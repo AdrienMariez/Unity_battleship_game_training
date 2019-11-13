@@ -151,7 +151,7 @@ public class ShipBehaviour : MonoBehaviour
 
             StartCoroutine(PauseSpeedIncrementation());
 
-            Debug.Log ("- FORTH - :"+ m_LocalRealSpeed);
+            // Debug.Log ("- FORTH - :"+ m_LocalRealSpeed);
 
         }
         else if (m_LocalRealSpeed > m_LocalTargetSpeed && m_SpeedIncrementation) {
@@ -167,7 +167,7 @@ public class ShipBehaviour : MonoBehaviour
                 // Debug.Log ("- DOUBLE SPEED BACK - :"+ m_LocalRealSpeed);
             }
             StartCoroutine(PauseSpeedIncrementation());
-            Debug.Log ("- BACK - :"+ m_LocalRealSpeed);
+            // Debug.Log ("- BACK - :"+ m_LocalRealSpeed);
         }
     }
     IEnumerator PauseSpeedIncrementation(){
@@ -180,7 +180,7 @@ public class ShipBehaviour : MonoBehaviour
         SetRealSpeed();
         //default direction
         var forceDirection = transform.forward;
-        Debug.Log ("- forceDirection - :"+ forceDirection);
+        // Debug.Log ("- forceDirection - :"+ forceDirection);
         var steer = 0;
 
         if (m_TurnInputValue > 0)
@@ -216,7 +216,7 @@ public class ShipBehaviour : MonoBehaviour
 
         //moving forward
         var movingForward = Vector3.Cross(transform.forward, Rigidbody.velocity).y < 0;
-        Debug.Log ("- transform.forward - :"+ transform.forward);
+        // Debug.Log ("- transform.forward - :"+ transform.forward);
 
         //move in direction
         Rigidbody.velocity = Quaternion.AngleAxis(Vector3.SignedAngle(Rigidbody.velocity, (movingForward ? 1f : 0f) * transform.forward, Vector3.up) * Drag, Vector3.up) * Rigidbody.velocity;

@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3b671fa8f4a844aac9236deff3c72a, type: 3}
+  m_Name: WavesCalm
+  m_EditorClassIdentifier: 
+  _windSpeed: 10
+  _fetch: 500000
+  _waveDirectionVariance: 56
+  _gravityScale: 1
+  _smallWavelengthMultiplier: 1
+  _multiplier: 1
+  _powerLog:
+  - -6
+  - -6
+  - -6
+  - -3.9378119
+  - -3.3359303
+  - -2.734585
+  - -2.1353834
+  - -2.064757
+  - -1.948432
+  - -1.969311
+  - -1.539007
+  - -1.5439708
+  - -1.48
+  - -6
+  _powerDisabled: 0000000000000000000000000000
+  _chopScales:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  _gravityScales:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  _chop: 1
+  _showAdvancedControls: 0

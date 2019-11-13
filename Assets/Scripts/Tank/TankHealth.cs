@@ -57,13 +57,13 @@ public class TankHealth : MonoBehaviour
     private void Update()
     {
         // Check if the tank isn't underwater
-        if (transform.localPosition.y < 0)
-        {
-            m_CurrentHealth -= 1;
+        // if (transform.localPosition.y < 0)
+        // {
+        //     m_CurrentHealth -= 1;
 
-            SetHealthUI ();
-            CheckDeath ();
-        }
+        //     SetHealthUI ();
+        //     CheckDeath ();
+        // }
     }
 
     private void CheckDeath ()
