@@ -26,7 +26,8 @@ using UnityEngine;
 
         // From PivotBasedCameraRig
         protected Transform m_Cam; // the transform of the camera
-        protected Transform m_Pivot; // the point at which the camera pivots around
+        protected Transform m_Pivot; // the point at which the camera points to
+        protected Transform m_Axis; // the point at which the camera pivots around
         protected Vector3 m_LastTargetPosition;
         // END From PivotBasedCameraRig
 
@@ -41,8 +42,8 @@ using UnityEngine;
         private float m_LookAngle;                    // The rig's y axis rotation.
         private float m_TiltAngle;                    // The pivot's x axis rotation.
         // private const float k_LookDistance = 100f;    // How far in front of the pivot the character's look target is.
-		private Vector3 m_PivotEulers;
-		private Quaternion m_PivotTargetRot;
+		private Vector3 m_AxisEulers;
+		private Quaternion m_AxisTargetRot;
 		private Quaternion m_TransformTargetRot;
 
         [HideInInspector] public GameObject ActiveTarget;
@@ -60,6 +61,7 @@ using UnityEngine;
             // From PivotBasedCameraRig
             m_Cam = GetComponentInChildren<Camera>().transform;
             m_Pivot = m_Cam.parent;
+            m_Axis = m_Pivot.parent;
 
             // END From PivotBasedCameraRig
 
@@ -67,9 +69,9 @@ using UnityEngine;
             
             Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !m_LockCursor;
-			m_PivotEulers = m_Pivot.rotation.eulerAngles;
+			m_AxisEulers = m_Axis.rotation.eulerAngles;
 
-	        m_PivotTargetRot = m_Pivot.transform.localRotation;
+	        m_AxisTargetRot = m_Axis.transform.localRotation;
 			m_TransformTargetRot = transform.localRotation;
 
             ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
@@ -103,6 +105,9 @@ using UnityEngine;
         }
 
         protected void Update() {
+            // Debug.Log ("m_Axis   : "+ m_Axis);
+
+
             Color color = new Color(1.0f, 1.0f, 1.0f);
             Debug.DrawLine(Vector3.zero, new Vector3(0, 5, 0), color);
 
@@ -118,6 +123,8 @@ using UnityEngine;
             else
             {
                 m_CameraDistance = 12;
+                m_CameraHeight = 2;
+                m_CameraLateralOffset = 0;
             }
 
             m_Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
@@ -175,6 +182,7 @@ using UnityEngine;
             //I think a lot of lines in this file could be ditched entirely, cleanup todo later.
             m_Cam = GetComponentInChildren<Camera>().transform;
             m_Pivot = m_Cam.parent;
+            m_Axis = m_Pivot.parent;
 
             // Move the rig towards target position.
 
@@ -206,16 +214,16 @@ using UnityEngine;
             m_TiltAngle = Mathf.Clamp(m_TiltAngle, -m_TiltMin, m_TiltMax);
 
             // Tilt input around X is applied to the pivot (the child of this object)
-			m_PivotTargetRot = Quaternion.Euler(m_TiltAngle, m_PivotEulers.y , m_PivotEulers.z);
+			m_AxisTargetRot = Quaternion.Euler(m_TiltAngle, m_AxisEulers.y , m_AxisEulers.z);
 
 			if (m_TurnSmoothing > 0)
 			{
-				m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_PivotTargetRot, m_TurnSmoothing * Time.deltaTime);
+				m_Axis.localRotation = Quaternion.Slerp(m_Axis.localRotation, m_AxisTargetRot, m_TurnSmoothing * Time.deltaTime);
 				transform.localRotation = Quaternion.Slerp(transform.localRotation, m_TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
 			}
 			else
 			{
-				m_Pivot.localRotation = m_PivotTargetRot;
+				m_Axis.localRotation = m_AxisTargetRot;
 				transform.localRotation = m_TransformTargetRot;
 			}
         }

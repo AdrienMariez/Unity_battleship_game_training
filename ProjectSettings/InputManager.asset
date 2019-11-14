@@ -166,6 +166,38 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
+    m_Name: Horizontal
+    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    descriptiveNegativeName: 
+    negativeButton: k
+    positiveButton: m
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Jump
+    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    descriptiveNegativeName: 
+    negativeButton: ','
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
     m_Name: HorizontalShip
     descriptiveName: Horizontal move for naval units
     descriptiveNegativeName: 
@@ -196,6 +228,38 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Vertical
+    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    descriptiveNegativeName: 
+    negativeButton: l
+    positiveButton: o
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Mouse ScrollWheel
+    descriptiveName: USED FOR PREFAB TANK TO REMOVE
+    descriptiveNegativeName: 
+    negativeButton: l
+    positiveButton: o
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 1
+    axis: 2
     joyNum: 2
   - serializedVersion: 3
     m_Name: VerticalShip
