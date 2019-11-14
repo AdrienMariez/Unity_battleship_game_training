@@ -16,7 +16,7 @@ Shader "Crest/Underwater Meniscus"
 		Pass
 		{
 			// Could turn this off, and it would allow the ocean surface to render through it
-			ZWrite Off
+			ZWrite On
 			//Blend SrcAlpha OneMinusSrcAlpha
 			Blend DstColor Zero
 

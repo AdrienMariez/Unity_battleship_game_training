@@ -77,7 +77,7 @@ namespace Crest
             {
                 _rend.material.CopyPropertiesFromMaterial(OceanRenderer.Instance.OceanMaterial);
             }
-            Debug.Log("_rend.sharedMaterial.name"+_rend.sharedMaterial.name);
+            // Debug.Log("_rend.sharedMaterial.name"+_rend.sharedMaterial.name);
         }
 
         private void LateUpdate()
