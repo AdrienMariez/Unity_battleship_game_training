@@ -11,6 +11,13 @@ public class TankMovement : MonoBehaviour
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;       // The amount by which the pitch of the engine noises
 
+    [Tooltip ("Maximum Rotation Speed. (Degree per Second)")] public float rotationSpeed = 15.0f;
+	[Tooltip ("Time to reach the maximum speed. (Sec)")] public float acceleration_Time = 0.2f;
+	[Tooltip ("Angle range for slowing down. (Degree)")] public float bufferAngle = 5.0f;
+    float speedRate;
+    float targetAng;
+    float currentAng;
+
     
     private string m_MovementAxisName;     
     private string m_TurnAxisName;         
@@ -22,12 +29,17 @@ public class TankMovement : MonoBehaviour
 
 
     private Rigidbody TankTurret;
+    private Rigidbody TankCannon;
+    private GameObject CameraPivot;
+
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
 
         TankTurret = this.transform.GetChild(0).GetChild(3).GetComponent<Rigidbody>();
+        TankCannon = this.transform.GetChild(0).GetChild(3).GetChild(0).GetComponent<Rigidbody>();
+        CameraPivot = GameObject.Find("Pivot");
     }
 
 
@@ -129,6 +141,7 @@ public class TankMovement : MonoBehaviour
             if (!Input.GetButton ("FreeCamera"))
             {
                 TurretRotate();
+                CannonElevation();
             }
             else
             {
@@ -161,17 +174,60 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
     }
 
-        private void TurretRotate()
+    private void TurretRotate()
     {
         // Get vehicle rotation
         Vector3 tankEulerAngles = this.transform.rotation.eulerAngles;
-        //Debug.Log("transform.rotation angles x: " + eulerAngles.x + " y: " + eulerAngles.y + " z: " + eulerAngles.z);
+        // Debug.Log("------------- tankEulerAngles: " + tankEulerAngles);
 
         // Get Camera rotation
-        Vector3 cameraEulerAngles = GameObject.Find("Pivot").transform.rotation.eulerAngles;
+        Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
+        // Debug.Log("cameraEulerAngles: " + cameraEulerAngles);
 
         // Turn turret towards camera facing
-        TankTurret.transform.rotation = Quaternion.Euler(tankEulerAngles.x, cameraEulerAngles.y, tankEulerAngles.z);    
+        // TankTurret.transform.localRotation = Quaternion.Euler(0.0f, cameraEulerAngles.y-tankEulerAngles.y, 0.0f);
+
+        targetAng = cameraEulerAngles.y-tankEulerAngles.y;
+        if (targetAng<0)
+            targetAng += 360;
+        currentAng = TankTurret.transform.localRotation.eulerAngles.y;
+        // Debug.Log("targetAng = "+targetAng+" /:/ currentAng = "+currentAng);
+        
+         // Calculate Turn Rate.
+        float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (rotationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
+        // Calculate Rate
+        speedRate = Mathf.MoveTowardsAngle (speedRate, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
+        // Rotate
+        
+        // if (Mathf.Abs (targetAng) > 0.01f) {
+        if (Mathf.Abs (currentAng) < Mathf.Abs (targetAng) && Mathf.Abs (currentAng)+180 > Mathf.Abs (targetAng) || Mathf.Abs (currentAng) > Mathf.Abs (targetAng) && Mathf.Abs (currentAng) > Mathf.Abs (targetAng)+180) {
+            // Debug.Log("IF IF IF IF IF");
+            currentAng += rotationSpeed * speedRate * Time.fixedDeltaTime;
+        }
+        else{
+            // Debug.Log("ELSELSELSE");
+            currentAng -= rotationSpeed * speedRate * Time.fixedDeltaTime;
+        }
+        TankTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
+    }
+
+    private void CannonElevation()
+    {
+        // Get vehicle rotation
+        Vector3 tankEulerAngles = this.transform.rotation.eulerAngles;
+        // Debug.Log("------------- tankEulerAngles: " + tankEulerAngles);
+
+        // Get Camera rotation
+        Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
+        // Debug.Log("cameraEulerAngles: " + cameraEulerAngles);
+
+        targetAng = cameraEulerAngles.x-tankEulerAngles.x;
+        if (targetAng<0)
+            targetAng += 360;
+
+        // Turn turret towards camera facing
+        TankCannon.transform.localRotation = Quaternion.Euler(targetAng, 0.0f, 0.0f);
+        Debug.Log(targetAng);
     }
 
     float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
