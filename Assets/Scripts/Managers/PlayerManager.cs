@@ -81,21 +81,29 @@ public class PlayerManager : MonoBehaviour
         ActiveTarget = PlayerUnits[CurrentTarget];
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
 
-        for (int i = 0; i < PlayerUnitsLength; i++)
-        {
+        for (int i = 0; i < PlayerUnitsLength; i++){
+            if (PlayerUnits[i].GetComponent<TurretManager>()) {
+                if (i == CurrentTarget)
+                {
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
+                    // Debug.Log ("Current turrets activated : "+ PlayerUnits[CurrentTarget]);
+                }
+                else
+                {
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
+                }
+            }
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>())
             {
                 if (i == CurrentTarget)
                 {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = true;
-                    PlayerUnits[i].GetComponent<TankShooting>().m_Active = true;
                     //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
                 }
                 else
                 {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = false;
-                    PlayerUnits[i].GetComponent<TankShooting>().m_Active = false;
                 }
             }
             else if (PlayerUnits[i].GetComponent<AircraftController>())
@@ -111,30 +119,18 @@ public class PlayerManager : MonoBehaviour
                 }
             }
             /*
-            else if (PlayerUnits[i].GetComponent<ShipMovement>())
+            else if (PlayerUnits[i].GetComponent<BoatProbes>())
             {
                 if (i == CurrentTarget)
                 {
-                    PlayerUnits[i].GetComponent<ShipMovement>().m_Active = true;
-                    //Debug.Log ("Current target is a plane : "+ PlayerUnits[CurrentTarget].GetComponent<AircraftUserControl4Axis>());
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
                 }
                 else
                 {
-                    PlayerUnits[i].GetComponent<ShipMovement>().m_Active = false;
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
                 }
             }
             */
-            else if (PlayerUnits[i].GetComponent<ShipBehaviour>())
-            {
-                if (i == CurrentTarget)
-                {
-                    PlayerUnits[i].GetComponent<ShipBehaviour>().m_Active = true;
-                }
-                else
-                {
-                    PlayerUnits[i].GetComponent<ShipBehaviour>().m_Active = false;
-                }
-            }
         }
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }

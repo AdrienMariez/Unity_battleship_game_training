@@ -1873,6 +1873,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 682091736796430031, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
+        type: 3}
+      propertyPath: m_Name
+      value: CameraPivot
+      objectReference: {fileID: 0}
     - target: {fileID: 682091736796430029, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
       propertyPath: m_Layer

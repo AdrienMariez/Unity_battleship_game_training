@@ -55,27 +55,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-/*
-    private void SetCameraTargets()
-    {
-        // Create a collection of transforms the same size as the number of tanks.
-        Transform[] targets = new Transform[m_Tanks.Length];
-
-        // For each of these transforms...
-        for (int i = 0; i < targets.Length; i++)
-        {
-            // ... set it to the appropriate tank transform.
-            targets[i] = m_Tanks[i].m_Instance.transform;
-
-
-            //print("Player Starting : "+m_Tanks[i].m_PlayerStarting);
-        }
-        // These are the targets the camera should follow.
-        m_CameraControl.m_Targets = targets;
-    }
-*/
-
-
     // This is called from start and will run each phase of the game one after another.
     private IEnumerator GameLoop ()
     {
@@ -93,9 +72,6 @@ public class GameManager : MonoBehaviour
         {
             // If there is a game winner, restart the level.
             SceneManager.LoadScene (0);
-
-            // Obsolete
-            // Application.LoadLevel (Application.loadedLevel);
         }
         else
         {
@@ -111,9 +87,6 @@ public class GameManager : MonoBehaviour
         // As soon as the round starts reset the tanks and make sure they can't move.
         ResetAllTanks ();
         DisableTankControl ();
-
-        // Snap the camera's zoom and position to something appropriate for the reset tanks.
-        // m_CameraControl.SetStartPositionAndSize ();
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;

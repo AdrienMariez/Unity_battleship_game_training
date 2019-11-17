@@ -27,19 +27,16 @@ public class TankMovement : MonoBehaviour
     private float m_FreeCamInputValue;      
     private float m_OriginalPitch;         // The pitch of the audio source at the start of the scene.
 
+    TurretFireManager TurretsFire;
+    TurretRotation TurretsRotation;
 
-    private Rigidbody TankTurret;
-    private Rigidbody TankCannon;
     private GameObject CameraPivot;
 
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-
-        TankTurret = this.transform.GetChild(0).GetChild(3).GetComponent<Rigidbody>();
-        TankCannon = this.transform.GetChild(0).GetChild(3).GetChild(0).GetComponent<Rigidbody>();
-        CameraPivot = GameObject.Find("Pivot");
+        CameraPivot = GameObject.Find("CameraPivot");
     }
 
 
@@ -63,11 +60,6 @@ public class TankMovement : MonoBehaviour
 
     private void Start()
     {
-        // The axes names are based on player number.
-
-        //m_MovementAxisName = "Vertical" + m_PlayerNumber;
-        //m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-
         // Store the original pitch of the audio source.
         m_OriginalPitch = m_MovementAudio.pitch;
     }
@@ -76,16 +68,11 @@ public class TankMovement : MonoBehaviour
     {
         // This is run every frame
         // Store the player's input and make sure the audio for the engine is playing.
-
-        
-
-        if (m_Active)
-        {
+        if (m_Active){
             m_MovementInputValue = Input.GetAxis ("VerticalGround");
             m_TurnInputValue = Input.GetAxis ("HorizontalGround");
         }
-        else
-        {
+        else{
             m_MovementInputValue = Input.GetAxis ("Empty");
             m_TurnInputValue = Input.GetAxis ("Empty");
         }
@@ -97,8 +84,6 @@ public class TankMovement : MonoBehaviour
     {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
 
-        //Abs (x) means that if x=-3, Abs(x)=3
-        //0.1f means 0.1 as a FLOAT value
         //if not moving or rotating
         if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f)
         {
@@ -138,15 +123,6 @@ public class TankMovement : MonoBehaviour
         {
             Move ();
             Turn ();
-            if (!Input.GetButton ("FreeCamera"))
-            {
-                TurretRotate();
-                CannonElevation();
-            }
-            else
-            {
-                //Debug.Log ("Free Camera Activated");
-            }
         }
         
     }
@@ -172,62 +148,6 @@ public class TankMovement : MonoBehaviour
         //(0f, turn, 0f) : X,Y,Z
         Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);
         m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
-    }
-
-    private void TurretRotate()
-    {
-        // Get vehicle rotation
-        Vector3 tankEulerAngles = this.transform.rotation.eulerAngles;
-        // Debug.Log("------------- tankEulerAngles: " + tankEulerAngles);
-
-        // Get Camera rotation
-        Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
-        // Debug.Log("cameraEulerAngles: " + cameraEulerAngles);
-
-        // Turn turret towards camera facing
-        // TankTurret.transform.localRotation = Quaternion.Euler(0.0f, cameraEulerAngles.y-tankEulerAngles.y, 0.0f);
-
-        targetAng = cameraEulerAngles.y-tankEulerAngles.y;
-        if (targetAng<0)
-            targetAng += 360;
-        currentAng = TankTurret.transform.localRotation.eulerAngles.y;
-        // Debug.Log("targetAng = "+targetAng+" /:/ currentAng = "+currentAng);
-        
-         // Calculate Turn Rate.
-        float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (rotationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
-        // Calculate Rate
-        speedRate = Mathf.MoveTowardsAngle (speedRate, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
-        // Rotate
-        
-        // if (Mathf.Abs (targetAng) > 0.01f) {
-        if (Mathf.Abs (currentAng) < Mathf.Abs (targetAng) && Mathf.Abs (currentAng)+180 > Mathf.Abs (targetAng) || Mathf.Abs (currentAng) > Mathf.Abs (targetAng) && Mathf.Abs (currentAng) > Mathf.Abs (targetAng)+180) {
-            // Debug.Log("IF IF IF IF IF");
-            currentAng += rotationSpeed * speedRate * Time.fixedDeltaTime;
-        }
-        else{
-            // Debug.Log("ELSELSELSE");
-            currentAng -= rotationSpeed * speedRate * Time.fixedDeltaTime;
-        }
-        TankTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
-    }
-
-    private void CannonElevation()
-    {
-        // Get vehicle rotation
-        Vector3 tankEulerAngles = this.transform.rotation.eulerAngles;
-        // Debug.Log("------------- tankEulerAngles: " + tankEulerAngles);
-
-        // Get Camera rotation
-        Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
-        // Debug.Log("cameraEulerAngles: " + cameraEulerAngles);
-
-        targetAng = cameraEulerAngles.x-tankEulerAngles.x;
-        if (targetAng<0)
-            targetAng += 360;
-
-        // Turn turret towards camera facing
-        TankCannon.transform.localRotation = Quaternion.Euler(targetAng, 0.0f, 0.0f);
-        Debug.Log(targetAng);
     }
 
     float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
