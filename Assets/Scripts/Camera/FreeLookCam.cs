@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-
+namespace FreeLookCam
+{
     public class FreeLookCam : MonoBehaviour
     {
         // This script is designed to be placed on the root object of a camera rig,
@@ -11,9 +12,7 @@ using UnityEngine;
         // 		Pivot
         // 			Camera
 
-        // From AbstractTargetFollower
-        public enum UpdateType // The available methods of updating are:
-        {
+        public enum UpdateType { // The available methods of updating are:
             FixedUpdate, // Update in FixedUpdate (for tracking rigidbodies).
             LateUpdate, // Update in LateUpdate. (for tracking objects that are moved in Update)
             ManualUpdate, // user must call to update camera
@@ -22,14 +21,10 @@ using UnityEngine;
         [HideInInspector] protected Transform m_Target;            // The target object to follow
         [SerializeField] private UpdateType m_UpdateType;         // stores the selected update type
         protected Rigidbody targetRigidbody;
-        // END From AbstractTargetFollower
-
-        // From PivotBasedCameraRig
         protected Transform m_Cam; // the transform of the camera
         protected Transform m_Pivot; // the point at which the camera points to
         protected Transform m_Axis; // the point at which the camera pivots around
         protected Vector3 m_LastTargetPosition;
-        // END From PivotBasedCameraRig
 
 
         [SerializeField] private float m_MoveSpeed = 20f;                      // How fast the rig will move to keep up with the target's position.
@@ -38,6 +33,17 @@ using UnityEngine;
         [SerializeField] private float m_TiltMax = 75f;                       // The maximum value of the x axis rotation of the pivot.
         [SerializeField] private float m_TiltMin = 45f;                       // The minimum value of the x axis rotation of the pivot.
         [SerializeField] private bool m_LockCursor = true;                   // Whether the cursor should be hidden and locked.
+        public float m_CameraDistance = 12;  // x   Variables to move the camera for each unit
+        public float m_CameraHeight = 2;    // y
+        public float m_CameraLateralOffset = 0;   // z
+
+        //RAYCAST
+        public LayerMask RaycastLayerMask;                                             // Layer to filter what the raycast will hit
+        protected GameObject m_RaycastProjector;
+        public float RaycastRange = 1000;
+        public RaycastHit RaycastHit;
+        protected GameObject m_TargetCircle;
+        [HideInInspector] public Vector3 m_TargetPosition;
 
         private float m_LookAngle;                    // The rig's y axis rotation.
         private float m_TiltAngle;                    // The pivot's x axis rotation.
@@ -45,28 +51,17 @@ using UnityEngine;
 		private Vector3 m_AxisEulers;
 		private Quaternion m_AxisTargetRot;
 		private Quaternion m_TransformTargetRot;
-
         [HideInInspector] public GameObject ActiveTarget;
-        public float m_CameraDistance = 12;  // x
-        public float m_CameraHeight = 2;    // y
-        public float m_CameraLateralOffset = 0;   // z
-
         private PlayerManager PlayerManager;
 
         protected virtual void Start() {
-            // From AbstractTargetFollower
             if (m_Target == null) return;
             targetRigidbody = m_Target.GetComponent<Rigidbody>();
-            // END From AbstractTargetFollower
-            // From PivotBasedCameraRig
+
             m_Cam = GetComponentInChildren<Camera>().transform;
             m_Pivot = m_Cam.parent;
-            m_Axis = m_Pivot.parent;
-
-            // END From PivotBasedCameraRig
 
             // Lock or unlock the cursor.
-            
             Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !m_LockCursor;
 			m_AxisEulers = m_Axis.rotation.eulerAngles;
@@ -75,6 +70,11 @@ using UnityEngine;
 			m_TransformTargetRot = transform.localRotation;
 
             ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
+        }
+
+        private void Awake(){
+            m_RaycastProjector = GameObject.Find("RaycastProjector");
+            m_TargetCircle = GameObject.Find("TargetCircle");
         }
 
         private void FixedUpdate() {   
@@ -106,11 +106,6 @@ using UnityEngine;
 
         protected void Update() {
             // Debug.Log ("m_Axis   : "+ m_Axis);
-
-
-            Color color = new Color(1.0f, 1.0f, 1.0f);
-            Debug.DrawLine(Vector3.zero, new Vector3(0, 5, 0), color);
-
             ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
 
             // Set camera position relative to the target
@@ -130,13 +125,11 @@ using UnityEngine;
             m_Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
 
 
-            if (ActiveTarget.GetComponent<AircraftController>() && Input.GetButton ("FreeCamera") || !ActiveTarget.GetComponent<AircraftController>())
-            {
+            if (ActiveTarget.GetComponent<AircraftController>() && Input.GetButton ("FreeCamera") || !ActiveTarget.GetComponent<AircraftController>()) {
                 // If it's a plane and free look is activated OR if it's anything but a plane, allow free cam
                 HandleRotationMovement();
             }
-            else
-            {
+            else {
                 // Otherwise, it's a plane. Keep the camera behind the unit.
                 FollowPlaneMovement();
             }
@@ -151,6 +144,22 @@ using UnityEngine;
             if (Input.GetButtonDown ("SetNextUnit") || Input.GetButtonDown ("SetPreviousUnit")){
                 ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
                 //Debug.Log ("Current Target : "+ CurrentTarget);
+            }
+            
+            // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
+            
+            // Debug.DrawRay(m_RaycastPoint.transform.position + (m_RaycastPoint.transform.forward * m_CameraDistance), m_RaycastPoint.transform.position + (m_RaycastPoint.transform.forward * 1000), Color.green);
+
+            if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
+                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
+                // Debug.Log ("RaycastHit : "+ RaycastHit.transform.name);
+                // Debug.Log ("RaycastHit.distance : "+ RaycastHit.distance);
+                // Debug.Log ("RaycastHit.point : "+ RaycastHit.point);
+                m_TargetCircle.transform.position = RaycastHit.point;
+                m_TargetPosition = RaycastHit.point;
+            }
+            else {
+                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 1000, Color.white);
             }
         }
 
@@ -238,3 +247,4 @@ using UnityEngine;
             transform.rotation = Quaternion.Euler(m_Target.rotation.eulerAngles.x, m_Target.rotation.eulerAngles.y, m_Target.rotation.eulerAngles.z);
         }
     }
+}

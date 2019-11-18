@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 452158}
   - component: {fileID: 19837028}
   - component: {fileID: 19964762}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4759,7 +4759,7 @@ GameObject:
   - component: {fileID: 19874418}
   - component: {fileID: 19921400}
   - component: {fileID: 5183439811922156016}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TankExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9605,7 +9605,7 @@ GameObject:
   - component: {fileID: 465276}
   - component: {fileID: 19854888}
   - component: {fileID: 19911312}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}

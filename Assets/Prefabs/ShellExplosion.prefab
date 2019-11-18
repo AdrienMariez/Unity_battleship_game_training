@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 424038}
   - component: {fileID: 19846844}
   - component: {fileID: 19967326}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4692,7 +4692,7 @@ GameObject:
   - component: {fileID: 19807510}
   - component: {fileID: 19960184}
   - component: {fileID: 82120141312391850}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ShellExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9529,7 +9529,7 @@ GameObject:
   - component: {fileID: 463882}
   - component: {fileID: 19861370}
   - component: {fileID: 19965342}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}

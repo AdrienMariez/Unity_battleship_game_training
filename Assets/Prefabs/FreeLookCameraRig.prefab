@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 682091736791063983}
   - component: {fileID: 682091736785652525}
   - component: {fileID: 1994422288}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FreeLookCameraRig
   m_TagString: Untagged
   m_Icon: {fileID: -215833656, guid: 0000000000000000d000000000000000, type: 0}
@@ -87,10 +87,14 @@ MonoBehaviour:
   m_TiltMax: 75
   m_TiltMin: 45
   m_LockCursor: 1
-  ActiveTarget: {fileID: 0}
   m_CameraDistance: 12
   m_CameraHeight: 2
   m_CameraLateralOffset: 0
+  RaycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  RaycastRange: 1000
+  ActiveTarget: {fileID: 0}
 --- !u!1 &682091736796430029
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +106,7 @@ GameObject:
   - component: {fileID: 682091736796586733}
   - component: {fileID: 682091736795053295}
   - component: {fileID: 682091736788426959}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -120,10 +124,10 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5112242396666613066}
   - {fileID: 2870097147236223451}
+  - {fileID: 5112242396666613066}
   m_Father: {fileID: 682091736796586735}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &682091736795053295
 Camera:
@@ -147,20 +151,20 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.02
+  near clip plane: 0.5
   far clip plane: 100000
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 100
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
+  m_HDR: 1
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -184,8 +188,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 682091736796586735}
-  m_Layer: 0
-  m_Name: Pivot
+  m_Layer: 9
+  m_Name: CameraPivot
   m_TagString: Untagged
   m_Icon: {fileID: -1500306622, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -202,8 +206,39 @@ Transform:
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4805232916253527601}
   - {fileID: 682091736796586733}
   m_Father: {fileID: 1141268719953741268}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4775265137189426835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4805232916253527601}
+  m_Layer: 9
+  m_Name: RaycastProjector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4805232916253527601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4775265137189426835}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 682091736796586735}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8709656255557825447
@@ -278,7 +313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4478995129147352, guid: 0651fec140179c543852db8d7990eb33, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4478995129147352, guid: 0651fec140179c543852db8d7990eb33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -341,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4720579618361426, guid: e76f275cd3e181b42a2362a12f854d74, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4720579618361426, guid: e76f275cd3e181b42a2362a12f854d74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

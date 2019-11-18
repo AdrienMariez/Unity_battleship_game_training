@@ -16,6 +16,8 @@ public class TurretRotation : MonoBehaviour
     private float currentAng;
     private GameObject CameraPivot;
 
+    [HideInInspector] public Vector3 m_TargetPosition;
+
 
     private void Awake(){
         CameraPivot = GameObject.Find("CameraPivot");
@@ -92,7 +94,7 @@ public class TurretRotation : MonoBehaviour
         currentAng = TankTurret.transform.localRotation.eulerAngles.y;
         // Debug.Log("targetAng = "+targetAng+" /:/ currentAng = "+currentAng);
         
-         // Calculate Turn Rate.
+        // Calculate Turn Rate.
         float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (rotationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
         // Calculate Rate
         speedRate = Mathf.MoveTowardsAngle (speedRate, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
