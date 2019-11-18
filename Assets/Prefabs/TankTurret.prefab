@@ -26,14 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522397695267254535}
-  m_LocalRotation: {x: 0.60876137, y: -0, z: -0, w: 0.7933534}
-  m_LocalPosition: {x: 0, y: 0.18099993, z: 0.64900005}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.795}
   m_LocalScale: {x: 0.3, y: 0.79, z: 0.29999995}
   m_Children:
   - {fileID: 9032721239661306136}
   m_Father: {fileID: 5488608897461628150}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &1374838335283449020
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -124,7 +124,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910800031127728737}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.000010554959, y: 1.0796412, z: -0.025321364}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_FireMuzzle: {fileID: 9032721239661306136}
   m_ShootingAudio: {fileID: 5123216979890349395}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_LaunchVelocity: 30
+  m_LaunchVelocity: 60
   m_ReloadTime: 5
   m_Active: 0
 --- !u!82 &5123216979890349395
@@ -325,8 +325,9 @@ MonoBehaviour:
   m_Active: 0
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  TankTurret: {fileID: 3224193198085467976}
-  TankCannon: {fileID: 6561433242781259133}
+  TurretTurret: {fileID: 3224193198085467976}
+  TurretCannon: {fileID: 6561433242781259133}
+  Parent: {fileID: 0}
   rotationSpeed: 15
   acceleration_Time: 0.2
   bufferAngle: 5

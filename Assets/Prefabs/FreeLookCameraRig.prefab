@@ -92,8 +92,9 @@ MonoBehaviour:
   m_CameraLateralOffset: 0
   RaycastLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 7987
   RaycastRange: 1000
+  m_TargetPosition: {x: 0, y: 0, z: 0}
   ActiveTarget: {fileID: 0}
 --- !u!1 &682091736796430029
 GameObject:
@@ -235,7 +236,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4775265137189426835}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 682091736796586735}

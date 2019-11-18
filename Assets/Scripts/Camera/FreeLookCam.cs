@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace FreeLookCam
+namespace FreeLookCamera
 {
     public class FreeLookCam : MonoBehaviour
     {
