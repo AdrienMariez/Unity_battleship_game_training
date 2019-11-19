@@ -5,10 +5,8 @@ public class TurretFireManager : MonoBehaviour
 {
     [Tooltip("Ammo used")]
     public Rigidbody m_Shell;                   // Prefab of the shell.
-    [Tooltip("Point where the shell will be actually spawned")]
-    public Transform m_FireMuzzle;           // A child of the tank where the shells are spawned.
-    
-    // public Transform[] m_FireTransform;      // Will be used for multiple cannons
+    [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
+    public Transform[] m_FireMuzzles;      // Will be used for multiple cannons
     public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
     [Tooltip("Audio for the shooting action")]
     public AudioClip m_FireClip;                // Audio that plays when each shot is fired.
@@ -43,8 +41,7 @@ public class TurretFireManager : MonoBehaviour
     }
 
 
-    private void Update ()
-    {
+    private void Update () {
         // Debug.Log("m_Active :"+ m_Active);
         if (m_Active) {
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
@@ -69,17 +66,18 @@ public class TurretFireManager : MonoBehaviour
     }
 
 
-    private void Fire ()
-    {
-        // Create an instance of the shell and store a reference to it's rigidbody.
-        Rigidbody shellInstance =
-            Instantiate (m_Shell, m_FireMuzzle.position, m_FireMuzzle.rotation) as Rigidbody;
+    private void Fire () {
+        for (int i = 0; i < m_FireMuzzles.Length; i++) {
+            // Create an instance of the shell and store a reference to it's rigidbody.
+            Rigidbody shellInstance =
+                Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation) as Rigidbody;
 
-        // Set the shell's velocity to the launch force in the fire position's forward direction.
-        shellInstance.velocity = m_LaunchVelocity * m_FireMuzzle.forward; ;
+            // Set the shell's velocity to the launch force in the fire position's forward direction.
+            shellInstance.velocity = m_LaunchVelocity * m_FireMuzzles[i].forward; ;
 
-        // Change the clip to the firing clip and play it.
-        m_ShootingAudio.clip = m_FireClip;
-        m_ShootingAudio.Play ();
+            // Change the clip to the firing clip and play it.
+            m_ShootingAudio.clip = m_FireClip;
+            m_ShootingAudio.Play ();      
+        }
     }
 }

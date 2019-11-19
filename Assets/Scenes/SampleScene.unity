@@ -1967,15 +1967,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
-      propertyPath: RaycastLayerMask.m_Bits
-      value: 7987
-      objectReference: {fileID: 0}
-    - target: {fileID: 4805232916253527601, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
 --- !u!1001 &2661556144605333969
@@ -2043,11 +2034,6 @@ PrefabInstance:
     - target: {fileID: 2661556145241615459, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3144006090107495224, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
-        type: 3}
-      propertyPath: m_Turrets.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
