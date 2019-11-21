@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fa67dbe646d0e4e9cd7e9b2ae804f5, type: 3}
   m_Name: SettingsFoamWakes
   m_EditorClassIdentifier: 
-  _foamFadeRate: 0.8
-  _waveFoamStrength: 3.3
-  _waveFoamCoverage: 0.9
-  _shorelineFoamMaxDepth: 0.65
+  _foamFadeRate: 0.2
+  _waveFoamStrength: 2.68
+  _waveFoamCoverage: 0.667
+  _shorelineFoamMaxDepth: 1.86
   _shorelineFoamStrength: 4
-  _renderTextureFormat: 15
+  _renderTextureFormat: 0

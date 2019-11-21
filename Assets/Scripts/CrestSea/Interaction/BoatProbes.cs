@@ -73,6 +73,8 @@ namespace Crest
 
         SampleFlowHelper _sampleFlowHelper = new SampleFlowHelper();
 
+        [HideInInspector] public bool m_Active;
+
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
@@ -166,11 +168,17 @@ namespace Crest
             var forcePosition = _rb.position;
 
             var forward = _engineBias;
-            if (_playerControlled) forward += Input.GetAxis("Vertical");
+            if (_playerControlled) forward += Input.GetAxis("VerticalShip");
             _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
 
             var sideways = _turnBias;
-            if (_playerControlled) sideways += (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
+            // Debug.Log("Input.GetKey(KeyCode.A) :"+ Input.GetKey(KeyCode.A));
+            // Debug.Log("Input.GetKey(KeyCode.D) :"+ Input.GetKey(KeyCode.D));
+            // Debug.Log("Input.GetAxis (HorizontalShip) :"+ Input.GetAxis ("HorizontalShip"));
+
+            // if (_playerControlled) sideways += (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
+            if (_playerControlled) sideways += Input.GetAxis ("HorizontalShip");
+            // Debug.Log("sideways :"+ sideways);
             var rotVec = transform.up + _turningHeel * transform.forward;
             _rb.AddTorque(rotVec * _turnPower * sideways, ForceMode.Acceleration);
         }

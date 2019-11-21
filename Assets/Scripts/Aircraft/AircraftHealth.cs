@@ -66,14 +66,14 @@ public class AircraftHealth : MonoBehaviour
     private void Update()
     {
         // Check if the tank isn't underwater
-        if (transform.localPosition.y < 0)
-        {
-            // Insta death for planes if they go underwater !
-            m_CurrentHealth -= 1000;
+        // if (transform.localPosition.y < 0)
+        // {
+        //     // Insta death for planes if they go underwater !
+        //     m_CurrentHealth -= 1000;
 
-            SetHealthUI ();
-            CheckDeath ();
-        }
+        //     SetHealthUI ();
+        //     CheckDeath ();
+        // }
     }
 
     private void CheckDeath ()

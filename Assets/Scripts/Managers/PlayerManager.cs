@@ -118,19 +118,17 @@ public class PlayerManager : MonoBehaviour
                     PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = false;
                 }
             }
-            /*
-            else if (PlayerUnits[i].GetComponent<BoatProbes>())
+            else if (PlayerUnits[i].GetComponent<ShipController>())
             {
                 if (i == CurrentTarget)
                 {
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
+                    PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                 }
                 else
                 {
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
+                    PlayerUnits[i].GetComponent<ShipController>().m_Active = false;
                 }
             }
-            */
         }
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
