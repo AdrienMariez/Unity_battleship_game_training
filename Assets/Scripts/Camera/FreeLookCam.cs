@@ -62,8 +62,8 @@ namespace FreeLookCamera
             m_Pivot = m_Cam.parent;
 
             // Lock or unlock the cursor.
-            Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !m_LockCursor;
+            // Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+            // Cursor.visible = !m_LockCursor;
 			m_AxisEulers = m_Axis.rotation.eulerAngles;
 
 	        m_AxisTargetRot = m_Axis.transform.localRotation;
@@ -134,11 +134,11 @@ namespace FreeLookCamera
                 FollowPlaneMovement();
             }
 
-            if (m_LockCursor && Input.GetMouseButtonUp(0))
-            {
-                Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-                Cursor.visible = !m_LockCursor;
-            }
+            // if (m_LockCursor && Input.GetMouseButtonUp(0))
+            // {
+            //     Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+            //     Cursor.visible = !m_LockCursor;
+            // }
 
 
             if (Input.GetButtonDown ("SetNextUnit") || Input.GetButtonDown ("SetPreviousUnit")){
@@ -167,8 +167,8 @@ namespace FreeLookCamera
 
 
         private void OnDisable() {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            // Cursor.lockState = CursorLockMode.None;
+            // Cursor.visible = true;
         }
 
         public virtual void SetTarget(Transform newTransform) {

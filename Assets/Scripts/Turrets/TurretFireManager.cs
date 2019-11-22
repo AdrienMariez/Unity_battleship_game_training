@@ -45,7 +45,7 @@ public class TurretFireManager : MonoBehaviour
         // Debug.Log("m_Active :"+ m_Active);
         if (m_Active) {
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
-            if (Input.GetButtonDown ("FireMainGround") && !m_Reloading)
+            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading)
             {
                 //start the reloading process immediately
                 m_Reloading = true;

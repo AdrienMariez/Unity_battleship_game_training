@@ -249,8 +249,8 @@ InputManager:
     m_Name: Mouse ScrollWheel
     descriptiveName: USED FOR PREFAB TANK TO REMOVE
     descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
+    negativeButton: 
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -278,8 +278,8 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
-    m_Name: FireMainGround
-    descriptiveName: Fire Button for ground units
+    m_Name: FireMainWeapon
+    descriptiveName: Main fire button for units
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: mouse 0
@@ -331,6 +331,22 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: j
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: OpenMap
+    descriptiveName: Open/close the map
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: ','
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

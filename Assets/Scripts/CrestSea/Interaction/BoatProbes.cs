@@ -75,8 +75,7 @@ namespace Crest
 
         [HideInInspector] public bool m_Active;
 
-        private void Start()
-        {
+        private void Start() {
             _rb = GetComponent<Rigidbody>();
             _rb.centerOfMass = _centerOfMass;
 
@@ -95,8 +94,7 @@ namespace Crest
             _queryResultVels = new Vector3[_forcePoints.Length + 1];
         }
 
-        void CalcTotalWeight()
-        {
+        void CalcTotalWeight() {
             _totalWeight = 0f;
             foreach (var pt in _forcePoints)
             {
@@ -104,12 +102,11 @@ namespace Crest
             }
         }
 
-        private void FixedUpdate()
-        {
-#if UNITY_EDITOR
-            // Sum weights every frame when running in editor in case weights are edited in the inspector.
-            CalcTotalWeight();
-#endif
+        private void FixedUpdate() {
+            #if UNITY_EDITOR
+                // Sum weights every frame when running in editor in case weights are edited in the inspector.
+                CalcTotalWeight();
+            #endif
 
             // Trigger processing of displacement textures that have come back this frame. This will be processed
             // anyway in Update(), but FixedUpdate() is earlier so make sure it's up to date now.
@@ -151,8 +148,7 @@ namespace Crest
             collProvider.ReturnSamplingData(_samplingData);
         }
 
-        void UpdateWaterQueries(ICollProvider collProvider)
-        {
+        void UpdateWaterQueries(ICollProvider collProvider){
             // Update query points
             for (int i = 0; i < _forcePoints.Length; i++)
             {
@@ -163,21 +159,26 @@ namespace Crest
             collProvider.Query(GetHashCode(), _samplingData, _queryPoints, _queryResultDisps, null, _queryResultVels);
         }
 
-        void FixedUpdateEngine()
-        {
+        void FixedUpdateEngine(){
             var forcePosition = _rb.position;
 
             var forward = _engineBias;
-            if (_playerControlled) forward += Input.GetAxis("VerticalShip");
-            _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
 
             var sideways = _turnBias;
+
+            if (m_Active) {
+                if (_playerControlled) forward += Input.GetAxis("VerticalShip");
+                if (_playerControlled) sideways += Input.GetAxis ("HorizontalShip");
+            }
+
+            _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
+
             // Debug.Log("Input.GetKey(KeyCode.A) :"+ Input.GetKey(KeyCode.A));
             // Debug.Log("Input.GetKey(KeyCode.D) :"+ Input.GetKey(KeyCode.D));
             // Debug.Log("Input.GetAxis (HorizontalShip) :"+ Input.GetAxis ("HorizontalShip"));
 
             // if (_playerControlled) sideways += (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
-            if (_playerControlled) sideways += Input.GetAxis ("HorizontalShip");
+            
             // Debug.Log("sideways :"+ sideways);
             var rotVec = transform.up + _turningHeel * transform.forward;
             _rb.AddTorque(rotVec * _turnPower * sideways, ForceMode.Acceleration);

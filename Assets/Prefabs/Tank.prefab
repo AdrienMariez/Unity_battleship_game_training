@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 291923873}
   - component: {fileID: 291923874}
   - component: {fileID: 291923875}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: HealthSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 510357586}
   - component: {fileID: 510357587}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: AimSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 609867325}
   - component: {fileID: 609867327}
   - component: {fileID: 609867326}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 811175960}
   - component: {fileID: 811175962}
   - component: {fileID: 811175961}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1058645307}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 1286357544}
   - component: {fileID: 1286357543}
   - component: {fileID: 1286357542}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 1319449773}
   - component: {fileID: 1319449775}
   - component: {fileID: 1319449774}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2038712075}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,11 +1188,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TurretTank
       objectReference: {fileID: 0}
-    - target: {fileID: 1938882384968223551, guid: f8b52b59a9c0e684882fba8614e08478,
-        type: 3}
-      propertyPath: Parent
-      value: 
-      objectReference: {fileID: 7484466486366364793}
     - target: {fileID: 1910800031127695233, guid: f8b52b59a9c0e684882fba8614e08478,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1248,6 +1243,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1938882384968223551, guid: f8b52b59a9c0e684882fba8614e08478,
+        type: 3}
+      propertyPath: Parent
+      value: 
+      objectReference: {fileID: 7484466486366364793}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8b52b59a9c0e684882fba8614e08478, type: 3}
 --- !u!4 &5630235499921268140 stripped
