@@ -35,6 +35,5 @@ public class MapManager : MonoBehaviour
             Cursor.visible = m_MapStatus;
             _m_MapStatus = !_m_MapStatus;
         }
-        Debug.Log ("Cursor.visible  : "+ Cursor.visible);
     }
 }
