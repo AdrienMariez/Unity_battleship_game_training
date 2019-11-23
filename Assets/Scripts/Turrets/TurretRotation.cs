@@ -4,6 +4,7 @@ using FreeLookCamera;
 public class TurretRotation : MonoBehaviour
 {    
     [HideInInspector] public bool m_Active;
+    [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
     [Tooltip ("Audio played when the turret is rotating.")]public AudioClip m_TurretRotationAudio;
     [Tooltip ("PAxis of rotation for horizontal rotation of the turret.")]public Rigidbody TurretTurret;
     [Tooltip ("Axis of rotation for the elevation of the cannon.")]public Rigidbody TurretCannon;
@@ -24,16 +25,32 @@ public class TurretRotation : MonoBehaviour
     private float localLeftTraverse;
     private float localRightTraverse;
 
+    [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float elevationSpeed = 15.0f;
+
+    [Tooltip("Maximum elevation (degrees) of the turret.")]
+    [Range(0.0f, 90.0f)]
+    public float upTraverse = 15.0f;
+    [Tooltip("Depression (degrees) of the turret.")]
+    [Range(0.0f, 90.0f)]
+    public float downTraverse = 5.0f;
+
     public bool debug = false;
 
     private float speedRate;
+    private float speedRateElev;
     [Tooltip ("Position/rotation of the direct parent")] private Vector3 parentEulerAngles;
     [Tooltip ("initial rotation of the turret")] private float TurretEulerAngle;
     private float targetAng;
     private float currentAng;
+    private float targetAngElev;
+    private float currentAngElev;
     private GameObject CameraPivot;
 
-    // [HideInInspector] public Vector3 m_TargetPosition;
+    [HideInInspector] public Vector3 m_TargetPosition;
+
+    private Vector3 m_IdlePosition;
+
+    private Vector3 TargetPositionInitial = new Vector3 (0.0f, 0.0f, 0.0f);
     private FreeLookCam FreeLookCam;
 
 
@@ -48,13 +65,17 @@ public class TurretRotation : MonoBehaviour
         localRightTraverse = 360 - rightTraverse + TurretEulerAngle;
         if (localRightTraverse>360)
             localRightTraverse -= 360;
-        // if (debug) {
+
+        m_IdlePosition = m_IdlePointer.transform.position;
+        
+        if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
         //     Debug.Log("leftTraverse: " + leftTraverse);
         //     Debug.Log("rightTraverse: " + rightTraverse);
         //     Debug.Log("localLeftTraverse: " + localLeftTraverse);
         //     Debug.Log("localRightTraverse: " + localRightTraverse);
-        // }
+            // Debug.Log("m_IdlePosition: " + m_IdlePosition);
+        }
     }
 
     /* Those methods are not used but could be to allow to disable all turrets of a unit if needed
@@ -104,13 +125,15 @@ public class TurretRotation : MonoBehaviour
     private void FixedUpdate(){
         if (m_Active){
             if (!Input.GetButton ("FreeCamera"))
-            {
-                TurretRotate();
-                CannonElevation();
-            }
+                m_TargetPosition = FreeLookCam.m_TargetPosition;
         // Reassign the new parent angle for future TurretRotate()
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
+        } else {
+            m_IdlePosition = m_IdlePointer.transform.position;
+            m_TargetPosition = m_IdlePosition;
         }
+        TurretRotate();
+        CannonElevation();
         
     }
 
@@ -122,18 +145,8 @@ public class TurretRotation : MonoBehaviour
         else if (parentRotationAng>360)
             parentRotationAng -= 360;
 
-        /*
-            //This allows to align with camera
-            // Get Camera rotation
-            Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
 
-            targetAng = cameraEulerAngles.y-parentEulerAngles.y;
-            if (targetAng<0)
-                targetAng += 360;
-        */
-
-
-        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, FreeLookCam.m_TargetPosition - TurretTurret.transform.position).eulerAngles.y;
+        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretTurret.transform.position).eulerAngles.y;
 
         targetAng = TargetAngleWorld - parentEulerAngles.y;
         if (targetAng<0)
@@ -141,7 +154,7 @@ public class TurretRotation : MonoBehaviour
         else if (targetAng>360)
             targetAng -= 360;
 
-        // Debug.DrawRay(TurretTurret.transform.position, TurretCannon.transform.TransformDirection(new Vector3(0f,targetAng,0f)) * 1000, Color.green);
+
         // if (debug) {
         //     Debug.Log("targetAng: " + targetAng);
         // }
@@ -165,23 +178,18 @@ public class TurretRotation : MonoBehaviour
         //     Debug.Log("TurretEulerAngles = "+TurretEulerAngle);
         // }
 
-        // Add parent rotation rate to the new current angle
-        // Why is it no longer necessary ? No idea ! Caused bugs with reversed turrets
-        // currentAng += parentRotationAng;
-
-        // if (debug) {
-        //     Debug.Log("currentAng 2 = "+ currentAng);
-        //     Debug.Log("parentRotationAng = "+ parentRotationAng);
-        // }
-
         if (limitTraverse) {
             currentAng = CheckLimitTraverse(currentAng);
         }
 
-        // if (debug) {
-        //     // Debug.Log("targetAng: " + targetAng);
-        //     Debug.Log("currentAng 3 = "+ currentAng);
-        // }
+        // Add parent rotation rate to the new current angle so that a rotating tank can turn its turret while rotating himself
+        currentAng -= parentRotationAng;
+
+
+        if (currentAng<0)
+            currentAng += 360;
+        if (currentAng>360)
+            currentAng -= 360;
 
         // Update the turret angle
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
@@ -241,25 +249,54 @@ public class TurretRotation : MonoBehaviour
         // Get parent current rotation rate
         float parentRotationAng = Parent.transform.rotation.eulerAngles.x-parentEulerAngles.x;
 
-
-
         // Get Camera rotation
         // Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
         // targetAng = cameraEulerAngles.x-parentEulerAngles.x;
         // if (targetAng<0)
         //     targetAng += 360;
 
-        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, FreeLookCam.m_TargetPosition - TurretTurret.transform.position).eulerAngles.x;
+        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretTurret.transform.position).eulerAngles.x;
 
-        targetAng = TargetAngleWorld - parentEulerAngles.x;
-        if (targetAng<0)
-            targetAng += 360;
+        targetAngElev = TargetAngleWorld - parentEulerAngles.x;
 
-        // targetAng += parentRotationAng;
+        currentAngElev = TurretCannon.transform.localRotation.eulerAngles.x;
+
+        float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (elevationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
+        speedRateElev = Mathf.MoveTowardsAngle (speedRateElev, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
+
+        if (currentAngElev > 180 && targetAngElev > 180 && currentAngElev > targetAngElev || currentAngElev < 180 && targetAngElev < 180 && currentAngElev > targetAngElev|| currentAngElev < 180 && targetAngElev > 180) {
+            currentAngElev -= elevationSpeed * speedRateElev * Time.fixedDeltaTime;
+        } else {
+            currentAngElev += elevationSpeed * speedRateElev * Time.fixedDeltaTime;
+        }
+
+        currentAngElev = CheckLimitElevation(currentAngElev);
+
+        currentAngElev += parentRotationAng;
+
+        if (currentAngElev<0)
+            currentAngElev += 360;
+        if (currentAngElev>360)
+            currentAngElev -= 360;
+
+        // if (debug) {
+        //     Debug.Log("targetAngElev = "+targetAngElev);
+        //     Debug.Log("currentAngElev = "+currentAngElev);
+        // }
 
         // Turn turret towards camera facing
-        TurretCannon.transform.localRotation = Quaternion.Euler(targetAng, 0.0f, 0.0f);
+        TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (currentAngElev, 0.0f, 0.0f));
 
         Debug.DrawRay(TurretCannon.transform.position, TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
+    }
+
+    private float CheckLimitElevation(float currentElevation){
+        if (currentElevation > 180 && currentElevation < (360-upTraverse)){
+            currentElevation = 360-upTraverse;
+        }
+        else if (currentElevation < 180 && currentElevation > downTraverse){
+            currentElevation = downTraverse;
+        }
+        return currentElevation;
     }
 }

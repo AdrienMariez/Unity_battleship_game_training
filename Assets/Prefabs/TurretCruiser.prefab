@@ -333,6 +333,14 @@ MonoBehaviour:
   rotationSpeed: 15
   acceleration_Time: 0.2
   bufferAngle: 5
+  limitTraverse: 0
+  leftTraverse: 60
+  rightTraverse: 60
+  elevationSpeed: 15
+  upTraverse: 15
+  downTraverse: 5
+  debug: 0
+  m_TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3478227579681722969
 GameObject:
   m_ObjectHideFlags: 0
