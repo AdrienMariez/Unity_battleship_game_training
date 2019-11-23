@@ -11,8 +11,6 @@ public class TurretRotation : MonoBehaviour
     [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]public Rigidbody Parent;
 
     [Tooltip ("Maximum Rotation Speed. (Degree per Second)")] public float rotationSpeed = 15.0f;
-	[Tooltip ("Time to reach the maximum speed. (Sec)")] public float acceleration_Time = 0.2f;
-	[Tooltip ("Angle range for slowing down. (Degree)")] public float bufferAngle = 5.0f;
 
     [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
     public bool limitTraverse = false;
@@ -36,8 +34,6 @@ public class TurretRotation : MonoBehaviour
 
     public bool debug = false;
 
-    private float speedRate;
-    private float speedRateElev;
     [Tooltip ("Position/rotation of the direct parent")] private Vector3 parentEulerAngles;
     [Tooltip ("initial rotation of the turret")] private float TurretEulerAngle;
     private float targetAng;
@@ -48,9 +44,8 @@ public class TurretRotation : MonoBehaviour
 
     [HideInInspector] public Vector3 m_TargetPosition;
 
-    private Vector3 m_IdlePosition;
+    private bool unitIsActivated = false;
 
-    private Vector3 TargetPositionInitial = new Vector3 (0.0f, 0.0f, 0.0f);
     private FreeLookCam FreeLookCam;
 
 
@@ -65,8 +60,6 @@ public class TurretRotation : MonoBehaviour
         localRightTraverse = 360 - rightTraverse + TurretEulerAngle;
         if (localRightTraverse>360)
             localRightTraverse -= 360;
-
-        m_IdlePosition = m_IdlePointer.transform.position;
         
         if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
@@ -123,18 +116,29 @@ public class TurretRotation : MonoBehaviour
 
 
     private void FixedUpdate(){
-        if (m_Active){
-            if (!Input.GetButton ("FreeCamera"))
-                m_TargetPosition = FreeLookCam.m_TargetPosition;
-        // Reassign the new parent angle for future TurretRotate()
-        parentEulerAngles = Parent.transform.rotation.eulerAngles;
+        if (!m_Active) {
+            m_TargetPosition = m_IdlePointer.transform.position;
+            if (unitIsActivated) {
+                unitIsActivated = !unitIsActivated;
+            }
         } else {
-            m_IdlePosition = m_IdlePointer.transform.position;
-            m_TargetPosition = m_IdlePosition;
+            if (!unitIsActivated) {
+                if (Input.GetButton ("FreeCamera")) {
+                    m_TargetPosition = m_IdlePointer.transform.position;
+                } else {
+                    unitIsActivated = !unitIsActivated;
+                }
+            }
+            if (!Input.GetButton ("FreeCamera")) {
+                m_TargetPosition = FreeLookCam.m_TargetPosition;
+            }
         }
+
         TurretRotate();
         CannonElevation();
         
+        // Reassign the new parent angle for future TurretRotate()
+        parentEulerAngles = Parent.transform.rotation.eulerAngles;
     }
 
     private void TurretRotate() {
@@ -155,35 +159,19 @@ public class TurretRotation : MonoBehaviour
             targetAng -= 360;
 
 
-        // if (debug) {
-        //     Debug.Log("targetAng: " + targetAng);
-        // }
-
         currentAng = TurretTurret.transform.localRotation.eulerAngles.y;
-        // if (currentAng>360)
-        //     currentAng -= 360;
 
-        // if (debug) { Debug.Log("currentAng 1 = "+ currentAng); }
-        
-        // Calculate Turn Rate.
-        float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (rotationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
-        
-        // Calculate Rate
-        speedRate = Mathf.MoveTowardsAngle (speedRate, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
+        // if (debug) { Debug.Log("parentRotationAng = "+ parentRotationAng); }
         
         // Rotate
         currentAng = BuildRotation(currentAng,targetAng);
-
-        // if (debug) {
-        //     Debug.Log("TurretEulerAngles = "+TurretEulerAngle);
-        // }
 
         if (limitTraverse) {
             currentAng = CheckLimitTraverse(currentAng);
         }
 
         // Add parent rotation rate to the new current angle so that a rotating tank can turn its turret while rotating himself
-        currentAng -= parentRotationAng;
+        currentAng += parentRotationAng;
 
 
         if (currentAng<0)
@@ -194,31 +182,31 @@ public class TurretRotation : MonoBehaviour
         // Update the turret angle
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
 
-        // Debug.Log("currentAng = "+currentAng);
+        Debug.DrawLine(TurretTurret.transform.position, m_TargetPosition, Color.green);
     }
 
     private float BuildRotation(float CurrentAngle, float TargetAngle){
         if (!limitTraverse) {
             if (CurrentAngle < TargetAngle && CurrentAngle+180 > targetAng || CurrentAngle > TargetAngle && CurrentAngle > TargetAngle+180) {
-                CurrentAngle += rotationSpeed * speedRate * Time.fixedDeltaTime;
+                CurrentAngle += rotationSpeed * Time.fixedDeltaTime;
             } else {
-                CurrentAngle -= rotationSpeed * speedRate * Time.fixedDeltaTime;
+                CurrentAngle -= rotationSpeed * Time.fixedDeltaTime;
             }
         } else {
             float Median;
             if (localLeftTraverse > localRightTraverse) {
                 Median = ((localRightTraverse + localLeftTraverse)/2) - 180;
                 if (CurrentAngle < TargetAngle && TargetAngle > Median || CurrentAngle > TargetAngle && TargetAngle < Median) {
-                    CurrentAngle += rotationSpeed * speedRate * Time.fixedDeltaTime;
+                    CurrentAngle += rotationSpeed * Time.fixedDeltaTime;
                 } else {
-                    CurrentAngle -= rotationSpeed * speedRate * Time.fixedDeltaTime;
+                    CurrentAngle -= rotationSpeed * Time.fixedDeltaTime;
                 }
             } else {
                 Median = (localRightTraverse + localLeftTraverse)/2;
                 if (CurrentAngle < TargetAngle && TargetAngle < Median || CurrentAngle < TargetAngle && CurrentAngle > Median || CurrentAngle > TargetAngle && CurrentAngle >= Median && TargetAngle < Median) {
-                    CurrentAngle += rotationSpeed * speedRate * Time.fixedDeltaTime;
+                    CurrentAngle += rotationSpeed * Time.fixedDeltaTime;
                 } else {
-                    CurrentAngle -= rotationSpeed * speedRate * Time.fixedDeltaTime;
+                    CurrentAngle -= rotationSpeed * Time.fixedDeltaTime;
                 }
             }
         }
@@ -255,22 +243,29 @@ public class TurretRotation : MonoBehaviour
         // if (targetAng<0)
         //     targetAng += 360;
 
-        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretTurret.transform.position).eulerAngles.x;
+        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretCannon.transform.position).eulerAngles.x;
 
-        targetAngElev = TargetAngleWorld - parentEulerAngles.x;
+        // targetAngElev = TargetAngleWorld + parentEulerAngles.x;
+        targetAngElev = TargetAngleWorld;
+
+        // if (debug) {
+        //     Debug.Log("TargetAngleWorld = "+TargetAngleWorld);
+        //     Debug.Log("parentEulerAngles.x = "+parentEulerAngles.x);
+        // }
 
         currentAngElev = TurretCannon.transform.localRotation.eulerAngles.x;
 
-        float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (elevationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
-        speedRateElev = Mathf.MoveTowardsAngle (speedRateElev, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
+        // float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (elevationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
+        // speedRateElev = Mathf.MoveTowardsAngle (speedRateElev, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
 
         if (currentAngElev > 180 && targetAngElev > 180 && currentAngElev > targetAngElev || currentAngElev < 180 && targetAngElev < 180 && currentAngElev > targetAngElev|| currentAngElev < 180 && targetAngElev > 180) {
-            currentAngElev -= elevationSpeed * speedRateElev * Time.fixedDeltaTime;
+            currentAngElev -= elevationSpeed * Time.fixedDeltaTime;
         } else {
-            currentAngElev += elevationSpeed * speedRateElev * Time.fixedDeltaTime;
+            currentAngElev += elevationSpeed * Time.fixedDeltaTime;
         }
 
         currentAngElev = CheckLimitElevation(currentAngElev);
+
 
         currentAngElev += parentRotationAng;
 
@@ -278,6 +273,7 @@ public class TurretRotation : MonoBehaviour
             currentAngElev += 360;
         if (currentAngElev>360)
             currentAngElev -= 360;
+
 
         // if (debug) {
         //     Debug.Log("targetAngElev = "+targetAngElev);
@@ -288,6 +284,7 @@ public class TurretRotation : MonoBehaviour
         TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (currentAngElev, 0.0f, 0.0f));
 
         Debug.DrawRay(TurretCannon.transform.position, TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
+        
     }
 
     private float CheckLimitElevation(float currentElevation){
