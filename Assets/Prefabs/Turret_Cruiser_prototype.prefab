@@ -216,6 +216,9 @@ MonoBehaviour:
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_LaunchVelocity: 120
   m_ReloadTime: 10
+  debug: 0
+  m_Reloading: 0
+  PreventFire: 0
   m_Active: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:
@@ -237,14 +240,14 @@ MonoBehaviour:
   TurretCannon: {fileID: 5086371173920104713}
   Parent: {fileID: 0}
   rotationSpeed: 15
-  acceleration_Time: 0.2
-  bufferAngle: 5
   limitTraverse: 0
   leftTraverse: 60
   rightTraverse: 60
+  NoFireZones: []
   elevationSpeed: 15
-  upTraverse: 15
-  downTraverse: 5
+  upTraverse: 125
+  downTraverse: 80
+  ElevationZones: []
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &628300269727696243

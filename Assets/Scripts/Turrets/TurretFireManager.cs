@@ -3,23 +3,23 @@ using UnityEngine.UI;
 
 public class TurretFireManager : MonoBehaviour
 {
-    [Tooltip("Ammo used")]
-    public Rigidbody m_Shell;                   // Prefab of the shell.
+    [Tooltip("Ammo used")] public Rigidbody m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
-    public Transform[] m_FireMuzzles;      // Will be used for multiple cannons
+    public Transform[] m_FireMuzzles;
     public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
-    [Tooltip("Audio for the shooting action")]
-    public AudioClip m_FireClip;                // Audio that plays when each shot is fired.
+    [Tooltip("Audio for the shooting action")] public AudioClip m_FireClip;
     [Tooltip("Initial velocity for the shell")]
     public float m_LaunchVelocity = 30f;
     [Tooltip("The reload time for th gun, in seconds")]
     public float m_ReloadTime = 5f;
 
+    [Header("Debug")]
+        public bool debug = false;
 
-    private string m_FireButton;                // The input axis that is used for launching shells.
-    private bool m_Reloading;
+    private string m_FireButton;
+    [HideInInspector] public bool m_Reloading;
     private float m_ReloadingTimer;
-
+    [HideInInspector] public bool PreventFire;
     [HideInInspector] public bool m_Active;
 
 
@@ -42,22 +42,26 @@ public class TurretFireManager : MonoBehaviour
 
 
     private void Update () {
-        // Debug.Log("m_Active :"+ m_Active);
+        // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("m_ReloadingTimer = "+ m_ReloadingTimer); }
+        if (PreventFire){
+            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+        }else if (m_Reloading){
+            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
+        }else{
+            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
+        }
         if (m_Active) {
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
-            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading)
-            {
+            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire) {
                 //start the reloading process immediately
                 m_Reloading = true;
                 m_ReloadingTimer = m_ReloadTime;
                 // ... launch the shell.
                 Fire ();
             }
-            else if (m_Reloading && m_ReloadingTimer > 0)
-            {
+            else if (m_Reloading && m_ReloadingTimer > 0) {
                 m_ReloadingTimer-= Time.deltaTime;
-                if (m_ReloadingTimer <= 0)
-                {
+                if (m_ReloadingTimer <= 0) {
                     m_ReloadingTimer = 0;
                     m_Reloading = !m_Reloading;
                 }

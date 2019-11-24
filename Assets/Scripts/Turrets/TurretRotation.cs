@@ -4,35 +4,42 @@ using FreeLookCamera;
 public class TurretRotation : MonoBehaviour
 {    
     [HideInInspector] public bool m_Active;
-    [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
-    [Tooltip ("Audio played when the turret is rotating.")]public AudioClip m_TurretRotationAudio;
-    [Tooltip ("PAxis of rotation for horizontal rotation of the turret.")]public Rigidbody TurretTurret;
-    [Tooltip ("Axis of rotation for the elevation of the cannon.")]public Rigidbody TurretCannon;
-    [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]public Rigidbody Parent;
 
-    [Tooltip ("Maximum Rotation Speed. (Degree per Second)")] public float rotationSpeed = 15.0f;
+    [Header("Elements")]
+        [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
+        [Tooltip ("Audio played when the turret is rotating.")]public AudioClip m_TurretRotationAudio;
+        [Tooltip ("PAxis of rotation for horizontal rotation of the turret.")]public Rigidbody TurretTurret;
+        [Tooltip ("Axis of rotation for the elevation of the cannon.")]public Rigidbody TurretCannon;
+        [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]public Rigidbody Parent;
 
-    [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
-    public bool limitTraverse = false;
-    [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
-    [Range(0.0f, 180.0f)]
-    public float leftTraverse = 60.0f;
-    [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
-    [Range(0.0f, 180.0f)]
-    public float rightTraverse = 60.0f;
-    private float localLeftTraverse;
-    private float localRightTraverse;
+        [Header("Horizontal rotation")]
+        [Tooltip ("Maximum Rotation Speed. (Degree per Second)")] public float rotationSpeed = 15.0f;
 
-    [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float elevationSpeed = 15.0f;
+        [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
+        public bool limitTraverse = false;
+        [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
+        [Range(0.0f, 180.0f)]
+        public float leftTraverse = 60.0f;
+        private float localLeftTraverse;
+        [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
+        [Range(0.0f, 180.0f)]
+        public float rightTraverse = 60.0f; 
+        private float localRightTraverse;
+        public FireZonesManager[] NoFireZones;
 
-    [Tooltip("Maximum elevation (degrees) of the turret.")]
-    [Range(0.0f, 90.0f)]
-    public float upTraverse = 15.0f;
-    [Tooltip("Depression (degrees) of the turret.")]
-    [Range(0.0f, 90.0f)]
-    public float downTraverse = 5.0f;
+    [Header("Vertical elevation")]
+        [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float elevationSpeed = 15.0f;
 
-    public bool debug = false;
+        [Tooltip("Maximum elevation (degrees) of the turret. 90° is horizontal.")]
+        [Range(0.0f, 180.0f)]
+        public float upTraverse = 200.0f;
+        [Tooltip("Depression (degrees) of the turret.  90° is horizontal.")]
+        [Range(0.0f, 180.0f)]
+        public float downTraverse = 80.0f;
+        public ElevationZonesManager[] ElevationZones;
+
+    [Header("Debug")]
+        public bool debug = false;
 
     [Tooltip ("Position/rotation of the direct parent")] private Vector3 parentEulerAngles;
     [Tooltip ("initial rotation of the turret")] private float TurretEulerAngle;
@@ -41,17 +48,23 @@ public class TurretRotation : MonoBehaviour
     private float targetAngElev;
     private float currentAngElev;
     private GameObject CameraPivot;
+    private FreeLookCam FreeLookCam;
 
     [HideInInspector] public Vector3 m_TargetPosition;
 
     private bool unitIsActivated = false;
 
-    private FreeLookCam FreeLookCam;
+    private TurretFireManager TurretFireManager;
+
+    private bool PreventFireHoriz = false;
+    private bool PreventFireVert = false;
+
 
 
     private void Awake(){
         FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
         CameraPivot = GameObject.Find("CameraPivot");
+        TurretFireManager = GetComponent<TurretFireManager>();
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
         TurretEulerAngle = TurretTurret.transform.localRotation.eulerAngles.y;
         localLeftTraverse = leftTraverse + TurretEulerAngle;
@@ -136,6 +149,13 @@ public class TurretRotation : MonoBehaviour
 
         TurretRotate();
         CannonElevation();
+
+        // Check if anything can prevent the turret from firing
+        if (PreventFireHoriz || PreventFireVert){
+            TurretFireManager.PreventFire = true;
+        } else{
+            TurretFireManager.PreventFire = false;
+        }
         
         // Reassign the new parent angle for future TurretRotate()
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
@@ -166,6 +186,7 @@ public class TurretRotation : MonoBehaviour
         // Rotate
         currentAng = BuildRotation(currentAng,targetAng);
 
+        // Check if the turret is hitting a limitation
         if (limitTraverse) {
             currentAng = CheckLimitTraverse(currentAng);
         }
@@ -178,6 +199,11 @@ public class TurretRotation : MonoBehaviour
             currentAng += 360;
         if (currentAng>360)
             currentAng -= 360;
+
+        // Check if the turret is in a no-fire zone
+        PreventFireHoriz = CheckNoFireZones(currentAng,targetAng);
+
+        // if (debug) { Debug.Log("currentAng = "+ currentAng); Debug.Log("targetAng = "+ targetAng); }
 
         // Update the turret angle
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
@@ -233,30 +259,47 @@ public class TurretRotation : MonoBehaviour
         return CurrentAngle;
     }
 
+    private bool CheckNoFireZones(float CurrentAngle, float TargetAngle){
+        // This fuction disables the firing capacity of the turrets on certain conditions.
+        bool PreventFire = false;
+
+        // Check first if any no fire zones are implemented, and if the turret is in it
+        if (NoFireZones.Length > 0) {
+            for (int i = 0; i < NoFireZones.Length; i++) {
+                if (NoFireZones[i].ZoneBegin > NoFireZones[i].ZoneEnd) {
+                    if (CurrentAngle > NoFireZones[i].ZoneBegin || CurrentAngle < NoFireZones[i].ZoneEnd) {
+                        PreventFire = true;
+                    }
+                } else if (CurrentAngle > NoFireZones[i].ZoneBegin && CurrentAngle < NoFireZones[i].ZoneEnd ) {
+                    PreventFire = true;
+                }
+            }
+        }
+        float TargetAngleMax = TargetAngle + 4;
+        if (TargetAngleMax>360)
+            TargetAngleMax -= 360;
+        float TargetAngleMin = TargetAngle - 4;
+        if (TargetAngleMin<0)
+            TargetAngleMin += 360;
+        // Check if the turret is close to the firing targeting point
+        if (CurrentAngle > TargetAngleMax || CurrentAngle < TargetAngleMin){
+            PreventFire = true;
+        }
+
+        return PreventFire;
+    }
+
     private void CannonElevation() {
+
         // Get parent current rotation rate
         float parentRotationAng = Parent.transform.rotation.eulerAngles.x-parentEulerAngles.x;
-
-        // Get Camera rotation
-        // Vector3 cameraEulerAngles = CameraPivot.transform.rotation.eulerAngles;
-        // targetAng = cameraEulerAngles.x-parentEulerAngles.x;
-        // if (targetAng<0)
-        //     targetAng += 360;
 
         float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretCannon.transform.position).eulerAngles.x;
 
         // targetAngElev = TargetAngleWorld + parentEulerAngles.x;
         targetAngElev = TargetAngleWorld;
 
-        // if (debug) {
-        //     Debug.Log("TargetAngleWorld = "+TargetAngleWorld);
-        //     Debug.Log("parentEulerAngles.x = "+parentEulerAngles.x);
-        // }
-
         currentAngElev = TurretCannon.transform.localRotation.eulerAngles.x;
-
-        // float targetSpeedRate = Mathf.Lerp (0.0f, 1.0f, Mathf.Abs (targetAng) / (elevationSpeed * Time.fixedDeltaTime + bufferAngle)) * Mathf.Sign (targetAng);
-        // speedRateElev = Mathf.MoveTowardsAngle (speedRateElev, targetSpeedRate, Time.fixedDeltaTime / acceleration_Time);
 
         if (currentAngElev > 180 && targetAngElev > 180 && currentAngElev > targetAngElev || currentAngElev < 180 && targetAngElev < 180 && currentAngElev > targetAngElev|| currentAngElev < 180 && targetAngElev > 180) {
             currentAngElev -= elevationSpeed * Time.fixedDeltaTime;
@@ -264,16 +307,17 @@ public class TurretRotation : MonoBehaviour
             currentAngElev += elevationSpeed * Time.fixedDeltaTime;
         }
 
-        currentAngElev = CheckLimitElevation(currentAngElev);
-
 
         currentAngElev += parentRotationAng;
+
+        currentAngElev = CheckLimitElevation(currentAngElev);
 
         if (currentAngElev<0)
             currentAngElev += 360;
         if (currentAngElev>360)
             currentAngElev -= 360;
 
+        PreventFireVert = CheckNoFireVertical(currentAngElev,targetAngElev);
 
         // if (debug) {
         //     Debug.Log("targetAngElev = "+targetAngElev);
@@ -288,12 +332,78 @@ public class TurretRotation : MonoBehaviour
     }
 
     private float CheckLimitElevation(float currentElevation){
-        if (currentElevation > 180 && currentElevation < (360-upTraverse)){
-            currentElevation = 360-upTraverse;
+        float localUpTraverse = upTraverse;
+        float localDownTraverse = downTraverse;
+
+        // Transform the elevation variable into the same axis than the limitations
+        if (currentElevation > 180)
+            currentElevation -= 360;
+        currentElevation += 180;
+        currentElevation = 360 - currentElevation;
+        currentElevation -= 90;
+
+        // Check the elevations zones, and update the limit values if needed
+        if (ElevationZones.Length > 0){
+            for (int i = 0; i < ElevationZones.Length; i++) {
+                if (ElevationZones[i].ZoneBegin > ElevationZones[i].ZoneEnd) {
+                    if (currentAng > ElevationZones[i].ZoneBegin || currentAng < ElevationZones[i].ZoneEnd) {
+                        if (ElevationZones[i].OverrideMaxElev){
+                            localUpTraverse = ElevationZones[i].UpTraverse;
+                        }
+                        if (ElevationZones[i].OverrideMinElev) {
+                            localDownTraverse = ElevationZones[i].DownTraverse;
+                        }
+                    }
+                } else if (currentAng > ElevationZones[i].ZoneBegin && currentAng < ElevationZones[i].ZoneEnd ) {
+                    if (ElevationZones[i].OverrideMaxElev){
+                            localUpTraverse = ElevationZones[i].UpTraverse;
+                        }
+                        if (ElevationZones[i].OverrideMinElev) {
+                            localDownTraverse = ElevationZones[i].DownTraverse;
+                        }
+                }
+            }
         }
-        else if (currentElevation < 180 && currentElevation > downTraverse){
-            currentElevation = downTraverse;
+
+        // Implement limitations, clamp if the limitation is close
+        if (currentElevation > (localUpTraverse+1)){
+            currentElevation -= 2 * elevationSpeed * Time.fixedDeltaTime;
         }
+        else if (currentElevation >= localUpTraverse){
+            currentElevation = localUpTraverse;
+        }
+        else if (currentElevation < (localDownTraverse-1)){
+            currentElevation += 2 * elevationSpeed * Time.fixedDeltaTime;
+        }
+        else if (currentElevation <= localDownTraverse){
+            currentElevation = localDownTraverse;
+        }
+
+        currentElevation += 90;
+        currentElevation = 360 - currentElevation;
+        currentElevation -= 180;
+        if (currentElevation < 0)
+            currentElevation += 360;
+        
         return currentElevation;
     }
+
+    private bool CheckNoFireVertical(float currentAngElev, float targetAngElev){
+        // This fuction disables the firing capacity of the turrets on certain conditions.
+        bool PreventFire = false;
+
+        float TargetAngleMax = targetAngElev + 4;
+        if (TargetAngleMax>360)
+            TargetAngleMax -= 360;
+        float TargetAngleMin = targetAngElev - 4;
+        if (TargetAngleMin<0)
+            TargetAngleMin += 360;
+        // Check if the turret is close to the firing targeting point
+        if (currentAngElev > TargetAngleMax || currentAngElev < TargetAngleMin){
+            PreventFire = true;
+        }
+
+        return PreventFire;
+    }
+
 }

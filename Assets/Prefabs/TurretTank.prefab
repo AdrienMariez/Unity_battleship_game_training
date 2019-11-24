@@ -213,6 +213,9 @@ MonoBehaviour:
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_LaunchVelocity: 60
   m_ReloadTime: 5
+  debug: 0
+  m_Reloading: 0
+  PreventFire: 0
   m_Active: 0
 --- !u!82 &5123216979890349395
 AudioSource:
@@ -324,19 +327,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Active: 0
+  m_IdlePointer: {fileID: 0}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
   TurretTurret: {fileID: 3224193198085467976}
   TurretCannon: {fileID: 6561433242781259133}
   Parent: {fileID: 0}
   rotationSpeed: 15
-  acceleration_Time: 0.2
-  bufferAngle: 5
-  elevationSpeed: 15
   limitTraverse: 0
   leftTraverse: 60
   rightTraverse: 60
+  NoFireZones: []
+  elevationSpeed: 15
+  upTraverse: 120
+  downTraverse: 60
+  ElevationZones: []
   debug: 0
+  m_TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3865778063621184773
 GameObject:
   m_ObjectHideFlags: 0
