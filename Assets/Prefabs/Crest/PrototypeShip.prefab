@@ -728,9 +728,9 @@ MonoBehaviour:
   _dragInWaterForward: 0
   _enginePower: 2
   _turnPower: 0.15
-  _playerControlled: 0
-  _engineBias: 1
-  _turnBias: -0.3
+  _playerControlled: 1
+  _engineBias: 0
+  _turnBias: 0
   m_Active: 0
 --- !u!54 &8237782044557327271
 Rigidbody:
@@ -1465,12 +1465,12 @@ PrefabInstance:
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: NoFireZones.Array.data[0].ZoneBegin
-      value: 340
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: NoFireZones.Array.data[0].ZoneEnd
-      value: 20
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 512295342537579509, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
@@ -1583,11 +1583,6 @@ PrefabInstance:
       propertyPath: Parent
       value: 
       objectReference: {fileID: 8237782044557327271}
-    - target: {fileID: 536144026725449547, guid: 44af781e5f4c83c45beb23d563680d86,
-        type: 3}
-      propertyPath: rotationSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 44af781e5f4c83c45beb23d563680d86,
         type: 3}
       propertyPath: limitTraverse
@@ -1959,7 +1954,12 @@ PrefabInstance:
     - target: {fileID: 1653871051627078444, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653871051627078444, guid: 19da4dec1cc8b7b429c93feade326c38,
+        type: 3}
+      propertyPath: m_MuzzleVelocity
+      value: 775
       objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
@@ -1999,7 +1999,7 @@ PrefabInstance:
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8933853122373449585, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
@@ -2236,7 +2236,7 @@ PrefabInstance:
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: ElevationZones.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
@@ -2399,11 +2399,6 @@ PrefabInstance:
       propertyPath: Parent
       value: 
       objectReference: {fileID: 8237782044557327271}
-    - target: {fileID: 536144026725449547, guid: 44af781e5f4c83c45beb23d563680d86,
-        type: 3}
-      propertyPath: rotationSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 44af781e5f4c83c45beb23d563680d86,
         type: 3}
       propertyPath: limitTraverse

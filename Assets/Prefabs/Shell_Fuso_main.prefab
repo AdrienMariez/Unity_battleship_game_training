@@ -111,8 +111,8 @@ GameObject:
   - component: {fileID: 1340822690336069317}
   - component: {fileID: 1340822690336069312}
   - component: {fileID: 141361556250576905}
-  m_Layer: 14
-  m_Name: Shell
+  m_Layer: 2
+  m_Name: Shell_Fuso_main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 1340822690796195968}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.06319443, y: 2.501, z: 1.6180441}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 1340822690363721080}
   m_Father: {fileID: 0}
@@ -186,9 +186,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340822690796195968}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 673.5
+  m_Drag: 0.01
+  m_AngularDrag: 673.5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -261,12 +261,13 @@ MonoBehaviour:
   m_HitMask:
     serializedVersion: 2
     m_Bits: 7680
-  m_Weight: 50
+  m_Weight: 673.5
+  m_MaxRange: 35500
   m_ExplosionParticles: {fileID: 1340822690344244516}
   m_ExplosionAudio: {fileID: 1420939521431360152}
   m_MaxDamage: 100
   m_ExplosionForce: 1000
-  m_MaxLifeTime: 8
+  m_MaxLifeTime: 8000
   m_ExplosionRadius: 5
 --- !u!1001 &1340822690364041266
 PrefabInstance:
@@ -281,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: m_Layer
-      value: 14
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
@@ -337,11 +338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 199372, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: m_Layer
-      value: 14
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 113952, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: m_Layer
-      value: 14
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 19846844, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState

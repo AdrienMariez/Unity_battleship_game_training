@@ -206,12 +206,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Shell: {fileID: 1340822690336069318, guid: d0938696ece944a45a22f648952cedda, type: 3}
+  m_Shell: {fileID: 1340822690796195968, guid: d0938696ece944a45a22f648952cedda, type: 3}
   m_FireMuzzles:
   - {fileID: 9032721239661306136}
   m_ShootingAudio: {fileID: 5123216979890349395}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_LaunchVelocity: 60
+  m_MaxRange: 10000
+  m_MuzzleVelocity: 30
   m_ReloadTime: 5
   debug: 0
   m_Reloading: 0

@@ -208,13 +208,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Shell: {fileID: 1340822690336069318, guid: d0938696ece944a45a22f648952cedda, type: 3}
+  m_Shell: {fileID: 1340822690796195968, guid: ad2bdbd723113b442a208525b46cb72f, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}
   - {fileID: 9220873763524553088}
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_LaunchVelocity: 120
+  m_MaxRange: 35500
+  m_MuzzleVelocity: 775
   m_ReloadTime: 10
   debug: 0
   m_Reloading: 0
@@ -239,14 +240,14 @@ MonoBehaviour:
   TurretTurret: {fileID: 3541568489413974844}
   TurretCannon: {fileID: 5086371173920104713}
   Parent: {fileID: 0}
-  rotationSpeed: 15
+  rotationSpeed: 0.03
   limitTraverse: 0
   leftTraverse: 60
   rightTraverse: 60
   NoFireZones: []
-  elevationSpeed: 15
-  upTraverse: 125
-  downTraverse: 80
+  elevationSpeed: 50
+  upTraverse: 133
+  downTraverse: 87
   ElevationZones: []
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}

@@ -13,7 +13,7 @@ public class TurretRotation : MonoBehaviour
         [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]public Rigidbody Parent;
 
         [Header("Horizontal rotation")]
-        [Tooltip ("Maximum Rotation Speed. (Degree per Second)")] public float rotationSpeed = 15.0f;
+        [Tooltip ("Rotation Speed. (°/s)")] public float rotationSpeed = 15.0f;
 
         [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
         public bool limitTraverse = false;
@@ -53,11 +53,12 @@ public class TurretRotation : MonoBehaviour
     [HideInInspector] public Vector3 m_TargetPosition;
 
     private bool unitIsActivated = false;
-
     private TurretFireManager TurretFireManager;
-
     private bool PreventFireHoriz = false;
     private bool PreventFireVert = false;
+    private float TotalAngleElevRatio;
+    private float CurrentAngleElevRatio;
+    [HideInInspector] public float CurrentAnglePercentage;
 
 
 
@@ -73,15 +74,17 @@ public class TurretRotation : MonoBehaviour
         localRightTraverse = 360 - rightTraverse + TurretEulerAngle;
         if (localRightTraverse>360)
             localRightTraverse -= 360;
+
+        TotalAngleElevRatio = upTraverse-downTraverse;
         
-        if (debug) {
+        // if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
         //     Debug.Log("leftTraverse: " + leftTraverse);
         //     Debug.Log("rightTraverse: " + rightTraverse);
         //     Debug.Log("localLeftTraverse: " + localLeftTraverse);
         //     Debug.Log("localRightTraverse: " + localRightTraverse);
             // Debug.Log("m_IdlePosition: " + m_IdlePosition);
-        }
+        // }
     }
 
     /* Those methods are not used but could be to allow to disable all turrets of a unit if needed
@@ -92,8 +95,7 @@ public class TurretRotation : MonoBehaviour
     */
 
 
-    private void TurretAudio()
-    {
+    private void TurretAudio() {
         // TODO play turret rotation audio if the turret axis is moving
         /*
 
@@ -155,6 +157,15 @@ public class TurretRotation : MonoBehaviour
             TurretFireManager.PreventFire = true;
         } else{
             TurretFireManager.PreventFire = false;
+
+            // if (debug) {
+                // Debug.Log("current: " + currentAngElev);
+                // Debug.Log("total: " + TotalAngleElevRatio);
+                // Debug.Log("percent sent: " + CurrentAngleElevRatio);
+            // }
+
+            // CurrentAngleElevRatio = currentAngElev * 100 / (TotalAngleElevRatio);
+            CurrentAnglePercentage = CurrentAngleElevRatio * 100 / (TotalAngleElevRatio);;
         }
         
         // Reassign the new parent angle for future TurretRotate()
@@ -275,12 +286,19 @@ public class TurretRotation : MonoBehaviour
                 }
             }
         }
+
+        // if (debug) {
+        //     Debug.Log("TargetAngleMax = "+ TargetAngleMax);
+        //     Debug.Log("currentAngElev = "+ currentAngElev);
+        //     Debug.Log("TargetAngleMin = "+ TargetAngleMin);
+        // }
+
         float TargetAngleMax = TargetAngle + 4;
-        if (TargetAngleMax>360)
-            TargetAngleMax -= 360;
+        // if (TargetAngleMax>360)
+        //     TargetAngleMax -= 360;
         float TargetAngleMin = TargetAngle - 4;
-        if (TargetAngleMin<0)
-            TargetAngleMin += 360;
+        // if (TargetAngleMin<0)
+        //     TargetAngleMin += 360;
         // Check if the turret is close to the firing targeting point
         if (CurrentAngle > TargetAngleMax || CurrentAngle < TargetAngleMin){
             PreventFire = true;
@@ -379,6 +397,8 @@ public class TurretRotation : MonoBehaviour
             currentElevation = localDownTraverse;
         }
 
+        CurrentAngleElevRatio = currentElevation - downTraverse;
+
         currentElevation += 90;
         currentElevation = 360 - currentElevation;
         currentElevation -= 180;
@@ -392,16 +412,24 @@ public class TurretRotation : MonoBehaviour
         // This fuction disables the firing capacity of the turrets on certain conditions.
         bool PreventFire = false;
 
+        if (currentAngElev > targetAngElev+180) {
+            targetAngElev += 360;
+        }else if (currentAngElev+180 < targetAngElev) {
+            targetAngElev -= 360;
+        }
+
         float TargetAngleMax = targetAngElev + 4;
-        if (TargetAngleMax>360)
-            TargetAngleMax -= 360;
         float TargetAngleMin = targetAngElev - 4;
-        if (TargetAngleMin<0)
-            TargetAngleMin += 360;
+
         // Check if the turret is close to the firing targeting point
         if (currentAngElev > TargetAngleMax || currentAngElev < TargetAngleMin){
             PreventFire = true;
         }
+        // if (debug && PreventFire) {
+        //     Debug.Log("currentAngElev = "+ currentAngElev);
+        //     Debug.Log("TargetAngleOrig = "+ TargetAngleOrig);
+        //     Debug.Log("targetAngElev = "+ targetAngElev);
+        // }
 
         return PreventFire;
     }

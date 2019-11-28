@@ -208,16 +208,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Shell: {fileID: 1340822690336069318, guid: d0938696ece944a45a22f648952cedda, type: 3}
+  m_Shell: {fileID: 1340822690796195968, guid: 75bcdf197429a9d458bde186dbcd9814, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_LaunchVelocity: 120
+  m_MaxRange: 19000
+  m_MinRange: 500
+  m_MuzzleVelocity: 855
   m_ReloadTime: 10
   debug: 0
   m_Reloading: 0
   PreventFire: 0
+  CurrentAngleElevRatio: 0
   m_Active: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:
@@ -238,17 +241,18 @@ MonoBehaviour:
   TurretTurret: {fileID: 3541568489413974844}
   TurretCannon: {fileID: 5086371173920104713}
   Parent: {fileID: 0}
-  rotationSpeed: 15
+  rotationSpeed: 5
   limitTraverse: 0
   leftTraverse: 60
   rightTraverse: 60
   NoFireZones: []
-  elevationSpeed: 15
-  upTraverse: 130
-  downTraverse: 80
+  elevationSpeed: 5
+  upTraverse: 120
+  downTraverse: 85
   ElevationZones: []
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
+  CurrentAnglePercentage: 0
 --- !u!1 &628300269727696243
 GameObject:
   m_ObjectHideFlags: 0

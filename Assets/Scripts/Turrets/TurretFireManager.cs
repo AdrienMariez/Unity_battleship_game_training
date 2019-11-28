@@ -3,14 +3,19 @@ using UnityEngine.UI;
 
 public class TurretFireManager : MonoBehaviour
 {
-    [Tooltip("Ammo used")] public Rigidbody m_Shell;
+    // [Tooltip("Ammo used")] public Rigidbody m_Shell;
+    [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
     public Transform[] m_FireMuzzles;
     public AudioSource m_ShootingAudio;         // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
     [Tooltip("Audio for the shooting action")] public AudioClip m_FireClip;
-    [Tooltip("Initial velocity for the shell")]
-    public float m_LaunchVelocity = 30f;
-    [Tooltip("The reload time for th gun, in seconds")]
+    [Tooltip("Maximum Range (m)")]
+    public float m_MaxRange = 10000f;
+    [Tooltip("Minimum Range (m)")]
+    public float m_MinRange = 1000f; 
+    [Tooltip("Muzzle velocity for the shell (m/s)")]
+    public float m_MuzzleVelocity = 30f;
+    [Tooltip("Reload time, (seconds)")]
     public float m_ReloadTime = 5f;
 
     [Header("Debug")]
@@ -19,8 +24,12 @@ public class TurretFireManager : MonoBehaviour
     private string m_FireButton;
     [HideInInspector] public bool m_Reloading;
     private float m_ReloadingTimer;
+    private TurretRotation TurretRotation;
     [HideInInspector] public bool PreventFire;
+    [HideInInspector] public float CurrentAngleElevRatio;
     [HideInInspector] public bool m_Active;
+    // private float ShellWeight;
+
 
 
     private void OnEnable()
@@ -33,11 +42,8 @@ public class TurretFireManager : MonoBehaviour
 
     private void Start ()
     {
-        // The fire axis is based on the player number.
-        //m_FireButton = "Fire" + m_PlayerNumber;
-
-        // The rate that the launch force charges up is the range of possible forces by the max charge time.
-        // m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+        // ShellWeight = m_Shell.GetComponent<ShellStat>().m_Weight;
+        TurretRotation = GetComponent<TurretRotation>();
     }
 
 
@@ -52,6 +58,8 @@ public class TurretFireManager : MonoBehaviour
         }
         if (m_Active) {
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
+            PreviewFire ();
+
             if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire) {
                 //start the reloading process immediately
                 m_Reloading = true;
@@ -69,15 +77,33 @@ public class TurretFireManager : MonoBehaviour
         }
     }
 
+    private void PreviewFire () {
+        
+    }
 
     private void Fire () {
+
         for (int i = 0; i < m_FireMuzzles.Length; i++) {
             // Create an instance of the shell and store a reference to it's rigidbody.
-            Rigidbody shellInstance =
-                Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation) as Rigidbody;
+            // Rigidbody shellInstance =
+            //     Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation) as Rigidbody;
+            GameObject shellInstance =
+                Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation);
+
+            Rigidbody rigid = shellInstance.GetComponent<Rigidbody> ();
+            rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
+
+            // ShellStat shellStats = shellInstance.GetComponent<ShellStat> ();
+            // shellStats.m_MaxRange = m_MaxRange;
+            shellInstance.GetComponent<ShellStat> ().m_MaxRange = m_MaxRange;
+            shellInstance.GetComponent<ShellStat> ().m_MinRange = m_MinRange;
+            shellInstance.GetComponent<ShellStat> ().m_MuzzleVelocity = m_MuzzleVelocity;
+            shellInstance.GetComponent<ShellStat> ().AngleLaunchPercentage = TurretRotation.CurrentAnglePercentage;
 
             // Set the shell's velocity to the launch force in the fire position's forward direction.
-            shellInstance.velocity = m_LaunchVelocity * m_FireMuzzles[i].forward; ;
+            // shellInstance.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
+            // shellInstance.velocity = ( (m_MuzzleVelocity * 100) / ShellWeight ) * m_FireMuzzles[i].forward;
+
 
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;
