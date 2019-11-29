@@ -215,11 +215,13 @@ MonoBehaviour:
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_MaxRange: 35500
+  m_MinRange: 1000
   m_MuzzleVelocity: 775
   m_ReloadTime: 10
   debug: 0
   m_Reloading: 0
   PreventFire: 0
+  CurrentAngleElevRatio: 0
   m_Active: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:
@@ -240,7 +242,7 @@ MonoBehaviour:
   TurretTurret: {fileID: 3541568489413974844}
   TurretCannon: {fileID: 5086371173920104713}
   Parent: {fileID: 0}
-  rotationSpeed: 0.03
+  rotationSpeed: 3
   limitTraverse: 0
   leftTraverse: 60
   rightTraverse: 60
@@ -251,6 +253,7 @@ MonoBehaviour:
   ElevationZones: []
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
+  CurrentAnglePercentage: 0
 --- !u!1 &628300269727696243
 GameObject:
   m_ObjectHideFlags: 0
