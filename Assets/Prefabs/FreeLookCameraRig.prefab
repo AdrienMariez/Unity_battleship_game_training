@@ -80,13 +80,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735bab2d2f4646445a813c830c7555ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UpdateType: 0
-  m_MoveSpeed: 20
+  m_FieldOfView: 60
+  m_MoveSpeed: 5
   m_TurnSpeed: 0.02
   m_TurnSmoothing: 0
   m_TiltMax: 75
-  m_TiltMin: 45
-  m_LockCursor: 1
+  m_TiltMin: 20
+  m_FieldOfViewFocus: 40
+  m_TurnSpeedFocus: 0.2
   m_CameraDistance: 12
   m_CameraHeight: 2
   m_CameraLateralOffset: 0

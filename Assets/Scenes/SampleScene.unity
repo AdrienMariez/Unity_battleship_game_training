@@ -1434,7 +1434,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawnPoint1
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1497,7 +1497,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawnPoint2
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2264,6 +2264,10 @@ PrefabInstance:
       propertyPath: RaycastLayerMask.m_Bits
       value: 16179
       objectReference: {fileID: 0}
+    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
+      propertyPath: m_TiltMin
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
 --- !u!1001 &2661556144605333969
@@ -2343,11 +2347,6 @@ PrefabInstance:
       propertyPath: debug
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4844736451245428996, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
-        type: 3}
-      propertyPath: rotationSpeed
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 4127850955613097289, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: debug
@@ -2375,13 +2374,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7206456436928395692, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
-      propertyPath: rotationSpeed
-      value: 50
+      propertyPath: debug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7206456436928395692, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
-      propertyPath: debug
-      value: 1
+      propertyPath: limitTraverse
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8467056612775028171, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}

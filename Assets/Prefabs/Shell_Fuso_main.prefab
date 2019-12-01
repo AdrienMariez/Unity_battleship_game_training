@@ -186,10 +186,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340822690796195968}
   serializedVersion: 2
-  m_Mass: 673.5
-  m_Drag: 0.01
-  m_AngularDrag: 673.5
-  m_UseGravity: 1
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -262,13 +262,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 7680
   m_Weight: 673.5
-  m_MaxRange: 35500
   m_ExplosionParticles: {fileID: 1340822690344244516}
   m_ExplosionAudio: {fileID: 1420939521431360152}
   m_MaxDamage: 100
   m_ExplosionForce: 1000
   m_MaxLifeTime: 8000
   m_ExplosionRadius: 5
+  m_MaxRange: 35500
+  m_MinRange: 0
+  m_MuzzleVelocity: 0
+  AngleLaunchPercentage: 0
+  startPosition: {x: 0, y: 0, z: 0}
+  TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &1340822690364041266
 PrefabInstance:
   m_ObjectHideFlags: 0

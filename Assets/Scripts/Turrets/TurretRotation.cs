@@ -345,7 +345,7 @@ public class TurretRotation : MonoBehaviour
         // Turn turret towards camera facing
         TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (currentAngElev, 0.0f, 0.0f));
 
-        Debug.DrawRay(TurretCannon.transform.position, TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
+        // Debug.DrawRay(TurretCannon.transform.position, TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
         
     }
 

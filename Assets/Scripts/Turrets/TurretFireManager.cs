@@ -14,14 +14,13 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Minimum Range (m)")]
     public float m_MinRange = 1000f; 
     [Tooltip("Muzzle velocity for the shell (m/s)")]
-    public float m_MuzzleVelocity = 30f;
+    public float m_MuzzleVelocity = 30f;        // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm give a ratio of *0.58
     [Tooltip("Reload time, (seconds)")]
     public float m_ReloadTime = 5f;
 
     [Header("Debug")]
         public bool debug = false;
-
-    private string m_FireButton;
+        
     [HideInInspector] public bool m_Reloading;
     private float m_ReloadingTimer;
     private TurretRotation TurretRotation;
@@ -40,9 +39,7 @@ public class TurretFireManager : MonoBehaviour
     }
 
 
-    private void Start ()
-    {
-        // ShellWeight = m_Shell.GetComponent<ShellStat>().m_Weight;
+    private void Start (){
         TurretRotation = GetComponent<TurretRotation>();
     }
 
@@ -58,7 +55,8 @@ public class TurretFireManager : MonoBehaviour
         }
         if (m_Active) {
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
-            PreviewFire ();
+            if (!m_Reloading && !PreventFire)
+                // PreviewFire ();
 
             if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire) {
                 //start the reloading process immediately
@@ -78,11 +76,12 @@ public class TurretFireManager : MonoBehaviour
     }
 
     private void PreviewFire () {
-        
+        float targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
+
+        Debug.Log("Calculated fire range : "+ targetRange);
     }
 
     private void Fire () {
-
         for (int i = 0; i < m_FireMuzzles.Length; i++) {
             // Create an instance of the shell and store a reference to it's rigidbody.
             // Rigidbody shellInstance =
@@ -91,19 +90,16 @@ public class TurretFireManager : MonoBehaviour
                 Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation);
 
             Rigidbody rigid = shellInstance.GetComponent<Rigidbody> ();
-            rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
+            // Add velocity in the forward direction
+            // DISABLED - shell ballistics moved in the ShellStat class.
+            // rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
 
             // ShellStat shellStats = shellInstance.GetComponent<ShellStat> ();
             // shellStats.m_MaxRange = m_MaxRange;
             shellInstance.GetComponent<ShellStat> ().m_MaxRange = m_MaxRange;
             shellInstance.GetComponent<ShellStat> ().m_MinRange = m_MinRange;
-            shellInstance.GetComponent<ShellStat> ().m_MuzzleVelocity = m_MuzzleVelocity;
+            shellInstance.GetComponent<ShellStat> ().m_MuzzleVelocity = m_MuzzleVelocity * 0.58f;
             shellInstance.GetComponent<ShellStat> ().AngleLaunchPercentage = TurretRotation.CurrentAnglePercentage;
-
-            // Set the shell's velocity to the launch force in the fire position's forward direction.
-            // shellInstance.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
-            // shellInstance.velocity = ( (m_MuzzleVelocity * 100) / ShellWeight ) * m_FireMuzzles[i].forward;
-
 
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;
