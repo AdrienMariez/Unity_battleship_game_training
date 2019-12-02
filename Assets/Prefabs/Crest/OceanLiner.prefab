@@ -963,9 +963,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4699689828683719271}
-  - component: {fileID: 2014455076213309831}
   - component: {fileID: 8380954490411808174}
   - component: {fileID: 4268148864260569497}
+  - component: {fileID: 225537522}
   m_Layer: 0
   m_Name: OceanLiner
   m_TagString: Player
@@ -994,74 +994,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2014455076213309831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4036194036648923335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc2c2fb1507ed441808c950ea54d4bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _centerOfMass: {x: 0, y: -8, z: 0}
-  _forcePoints:
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: 120}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: 120}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: 120}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: 80}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: 80}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: 80}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: 40}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: 40}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: 40}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: 0}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: 0}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: 0}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: -40}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: -40}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: -40}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: -80}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: -80}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: -80}
-  - _weight: 1
-    _offsetPosition: {x: -11, y: 0, z: -120}
-  - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: -120}
-  - _weight: 1
-    _offsetPosition: {x: 11, y: 0, z: -120}
-  _forceHeightOffset: 0
-  _forceMultiplier: 15000
-  _minSpatialLength: 24
-  _turningHeel: 0.35
-  _dragInWaterUp: 1
-  _dragInWaterRight: 4
-  _dragInWaterForward: 0
-  _enginePower: 4
-  _turnPower: 0.15
-  _playerControlled: 1
-  _engineBias: 0
-  _turnBias: 0
 --- !u!54 &8380954490411808174
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1077,7 +1009,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &4268148864260569497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,8 +1023,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CameraDistance: 165
-  m_CameraHeight: 2
+  m_CameraHeight: 30
   m_CameraLateralOffset: 0
+--- !u!114 &225537522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036194036648923335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecf4c150689d55e49ac8d08461fdd087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _centerOfMass: {x: 0, y: 0, z: 0}
+  _forcePoints:
+  - _weight: 1
+    _offsetPosition: {x: -10, y: 0, z: 80}
+  - _weight: 1
+    _offsetPosition: {x: 10, y: 0, z: 80}
+  - _weight: 1
+    _offsetPosition: {x: -10, y: 0, z: -80}
+  - _weight: 1
+    _offsetPosition: {x: 10, y: 0, z: -80}
+  _forceHeightOffset: 0
+  _forceMultiplier: 10000
+  _minSpatialLength: 12
+  _turningHeel: 0.35
+  _dragInWaterUp: 3
+  _dragInWaterRight: 2
+  _dragInWaterForward: 1
+  _enginePower: 2
+  _turnPower: 0.5
+  _playerControlled: 0
+  _engineBias: 1
+  _turnBias: 0.1
+  m_Active: 0
 --- !u!1 &4070980327492005467
 GameObject:
   m_ObjectHideFlags: 0

@@ -81,23 +81,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 1371779553471058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc2c2fb1507ed441808c950ea54d4bd, type: 3}
+  m_Script: {fileID: 11500000, guid: ecf4c150689d55e49ac8d08461fdd087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _centerOfMass: {x: 0, y: -1, z: 0}
-  _forcePoints: []
+  _centerOfMass: {x: 0, y: 0, z: 0}
+  _forcePoints:
+  - _weight: 1
+    _offsetPosition: {x: 2, y: 0, z: 6}
+  - _weight: 1
+    _offsetPosition: {x: -2, y: 0, z: 6}
+  - _weight: 1
+    _offsetPosition: {x: 2, y: 0, z: -6}
+  - _weight: 1
+    _offsetPosition: {x: -2, y: 0, z: -6}
   _forceHeightOffset: 0
-  _forceMultiplier: 6
-  _minSpatialLength: 24
+  _forceMultiplier: 10
+  _minSpatialLength: 12
   _turningHeel: 0.35
   _dragInWaterUp: 3
-  _dragInWaterRight: 4
-  _dragInWaterForward: 0.5
-  _enginePower: 5
+  _dragInWaterRight: 2
+  _dragInWaterForward: 1
+  _enginePower: 7
   _turnPower: 0.5
   _playerControlled: 0
   _engineBias: 1
-  _turnBias: 1
+  _turnBias: 0.5
+  m_Active: 0
 --- !u!54 &54707522104481946
 Rigidbody:
   m_ObjectHideFlags: 0

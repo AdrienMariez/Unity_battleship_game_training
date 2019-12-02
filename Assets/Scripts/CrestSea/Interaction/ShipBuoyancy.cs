@@ -11,8 +11,8 @@ namespace Crest
     /// <summary>
     /// Boat physics by sampling at multiple probe points.
     /// </summary>
-    public class BoatProbes : FloatingObjectBase
-    {
+    // public class BoatProbes : FloatingObjectBase {
+    public class ShipBuoyancy : FloatingObjectBase {
         [Header("Forces")]
         [Tooltip("Override RB center of mass, in local space."), SerializeField]
         Vector3 _centerOfMass = Vector3.zero;
@@ -41,6 +41,7 @@ namespace Crest
         float _enginePower = 7;
         [SerializeField, FormerlySerializedAs("TurnPower")]
         float _turnPower = 0.5f;
+        [Header("Debug Controls")]
         [SerializeField]
         bool _playerControlled = true;
         [Tooltip("Used to automatically add throttle input"), SerializeField]
@@ -74,6 +75,9 @@ namespace Crest
         SampleFlowHelper _sampleFlowHelper = new SampleFlowHelper();
 
         [HideInInspector] public bool m_Active;
+        [HideInInspector] public float SpeedInput;
+        [HideInInspector] public float RotationInput;
+
 
         private void Start() {
             _rb = GetComponent<Rigidbody>();
@@ -162,26 +166,17 @@ namespace Crest
         void FixedUpdateEngine(){
             var forcePosition = _rb.position;
 
-            var forward = _engineBias;
-
-            var sideways = _turnBias;
-
-            if (m_Active) {
-                if (_playerControlled) forward += Input.GetAxis("VerticalShip");
-                if (_playerControlled) sideways += Input.GetAxis ("HorizontalShip");
+            if (!_playerControlled) {
+                var forward = _engineBias;
+                var sideways = _turnBias;   
+                _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
+                var rotVec = transform.up + _turningHeel * transform.forward;
+                _rb.AddTorque(rotVec * _turnPower * RotationInput, ForceMode.Acceleration);
+            }else{
+                _rb.AddForceAtPosition(transform.forward * _enginePower * SpeedInput, forcePosition, ForceMode.Acceleration);
+                var rotVec = transform.up + _turningHeel * transform.forward;
+                _rb.AddTorque(rotVec * _turnPower * RotationInput, ForceMode.Acceleration);
             }
-
-            _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
-
-            // Debug.Log("Input.GetKey(KeyCode.A) :"+ Input.GetKey(KeyCode.A));
-            // Debug.Log("Input.GetKey(KeyCode.D) :"+ Input.GetKey(KeyCode.D));
-            // Debug.Log("Input.GetAxis (HorizontalShip) :"+ Input.GetAxis ("HorizontalShip"));
-
-            // if (_playerControlled) sideways += (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
-            
-            // Debug.Log("sideways :"+ sideways);
-            var rotVec = transform.up + _turningHeel * transform.forward;
-            _rb.AddTorque(rotVec * _turnPower * sideways, ForceMode.Acceleration);
         }
 
         void FixedUpdateBuoyancy(ICollProvider collProvider)

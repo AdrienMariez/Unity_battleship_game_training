@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Crest;
 
 public class ShipMovement : MonoBehaviour
 {
-    public int m_PlayerNumber = 1;         
     [HideInInspector] public bool m_Active; 
-    public float m_MaxSpeed = 12f;            
-    public float m_TurnSpeed = 180f;       
-    public AudioSource m_MovementAudio;    
-    public AudioClip m_EngineIdling;       
-    public AudioClip m_EngineDriving;      
+    [HideInInspector] public float m_MaxSpeed = 1f;
+    [HideInInspector] public float m_TurnSpeed = 1f;
+    public AudioSource m_MovementAudio;
+    public AudioClip m_EngineIdling;
+    public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;       // The amount by which the pitch of the engine noises
 
     
-    private string m_MovementAxisName;     
-    private string m_TurnAxisName;         
-    private Rigidbody m_Rigidbody;         // Reference used to move the tank.
+    private string m_MovementAxisName;
+    private string m_TurnAxisName;
     private float m_MovementInputValue;    // The current value of the movement input.
-    private float m_TurnInputValue;        
+    private float m_TurnInputValue = 0f;        
     private float m_FreeCamInputValue;      
     private float m_OriginalPitch;         // The pitch of the audio source at the start of the scene.
 
@@ -37,47 +36,19 @@ public class ShipMovement : MonoBehaviour
     */
     [HideInInspector] public float m_LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
     public float m_SpeedInertia = 0.3f;                        // The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.
-    [HideInInspector] private bool m_SpeedIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
+    private bool m_SpeedIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
     [HideInInspector] public float m_LocalRealSpeed;            // The real final speed of the ship.
+    [HideInInspector] public float m_LocalRealRotation;            // The real final rotation of the ship.
+    private bool m_RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
 
+    private ShipBuoyancy m_Buoyancy;
 
-    // private Rigidbody TankTurret;
-
-    private void Awake()
-    {
-        m_Rigidbody = GetComponent<Rigidbody>();
-
-        //TankTurret = this.transform.GetChild(0).GetChild(3).GetComponent<Rigidbody>();
+    private void Awake() {
     }
-
-
-    private void OnEnable ()
-    {
-        // When the tank is turned on, make sure it's not kinematic.
-        m_Rigidbody.isKinematic = false;
-
-        // Also reset the input values.
-        m_MovementInputValue = 0f;
-        m_TurnInputValue = 0f;
-        SetTargetSpeed();
-        m_LocalRealSpeed = m_LocalTargetSpeed;
-    }
-
-
-    private void OnDisable ()
-    {
-        // When the tank is turned off, set it to kinematic so it stops moving.
-        m_Rigidbody.isKinematic = true;
-    }
-
 
     private void Start()
     {
-        // The axes names are based on player number.
-
-        //m_MovementAxisName = "Vertical" + m_PlayerNumber;
-        //m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-
+        m_Buoyancy = GetComponent<ShipBuoyancy>();
         // Store the original pitch of the audio source.
         m_OriginalPitch = m_MovementAudio.pitch;
     }
@@ -86,25 +57,7 @@ public class ShipMovement : MonoBehaviour
     {
         // This is run every frame
         // Store the player's input and make sure the audio for the engine is playing.
-
-        if (m_Active)
-        {
-            m_MovementInputValue = Input.GetAxis ("VerticalShip");
-            m_TurnInputValue = Input.GetAxis ("HorizontalShip");
-        }
-        else
-        {
-            m_MovementInputValue = Input.GetAxis ("Empty");
-            m_TurnInputValue = Input.GetAxis ("Empty");
-        }
         EngineAudio ();
-
-        if (transform.localPosition.y < 1){
-            m_Rigidbody.drag = 5;
-        }
-        else{
-            m_Rigidbody.drag = 0;
-        }
     }
 
 
@@ -148,22 +101,14 @@ public class ShipMovement : MonoBehaviour
     {
         // This is run every physics step instead of every frame
         // Move and turn the tank.
-        Move ();
-        Turn ();
-        if (m_Active)
-        {
-            if (m_MovementInputValue == 1){
+        if (m_Active) {
+            if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
-            }
-            else if(m_MovementInputValue == -1){
+            } else if(Input.GetAxis ("VerticalShip") == -1){
                 ChangeSpeedStep(-1);
             }
-            if (!Input.GetButton ("FreeCamera")) {
-                //TurretRotate();
-            }
-            else {
-                //Debug.Log ("Free Camera Activated");
-            }
+            Move ();
+            Turn ();
         }
         
     }
@@ -222,31 +167,25 @@ public class ShipMovement : MonoBehaviour
         if (m_LocalRealSpeed < m_LocalTargetSpeed && m_SpeedIncrementation) {
             if ((m_LocalRealSpeed+m_SpeedInertia) > m_LocalTargetSpeed) {
                 m_LocalRealSpeed = m_LocalTargetSpeed;
-            }
-            else {
+            } else {
                 m_LocalRealSpeed += m_SpeedInertia;
             }
             
-            if (m_LocalRealSpeed < 0 && m_LocalTargetSpeed > 0)
-            {
+            if (m_LocalRealSpeed < 0 && m_LocalTargetSpeed > 0) {
                 m_LocalRealSpeed += m_SpeedInertia;
                 // Debug.Log ("- DOUBLE SPEED FRONT - :"+ m_LocalRealSpeed);
             }
 
             StartCoroutine(PauseSpeedIncrementation());
-
             // Debug.Log ("- FORTH - :"+ m_LocalRealSpeed);
-
         }
         else if (m_LocalRealSpeed > m_LocalTargetSpeed && m_SpeedIncrementation) {
             if ((m_LocalRealSpeed-m_SpeedInertia) < m_LocalTargetSpeed) {
                 m_LocalRealSpeed = m_LocalTargetSpeed;
-            }
-            else {
+            } else {
                 m_LocalRealSpeed += -m_SpeedInertia;
             }
-            if (m_LocalRealSpeed > 0 && m_LocalTargetSpeed < 0)
-            {
+            if (m_LocalRealSpeed > 0 && m_LocalTargetSpeed < 0) {
                 m_LocalRealSpeed += -m_SpeedInertia;
                 // Debug.Log ("- DOUBLE SPEED BACK - :"+ m_LocalRealSpeed);
             }
@@ -260,44 +199,31 @@ public class ShipMovement : MonoBehaviour
         m_SpeedIncrementation = true;
     }
 
-    private void Move()
-    {
+    private void Move() {
         SetRealSpeed();
-        // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-        // vector in tank's forward direction * input received * m_Speed multiplier and proportionate this by seconds instead of frame.
-        //Vector3 movement = transform.forward * m_MovementInputValue * m_LocalSpeed * Time.deltaTime;
-
-        Vector3 movement = transform.forward * m_LocalRealSpeed * Time.deltaTime;
-
-        //update current rigidbody position with new values
-        m_Rigidbody.MovePosition (m_Rigidbody.position + movement);
+        m_Buoyancy.SpeedInput = m_LocalRealSpeed;
     }
 
     private void Turn()
     {
+        // float tempTurn = m_TurnInputValue;
         // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
-
-        //Quaternion : way for Unity to stock rotation
-        //(0f, turn, 0f) : X,Y,Z
-        Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);
-        m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
+        if (Input.GetAxis ("HorizontalShip") == 1 && m_TurnInputValue < 1 && m_RotationIncrementation){
+            m_TurnInputValue += 0.5f;
+            StartCoroutine(PauseTurnIncrementation());
+        } else if(Input.GetAxis ("HorizontalShip") == -1 && m_TurnInputValue > -1 && m_RotationIncrementation){
+            m_TurnInputValue -= 0.5f;
+            StartCoroutine(PauseTurnIncrementation());
+        }
+        // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
+        m_LocalRealRotation = m_TurnInputValue * m_LocalRealSpeed;
+        // Debug.Log ("- m_TurnInputValue - :"+ m_TurnInputValue);
+        m_Buoyancy.RotationInput = m_LocalRealRotation;
     }
 
-    //     private void TurretRotate()
-    // {
-    //     // Get vehicle rotation
-    //     Vector3 tankEulerAngles = this.transform.rotation.eulerAngles;
-    //     //Debug.Log("transform.rotation angles x: " + eulerAngles.x + " y: " + eulerAngles.y + " z: " + eulerAngles.z);
-
-    //     // Get Camera rotation
-    //     Vector3 cameraEulerAngles = GameObject.Find("Pivot").transform.rotation.eulerAngles;
-
-    //     // Turn turret towards camera facing
-    //     TankTurret.transform.rotation = Quaternion.Euler(tankEulerAngles.x, cameraEulerAngles.y, tankEulerAngles.z);    
-    // }
-
-    float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
-         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+        IEnumerator PauseTurnIncrementation(){
+        m_RotationIncrementation = false;
+        yield return new WaitForSeconds(0.5f);
+        m_RotationIncrementation = true;
     }
 }
