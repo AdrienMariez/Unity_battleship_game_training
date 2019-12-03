@@ -129,7 +129,6 @@ public class TurretRotation : MonoBehaviour
         */
     }
 
-
     private void FixedUpdate(){
         if (!m_Active) {
             m_TargetPosition = m_IdlePointer.transform.position;

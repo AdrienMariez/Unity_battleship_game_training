@@ -14,9 +14,11 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Minimum Range (m)")]
     public float m_MinRange = 1000f; 
     [Tooltip("Muzzle velocity for the shell (m/s)")]
-    public float m_MuzzleVelocity = 30f;        // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm give a ratio of *0.58
+    public float m_MuzzleVelocity = 30f;        // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm gives a ratio of *0.58
     [Tooltip("Reload time, (seconds)")]
     public float m_ReloadTime = 5f;
+    [Tooltip("Check this if the turret is a main turret (rangefinding is done with main turrets). You need to check only one turret par unit, not all main turrets (it won't bug, it will only be slower).")]
+    public bool m_DirectorTurret = false;
 
     [Header("Debug")]
         public bool debug = false;
@@ -25,7 +27,9 @@ public class TurretFireManager : MonoBehaviour
     private float m_ReloadingTimer;
     private TurretRotation TurretRotation;
     [HideInInspector] public bool PreventFire;
+    private bool OutOfRange;
     [HideInInspector] public float CurrentAngleElevRatio;
+    [HideInInspector] public float targetRange;
     [HideInInspector] public bool m_Active;
     // private float ShellWeight;
 
@@ -46,7 +50,13 @@ public class TurretFireManager : MonoBehaviour
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("m_ReloadingTimer = "+ m_ReloadingTimer); }
-        if (PreventFire){
+        if (targetRange > m_MaxRange) {
+            OutOfRange = true;
+        }else{
+            OutOfRange = false;
+        }
+        
+        if (PreventFire || OutOfRange){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
         }else if (m_Reloading){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
@@ -54,31 +64,35 @@ public class TurretFireManager : MonoBehaviour
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
         if (m_Active) {
+            // Debug.Log("m_Reloading :"+ m_Reloading);
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
-            if (!m_Reloading && !PreventFire)
-                // PreviewFire ();
+            if (m_DirectorTurret)
+                PreviewFire ();
 
-            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire) {
+            Debug.Log("Calculated fire range : "+ targetRange);
+
+            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire && !OutOfRange) {
                 //start the reloading process immediately
                 m_Reloading = true;
                 m_ReloadingTimer = m_ReloadTime;
                 // ... launch the shell.
                 Fire ();
             }
-            else if (m_Reloading && m_ReloadingTimer > 0) {
+            if (m_Reloading && m_ReloadingTimer > 0) {
                 m_ReloadingTimer-= Time.deltaTime;
                 if (m_ReloadingTimer <= 0) {
                     m_ReloadingTimer = 0;
                     m_Reloading = !m_Reloading;
                 }
+                // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
             }
         }
     }
 
     private void PreviewFire () {
-        float targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
-
-        Debug.Log("Calculated fire range : "+ targetRange);
+        // For gameplay reasons, we cheat the physics here. The director(s) turrets will send their telemetric data to all other turrets
+        targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
+        // Debug.Log("Calculated fire range : "+ targetRange);
     }
 
     private void Fire () {
@@ -98,6 +112,7 @@ public class TurretFireManager : MonoBehaviour
             // shellStats.m_MaxRange = m_MaxRange;
             shellInstance.GetComponent<ShellStat> ().m_MaxRange = m_MaxRange;
             shellInstance.GetComponent<ShellStat> ().m_MinRange = m_MinRange;
+            shellInstance.GetComponent<ShellStat> ().targetRange = targetRange;
             shellInstance.GetComponent<ShellStat> ().m_MuzzleVelocity = m_MuzzleVelocity * 0.58f;
             shellInstance.GetComponent<ShellStat> ().AngleLaunchPercentage = TurretRotation.CurrentAnglePercentage;
 

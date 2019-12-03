@@ -214,7 +214,7 @@ MonoBehaviour:
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_MaxRange: 19000
-  m_MinRange: 500
+  m_MinRange: 5
   m_MuzzleVelocity: 855
   m_ReloadTime: 10
   debug: 0
@@ -241,8 +241,8 @@ MonoBehaviour:
   TurretTurret: {fileID: 3541568489413974844}
   TurretCannon: {fileID: 5086371173920104713}
   Parent: {fileID: 0}
-  rotationSpeed: 5
-  limitTraverse: 0
+  rotationSpeed: 50
+  limitTraverse: 1
   leftTraverse: 60
   rightTraverse: 60
   NoFireZones: []

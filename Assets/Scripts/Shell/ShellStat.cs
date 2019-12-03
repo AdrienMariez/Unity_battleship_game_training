@@ -22,7 +22,7 @@ public class ShellStat : MonoBehaviour
     [HideInInspector] public Vector3 startPosition;
 
     private float currentRange;                     // Distance between the shell and the starting point
-    private float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same 
+    [HideInInspector] public float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same
     private float currentAltitudeGain;
     private float xBasis;
     private Vector3 V;
@@ -39,7 +39,7 @@ public class ShellStat : MonoBehaviour
         startPosition = transform.position;
 
         // Calculate target range by getting the percentage of vertical fire rotation of the turret
-        targetRange = ((m_MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
+        // targetRange = ((m_MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
 
         xBasis = transform.eulerAngles.x;
         if (xBasis > 180)
@@ -62,6 +62,22 @@ public class ShellStat : MonoBehaviour
     private void FixedUpdate () {
         // CalculateTrajectory ();
         CalculateTrajectoryWithPoint ();
+        if (transform.position.y <= 0f) {
+            // Unparent the particles from the shell.
+            m_ExplosionParticles.transform.parent = null;
+
+            // Play the particle system.
+            m_ExplosionParticles.Play();
+
+            // Play the explosion sound effect.
+            m_ExplosionAudio.Play();
+
+            // Once the particles have finished, destroy the gameobject they are on.
+            Destroy (m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
+
+            // Destroy the shell.
+            Destroy (gameObject);
+        }
     }
 
     private void CalculateTrajectoryWithPoint () {
@@ -74,9 +90,9 @@ public class ShellStat : MonoBehaviour
             //Blue : from firing spawn to target position
             Debug.DrawRay(startPosition, TargetPosition - startPosition, Color.blue);
             // Red : facing of shell
-            Debug.DrawRay(transform.position, transform.forward * m_MaxRange, Color.red);
+            // Debug.DrawRay(transform.position, transform.forward * m_MaxRange, Color.red);
             // Green : The vector between the shell and the target
-            Debug.DrawRay(transform.position, targetDir * m_MaxRange , Color.green);
+            // Debug.DrawRay(transform.position, targetDir * m_MaxRange , Color.green);
 
 
         currentRange = Vector3.Distance(startPosition, transform.position);
@@ -91,7 +107,7 @@ public class ShellStat : MonoBehaviour
         float x = transform.eulerAngles.x;
 
         //If the angle is not yet met and wasn't met...
-        if (angle > 0.3 && !RangePassed) {
+        if (angle > 0.1 && !RangePassed) {
             x = (distanceToTargetRatio * xBasis) / 100;
 
             // This is not tested !!
@@ -111,9 +127,9 @@ public class ShellStat : MonoBehaviour
             x -= 180;
             if (x < 0)
                 x += 360;
-        } else if (angle < 0.3){
+        } else if (angle < 0.1){
             RangePassed = true;
-            //If velocity was passed to the rigidbody, remov it here !
+            //If velocity was passed to the rigidbody, remove it here !
             // rb.velocity=Vector3.zero;
         }
 
@@ -164,9 +180,6 @@ public class ShellStat : MonoBehaviour
 
         // Once the particles have finished, destroy the gameobject they are on.
         Destroy (m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
-        
-        //obsolete
-        //Destroy (m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
 
         // Destroy the shell.
         Destroy (gameObject);

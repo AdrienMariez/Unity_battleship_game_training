@@ -2422,19 +2422,29 @@ PrefabInstance:
       propertyPath: debug
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7206456436928395692, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+    - target: {fileID: 5960664679439961443, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
-      propertyPath: debug
-      value: 0
+      propertyPath: m_DirectorTurret
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7206456436928395692, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
-      propertyPath: limitTraverse
+      propertyPath: debug
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8467056612775028171, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467056612775028171, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_Secondary
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1379891545128826263, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_Secondary
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
