@@ -141,32 +141,36 @@ public class ShellStat : MonoBehaviour
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
         Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_HitMask);
 
+        // Debug.Log( "collide (name) : " + collide.collider.gameObject.name );
+        // Debug.Log("Collider = "+ other);
+
         // Go through all the colliders...
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            // ... and find their rigidbody.
-            Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
+        for (int i = 0; i < colliders.Length; i++) {
+            // Debug.Log("colliders[i] = "+ colliders[i]);
+            // // ... and find their rigidbody.
+            // Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
 
-            // If they don't have a rigidbody, go on to the next collider.
-            if (!targetRigidbody)
-                continue;
+            // // If they don't have a rigidbody, go on to the next collider.
+            // if (!targetRigidbody)
+            //     continue;
 
-            // Add an explosion force.
-            // This is used to move the target back away from the explosion
-            //targetRigidbody.AddExplosionForce (m_ExplosionForce, transform.position, m_ExplosionRadius);
+            // // Find the TankHealth script associated with the rigidbody.
+            // ShipHealth targetHealth = targetRigidbody.GetComponent<ShipHealth> ();
 
-            // Find the TankHealth script associated with the rigidbody.
-            TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth> ();
+            // // If there is no TankHealth script attached to the gameobject, go on to the next collider.
+            // if (!targetHealth)
+            //     continue;
 
-            // If there is no TankHealth script attached to the gameobject, go on to the next collider.
-            if (!targetHealth)
+            HitboxComponent targetHitboxComponent = colliders[i].GetComponent<HitboxComponent> ();
+
+            if (!targetHitboxComponent)
                 continue;
 
             // Calculate the amount of damage the target should take based on it's distance from the shell.
-            float damage = CalculateDamage (targetRigidbody.position);
+            float damage = CalculateDamage (colliders[i].transform.position);
 
             // Deal this damage to the tank.
-            targetHealth.TakeDamage (damage);
+            targetHitboxComponent.TakeDamage (damage);
         }
 
         // Unparent the particles from the shell.
@@ -194,6 +198,9 @@ public class ShellStat : MonoBehaviour
 
         // Calculate the proportion of the maximum distance (the explosionRadius) the target is away.
         float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
+
+        // Debug.Log("m_ExplosionRadius = "+ m_ExplosionRadius + " - explosionDistance = "+ explosionDistance);
+        // Debug.Log("explosionDistance = "+ explosionDistance);
 
         // Calculate damage as this proportion of the maximum possible damage.
         float damage = relativeDistance * m_MaxDamage;

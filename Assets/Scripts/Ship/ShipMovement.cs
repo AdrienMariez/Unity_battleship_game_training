@@ -68,8 +68,7 @@ public class ShipMovement : MonoBehaviour
         //Abs (x) means that if x=-3, Abs(x)=3
         //0.1f means 0.1 as a FLOAT value
         //if not moving or rotating
-        if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f)
-        {
+        if (m_CurrentSpeedStep != 0) {
             //if moving audio currently playing
              if (m_MovementAudio.clip == m_EngineDriving)
              {
@@ -80,9 +79,7 @@ public class ShipMovement : MonoBehaviour
                 //play the new audio
                 m_MovementAudio.Play ();
              }
-        }
-        else
-        {
+        } else {
             //if idling audio currently playing
              if (m_MovementAudio.clip == m_EngineIdling)
              {
@@ -97,8 +94,7 @@ public class ShipMovement : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         // This is run every physics step instead of every frame
         // Move and turn the tank.
         if (m_Active) {
@@ -110,7 +106,6 @@ public class ShipMovement : MonoBehaviour
             Move ();
             Turn ();
         }
-        
     }
 
     private void ChangeSpeedStep(int Step) {
@@ -221,7 +216,7 @@ public class ShipMovement : MonoBehaviour
         m_Buoyancy.RotationInput = m_LocalRealRotation;
     }
 
-        IEnumerator PauseTurnIncrementation(){
+    IEnumerator PauseTurnIncrementation(){
         m_RotationIncrementation = false;
         yield return new WaitForSeconds(0.5f);
         m_RotationIncrementation = true;

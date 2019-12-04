@@ -211,12 +211,16 @@ MonoBehaviour:
   - {fileID: 9032721239661306136}
   m_ShootingAudio: {fileID: 5123216979890349395}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_MaxRange: 10000
+  m_MaxRange: 2000
+  m_MinRange: 10
   m_MuzzleVelocity: 30
   m_ReloadTime: 5
+  m_DirectorTurret: 0
   debug: 0
   m_Reloading: 0
   PreventFire: 0
+  CurrentAngleElevRatio: 0
+  targetRange: 0
   m_Active: 0
 --- !u!82 &5123216979890349395
 AudioSource:
@@ -345,6 +349,7 @@ MonoBehaviour:
   ElevationZones: []
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
+  CurrentAnglePercentage: 0
 --- !u!1 &3865778063621184773
 GameObject:
   m_ObjectHideFlags: 0
