@@ -5,8 +5,6 @@ public class ShipHealth : MonoBehaviour
 {
     public float m_StartingHealth = 100f;               // The amount of health each tank starts with.
     public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the tank dies.
-    [Tooltip("Components (game object with collider + Hitbox Component script)")]
-    public GameObject[] m_ShipComponents; 
 
 
     private AudioSource m_ExplosionAudio;               // The audio source to play when the tank explodes.

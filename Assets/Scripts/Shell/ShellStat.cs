@@ -146,21 +146,6 @@ public class ShellStat : MonoBehaviour
 
         // Go through all the colliders...
         for (int i = 0; i < colliders.Length; i++) {
-            // Debug.Log("colliders[i] = "+ colliders[i]);
-            // // ... and find their rigidbody.
-            // Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
-
-            // // If they don't have a rigidbody, go on to the next collider.
-            // if (!targetRigidbody)
-            //     continue;
-
-            // // Find the TankHealth script associated with the rigidbody.
-            // ShipHealth targetHealth = targetRigidbody.GetComponent<ShipHealth> ();
-
-            // // If there is no TankHealth script attached to the gameobject, go on to the next collider.
-            // if (!targetHealth)
-            //     continue;
-
             HitboxComponent targetHitboxComponent = colliders[i].GetComponent<HitboxComponent> ();
 
             if (!targetHitboxComponent)
@@ -169,7 +154,7 @@ public class ShellStat : MonoBehaviour
             // Calculate the amount of damage the target should take based on it's distance from the shell.
             float damage = CalculateDamage (colliders[i].transform.position);
 
-            // Deal this damage to the tank.
+            // Deal this damage to the component.
             targetHitboxComponent.TakeDamage (damage);
         }
 

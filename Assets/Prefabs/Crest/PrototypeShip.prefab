@@ -692,7 +692,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9029c3b320aaf764690630082a4b8272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ShipComponents:
+  - {fileID: 610677313978783278}
+  - {fileID: 993795375933283818}
+  - {fileID: 8142411766867927660}
+  - {fileID: 4463602994487626728}
+  - {fileID: 2204760869544350420}
   m_Active: 0
+  engine: 0
+  engineCount: 0
+  hullCount: 0
+  ammoCount: 0
+  fuelCount: 0
+  underwaterCount: 0
+  underwater2Count: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,12 +720,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHealth: 100
   m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
-  m_ShipComponents:
-  - {fileID: 4463602994487626728}
-  - {fileID: 993795375933283818}
-  - {fileID: 8142411766867927660}
-  - {fileID: 4463602994487626728}
-  - {fileID: 2204760869544350420}
 --- !u!114 &375208000063036731
 MonoBehaviour:
   m_ObjectHideFlags: 0
