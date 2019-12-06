@@ -6,6 +6,7 @@ using Crest;
 public class ShipMovement : MonoBehaviour
 {
     [HideInInspector] public bool m_Active; 
+    [HideInInspector] public bool m_Dead; 
     [HideInInspector] public float m_MaxSpeed = 1f;
     [HideInInspector] public float m_TurnSpeed = 1f;
     public AudioSource m_MovementAudio;
@@ -36,7 +37,7 @@ public class ShipMovement : MonoBehaviour
     */
     [HideInInspector] public float m_LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
     public float m_SpeedInertia = 0.3f;                        // The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.
-    private bool m_SpeedIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
+    private bool m_SpeedIncrementation = true;                  // Used to allow the m_SpeedInertia to take some time.
     [HideInInspector] public float m_LocalRealSpeed;            // The real final speed of the ship.
     [HideInInspector] public float m_LocalRealRotation;            // The real final rotation of the ship.
     private bool m_RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
@@ -97,7 +98,7 @@ public class ShipMovement : MonoBehaviour
     private void FixedUpdate() {
         // This is run every physics step instead of every frame
         // Move and turn the tank.
-        if (m_Active) {
+        if (m_Active && !m_Dead) {
             if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
             } else if(Input.GetAxis ("VerticalShip") == -1){
@@ -158,7 +159,7 @@ public class ShipMovement : MonoBehaviour
         }
         //Debug.Log ("- m_LocalSpeed - :"+ m_LocalTargetSpeed);
     }
-    private void SetRealSpeed() {
+    public void SetRealSpeed() {
         if (m_LocalRealSpeed < m_LocalTargetSpeed && m_SpeedIncrementation) {
             if ((m_LocalRealSpeed+m_SpeedInertia) > m_LocalTargetSpeed) {
                 m_LocalRealSpeed = m_LocalTargetSpeed;

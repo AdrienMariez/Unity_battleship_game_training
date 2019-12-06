@@ -73,10 +73,11 @@ namespace Crest
         Vector3[] _queryResultVels;
 
         SampleFlowHelper _sampleFlowHelper = new SampleFlowHelper();
-
-        [HideInInspector] public bool m_Active;
         [HideInInspector] public float SpeedInput;
         [HideInInspector] public float RotationInput;
+        [HideInInspector] public bool m_Dead;
+
+        private float SinkingFactor;
 
 
         private void Start() {
@@ -96,6 +97,8 @@ namespace Crest
             _queryPoints = new Vector3[_forcePoints.Length + 1];
             _queryResultDisps = new Vector3[_forcePoints.Length + 1];
             _queryResultVels = new Vector3[_forcePoints.Length + 1];
+
+            SinkingFactor = 0f;
         }
 
         void CalcTotalWeight() {
@@ -111,6 +114,15 @@ namespace Crest
                 // Sum weights every frame when running in editor in case weights are edited in the inspector.
                 CalcTotalWeight();
             #endif
+
+            // If the ship is sinking, sink it by a factor determined in ShipController
+            if (m_Dead && SinkingFactor > 0 && _forceMultiplier > 0) {
+                Sink(SinkingFactor);
+            }
+            // Also, stop engines if the ship is dead.
+            if (m_Dead) {
+                SpeedInput = 0f;
+            }
 
             // Trigger processing of displacement textures that have come back this frame. This will be processed
             // anyway in Update(), but FixedUpdate() is earlier so make sure it's up to date now.
@@ -224,8 +236,7 @@ namespace Crest
             new Bounds(new Vector3(worldAABB.center.x, 0f, worldAABB.center.y), Vector3.right * worldAABB.width + Vector3.forward * worldAABB.height).DebugDraw();
         }
 
-        Rect ComputeLocalSamplingAABB()
-        {
+        Rect ComputeLocalSamplingAABB() {
             if (_forcePoints.Length == 0) return new Rect();
 
             float xmin = _forcePoints[0]._offsetPosition.x;
@@ -241,8 +252,7 @@ namespace Crest
             return Rect.MinMaxRect(xmin, zmin, xmax, zmax);
         }
 
-        Rect GetWorldAABB()
-        {
+        Rect GetWorldAABB() {
             Bounds b = new Bounds(transform.position, Vector3.one);
             b.Encapsulate(transform.TransformPoint(new Vector3(_localSamplingAABB.xMin, 0f, _localSamplingAABB.yMin)));
             b.Encapsulate(transform.TransformPoint(new Vector3(_localSamplingAABB.xMin, 0f, _localSamplingAABB.yMax)));
@@ -251,12 +261,18 @@ namespace Crest
             return Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             if (QueryDisplacements.Instance)
             {
                 QueryDisplacements.Instance.RemoveQueryPoints(GetHashCode());
             }
+        }
+
+        public void Sink(float sinking) {
+            // Debug.Log("sinkingfactor = "+ sinking);
+            _forceMultiplier -= sinking;
+            if (SinkingFactor == 0)
+                SinkingFactor = sinking;
         }
     }
 

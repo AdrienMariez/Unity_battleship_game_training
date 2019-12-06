@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class TurretFireManager : MonoBehaviour
 {
-    // [Tooltip("Ammo used")] public Rigidbody m_Shell;
+    [HideInInspector] public bool m_Active;
+    [HideInInspector] public bool m_Dead;
     [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
     public Transform[] m_FireMuzzles;
@@ -30,7 +31,6 @@ public class TurretFireManager : MonoBehaviour
     private bool OutOfRange;
     [HideInInspector] public float CurrentAngleElevRatio;
     [HideInInspector] public float targetRange;
-    [HideInInspector] public bool m_Active;
     // private float ShellWeight;
 
 
@@ -63,7 +63,7 @@ public class TurretFireManager : MonoBehaviour
         }else{
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
-        if (m_Active) {
+        if (m_Active && !m_Dead) {
             // Debug.Log("m_Reloading :"+ m_Reloading);
             // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
             if (m_DirectorTurret)

@@ -78,15 +78,6 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
 
         for (int i = 0; i < PlayerUnitsLength; i++){
-            if (PlayerUnits[i].GetComponent<TurretManager>()) {
-                if (i == CurrentTarget && !m_MapActive) {
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
-                    // Debug.Log ("Current turrets activated : "+ PlayerUnits[CurrentTarget]);
-                }
-                else {
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
-                }
-            }
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
                 if (i == CurrentTarget && !m_MapActive) {
@@ -107,12 +98,12 @@ public class PlayerManager : MonoBehaviour
                 }
             }
             else if (PlayerUnits[i].GetComponent<ShipController>()) {
-                if (i == CurrentTarget && !m_MapActive) {
+                if (i == CurrentTarget && !m_MapActive && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                 }
                 else {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = false;
-                }
+                } 
             }
         }
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);

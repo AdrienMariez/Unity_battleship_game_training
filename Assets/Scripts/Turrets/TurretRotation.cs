@@ -4,6 +4,7 @@ using FreeLookCamera;
 public class TurretRotation : MonoBehaviour
 {    
     [HideInInspector] public bool m_Active;
+    [HideInInspector] public bool m_Dead;
 
     [Header("Elements")]
         [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
@@ -130,7 +131,7 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!m_Active) {
+        if (!m_Active && !m_Dead) {
             m_TargetPosition = m_IdlePointer.transform.position;
             if (unitIsActivated) {
                 unitIsActivated = !unitIsActivated;
@@ -148,8 +149,10 @@ public class TurretRotation : MonoBehaviour
             }
         }
 
-        TurretRotate();
-        CannonElevation();
+        if (!m_Dead) {
+            TurretRotate();
+            CannonElevation();
+        }
 
         // Check if anything can prevent the turret from firing
         if (PreventFireHoriz || PreventFireVert){
