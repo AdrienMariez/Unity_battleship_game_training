@@ -10,6 +10,8 @@ public class ShellStat : MonoBehaviour
     public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
     public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
+    [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
+    public float m_ArmorPenetration = 100f;
     public float m_ExplosionForce = 1000f;              // The amount of force added to a tank at the centre of the explosion.
     public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
     public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
@@ -28,7 +30,6 @@ public class ShellStat : MonoBehaviour
     private Vector3 V;
     public Vector3 TargetPosition;
     private bool RangePassed = false;
-
 
     private void Start () {
         // If it isn't destroyed by then, destroy the shell after it's lifetime.
@@ -147,15 +148,32 @@ public class ShellStat : MonoBehaviour
         // Go through all the colliders...
         for (int i = 0; i < colliders.Length; i++) {
             HitboxComponent targetHitboxComponent = colliders[i].GetComponent<HitboxComponent> ();
+            TurretHealth targetTurretHealth = colliders[i].GetComponent<TurretHealth> ();
+            float damage;
 
-            if (!targetHitboxComponent)
-                continue;
+            if (targetHitboxComponent != null) {
+                if (m_ArmorPenetration < targetHitboxComponent.m_ElementArmor)
+                    continue;
 
-            // Calculate the amount of damage the target should take based on it's distance from the shell.
-            float damage = CalculateDamage (colliders[i].transform.position);
+                // Calculate the amount of damage the target should take based on it's distance from the shell.
+                damage = CalculateDamage (colliders[i].transform.position);
 
-            // Deal this damage to the component.
-            targetHitboxComponent.TakeDamage (damage);
+                // Deal this damage to the component.
+                targetHitboxComponent.TakeDamage (damage);
+            }
+
+            if (targetTurretHealth != null) {
+                if (m_ArmorPenetration < targetTurretHealth.m_ElementArmor)
+                    continue;
+
+                // Calculate the amount of damage the target should take based on it's distance from the shell.
+                damage = CalculateDamage (colliders[i].transform.position);
+
+                // Deal this damage to the component.
+                targetTurretHealth.TakeDamage (damage);
+            }
+
+
         }
 
         // Unparent the particles from the shell.

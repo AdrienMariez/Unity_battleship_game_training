@@ -77,6 +77,8 @@ public class TurretRotation : MonoBehaviour
             localRightTraverse -= 360;
 
         TotalAngleElevRatio = upTraverse-downTraverse;
+
+        currentAng = TurretTurret.transform.localRotation.eulerAngles.y;
         
         // if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
@@ -152,6 +154,8 @@ public class TurretRotation : MonoBehaviour
         if (!m_Dead) {
             TurretRotate();
             CannonElevation();
+        } else {
+            TurretStatic();
         }
 
         // Check if anything can prevent the turret from firing
@@ -192,7 +196,7 @@ public class TurretRotation : MonoBehaviour
             targetAng -= 360;
 
 
-        currentAng = TurretTurret.transform.localRotation.eulerAngles.y;
+        // currentAng = TurretTurret.transform.localRotation.eulerAngles.y;
 
         // if (debug) { Debug.Log("parentRotationAng = "+ parentRotationAng); }
         
@@ -436,4 +440,8 @@ public class TurretRotation : MonoBehaviour
         return PreventFire;
     }
 
+    private void TurretStatic() {
+        // Update the turret angle
+        TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
+    }
 }

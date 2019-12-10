@@ -55,8 +55,9 @@ public class TurretFireManager : MonoBehaviour
         }else{
             OutOfRange = false;
         }
-        
-        if (PreventFire || OutOfRange){
+        if (m_Dead){
+            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.black);
+        }else if  (PreventFire || OutOfRange){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
         }else if (m_Reloading){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);

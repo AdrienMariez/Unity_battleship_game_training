@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 512295342540003695}
   - component: {fileID: 3541568489413974844}
   - component: {fileID: 6521737640121520423}
+  - component: {fileID: 1061420820093156919}
   - component: {fileID: 1653871051627078444}
   - component: {fileID: 536144026725449547}
-  m_Layer: 0
+  - component: {fileID: 4881369812155529996}
+  m_Layer: 15
   m_Name: TurretCruiser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,6 +198,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1061420820093156919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512295342537803285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa93e27c3a41a534384ab345bc0c9ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ElementHealth: 200
+  m_ElementArmor: 80
+  debug: 0
+  m_CurrentHealth: 0
+  RepairRate: 0
+  TurretsRepairCrew: 0
+  m_Dead: 0
 --- !u!114 &1653871051627078444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Active: 0
+  m_Dead: 0
   m_Shell: {fileID: 1340822690796195968, guid: ad2bdbd723113b442a208525b46cb72f, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}
@@ -218,11 +241,12 @@ MonoBehaviour:
   m_MinRange: 50
   m_MuzzleVelocity: 775
   m_ReloadTime: 10
+  m_DirectorTurret: 0
   debug: 0
   m_Reloading: 0
   PreventFire: 0
   CurrentAngleElevRatio: 0
-  m_Active: 0
+  targetRange: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Active: 0
+  m_Dead: 0
   m_IdlePointer: {fileID: 8933853122373449585}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
@@ -254,6 +279,19 @@ MonoBehaviour:
   debug: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
   CurrentAnglePercentage: 0
+--- !u!65 &4881369812155529996
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512295342537803285}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.21, y: 0.92, z: 1.39}
+  m_Center: {x: 0, y: 0.38, z: -0.04}
 --- !u!1 &628300269727696243
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +304,7 @@ GameObject:
   - component: {fileID: 1048467118184020168}
   - component: {fileID: 1889585189106195433}
   - component: {fileID: 395337520176311333}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: TankCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 257214647645740816}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Turret_Cruiser_prototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 840146293658127578}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.93, z: 28.19}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 512295342537579509}
@@ -391,7 +429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5887326013508966530}
   - component: {fileID: 5086371173920104713}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: CannonAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -442,7 +480,7 @@ GameObject:
   - component: {fileID: 8081580736031367467}
   - component: {fileID: 8904716115163344576}
   - component: {fileID: 3155959700334166140}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: TankCannon2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +572,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6972174185670022508}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: MuzzleFire1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,7 +602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8933853122373449585}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: OriginPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +632,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9220873763524553088}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: MuzzleFire2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2115,6 +2115,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3992816113410691544, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609157219550960596, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326148110362211667, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8238569340152183752, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284332855798150703, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 300254401812697696, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495701681535093813, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbac4ebb287bca44fa8b36fe1f451c2f, type: 3}
 --- !u!4 &2106296984 stripped
@@ -2392,7 +2427,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
       propertyPath: RaycastLayerMask.m_Bits
-      value: 16179
+      value: 48947
+      objectReference: {fileID: 0}
+    - target: {fileID: 682091736795053295, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 57143
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
@@ -2522,6 +2562,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Secondary
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 162703735478074663, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbac4ebb287bca44fa8b36fe1f451c2f, type: 3}
