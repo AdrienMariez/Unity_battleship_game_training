@@ -17,8 +17,6 @@ public class TurretManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        // Get vehicle rotation
-        // Vector3 unitEulerAngles = this.transform.rotation.eulerAngles;
         for (int i = 0; i < m_Turrets.Length; i++){
             if (m_Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret) {
                 targetRange = m_Turrets[i].GetComponent<TurretFireManager>().targetRange; 
