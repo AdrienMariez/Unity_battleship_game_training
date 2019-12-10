@@ -28,12 +28,13 @@ public class ShellStat : MonoBehaviour
     private float currentAltitudeGain;
     private float xBasis;
     private Vector3 V;
-    public Vector3 TargetPosition;
+    [HideInInspector] public Vector3 TargetPosition;
     private bool RangePassed = false;
+    private bool SelfDestruct = false;
 
     private void Start () {
         // If it isn't destroyed by then, destroy the shell after it's lifetime.
-        Destroy (gameObject, m_MaxLifeTime);
+        // Destroy (gameObject, m_MaxLifeTime);
 
         rb = GetComponent<Rigidbody>();
         currentAltitudeGain = rb.velocity.y;
@@ -102,7 +103,7 @@ public class ShellStat : MonoBehaviour
         float distanceToTargetRatio = (distanceToTarget*100) / targetRange;
 
         // Debug.Log("distanceToTarget = "+ distanceToTarget);
-        // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
+        Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
 
         // x is the only axis used to make the shell curves
         float x = transform.eulerAngles.x;
@@ -132,6 +133,12 @@ public class ShellStat : MonoBehaviour
             RangePassed = true;
             //If velocity was passed to the rigidbody, remove it here !
             // rb.velocity=Vector3.zero;
+        }
+        if (distanceToTargetRatio < 0 && !SelfDestruct) {
+            // Engage auto destruct if the range is passed
+            Debug.Log("engage self destruct !");
+            Destroy (gameObject, m_MaxLifeTime);
+            SelfDestruct = true;
         }
 
         transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));

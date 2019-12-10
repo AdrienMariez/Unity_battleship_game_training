@@ -265,8 +265,9 @@ MonoBehaviour:
   m_ExplosionParticles: {fileID: 1340822690344244516}
   m_ExplosionAudio: {fileID: 1420939521431360152}
   m_MaxDamage: 100
+  m_ArmorPenetration: 100
   m_ExplosionForce: 1000
-  m_MaxLifeTime: 8
+  m_MaxLifeTime: 3
   m_ExplosionRadius: 5
   m_MaxRange: 0
   m_MinRange: 0

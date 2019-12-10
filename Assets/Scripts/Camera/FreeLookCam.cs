@@ -101,8 +101,10 @@ namespace FreeLookCamera
 
             if (Input.GetButton ("FocusCamera")){
                 m_Cam.fieldOfView = m_FieldOfViewFocus;
+                m_Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
             } else {
                 m_Cam.fieldOfView = m_FieldOfView;
+                m_Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
 
             if (ActiveTarget.GetComponent<AircraftController>() && Input.GetButton ("FreeCamera") || !ActiveTarget.GetComponent<AircraftController>()) {

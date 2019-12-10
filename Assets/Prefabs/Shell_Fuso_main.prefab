@@ -267,7 +267,7 @@ MonoBehaviour:
   m_MaxDamage: 100
   m_ArmorPenetration: 100
   m_ExplosionForce: 1000
-  m_MaxLifeTime: 8000
+  m_MaxLifeTime: 3
   m_ExplosionRadius: 20
   m_MaxRange: 35500
   m_MinRange: 0

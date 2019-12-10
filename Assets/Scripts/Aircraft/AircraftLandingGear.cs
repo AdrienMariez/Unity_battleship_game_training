@@ -41,7 +41,7 @@ using UnityEngine;
                     }
                 }
                 if (landingZoneInProximity){
-                    Debug.Log ("landingZoneInProximity = "+landingZoneInProximity);
+                    // Debug.Log ("landingZoneInProximity = "+landingZoneInProximity);
                     if (m_State == GearState.Raised){
                         m_State = GearState.Lowered;
                     }
@@ -52,7 +52,7 @@ using UnityEngine;
                 m_State = GearState.Raised;
             }
 
-            Debug.Log ("m_State = "+m_State);
+            // Debug.Log ("m_State = "+m_State);
 
             // set the parameter on the animator controller to trigger the appropriate animation
             m_Animator.SetInteger("GearState", (int) m_State);
