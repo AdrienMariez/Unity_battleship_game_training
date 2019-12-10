@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-    public class AircraftLandingGear : MonoBehaviour
-    {
+    public class AircraftLandingGear : MonoBehaviour {
 
-        private enum GearState
-        {
+        private enum GearState {
             Raised = -1,
             Lowered = 1
         }
@@ -25,39 +23,42 @@ using UnityEngine;
         [HideInInspector] public GameObject[] landingZones;
 
         // Use this for initialization
-        private void Start()
-        {
+        private void Start() {
             m_Plane = GetComponent<AircraftController>();
             m_Animator = GetComponent<Animator>();
             m_Rigidbody = GetComponent<Rigidbody>();
         }
 
-
-        // Update is called once per frame
-        private void Update()
-        {
+        private void Update() {
             // bool x = this.GetComponent<AircraftUserControl4Axis>().m_Active;
 
-            float speed = Mathf.Abs (m_Rigidbody.velocity.x) + Mathf.Abs (m_Rigidbody.velocity.y) + Mathf.Abs (m_Rigidbody.velocity.z);
+            // float speed = Mathf.Abs (m_Rigidbody.velocity.x) + Mathf.Abs (m_Rigidbody.velocity.y) + Mathf.Abs (m_Rigidbody.velocity.z);
 
-            if (speed < 70) {
-                //Debug.Log ("speed < 70");
-                landingZones = GameObject.FindGameObjectsWithTag("LandingZone");
-                bool landingZoneInProximity = false;
-                foreach (var zone in landingZones) {
-                    if ( (m_Rigidbody.transform.position - zone.transform.position).magnitude < 200) {
-                        landingZoneInProximity = true;
-                    }
-                }
-                if (landingZoneInProximity){
-                    Debug.Log ("landingZoneInProximity = "+landingZoneInProximity);
-                    if (m_State == GearState.Raised){
-                        m_State = GearState.Lowered;
-                    }
-                } else {
-                    m_State = GearState.Raised;
-                }
-            } else if (m_State == GearState.Lowered) {
+            // if (speed < 70) {
+            //     //Debug.Log ("speed < 70");
+            //     landingZones = GameObject.FindGameObjectsWithTag("LandingZone");
+            //     bool landingZoneInProximity = false;
+            //     foreach (var zone in landingZones) {
+            //         if ( (m_Rigidbody.transform.position - zone.transform.position).magnitude < 200) {
+            //             landingZoneInProximity = true;
+            //         }
+            //     }
+            //     if (landingZoneInProximity){
+            //         Debug.Log ("landingZoneInProximity = "+landingZoneInProximity);
+            //         if (m_State == GearState.Raised){
+            //             m_State = GearState.Lowered;
+            //         }
+            //     } else {
+            //         m_State = GearState.Raised;
+            //     }
+            // } else if (m_State == GearState.Lowered) {
+            //     m_State = GearState.Raised;
+            // }
+
+            if (Input.GetButton ("FocusCamera") && m_State == GearState.Raised){
+                m_State = GearState.Lowered;
+            }
+            if (!Input.GetButton ("FocusCamera") && m_State == GearState.Lowered) {
                 m_State = GearState.Raised;
             }
 
