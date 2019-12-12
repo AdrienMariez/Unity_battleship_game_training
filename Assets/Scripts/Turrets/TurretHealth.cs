@@ -57,8 +57,8 @@ public class TurretHealth : MonoBehaviour {
             m_CurrentHealth = m_ElementHealth;
             m_Dead = false;
         }
-        if (debug){
-            Debug.Log("Repairing... = "+ m_CurrentHealth);
-        }
+        // if (debug){
+        //     Debug.Log("Repairing... = "+ m_CurrentHealth);
+        // }
     }
 }

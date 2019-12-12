@@ -103,7 +103,7 @@ public class ShellStat : MonoBehaviour
         float distanceToTargetRatio = (distanceToTarget*100) / targetRange;
 
         // Debug.Log("distanceToTarget = "+ distanceToTarget);
-        Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
+        // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
 
         // x is the only axis used to make the shell curves
         float x = transform.eulerAngles.x;
@@ -136,7 +136,7 @@ public class ShellStat : MonoBehaviour
         }
         if (distanceToTargetRatio < 0 && !SelfDestruct) {
             // Engage auto destruct if the range is passed
-            Debug.Log("engage self destruct !");
+            // Debug.Log("engage self destruct !");
             Destroy (gameObject, m_MaxLifeTime);
             SelfDestruct = true;
         }

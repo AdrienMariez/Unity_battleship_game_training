@@ -35,20 +35,26 @@ public class HitboxComponent : MonoBehaviour {
     }
 
     public void TakeDamage (float amount) {
-        // Reduce current health by the amount of damage done.
-        m_CurrentHealth -= amount;
-        if (m_CurrentHealth < 0)
-            m_CurrentHealth = 0;
+        // If a underwater armor is damaged, apply water damage
+        if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
+            ShipController.ApplyDamage(amount);
+            ShipController.BuoyancyCompromised(m_ElementType, amount);
+        } else {
+            // Reduce current health by the amount of damage done.
+            m_CurrentHealth -= amount;
+            if (m_CurrentHealth < 0)
+                m_CurrentHealth = 0;
 
-        if (m_CurrentHealth == 0 && !m_Dead) {
-            ModuleDestroyed();
-        }
-        // This directly transfers damage to modules to the unit itself
-        else if (m_CurrentHealth > 0 && !m_Dead) {
-            ModuleDamaged(amount);
-        }
-        else if (m_Dead) {
-            RepairModule();
+            if (m_CurrentHealth == 0 && !m_Dead) {
+                ModuleDestroyed();
+            }
+            // This directly transfers damage to modules to the unit itself
+            else if (m_CurrentHealth > 0 && !m_Dead) {
+                ShipController.ApplyDamage(amount);
+            }
+            else if (m_Dead) {
+                RepairModule();
+            }
         }
 
         if (debug){
@@ -56,14 +62,6 @@ public class HitboxComponent : MonoBehaviour {
             Debug.Log("m_ElementType = "+ m_ElementType);
             Debug.Log("m_CurrentHealth = "+ m_CurrentHealth);
         }
-    }
-
-    private void ModuleDamaged (float damage) {
-        ShipController.ApplyDamage(damage);
-        if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
-            ShipController.BuoyancyCompromised(m_ElementType);
-        }
-        // ShipController.ModuleDamaged(m_ElementType);
     }
 
     private void ModuleDestroyed () {
