@@ -84,6 +84,7 @@ public class ShipController : MonoBehaviour {
             if (CurrentRotationX != TargetRotationX || CurrentRotationZ != TargetRotationZ) {
                 BuoyancyCorrectXZ(LeakRatio);
             }
+
             // Also, repair the leak while it is still opened
             LeakRatio -= 0.1f * RepairRate * WaterRepairCrew * Time.deltaTime;
             // Debug.Log("LeakRatio :"+ LeakRatio);
@@ -103,6 +104,7 @@ public class ShipController : MonoBehaviour {
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
+        CallDeath();
     }
 
     public void BuoyancyCompromised(ElementType ElementType, float damage) {
@@ -157,9 +159,10 @@ public class ShipController : MonoBehaviour {
             BuoyancyCorrectXZ(WaterRepairCrew);
         }
     }
+
     private void BuoyancyCorrectY(float ratio) {
-        Debug.Log("CurrentpositionY :"+ CurrentpositionY);
-        Debug.Log("TargetpositionY :"+ TargetpositionY);
+        // Debug.Log("CurrentpositionY :"+ CurrentpositionY);
+        // Debug.Log("TargetpositionY :"+ TargetpositionY);
         if (CurrentpositionY > TargetpositionY) {
             // If sinking...
             CurrentpositionY -= 0.1f * ratio * Time.deltaTime;
@@ -170,7 +173,7 @@ public class ShipController : MonoBehaviour {
         ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
 
         // Check death by taking in too much water
-        if (CurrentpositionY < 2)
+        if (CurrentpositionY < -2 && !m_Dead)
             CallDeath();
     }
     private void BuoyancyCorrectXZ(float ratio) {
@@ -193,7 +196,7 @@ public class ShipController : MonoBehaviour {
         ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         // Check death by taking in too much water
-        if (CurrentRotationX < -2 || CurrentRotationX > 2 || CurrentRotationZ < -2 || CurrentRotationZ > 2)
+        if (CurrentRotationX < -3  && !m_Dead|| CurrentRotationX > 3  && !m_Dead|| CurrentRotationZ < -15  && !m_Dead|| CurrentRotationZ > 15 && !m_Dead)
             CallDeath();
     }
 
@@ -202,10 +205,19 @@ public class ShipController : MonoBehaviour {
     }
 
     public void CallDeath() {
+        // Debug.Log("DEATH"+m_Dead);
         m_Dead = true;
         tag = "Untagged";
 
         // Sink the ship
-        Buoyancy.Sink(1f + LeakRatio);
+        if (TargetRotationX > 1 && TargetRotationZ > 5 || TargetRotationX < -1 && TargetRotationZ < -5) {
+            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, TargetRotationZ);
+        } else if (TargetRotationX > 1 || TargetRotationX < -1) {
+            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, 0);
+        } else if (TargetRotationZ > 5 || TargetRotationZ < -5) {
+            Buoyancy.Sink(1f + LeakRatio, 0, TargetRotationZ);
+        } else {
+            Buoyancy.Sink(1f + LeakRatio, 0, 0);
+        }
     }
 }

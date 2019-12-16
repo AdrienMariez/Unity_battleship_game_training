@@ -34,7 +34,7 @@ public class ShipHealth : MonoBehaviour
     public void ApplyDamage (float damage) {
         m_CurrentHealth -= damage;
         // if (m_CurrentHealth > 0)
-            // Debug.Log("m_CurrentHealth = "+ m_CurrentHealth);
+        //     Debug.Log("m_CurrentHealth = "+ m_CurrentHealth);
             
         CheckDeath ();
     }
@@ -49,6 +49,8 @@ public class ShipHealth : MonoBehaviour
     private void OnDeath () {
         // Set the flag so that this function is only called once.
         m_Dead = true;
+
+        // Debug.Log("----------------------m_Dead------------------------ = "+ m_Dead);
 
         // Move the instantiated explosion prefab to the tank's position and turn it on.
         m_ExplosionParticles.transform.position = transform.position;

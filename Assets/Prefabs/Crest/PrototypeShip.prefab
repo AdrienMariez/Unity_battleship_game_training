@@ -810,7 +810,7 @@ MonoBehaviour:
   - _weight: 1
     _offsetPosition: {x: -5, y: 0, z: 15}
   - _weight: 1
-    _offsetPosition: {x: -5, y: 0, z: 15}
+    _offsetPosition: {x: 5, y: 0, z: 15}
   _forceHeightOffset: 0
   _forceMultiplier: 8000
   _minSpatialLength: 24
@@ -1992,6 +1992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: NoFireZones.Array.data[0].ZoneEnd
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
+        type: 3}
+      propertyPath: debug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 840146293658127578, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}

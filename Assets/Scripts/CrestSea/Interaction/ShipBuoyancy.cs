@@ -78,6 +78,8 @@ namespace Crest
         [HideInInspector] public bool m_Dead;
 
         private float SinkingFactor;
+        private float SinkingX;
+        private float SinkingZ;
 
 
         private void Start() {
@@ -117,7 +119,7 @@ namespace Crest
 
             // If the ship is sinking, sink it by a factor determined in ShipController
             if (m_Dead && SinkingFactor > 0 && _forceMultiplier > 0) {
-                Sink(SinkingFactor);
+                Sink(SinkingFactor, SinkingX, SinkingZ);
             }
             // Also, stop engines if the ship is dead.
             if (m_Dead) {
@@ -268,11 +270,23 @@ namespace Crest
             }
         }
 
-        public void Sink(float sinking) {
-            // Debug.Log("sinkingfactor = "+ sinking);
+        public void Sink(float sinking, float x, float z) {
+            // Debug.Log("sinkingfactor = "+ sinking +" - x = "+ x +" - z = "+ z);
             _forceMultiplier -= sinking;
+            for (int i = 0; i < _forcePoints.Length; i++) {
+                float localX = _forcePoints[i]._offsetPosition.x, localZ = _forcePoints[i]._offsetPosition.z;
+                if (Math.Sign(x) == Math.Sign(localX) || Math.Sign(z) == Math.Sign(localZ)) {
+                    if (_forcePoints[i]._weight > 0)
+                        _forcePoints[i]._weight -= 0.0001f * SinkingFactor;
+                }
+            }
+
             if (SinkingFactor == 0)
                 SinkingFactor = sinking;
+            if (SinkingX == 0)
+                SinkingX = x;
+            if (SinkingZ == 0)
+                SinkingZ = z;
         }
     }
 
