@@ -10,12 +10,11 @@ public class PlayerManager : MonoBehaviour
 {
     //public FreeLookCam m_FreeLookCam;
 
-    [HideInInspector] public GameObject[] PlayerUnits;
-    [HideInInspector] public int CurrentTarget = 0;
+    private GameObject[] PlayerUnits;
+    private int CurrentTarget = 0;
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
     private bool MapActive;
-
     private FreeLookCam FreeLookCamera;
     private UIManager UIManager;
 
@@ -78,7 +77,7 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < PlayerUnitsLength; i++){
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
-                if (i == CurrentTarget && !MapActive) {
+                if (i == CurrentTarget) {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = true;
                     PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
                     //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
@@ -89,7 +88,7 @@ public class PlayerManager : MonoBehaviour
                 }
             }
             else if (PlayerUnits[i].GetComponent<AircraftController>()) {
-                if (i == CurrentTarget && !MapActive) {
+                if (i == CurrentTarget) {
                     PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = true;
                     //Debug.Log ("Current target is a plane : "+ PlayerUnits[CurrentTarget].GetComponent<AircraftUserControl4Axis>());
                 }
@@ -98,7 +97,7 @@ public class PlayerManager : MonoBehaviour
                 }
             }
             else if (PlayerUnits[i].GetComponent<ShipController>()) {
-                if (i == CurrentTarget && !MapActive && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
+                if (i == CurrentTarget && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                 }
                 else {
@@ -118,5 +117,9 @@ public class PlayerManager : MonoBehaviour
             SetEnabledUnit(PlayerUnits.Length);
 
         UIManager.SetMap(map);
+
+        if (ActiveTarget.GetComponent<ShipController>()) {
+            ActiveTarget.GetComponent<ShipController>().SetMap(map);
+        }
     }
 }

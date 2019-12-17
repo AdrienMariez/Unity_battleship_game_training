@@ -10,18 +10,11 @@ namespace FreeLookCamera {
         // 		Pivot
         // 			Camera
 
-        public enum UpdateType { // The available methods of updating are:
-            FixedUpdate, // Update in FixedUpdate (for tracking rigidbodies).
-            LateUpdate, // Update in LateUpdate. (for tracking objects that are moved in Update)
-            ManualUpdate, // user must call to update camera
-        }
-
-        [HideInInspector] protected Transform m_Target;            // The target object to follow
-        protected Rigidbody targetRigidbody;
-        protected Camera m_Cam; // Main camera
-        protected Transform m_Pivot; // the point at which the camera points to
-        protected Transform m_Axis; // the point at which the camera pivots around
-        protected Vector3 m_LastTargetPosition;
+        private Transform Target;            // The target object to follow
+        private Rigidbody targetRigidbody;
+        private Camera Cam; // Main camera
+        private Transform Pivot; // the point at which the camera points to
+        private Transform Axis; // the point at which the camera pivots around
 
         [Header("Camera")]
             [Tooltip("Field of View")] [Range(1f, 150f)] [SerializeField] private float m_FieldOfView = 60f;
@@ -40,37 +33,36 @@ namespace FreeLookCamera {
 
         [Header("Raycast")]
             [Tooltip("Layer to filter what the raycast will hit.")] public LayerMask RaycastLayerMask;
-            protected GameObject m_RaycastProjector;
-        public float RaycastRange = 1000;
+            private GameObject m_RaycastProjector;
         public RaycastHit RaycastHit;
-        protected GameObject m_TargetCircle;
-        [HideInInspector] public Vector3 m_TargetPosition;
+        private GameObject TargetCircle;
+        private Vector3 TargetPosition;
 
-        private float m_LookAngle;                    // The rig's y axis rotation.
-        private float m_TiltAngle;                    // The pivot's x axis rotation.
-		private Vector3 m_AxisEulers;
-		private Quaternion m_AxisTargetRot;
-		private Quaternion m_TransformTargetRot;
+        private float LookAngle;                    // The rig's y axis rotation.
+        private float TiltAngle;                    // The pivot's x axis rotation.
+		private Vector3 AxisEulers;
+		private Quaternion AxisTargetRot;
+		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
         private PlayerManager PlayerManager;
 
         protected virtual void Start() {
-            if (m_Target == null) return;
-            targetRigidbody = m_Target.GetComponent<Rigidbody>();
+            if (Target == null) return;
+            targetRigidbody = Target.GetComponent<Rigidbody>();
 
-			m_AxisEulers = m_Axis.rotation.eulerAngles;
+			AxisEulers = Axis.rotation.eulerAngles;
 
-	        m_AxisTargetRot = m_Axis.transform.localRotation;
-			m_TransformTargetRot = transform.localRotation;
+	        AxisTargetRot = Axis.transform.localRotation;
+			TransformTargetRot = transform.localRotation;
         }
 
         private void Awake(){
-            m_Cam = GetComponentInChildren<Camera>();
-            m_Pivot = GetComponentInChildren<Camera>().transform.parent;
-            m_Axis = m_Pivot.parent;
+            Cam = GetComponentInChildren<Camera>();
+            Pivot = GetComponentInChildren<Camera>().transform.parent;
+            Axis = Pivot.parent;
 
             m_RaycastProjector = GameObject.Find("RaycastProjector");
-            m_TargetCircle = GameObject.Find("TargetCircle");
+            TargetCircle = GameObject.Find("TargetCircle");
         }
 
         private void FixedUpdate() { 
@@ -91,14 +83,14 @@ namespace FreeLookCamera {
                 m_CameraLateralOffset = 0;
             }
 
-            m_Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
+            Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
 
             if (Input.GetButton ("FocusCamera")){
-                m_Cam.fieldOfView = m_FieldOfViewFocus;
-                m_Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
+                Cam.fieldOfView = m_FieldOfViewFocus;
+                Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
             } else {
-                m_Cam.fieldOfView = m_FieldOfView;
-                m_Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                Cam.fieldOfView = m_FieldOfView;
+                Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
 
             if (ActiveTarget.GetComponent<AircraftController>() && Input.GetButton ("FreeCamera") || !ActiveTarget.GetComponent<AircraftController>()) {
@@ -113,31 +105,31 @@ namespace FreeLookCamera {
             
             if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
-                m_TargetCircle.transform.position = RaycastHit.point;
-                m_TargetPosition = RaycastHit.point;
+                TargetCircle.transform.position = RaycastHit.point;
+                TargetPosition = RaycastHit.point;
             } else {
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
-                m_TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
-                m_TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
         }
 
         public virtual void SetTarget(Transform newTransform) {
-            m_Target = newTransform;
+            Target = newTransform;
         }
 
-        public Transform Target {
-            get { return m_Target; }
-        }
+        // public Transform GetTarget {
+        //     get { return Target; }
+        // }
 
         protected virtual void FollowTarget(float deltaTime) {
-            // if (m_Target == null) 
+            // if (Target == null) 
                 // ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
 
             // Move the rig towards target position.
-            m_Target = ActiveTarget.transform;
+            Target = ActiveTarget.transform;
 
-            transform.position = Vector3.Lerp(transform.position, m_Target.position, deltaTime*m_MoveSpeed);
+            transform.position = Vector3.Lerp(transform.position, Target.position, deltaTime * m_MoveSpeed);
         }
 
 
@@ -156,28 +148,28 @@ namespace FreeLookCamera {
             
 
             // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
-            m_LookAngle += x * turnSpeed * Time.deltaTime;
+            LookAngle += x * turnSpeed * Time.deltaTime;
 
             // Rotate the rig (the root object) around Y axis only:
-            m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
+            TransformTargetRot = Quaternion.Euler(0f, LookAngle, 0f);
 
             // on platforms with a mouse, we adjust the current angle based on Y mouse input and turn speed
-            m_TiltAngle -= y * turnSpeed * Time.deltaTime;
+            TiltAngle -= y * turnSpeed * Time.deltaTime;
 
 
             // and make sure the new value is within the tilt range
-            m_TiltAngle = Mathf.Clamp(m_TiltAngle, -m_TiltMin, m_TiltMax);
+            TiltAngle = Mathf.Clamp(TiltAngle, -m_TiltMin, m_TiltMax);
 
             // Tilt input around X is applied to the pivot (the child of this object)
-			m_AxisTargetRot = Quaternion.Euler(m_TiltAngle, m_AxisEulers.y , m_AxisEulers.z);
+			AxisTargetRot = Quaternion.Euler(TiltAngle, AxisEulers.y , AxisEulers.z);
 
 			if (m_TurnSmoothing > 0)
 			{
-				m_Axis.localRotation = Quaternion.Slerp(m_Axis.localRotation, m_AxisTargetRot, m_TurnSmoothing * Time.deltaTime);
-				transform.localRotation = Quaternion.Slerp(transform.localRotation, m_TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
+				Axis.localRotation = Quaternion.Slerp(Axis.localRotation, AxisTargetRot, m_TurnSmoothing * Time.deltaTime);
+				transform.localRotation = Quaternion.Slerp(transform.localRotation, TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
 			} else {
-				m_Axis.localRotation = m_AxisTargetRot;
-				transform.localRotation = m_TransformTargetRot;
+				Axis.localRotation = AxisTargetRot;
+				transform.localRotation = TransformTargetRot;
 			}
         }
 
@@ -185,15 +177,18 @@ namespace FreeLookCamera {
 			if(Time.timeScale < float.Epsilon)
 			return;
             // Get target plane rotation
-            Vector3 planeeulerAngles = m_Target.rotation.eulerAngles;
+            Vector3 planeeulerAngles = Target.rotation.eulerAngles;
 
             // Give it to the local camera rig transform
-            transform.rotation = Quaternion.Euler(m_Target.rotation.eulerAngles.x, m_Target.rotation.eulerAngles.y, m_Target.rotation.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(Target.rotation.eulerAngles.x, Target.rotation.eulerAngles.y, Target.rotation.eulerAngles.z);
         }
 
-        public void SetActiveTarget(GameObject Target) {
-            ActiveTarget = Target;
-            m_Target = ActiveTarget.transform;
+        public void SetActiveTarget(GameObject TargetSent) {
+            ActiveTarget = TargetSent;
+            Target = ActiveTarget.transform;
+        }
+        public Vector3 GetTargetPosition() {
+            return TargetPosition;
         }
     }
 }

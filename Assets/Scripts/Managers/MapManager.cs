@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class MapManager : MonoBehaviour
 {
     public Camera m_MapCamera;
-    private bool m_MapStatus;
-    private bool _m_MapStatus;
+    private bool MapStatus;
+    private bool _MapStatus;
     private PlayerManager PlayerManager;
 
     private void Start() {
-        m_MapStatus = false;
-        _m_MapStatus = false;
+        MapStatus = false;
+        _MapStatus = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         PlayerManager = GameObject.Find("GameManager").GetComponent<PlayerManager>();
@@ -21,19 +21,19 @@ public class MapManager : MonoBehaviour
     protected void Update() {
         // Cursor.visible = true;
         if (Input.GetButtonDown ("OpenMap")) {
-            m_MapStatus = !m_MapStatus;
-            PlayerManager.SetMap(m_MapStatus);
+            MapStatus = !MapStatus;
+            PlayerManager.SetMap(MapStatus);
         }
-        m_MapCamera.enabled = m_MapStatus;
-        if (m_MapStatus != _m_MapStatus) {
-            if (m_MapStatus) {
+        m_MapCamera.enabled = MapStatus;
+        if (MapStatus != _MapStatus) {
+            if (MapStatus) {
                 Cursor.lockState = CursorLockMode.None;
             }
             else {
                 Cursor.lockState = CursorLockMode.Locked;
             }
-            Cursor.visible = m_MapStatus;
-            _m_MapStatus = !_m_MapStatus;
+            Cursor.visible = MapStatus;
+            _MapStatus = !_MapStatus;
         }
     }
 }

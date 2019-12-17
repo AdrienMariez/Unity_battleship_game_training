@@ -22,8 +22,7 @@ namespace UI {
                 m_CurrentUnit.enabled = false;
             } else {
                 m_CurrentUnit.enabled = true;
-            }
-                
+            }    
         }
     }
 }

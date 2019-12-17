@@ -8,57 +8,72 @@ public class TurretHealth : MonoBehaviour {
 
     [Header("Debug")]
         public bool debug = false;
-    [HideInInspector] public float m_CurrentHealth;
-    [HideInInspector] public float RepairRate;
-    [HideInInspector] public float TurretsRepairCrew;
-    [HideInInspector] public bool m_Dead;
+    private float CurrentHealth;
+    private float RepairRate;
+    private float TurretsRepairCrew;
+    [HideInInspector] public bool Dead;
 
 
     private void Start () {
-        m_CurrentHealth = m_ElementHealth;
-        m_Dead = false;
+        CurrentHealth = m_ElementHealth;
+        Dead = false;
     }
 
     private void FixedUpdate(){
-        if (m_Dead) {
+        if (Dead) {
             RepairModule();
         }
     }
 
     public void TakeDamage (float amount) {
         // Reduce current health by the amount of damage done.
-        m_CurrentHealth -= amount;
+        CurrentHealth -= amount;
 
-        if (m_CurrentHealth < 0)
-            m_CurrentHealth = 0;
+        if (CurrentHealth < 0)
+            CurrentHealth = 0;
 
-        if (m_CurrentHealth == 0 && !m_Dead) {
+        if (CurrentHealth == 0 && !Dead) {
             ModuleDestroyed();
         }
 
         // if (debug){
         //     Debug.Log("turret damage taken = "+ amount);
-        //     Debug.Log("turret current health = "+ m_CurrentHealth);
+        //     Debug.Log("turret current health = "+ CurrentHealth);
         // }
     }
 
     private void ModuleDestroyed () {
-        m_Dead = true;
+        Dead = true;
         // ShipController.ModuleDestroyed(m_ElementType);
     }
 
     private void RepairModule () {
         // If the module is destroyed, repair it to full health while keeping it disabled as long as it's not fully repaired
         float ModuleRepairRate = RepairRate * TurretsRepairCrew * Time.deltaTime;
-        m_CurrentHealth += ModuleRepairRate;
+        CurrentHealth += ModuleRepairRate;
 
         // Stop repair and reactivate the module when full health is back
-        if (m_CurrentHealth >= m_ElementHealth) {
-            m_CurrentHealth = m_ElementHealth;
-            m_Dead = false;
+        if (CurrentHealth >= m_ElementHealth) {
+            CurrentHealth = m_ElementHealth;
+            Dead = false;
         }
         // if (debug){
-        //     Debug.Log("Repairing... = "+ m_CurrentHealth);
+        //     Debug.Log("Repairing... = "+ CurrentHealth);
         // }
+    }
+
+    public void SetRepairRate(float Rate) {
+        RepairRate = Rate;
+    }
+    public void SetTurretRepairRate(float Rate) {
+        TurretsRepairCrew = Rate;
+    }
+
+    public void SetTurretDeath(bool IsShipDead) {
+        Dead = IsShipDead;
+        if (IsShipDead) {
+            SetRepairRate(0f);
+            SetTurretRepairRate(0f);
+        }
     }
 }

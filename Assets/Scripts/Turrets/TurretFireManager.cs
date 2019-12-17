@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class TurretFireManager : MonoBehaviour
 {
     [HideInInspector] public bool m_Active;
-    [HideInInspector] public bool m_Dead;
+    private bool Dead;
     [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
     public Transform[] m_FireMuzzles;
@@ -24,14 +24,12 @@ public class TurretFireManager : MonoBehaviour
     [Header("Debug")]
         public bool debug = false;
         
-    [HideInInspector] public bool m_Reloading;
-    private float m_ReloadingTimer;
+    private bool Reloading;
+    private float ReloadingTimer;
     private TurretRotation TurretRotation;
-    [HideInInspector] public bool PreventFire;
+    private bool PreventFire;
     private bool OutOfRange;
-    [HideInInspector] public float CurrentAngleElevRatio;
-    [HideInInspector] public float targetRange;
-    // private float ShellWeight;
+    private float targetRange;
 
 
 
@@ -49,43 +47,43 @@ public class TurretFireManager : MonoBehaviour
 
 
     private void Update () {
-        // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("m_ReloadingTimer = "+ m_ReloadingTimer); }
+        // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
         if (targetRange > m_MaxRange) {
             OutOfRange = true;
         }else{
             OutOfRange = false;
         }
-        if (m_Dead){
+        if (Dead){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.black);
         }else if  (PreventFire || OutOfRange){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
-        }else if (m_Reloading){
+        }else if (Reloading){
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
         }else{
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
-        if (m_Active && !m_Dead) {
-            // Debug.Log("m_Reloading :"+ m_Reloading);
-            // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
+        if (m_Active && !Dead) {
+            // Debug.Log("Reloading :"+ Reloading);
+            // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
             if (m_DirectorTurret)
                 PreviewFire ();
 
             // Debug.Log("Calculated fire range : "+ targetRange);
 
-            if (Input.GetButtonDown ("FireMainWeapon") && !m_Reloading && !PreventFire && !OutOfRange) {
+            if (Input.GetButtonDown ("FireMainWeapon") && !Reloading && !PreventFire && !OutOfRange) {
                 //start the reloading process immediately
-                m_Reloading = true;
-                m_ReloadingTimer = m_ReloadTime;
+                Reloading = true;
+                ReloadingTimer = m_ReloadTime;
                 // ... launch the shell.
                 Fire ();
             }
-            if (m_Reloading && m_ReloadingTimer > 0) {
-                m_ReloadingTimer-= Time.deltaTime;
-                if (m_ReloadingTimer <= 0) {
-                    m_ReloadingTimer = 0;
-                    m_Reloading = !m_Reloading;
+            if (Reloading && ReloadingTimer > 0) {
+                ReloadingTimer-= Time.deltaTime;
+                if (ReloadingTimer <= 0) {
+                    ReloadingTimer = 0;
+                    Reloading = !Reloading;
                 }
-                // Debug.Log("m_ReloadingTimer :"+ m_ReloadingTimer);
+                // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
             }
         }
     }
@@ -121,5 +119,20 @@ public class TurretFireManager : MonoBehaviour
             m_ShootingAudio.clip = m_FireClip;
             m_ShootingAudio.Play ();      
         }
+    }
+
+    public void SetPreventFire(bool status){
+        PreventFire = status;
+    }
+    public float GetTargetRange(){
+        return targetRange;
+    }
+
+    public void SetTargetRange(float range){
+        targetRange = range;
+    }
+
+    public void SetTurretDeath(bool IsShipDead) {
+        Dead = IsShipDead;
     }
 }

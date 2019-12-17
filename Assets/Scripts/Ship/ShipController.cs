@@ -55,8 +55,8 @@ public class ShipController : MonoBehaviour {
         }
         if (GetComponent<TurretManager>()) {
             Turrets = GetComponent<TurretManager>();
-            Turrets.RepairRate = RepairRate;
-            Turrets.TurretsRepairCrew = TurretsRepairCrew;
+            Turrets.SetRepairRate(RepairRate);
+            Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
         ShipModel = this.gameObject.transform.GetChild(0);
         
@@ -72,7 +72,7 @@ public class ShipController : MonoBehaviour {
             // Prevent any action from the ship once it is dead
             Buoyancy.m_Dead = true;
             Movement.m_Dead = true;
-            Turrets.m_Dead = true;
+            // Turrets.m_Dead = true;
         }
         if (LeakRatio > 0) {
             // If the ship is taking water...
@@ -218,6 +218,14 @@ public class ShipController : MonoBehaviour {
             Buoyancy.Sink(1f + LeakRatio, 0, TargetRotationZ);
         } else {
             Buoyancy.Sink(1f + LeakRatio, 0, 0);
+        }
+
+        Turrets.SetDeath(true);
+    }
+
+    public void SetMap(bool map) {
+        if (GetComponent<TurretManager>()) {
+            Turrets.SetMap(map);
         }
     }
 }

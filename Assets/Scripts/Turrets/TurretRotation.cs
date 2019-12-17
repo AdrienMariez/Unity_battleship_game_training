@@ -4,7 +4,7 @@ using FreeLookCamera;
 public class TurretRotation : MonoBehaviour
 {    
     [HideInInspector] public bool m_Active;
-    [HideInInspector] public bool m_Dead;
+    private bool Dead;
 
     [Header("Elements")]
         [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
@@ -27,6 +27,7 @@ public class TurretRotation : MonoBehaviour
         public float rightTraverse = 60.0f; 
         private float localRightTraverse;
         public FireZonesManager[] NoFireZones;
+        private bool MapActive;
 
     [Header("Vertical elevation")]
         [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float elevationSpeed = 15.0f;
@@ -51,7 +52,7 @@ public class TurretRotation : MonoBehaviour
     private GameObject CameraPivot;
     private FreeLookCam FreeLookCam;
 
-    [HideInInspector] public Vector3 m_TargetPosition;
+    private Vector3 m_TargetPosition;
 
     private bool unitIsActivated = false;
     private TurretFireManager TurretFireManager;
@@ -133,25 +134,16 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!m_Active && !m_Dead) {
+        if (!m_Active) {
             m_TargetPosition = m_IdlePointer.transform.position;
-            if (unitIsActivated) {
-                unitIsActivated = !unitIsActivated;
-            }
         } else {
-            if (!unitIsActivated) {
-                if (Input.GetButton ("FreeCamera")) {
-                    m_TargetPosition = m_IdlePointer.transform.position;
-                } else {
-                    unitIsActivated = !unitIsActivated;
-                }
-            }
-            if (!Input.GetButton ("FreeCamera")) {
-                m_TargetPosition = FreeLookCam.m_TargetPosition;
-            }
+            if (!Input.GetButton ("FreeCamera") && !MapActive) {
+                // Manual control activated
+                m_TargetPosition = FreeLookCam.GetTargetPosition();
+            } 
         }
 
-        if (!m_Dead) {
+        if (!Dead) {
             TurretRotate();
             CannonElevation();
         } else {
@@ -159,19 +151,17 @@ public class TurretRotation : MonoBehaviour
         }
 
         // Check if anything can prevent the turret from firing
-        if (PreventFireHoriz || PreventFireVert){
-            TurretFireManager.PreventFire = true;
+        if (PreventFireHoriz || PreventFireVert || MapActive){
+            TurretFireManager.SetPreventFire(true);
         } else{
-            TurretFireManager.PreventFire = false;
+            TurretFireManager.SetPreventFire(false);
 
             // if (debug) {
                 // Debug.Log("current: " + currentAngElev);
                 // Debug.Log("total: " + TotalAngleElevRatio);
                 // Debug.Log("percent sent: " + CurrentAngleElevRatio);
             // }
-
-            // CurrentAngleElevRatio = currentAngElev * 100 / (TotalAngleElevRatio);
-            CurrentAnglePercentage = CurrentAngleElevRatio * 100 / (TotalAngleElevRatio);;
+            CurrentAnglePercentage = CurrentAngleElevRatio * 100 / (TotalAngleElevRatio);
         }
         
         // Reassign the new parent angle for future TurretRotate()
@@ -443,5 +433,13 @@ public class TurretRotation : MonoBehaviour
     private void TurretStatic() {
         // Update the turret angle
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
+    }
+
+    public void SetMap(bool map) {
+        MapActive = map;
+    }
+
+    public void SetTurretDeath(bool IsShipDead) {
+        Dead = IsShipDead;
     }
 }
