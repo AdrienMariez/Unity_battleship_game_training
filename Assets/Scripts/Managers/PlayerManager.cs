@@ -73,6 +73,7 @@ public class PlayerManager : MonoBehaviour
     private void SetEnabledUnit(int PlayerUnitsLength) {
         ActiveTarget = PlayerUnits[CurrentTarget];
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
+        // UIManager.SetTargetType("Unknown");
 
         for (int i = 0; i < PlayerUnitsLength; i++){
             // If it's a tank :
@@ -80,6 +81,7 @@ public class PlayerManager : MonoBehaviour
                 if (i == CurrentTarget) {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = true;
                     PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
+                    UIManager.SetTargetType("Tank");
                     //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
                 }
                 else {
@@ -90,15 +92,17 @@ public class PlayerManager : MonoBehaviour
             else if (PlayerUnits[i].GetComponent<AircraftController>()) {
                 if (i == CurrentTarget) {
                     PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = true;
-                    //Debug.Log ("Current target is a plane : "+ PlayerUnits[CurrentTarget].GetComponent<AircraftUserControl4Axis>());
+                    UIManager.SetTargetType("Aircraft");
+                    // Debug.Log ("Current target is a plane");
                 }
                 else {
                     PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = false;
                 }
             }
             else if (PlayerUnits[i].GetComponent<ShipController>()) {
-                if (i == CurrentTarget && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
+                if (i == CurrentTarget) {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
+                    UIManager.SetTargetType("Ship");
                 }
                 else {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = false;

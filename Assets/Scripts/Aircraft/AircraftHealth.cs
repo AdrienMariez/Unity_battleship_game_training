@@ -11,22 +11,22 @@ public class AircraftHealth : MonoBehaviour
     public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the tank dies.
 
 
-    private AudioSource m_ExplosionAudio;               // The audio source to play when the tank explodes.
-    private ParticleSystem m_ExplosionParticles;        // The particle system the will play when the tank is destroyed.
-    private float m_CurrentHealth;                      // How much health the tank currently has.
+    private AudioSource ExplosionAudio;               // The audio source to play when the tank explodes.
+    private ParticleSystem ExplosionParticles;        // The particle system the will play when the tank is destroyed.
+    private float CurrentHealth;                      // How much health the tank currently has.
     private bool m_Dead;                                // Has the tank been reduced beyond zero health yet?
 
 
     private void Awake ()
     {
         // Instantiate the explosion prefab and get a reference to the particle system on it.
-        m_ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
+        ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
 
         // Get a reference to the audio source on the instantiated prefab.
-        m_ExplosionAudio = m_ExplosionParticles.GetComponent<AudioSource> ();
+        ExplosionAudio = ExplosionParticles.GetComponent<AudioSource> ();
 
         // Disable the prefab so it can be activated when it's required.
-        m_ExplosionParticles.gameObject.SetActive (false);
+        ExplosionParticles.gameObject.SetActive (false);
 
         // Search "object pooling" to see how to set complex particles.
     }
@@ -35,7 +35,7 @@ public class AircraftHealth : MonoBehaviour
     private void OnEnable()
     {
         // When the tank is enabled, reset the tank's health and whether or not it's dead.
-        m_CurrentHealth = m_StartingHealth;
+        CurrentHealth = m_StartingHealth;
         m_Dead = false;
 
         // Update the health slider's value and color.
@@ -46,7 +46,7 @@ public class AircraftHealth : MonoBehaviour
     public void TakeDamage (float amount)
     {
         // Reduce current health by the amount of damage done.
-        m_CurrentHealth -= amount;
+        CurrentHealth -= amount;
 
         // Change the UI elements appropriately.
         SetHealthUI ();
@@ -57,7 +57,7 @@ public class AircraftHealth : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.relativeVelocity.magnitude > 2)
-            m_CurrentHealth -= collision.relativeVelocity.magnitude;
+            CurrentHealth -= collision.relativeVelocity.magnitude;
 
         SetHealthUI ();
         CheckDeath ();     
@@ -69,7 +69,7 @@ public class AircraftHealth : MonoBehaviour
         // if (transform.localPosition.y < 0)
         // {
         //     // Insta death for planes if they go underwater !
-        //     m_CurrentHealth -= 1000;
+        //     CurrentHealth -= 1000;
 
         //     SetHealthUI ();
         //     CheckDeath ();
@@ -79,8 +79,7 @@ public class AircraftHealth : MonoBehaviour
     private void CheckDeath ()
     {
         // If the current health is at or below zero and it has not yet been registered, call OnDeath.
-        if (m_CurrentHealth <= 0f && !m_Dead)
-        {
+        if (CurrentHealth <= 0f && !m_Dead) {
             OnDeath ();
         }
     }
@@ -89,31 +88,34 @@ public class AircraftHealth : MonoBehaviour
     private void SetHealthUI ()
     {
         // Set the slider's value appropriately.
-        m_Slider.value = m_CurrentHealth;
+        m_Slider.value = CurrentHealth;
 
         // Interpolate the color of the bar between the choosen colours based on the current percentage of the starting health.
-        m_FillImage.color = Color.Lerp (m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / m_StartingHealth);
+        m_FillImage.color = Color.Lerp (m_ZeroHealthColor, m_FullHealthColor, CurrentHealth / m_StartingHealth);
 
         // "Lerp" : Linear interpolation
     }
 
 
-    private void OnDeath ()
-    {
+    private void OnDeath () {
         // Set the flag so that this function is only called once.
         m_Dead = true;
 
         // Move the instantiated explosion prefab to the tank's position and turn it on.
-        m_ExplosionParticles.transform.position = transform.position;
-        m_ExplosionParticles.gameObject.SetActive (true);
+        ExplosionParticles.transform.position = transform.position;
+        ExplosionParticles.gameObject.SetActive (true);
 
         // Play the particle system of the tank exploding.
-        m_ExplosionParticles.Play ();
+        ExplosionParticles.Play ();
 
         // Play the tank explosion sound effect.
-        m_ExplosionAudio.Play();
+        ExplosionAudio.Play();
 
         // Turn the tank off.
         gameObject.SetActive (false);
+    }
+
+    public float GetCurrentHealth(){
+        return CurrentHealth;
     }
 }

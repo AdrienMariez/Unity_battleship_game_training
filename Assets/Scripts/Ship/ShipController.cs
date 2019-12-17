@@ -31,6 +31,8 @@ public class ShipController : MonoBehaviour {
     [HideInInspector] public float WaterRepairCrew;
     [HideInInspector] public float TurretsRepairCrew;
 
+    [HideInInspector] public float CurrentHealth;
+
     public enum ElementType {
         hull,
         engine,
@@ -104,7 +106,7 @@ public class ShipController : MonoBehaviour {
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
-        CallDeath();
+        Health.GetCurrentHealth();
     }
 
     public void BuoyancyCompromised(ElementType ElementType, float damage) {

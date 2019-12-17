@@ -222,4 +222,14 @@ public class ShipMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         m_RotationIncrementation = true;
     }
+
+    public float GetCurrentSpeedStep(){
+        return m_CurrentSpeedStep;
+    }
+    public float GetLocalRealSpeed(){
+        return m_LocalRealSpeed;
+    }
+    public float GetLocalRealRotation(){
+        return m_LocalRealRotation;
+    }
 }

@@ -51,10 +51,7 @@ public class TurretRotation : MonoBehaviour
     private float currentAngElev;
     private GameObject CameraPivot;
     private FreeLookCam FreeLookCam;
-
     private Vector3 m_TargetPosition;
-
-    private bool unitIsActivated = false;
     private TurretFireManager TurretFireManager;
     private bool PreventFireHoriz = false;
     private bool PreventFireVert = false;
