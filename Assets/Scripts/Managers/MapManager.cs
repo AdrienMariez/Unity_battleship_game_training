@@ -8,21 +8,21 @@ public class MapManager : MonoBehaviour
     public Camera m_MapCamera;
     private bool m_MapStatus;
     private bool _m_MapStatus;
-    private GameObject m_GameManager;
+    private PlayerManager PlayerManager;
 
     private void Start() {
         m_MapStatus = false;
         _m_MapStatus = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        m_GameManager = GameObject.Find("GameManager");
+        PlayerManager = GameObject.Find("GameManager").GetComponent<PlayerManager>();
     }
 
     protected void Update() {
         // Cursor.visible = true;
         if (Input.GetButtonDown ("OpenMap")) {
             m_MapStatus = !m_MapStatus;
-            m_GameManager.GetComponent<PlayerManager>().m_MapActive = m_MapStatus;
+            PlayerManager.SetMap(m_MapStatus);
         }
         m_MapCamera.enabled = m_MapStatus;
         if (m_MapStatus != _m_MapStatus) {

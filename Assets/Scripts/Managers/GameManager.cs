@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         {
             m_Tanks[i].EnableControl();
         }
-        GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = true;
+        // GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = true;
     }
 
 
@@ -247,6 +247,6 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].DisableControl();
         }
         // Disable the PlayerManager while the units are disabled
-        GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = false;
+        // GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = false;
     }
 }

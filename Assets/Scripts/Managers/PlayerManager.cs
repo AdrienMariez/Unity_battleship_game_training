@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FreeLookCamera;
+using UI;
 
 // This class stores the currently played unit and allows to enable player controls for units or disable them
 public class PlayerManager : MonoBehaviour
@@ -10,19 +12,19 @@ public class PlayerManager : MonoBehaviour
 
     [HideInInspector] public GameObject[] PlayerUnits;
     [HideInInspector] public int CurrentTarget = 0;
-    [HideInInspector] public bool m_Active;
+    // [HideInInspector] public bool m_Active;
+    private GameObject ActiveTarget;
+    private bool MapActive;
 
-    // This var is only to be sent to other scripts.
-    [HideInInspector] public GameObject ActiveTarget;
-
-    [HideInInspector] public bool m_MapActive;
-    private bool _m_MapActive;
+    private FreeLookCam FreeLookCamera;
+    private UIManager UIManager;
 
     private void Start() {
+        FreeLookCamera = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
+        UIManager = GetComponent<UIManager>();
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
-        m_MapActive = false;
-        _m_MapActive = false;
+        MapActive = false;
     }
 
     protected void Update() {
@@ -32,10 +34,6 @@ public class PlayerManager : MonoBehaviour
         }
         if (Input.GetButtonDown ("SetPreviousUnit")) {
             SetPreviousTarget();
-        }
-        if (m_MapActive != _m_MapActive) {
-            SetEnabledUnit(PlayerUnits.Length);
-            _m_MapActive = !_m_MapActive;
         }
         //Debug.Log ("Current target : "+ CurrentTarget);
     }
@@ -80,16 +78,18 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < PlayerUnitsLength; i++){
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
-                if (i == CurrentTarget && !m_MapActive) {
+                if (i == CurrentTarget && !MapActive) {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = true;
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
                     //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
                 }
                 else {
                     PlayerUnits[i].GetComponent<TankMovement>().m_Active = false;
+                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
                 }
             }
             else if (PlayerUnits[i].GetComponent<AircraftController>()) {
-                if (i == CurrentTarget && !m_MapActive) {
+                if (i == CurrentTarget && !MapActive) {
                     PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = true;
                     //Debug.Log ("Current target is a plane : "+ PlayerUnits[CurrentTarget].GetComponent<AircraftUserControl4Axis>());
                 }
@@ -98,7 +98,7 @@ public class PlayerManager : MonoBehaviour
                 }
             }
             else if (PlayerUnits[i].GetComponent<ShipController>()) {
-                if (i == CurrentTarget && !m_MapActive && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
+                if (i == CurrentTarget && !MapActive && !PlayerUnits[i].GetComponent<ShipController>().m_Dead) {
                     PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                 }
                 else {
@@ -106,7 +106,17 @@ public class PlayerManager : MonoBehaviour
                 } 
             }
         }
+        FreeLookCamera.SetActiveTarget(ActiveTarget);
+        UIManager.SetActiveTarget(ActiveTarget);
+        // UI.UITest.SetActiveTarget(ActiveTarget);
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
 
+    public void SetMap(bool map) {
+        MapActive = map;
+        if (map)
+            SetEnabledUnit(PlayerUnits.Length);
+
+        UIManager.SetMap(map);
+    }
 }

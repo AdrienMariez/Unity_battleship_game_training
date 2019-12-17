@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 
-namespace FreeLookCamera
-{
-    public class FreeLookCam : MonoBehaviour
-    {
+namespace FreeLookCamera {
+    public class FreeLookCam : MonoBehaviour {
         // This script is designed to be placed on the root object of a camera rig,
         // comprising 3 gameobjects, each parented to the next:
 
@@ -53,7 +51,7 @@ namespace FreeLookCamera
 		private Vector3 m_AxisEulers;
 		private Quaternion m_AxisTargetRot;
 		private Quaternion m_TransformTargetRot;
-        [HideInInspector] public GameObject ActiveTarget;
+        private GameObject ActiveTarget;
         private PlayerManager PlayerManager;
 
         protected virtual void Start() {
@@ -64,8 +62,6 @@ namespace FreeLookCamera
 
 	        m_AxisTargetRot = m_Axis.transform.localRotation;
 			m_TransformTargetRot = transform.localRotation;
-
-            ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
         }
 
         private void Awake(){
@@ -83,11 +79,9 @@ namespace FreeLookCamera
 
         protected void Update() {
             // Debug.Log ("m_Axis   : "+ m_Axis);
-            ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
 
             // Set camera position relative to the target
-            if (ActiveTarget.GetComponent<TargetCameraParameters>())
-            {
+            if (ActiveTarget.GetComponent<TargetCameraParameters>()) {
                 m_CameraDistance = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraDistance;
                 m_CameraHeight = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraHeight;
                 m_CameraLateralOffset = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
@@ -114,12 +108,6 @@ namespace FreeLookCamera
                 // Otherwise, it's a plane. Keep the camera behind the unit.
                 FollowPlaneMovement();
             }
-
-
-            if (Input.GetButtonDown ("SetNextUnit") || Input.GetButtonDown ("SetPreviousUnit")){
-                ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
-                //Debug.Log ("Current Target : "+ CurrentTarget);
-            }
             
             // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
             
@@ -143,8 +131,8 @@ namespace FreeLookCamera
         }
 
         protected virtual void FollowTarget(float deltaTime) {
-            if (m_Target == null) 
-                ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
+            // if (m_Target == null) 
+                // ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
 
             // Move the rig towards target position.
             m_Target = ActiveTarget.transform;
@@ -201,6 +189,11 @@ namespace FreeLookCamera
 
             // Give it to the local camera rig transform
             transform.rotation = Quaternion.Euler(m_Target.rotation.eulerAngles.x, m_Target.rotation.eulerAngles.y, m_Target.rotation.eulerAngles.z);
+        }
+
+        public void SetActiveTarget(GameObject Target) {
+            ActiveTarget = Target;
+            m_Target = ActiveTarget.transform;
         }
     }
 }
