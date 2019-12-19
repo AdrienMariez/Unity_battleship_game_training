@@ -14,16 +14,11 @@ public class ShipMovement : MonoBehaviour
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;       // The amount by which the pitch of the engine noises
 
-    
-    private string m_MovementAxisName;
-    private string m_TurnAxisName;
-    private float m_MovementInputValue;    // The current value of the movement input.
-    private float m_TurnInputValue = 0f;        
-    private float m_FreeCamInputValue;      
-    private float m_OriginalPitch;         // The pitch of the audio source at the start of the scene.
+    private float TurnInputValue = 0f;    
+    private float OriginalPitch;         // The pitch of the audio source at the start of the scene.
 
     [SerializeField] [Range(-4, 4)] public int m_CurrentSpeedStep;      // this mimics an Engine Order Telegraph, possible speeds below in comments
-    [HideInInspector] private bool m_OrderSystem = true;                // This var is used to pause the system to allow the player to choose the speed order (instead of being pushed to the max values)
+    private bool OrderSystem = true;                // This var is used to pause the system to allow the player to choose the speed order (instead of being pushed to the max values)
     /*
         -4  Full Ahead
         -3  Half Ahead
@@ -35,12 +30,12 @@ public class ShipMovement : MonoBehaviour
         3   Half Astern
         4   Full Astern
     */
-    [HideInInspector] public float m_LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
+    private float LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
     public float m_SpeedInertia = 0.3f;                        // The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.
-    private bool m_SpeedIncrementation = true;                  // Used to allow the m_SpeedInertia to take some time.
-    [HideInInspector] public float m_LocalRealSpeed;            // The real final speed of the ship.
-    [HideInInspector] public float m_LocalRealRotation;            // The real final rotation of the ship.
-    private bool m_RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
+    private bool SpeedIncrementation = true;                  // Used to allow the m_SpeedInertia to take some time.
+    private float LocalRealSpeed;            // The real final speed of the ship.
+    private float LocalRealRotation;            // The real final rotation of the ship.
+    private bool RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
 
     private ShipBuoyancy m_Buoyancy;
 
@@ -51,7 +46,7 @@ public class ShipMovement : MonoBehaviour
     {
         m_Buoyancy = GetComponent<ShipBuoyancy>();
         // Store the original pitch of the audio source.
-        m_OriginalPitch = m_MovementAudio.pitch;
+        OriginalPitch = m_MovementAudio.pitch;
     }
 
     private void Update()
@@ -76,7 +71,7 @@ public class ShipMovement : MonoBehaviour
                 //switch playing clip
                 m_MovementAudio.clip = m_EngineIdling;
                 //randomize pitch
-                m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
+                m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
                 //play the new audio
                 m_MovementAudio.Play ();
              }
@@ -87,7 +82,7 @@ public class ShipMovement : MonoBehaviour
                 //switch playing clip
                 m_MovementAudio.clip = m_EngineDriving;
                 //randomize pitch
-                m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
+                m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
                 //play the new audio
                 m_MovementAudio.Play ();
              }
@@ -110,13 +105,13 @@ public class ShipMovement : MonoBehaviour
     }
 
     private void ChangeSpeedStep(int Step) {
-        if (Step > 0 && m_CurrentSpeedStep < 4 && m_OrderSystem) {
+        if (Step > 0 && m_CurrentSpeedStep < 4 && OrderSystem) {
             m_CurrentSpeedStep = m_CurrentSpeedStep +1;
             // Debug.Log (m_CurrentSpeedStep+" - m_CurrentSpeedStep -");
             SetTargetSpeed();
             StartCoroutine(PauseOrderSystem());
         }
-        else if(Step < 0 && m_CurrentSpeedStep > -4 && m_OrderSystem) {
+        else if(Step < 0 && m_CurrentSpeedStep > -4 && OrderSystem) {
             m_CurrentSpeedStep = m_CurrentSpeedStep -1;
             // Debug.Log (m_CurrentSpeedStep+" - m_CurrentSpeedStep -");
             SetTargetSpeed();
@@ -125,111 +120,110 @@ public class ShipMovement : MonoBehaviour
     }
 
     IEnumerator PauseOrderSystem(){
-        m_OrderSystem = false;
+        OrderSystem = false;
         yield return new WaitForSeconds(1f);
-        m_OrderSystem = true;
+        OrderSystem = true;
     }
     private void SetTargetSpeed() {
         if (m_CurrentSpeedStep == 4) {
-            m_LocalTargetSpeed = m_MaxSpeed;
+            LocalTargetSpeed = m_MaxSpeed;
         }
         else if(m_CurrentSpeedStep == 3) {
-            m_LocalTargetSpeed = m_MaxSpeed*0.6f;
+            LocalTargetSpeed = m_MaxSpeed*0.6f;
         }
         else if(m_CurrentSpeedStep == 2) {
-            m_LocalTargetSpeed = m_MaxSpeed*0.3f;
+            LocalTargetSpeed = m_MaxSpeed*0.3f;
         }
         else if(m_CurrentSpeedStep == 1) {
-            m_LocalTargetSpeed = m_MaxSpeed*0.1f;
+            LocalTargetSpeed = m_MaxSpeed*0.1f;
         }
         else if(m_CurrentSpeedStep == 0) {
-            m_LocalTargetSpeed = 0;
+            LocalTargetSpeed = 0;
         }
         else if(m_CurrentSpeedStep == -1) {
-            m_LocalTargetSpeed = -m_MaxSpeed*0.1f;
+            LocalTargetSpeed = -m_MaxSpeed*0.1f;
         }
         else if(m_CurrentSpeedStep == -2) {
-            m_LocalTargetSpeed = -m_MaxSpeed*0.2f;
+            LocalTargetSpeed = -m_MaxSpeed*0.2f;
         }
         else if(m_CurrentSpeedStep == -3) {
-            m_LocalTargetSpeed = -m_MaxSpeed*0.4f;
+            LocalTargetSpeed = -m_MaxSpeed*0.4f;
         }
         else if(m_CurrentSpeedStep == -4) {
-            m_LocalTargetSpeed = -m_MaxSpeed*0.6f;
+            LocalTargetSpeed = -m_MaxSpeed*0.6f;
         }
-        //Debug.Log ("- m_LocalSpeed - :"+ m_LocalTargetSpeed);
+        //Debug.Log ("- m_LocalSpeed - :"+ LocalTargetSpeed);
     }
     public void SetRealSpeed() {
-        if (m_LocalRealSpeed < m_LocalTargetSpeed && m_SpeedIncrementation) {
-            if ((m_LocalRealSpeed+m_SpeedInertia) > m_LocalTargetSpeed) {
-                m_LocalRealSpeed = m_LocalTargetSpeed;
+        if (LocalRealSpeed < LocalTargetSpeed && SpeedIncrementation) {
+            if ((LocalRealSpeed+m_SpeedInertia) > LocalTargetSpeed) {
+                LocalRealSpeed = LocalTargetSpeed;
             } else {
-                m_LocalRealSpeed += m_SpeedInertia;
+                LocalRealSpeed += m_SpeedInertia;
             }
             
-            if (m_LocalRealSpeed < 0 && m_LocalTargetSpeed > 0) {
-                m_LocalRealSpeed += m_SpeedInertia;
-                // Debug.Log ("- DOUBLE SPEED FRONT - :"+ m_LocalRealSpeed);
+            if (LocalRealSpeed < 0 && LocalTargetSpeed > 0) {
+                LocalRealSpeed += m_SpeedInertia;
+                // Debug.Log ("- DOUBLE SPEED FRONT - :"+ LocalRealSpeed);
             }
 
             StartCoroutine(PauseSpeedIncrementation());
-            // Debug.Log ("- FORTH - :"+ m_LocalRealSpeed);
+            // Debug.Log ("- FORTH - :"+ LocalRealSpeed);
         }
-        else if (m_LocalRealSpeed > m_LocalTargetSpeed && m_SpeedIncrementation) {
-            if ((m_LocalRealSpeed-m_SpeedInertia) < m_LocalTargetSpeed) {
-                m_LocalRealSpeed = m_LocalTargetSpeed;
+        else if (LocalRealSpeed > LocalTargetSpeed && SpeedIncrementation) {
+            if ((LocalRealSpeed-m_SpeedInertia) < LocalTargetSpeed) {
+                LocalRealSpeed = LocalTargetSpeed;
             } else {
-                m_LocalRealSpeed += -m_SpeedInertia;
+                LocalRealSpeed += -m_SpeedInertia;
             }
-            if (m_LocalRealSpeed > 0 && m_LocalTargetSpeed < 0) {
-                m_LocalRealSpeed += -m_SpeedInertia;
-                // Debug.Log ("- DOUBLE SPEED BACK - :"+ m_LocalRealSpeed);
+            if (LocalRealSpeed > 0 && LocalTargetSpeed < 0) {
+                LocalRealSpeed += -m_SpeedInertia;
+                // Debug.Log ("- DOUBLE SPEED BACK - :"+ LocalRealSpeed);
             }
             StartCoroutine(PauseSpeedIncrementation());
-            // Debug.Log ("- BACK - :"+ m_LocalRealSpeed);
+            // Debug.Log ("- BACK - :"+ LocalRealSpeed);
         }
     }
     IEnumerator PauseSpeedIncrementation(){
-        m_SpeedIncrementation = false;
+        SpeedIncrementation = false;
         yield return new WaitForSeconds(0.5f);
-        m_SpeedIncrementation = true;
+        SpeedIncrementation = true;
     }
 
     private void Move() {
         SetRealSpeed();
-        m_Buoyancy.SpeedInput = m_LocalRealSpeed;
+        m_Buoyancy.SetSpeedInput(LocalRealSpeed);
     }
 
-    private void Turn()
-    {
-        // float tempTurn = m_TurnInputValue;
+    private void Turn() {
+        // float tempTurn = TurnInputValue;
         // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        if (Input.GetAxis ("HorizontalShip") == 1 && m_TurnInputValue < 1 && m_RotationIncrementation){
-            m_TurnInputValue += 0.5f;
+        if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation){
+            TurnInputValue += 0.5f;
             StartCoroutine(PauseTurnIncrementation());
-        } else if(Input.GetAxis ("HorizontalShip") == -1 && m_TurnInputValue > -1 && m_RotationIncrementation){
-            m_TurnInputValue -= 0.5f;
+        } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation){
+            TurnInputValue -= 0.5f;
             StartCoroutine(PauseTurnIncrementation());
         }
         // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
-        m_LocalRealRotation = m_TurnInputValue * m_LocalRealSpeed;
-        // Debug.Log ("- m_TurnInputValue - :"+ m_TurnInputValue);
-        m_Buoyancy.RotationInput = m_LocalRealRotation;
+        LocalRealRotation = TurnInputValue * LocalRealSpeed;
+        // Debug.Log ("- TurnInputValue - :"+ TurnInputValue);
+        m_Buoyancy.RotationInput = LocalRealRotation;
     }
 
     IEnumerator PauseTurnIncrementation(){
-        m_RotationIncrementation = false;
+        RotationIncrementation = false;
         yield return new WaitForSeconds(0.5f);
-        m_RotationIncrementation = true;
+        RotationIncrementation = true;
     }
 
     public float GetCurrentSpeedStep(){
         return m_CurrentSpeedStep;
     }
     public float GetLocalRealSpeed(){
-        return m_LocalRealSpeed;
+        return LocalRealSpeed;
     }
     public float GetLocalRealRotation(){
-        return m_LocalRealRotation;
+        return LocalRealRotation;
     }
 }

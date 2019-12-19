@@ -33,8 +33,10 @@ public class ShipHealth : MonoBehaviour
 
     public void ApplyDamage (float damage) {
         CurrentHealth -= damage;
-        // if (CurrentHealth > 0)
-        //     Debug.Log("CurrentHealth = "+ CurrentHealth);
+        if (CurrentHealth > 0){
+            // Debug.Log("damage = "+ damage);
+            // Debug.Log("CurrentHealth = "+ CurrentHealth);
+        }
             
         CheckDeath ();
     }
@@ -70,5 +72,8 @@ public class ShipHealth : MonoBehaviour
 
     public float GetCurrentHealth(){
         return CurrentHealth;
+    }
+    public float GetStartingHealth(){
+        return m_StartingHealth;
     }
 }

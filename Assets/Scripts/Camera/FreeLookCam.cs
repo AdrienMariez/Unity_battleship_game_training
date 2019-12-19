@@ -190,5 +190,9 @@ namespace FreeLookCamera {
         public Vector3 GetTargetPosition() {
             return TargetPosition;
         }
+        public float GetTargetPointRange() {
+            float Range = Vector3.Distance(Target.position, TargetPosition);
+            return Range;
+        }
     }
 }

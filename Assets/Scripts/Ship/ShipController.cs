@@ -5,7 +5,8 @@ public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
 
-    [HideInInspector] public bool m_Active;
+    // [HideInInspector] public bool m_Active;
+    private bool m_Active;
     [HideInInspector] public bool m_Dead;
 
     private ShipBuoyancy Buoyancy;
@@ -69,44 +70,25 @@ public class ShipController : MonoBehaviour {
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
         if (!m_Dead) {
             Movement.m_Active = m_Active;
-            Turrets.m_Active = m_Active;
+            if (GetComponent<TurretManager>())
+                Turrets.m_Active = m_Active;
         } else {
             // Prevent any action from the ship once it is dead
             Buoyancy.m_Dead = true;
-            Movement.m_Dead = true;
+            if (GetComponent<TurretManager>())
+                Movement.m_Dead = true;
             // Turrets.m_Dead = true;
         }
-        if (LeakRatio > 0) {
-            // If the ship is taking water...
-            // Transform the model to show the ship embedding into water
-            if (CurrentpositionY != TargetpositionY) {
-                BuoyancyCorrectY(LeakRatio);
-            }
-            // Transform the model to show the ship angling in the direction of the compartments
-            if (CurrentRotationX != TargetRotationX || CurrentRotationZ != TargetRotationZ) {
-                BuoyancyCorrectXZ(LeakRatio);
-            }
 
-            // Also, repair the leak while it is still opened
-            LeakRatio -= 0.1f * RepairRate * WaterRepairCrew * Time.deltaTime;
-            // Debug.Log("LeakRatio :"+ LeakRatio);
-
-        } else {
-            //If the leak is corrected...
-            // Reset targets if the ship was still taking water
-            if (CurrentpositionY != TargetpositionY)
-                TargetpositionY = CurrentpositionY;
-            if (CurrentRotationX != TargetRotationX)
-                TargetRotationX = CurrentRotationX;
-            if (CurrentRotationZ != TargetRotationZ)
-                TargetRotationX = CurrentRotationZ;
-            BuoyancyRepair();
-        }
+        BuoyancyLoop();
     }
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
-        Health.GetCurrentHealth();
+        CurrentHealth = Health.GetCurrentHealth();
+        // if (CurrentHealth <= 0)
+        //     CallDeath();
+        // Debug.Log("CurrentHealth = "+ CurrentHealth);
     }
 
     public void BuoyancyCompromised(ElementType ElementType, float damage) {
@@ -136,8 +118,37 @@ public class ShipController : MonoBehaviour {
 
         // Debug.Log("ShipModel :"+ ShipModel);
         // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
-        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);
-        
+        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);  
+    }
+
+    private void BuoyancyLoop() {
+        if (LeakRatio > 0) {
+            // If the ship is taking water...
+            // Transform the model to show the ship embedding into water
+            if (CurrentpositionY != TargetpositionY) {
+                BuoyancyCorrectY(LeakRatio);
+            }
+            // Transform the model to show the ship angling in the direction of the compartments
+            if (CurrentRotationX != TargetRotationX || CurrentRotationZ != TargetRotationZ) {
+                BuoyancyCorrectXZ(LeakRatio);
+            }
+
+            // Also, repair the leak while it is still opened
+            LeakRatio -= 0.1f * RepairRate * WaterRepairCrew * Time.deltaTime;
+            // Debug.Log("LeakRatio :"+ LeakRatio);
+
+        } else {
+            //If the leak is corrected...
+            // Reset targets if the ship was still taking water
+            if (CurrentpositionY != TargetpositionY)
+                TargetpositionY = CurrentpositionY;
+            if (CurrentRotationX != TargetRotationX)
+                TargetRotationX = CurrentRotationX;
+            if (CurrentRotationZ != TargetRotationZ)
+                TargetRotationX = CurrentRotationZ;
+            if (!m_Dead)
+                BuoyancyRepair();
+        }
     }
 
     private void BuoyancyRepair() {
@@ -221,13 +232,17 @@ public class ShipController : MonoBehaviour {
         } else {
             Buoyancy.Sink(1f + LeakRatio, 0, 0);
         }
+        if (GetComponent<TurretManager>())
+            Turrets.SetDeath(true);
 
-        Turrets.SetDeath(true);
     }
 
     public void SetMap(bool map) {
         if (GetComponent<TurretManager>()) {
             Turrets.SetMap(map);
         }
+    }
+    public void SetActive(bool activate) {
+        m_Active = activate;
     }
 }

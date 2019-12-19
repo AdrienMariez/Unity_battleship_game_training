@@ -12,22 +12,20 @@ public class TurretManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        if (m_Active) {
+            
+        }
+        
         for (int i = 0; i < m_Turrets.Length; i++){
             if (m_Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret) {
                 TargetRange = m_Turrets[i].GetComponent<TurretFireManager>().GetTargetRange(); 
             } else {
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
             }
-            if (m_Turrets[i].GetComponent<TurretHealth>().Dead) {
-                m_Turrets[i].GetComponent<TurretRotation>().SetTurretDeath(true);
-                m_Turrets[i].GetComponent<TurretFireManager>().SetTurretDeath(true);
-            } else {
-                m_Turrets[i].GetComponent<TurretRotation>().SetTurretDeath(false);
-                m_Turrets[i].GetComponent<TurretFireManager>().SetTurretDeath(false);
-                m_Turrets[i].GetComponent<TurretRotation>().m_Active = m_Active;
-                m_Turrets[i].GetComponent<TurretFireManager>().m_Active = m_Active;
-            }
+            m_Turrets[i].GetComponent<TurretRotation>().m_Active = m_Active;
+            m_Turrets[i].GetComponent<TurretFireManager>().m_Active = m_Active;
         }
+        // Debug.Log("TargetRange = "+ TargetRange);
     }
 
     public void SetMap(bool map) {
@@ -52,5 +50,12 @@ public class TurretManager : MonoBehaviour
             m_Turrets[i].GetComponent<TurretRotation>().SetTurretDeath(IsShipDead);
             m_Turrets[i].GetComponent<TurretFireManager>().SetTurretDeath(IsShipDead);
         }
+    }
+
+    public GameObject[] GetTurrets() {
+        return m_Turrets;
+    }
+    public float GetTargetRange() {
+        return TargetRange;
     }
 }

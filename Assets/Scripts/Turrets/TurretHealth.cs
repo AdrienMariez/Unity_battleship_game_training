@@ -11,12 +11,16 @@ public class TurretHealth : MonoBehaviour {
     private float CurrentHealth;
     private float RepairRate;
     private float TurretsRepairCrew;
+    private TurretFireManager TurretFireManager;
+    private TurretRotation TurretRotation;
     [HideInInspector] public bool Dead;
 
 
     private void Start () {
         CurrentHealth = m_ElementHealth;
         Dead = false;
+        TurretFireManager = GetComponent<TurretFireManager>();
+        TurretRotation = GetComponent<TurretRotation>();
     }
 
     private void FixedUpdate(){
@@ -44,6 +48,8 @@ public class TurretHealth : MonoBehaviour {
 
     private void ModuleDestroyed () {
         Dead = true;
+        TurretFireManager.SetTurretDeath(true);
+        TurretRotation.SetTurretDeath(true);
         // ShipController.ModuleDestroyed(m_ElementType);
     }
 
@@ -56,6 +62,8 @@ public class TurretHealth : MonoBehaviour {
         if (CurrentHealth >= m_ElementHealth) {
             CurrentHealth = m_ElementHealth;
             Dead = false;
+            TurretFireManager.SetTurretDeath(true);
+            TurretRotation.SetTurretDeath(true);
         }
         // if (debug){
         //     Debug.Log("Repairing... = "+ CurrentHealth);

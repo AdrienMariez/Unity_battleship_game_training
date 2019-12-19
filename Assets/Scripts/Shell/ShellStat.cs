@@ -167,6 +167,7 @@ public class ShellStat : MonoBehaviour
 
                 // Deal this damage to the component.
                 targetHitboxComponent.TakeDamage (damage);
+                Debug.Log("damage = "+ damage);
             }
 
             if (targetTurretHealth != null) {

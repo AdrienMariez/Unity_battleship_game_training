@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using FreeLookCamera;
 
 public class TurretRotation : MonoBehaviour
@@ -68,10 +69,10 @@ public class TurretRotation : MonoBehaviour
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
         TurretEulerAngle = TurretTurret.transform.localRotation.eulerAngles.y;
         localLeftTraverse = leftTraverse + TurretEulerAngle;
-        if (localLeftTraverse>360)
+        if (localLeftTraverse > 360)
             localLeftTraverse -= 360;
         localRightTraverse = 360 - rightTraverse + TurretEulerAngle;
-        if (localRightTraverse>360)
+        if (localRightTraverse > 360)
             localRightTraverse -= 360;
 
         TotalAngleElevRatio = upTraverse-downTraverse;
@@ -177,6 +178,7 @@ public class TurretRotation : MonoBehaviour
         float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, m_TargetPosition - TurretTurret.transform.position).eulerAngles.y;
 
         targetAng = TargetAngleWorld - parentEulerAngles.y;
+        
         if (targetAng<0)
             targetAng += 360;
         else if (targetAng>360)

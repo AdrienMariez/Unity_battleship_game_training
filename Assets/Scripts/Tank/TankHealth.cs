@@ -109,4 +109,7 @@ public class TankHealth : MonoBehaviour
     public float GetCurrentHealth(){
         return CurrentHealth;
     }
+    public float GetStartingHealth(){
+        return m_StartingHealth;
+    }
 }

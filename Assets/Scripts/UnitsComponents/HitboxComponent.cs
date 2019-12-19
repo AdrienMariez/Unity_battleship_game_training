@@ -10,15 +10,18 @@ public class HitboxComponent : MonoBehaviour {
 
     [Header("Debug")]
         public bool debug = false;
-    [HideInInspector] public float m_CurrentHealth;
-    [HideInInspector] public  bool m_Dead;
+    private float CurrentHealth;
+    [HideInInspector] public bool m_Dead;
 
 
     private ShipController ShipController;
 
 
     private void Start () {
-        m_CurrentHealth = m_ElementHealth;
+        if (m_ElementType == ShipController.ElementType.hull || m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
+            m_ElementHealth = 1000000f;
+        }
+        CurrentHealth = m_ElementHealth;
         m_Dead = false;
         InitializeModules();
     }
@@ -40,16 +43,17 @@ public class HitboxComponent : MonoBehaviour {
             ShipController.ApplyDamage(amount);
             ShipController.BuoyancyCompromised(m_ElementType, amount);
         } else {
+            // Debug.Log("amount = "+ amount);
             // Reduce current health by the amount of damage done.
-            m_CurrentHealth -= amount;
-            if (m_CurrentHealth < 0)
-                m_CurrentHealth = 0;
+            CurrentHealth -= amount;
+            if (CurrentHealth < 0)
+                CurrentHealth = 0;
 
-            if (m_CurrentHealth == 0 && !m_Dead) {
+            if (CurrentHealth == 0 && !m_Dead) {
                 ModuleDestroyed();
             }
             // This directly transfers damage to modules to the unit itself
-            else if (m_CurrentHealth > 0 && !m_Dead) {
+            else if (CurrentHealth > 0 && !m_Dead) {
                 ShipController.ApplyDamage(amount);
             }
             else if (m_Dead) {
@@ -58,9 +62,9 @@ public class HitboxComponent : MonoBehaviour {
         }
 
         if (debug){
-            Debug.Log("amount = "+ amount);
-            Debug.Log("m_ElementType = "+ m_ElementType);
-            Debug.Log("m_CurrentHealth = "+ m_CurrentHealth);
+            // Debug.Log("amount = "+ amount);
+            // Debug.Log("m_ElementType = "+ m_ElementType);
+            // Debug.Log("CurrentHealth = "+ CurrentHealth);
         }
     }
 
@@ -80,11 +84,11 @@ public class HitboxComponent : MonoBehaviour {
         } else {
             ModuleRepairRate = ShipController.RepairRate * Time.deltaTime;
         }
-        m_CurrentHealth += ModuleRepairRate;
+        CurrentHealth += ModuleRepairRate;
 
         // Stop repair and reactivate the module when full health is back
-        if (m_CurrentHealth >= m_ElementHealth) {
-            m_CurrentHealth = m_ElementHealth;
+        if (CurrentHealth >= m_ElementHealth) {
+            CurrentHealth = m_ElementHealth;
             m_Dead = false;
         }
     }

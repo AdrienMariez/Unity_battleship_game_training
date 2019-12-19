@@ -5,6 +5,7 @@ public class TurretFireManager : MonoBehaviour
 {
     [HideInInspector] public bool m_Active;
     private bool Dead;
+    [Tooltip("Type of turret")] public TurretType m_TurretType;
     [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
     public Transform[] m_FireMuzzles;
@@ -30,6 +31,13 @@ public class TurretFireManager : MonoBehaviour
     private bool PreventFire;
     private bool OutOfRange;
     private float targetRange;
+
+    public enum TurretType {
+        Artillery,
+        ArtilleryAA,
+        AA,
+        Torpedo
+    }
 
 
 
@@ -134,5 +142,18 @@ public class TurretFireManager : MonoBehaviour
 
     public void SetTurretDeath(bool IsShipDead) {
         Dead = IsShipDead;
+    }
+    public string GetTurretStatus() {
+        string Status;
+        if (Dead){
+            Status = "0";
+        }else if  (PreventFire || OutOfRange){
+            Status = "1";
+        }else if (Reloading){
+            Status = "2";
+        }else{
+            Status = "3";
+        }
+        return Status;
     }
 }

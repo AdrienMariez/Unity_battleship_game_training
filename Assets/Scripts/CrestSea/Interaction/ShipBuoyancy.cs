@@ -288,14 +288,23 @@ namespace Crest
             if (SinkingZ == 0)
                 SinkingZ = z;
         }
+
+        public float GetRealSpeed(){
+            float Speed = _enginePower * SpeedInput;
+            return Speed;
+        }
+        public void SetSpeedInput(float Speed){
+            SpeedInput = Speed;
+        }
     }
 
+
     [Serializable]
-    public class FloaterForcePoints
-    {
+    public class FloaterForcePoints {
         [FormerlySerializedAs("_factor")]
         public float _weight = 1f;
 
         public Vector3 _offsetPosition;
     }
+    
 }
