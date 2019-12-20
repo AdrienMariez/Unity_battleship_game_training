@@ -13,6 +13,8 @@ namespace Crest
     /// </summary>
     // public class BoatProbes : FloatingObjectBase {
     public class ShipBuoyancy : FloatingObjectBase {
+        private bool Dead;
+
         [Header("Forces")]
         [Tooltip("Override RB center of mass, in local space."), SerializeField]
         Vector3 _centerOfMass = Vector3.zero;
@@ -73,9 +75,8 @@ namespace Crest
         Vector3[] _queryResultVels;
 
         SampleFlowHelper _sampleFlowHelper = new SampleFlowHelper();
-        [HideInInspector] public float SpeedInput;
-        [HideInInspector] public float RotationInput;
-        [HideInInspector] public bool m_Dead;
+        private float SpeedInput;
+        private float RotationInput;
 
         private float SinkingFactor;
         private float SinkingX;
@@ -118,11 +119,11 @@ namespace Crest
             #endif
 
             // If the ship is sinking, sink it by a factor determined in ShipController
-            if (m_Dead && SinkingFactor > 0 && _forceMultiplier > 0) {
+            if (Dead && SinkingFactor > 0 && _forceMultiplier > 0) {
                 Sink(SinkingFactor, SinkingX, SinkingZ);
             }
             // Also, stop engines if the ship is dead.
-            if (m_Dead) {
+            if (Dead) {
                 SpeedInput = 0f;
             }
 
@@ -289,12 +290,18 @@ namespace Crest
                 SinkingZ = z;
         }
 
+        public void SetSpeedInput(float Speed){
+            SpeedInput = Speed;
+        }
+        public void SetRotationInput(float Rotation){
+            RotationInput = Rotation;
+        }
+        public void SetDead(bool death) {
+            Dead = death;
+        }
         public float GetRealSpeed(){
             float Speed = _enginePower * SpeedInput;
             return Speed;
-        }
-        public void SetSpeedInput(float Speed){
-            SpeedInput = Speed;
         }
     }
 

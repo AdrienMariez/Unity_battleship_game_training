@@ -4,7 +4,7 @@ using FreeLookCamera;
 
 public class TurretRotation : MonoBehaviour
 {    
-    [HideInInspector] public bool m_Active;
+    private bool Active;
     private bool Dead;
 
     [Header("Elements")]
@@ -132,7 +132,7 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!m_Active) {
+        if (!Active) {
             m_TargetPosition = m_IdlePointer.transform.position;
         } else {
             if (!Input.GetButton ("FreeCamera") && !MapActive) {
@@ -434,6 +434,9 @@ public class TurretRotation : MonoBehaviour
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
     }
 
+    public void SetActive(bool activate) {
+        Active = activate;
+    }
     public void SetMap(bool map) {
         MapActive = map;
     }

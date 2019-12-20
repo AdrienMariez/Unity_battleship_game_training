@@ -14,7 +14,10 @@ public class ShipController : MonoBehaviour {
     private ShipHealth Health;
     private TurretManager Turrets;
     private ShipDamageControl DamageControl;
+    private ShipUI UI;
     private Transform ShipModel;
+
+    
     private float CurrentRotationX  = 0.0f;
     private float CurrentRotationZ = 0.0f;
     private float CurrentpositionY = 0.0f;
@@ -52,6 +55,7 @@ public class ShipController : MonoBehaviour {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
+        UI = GetComponent<ShipUI>();
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
             RepairRate = DamageControl.RepairRate;
@@ -62,24 +66,11 @@ public class ShipController : MonoBehaviour {
             Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
         ShipModel = this.gameObject.transform.GetChild(0);
-        
     }
 
     private void FixedUpdate() {
 		// Debug.Log("m_Active :"+ m_Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
-        if (!m_Dead) {
-            Movement.m_Active = m_Active;
-            if (GetComponent<TurretManager>())
-                Turrets.m_Active = m_Active;
-        } else {
-            // Prevent any action from the ship once it is dead
-            Buoyancy.m_Dead = true;
-            if (GetComponent<TurretManager>())
-                Movement.m_Dead = true;
-            // Turrets.m_Dead = true;
-        }
-
         BuoyancyLoop();
     }
 
@@ -234,15 +225,23 @@ public class ShipController : MonoBehaviour {
         }
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
-
+        Movement.SetDead(true);
+        Buoyancy.SetDead(true);
+        UI.SetActive(false);
     }
 
     public void SetMap(bool map) {
-        if (GetComponent<TurretManager>()) {
+        if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
-        }
+        if (GetComponent<ShipUI>())
+            UI.SetMap(map);
     }
     public void SetActive(bool activate) {
         m_Active = activate;
+        if (GetComponent<TurretManager>())
+                Turrets.SetActive(m_Active);
+        Movement.SetActive(m_Active);
+        // UI is activated if the unit is NOT active.
+        UI.SetActive(!m_Active);
     }
 }

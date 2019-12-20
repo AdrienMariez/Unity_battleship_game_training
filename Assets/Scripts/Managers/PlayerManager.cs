@@ -79,13 +79,13 @@ public class PlayerManager : MonoBehaviour
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
                 if (i == CurrentTarget) {
-                    PlayerUnits[i].GetComponent<TankMovement>().m_Active = true;
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = true;
+                    PlayerUnits[i].GetComponent<TankMovement>().SetActive(true);
+                    PlayerUnits[i].GetComponent<TurretManager>().SetActive(true);
                     UIManager.SetTargetType("Tank");
                     //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
                 } else {
-                    PlayerUnits[i].GetComponent<TankMovement>().m_Active = false;
-                    PlayerUnits[i].GetComponent<TurretManager>().m_Active = false;
+                    PlayerUnits[i].GetComponent<TankMovement>().SetActive(false);
+                    PlayerUnits[i].GetComponent<TurretManager>().SetActive(false);
                 }
             }
             else if (PlayerUnits[i].GetComponent<AircraftController>()) {

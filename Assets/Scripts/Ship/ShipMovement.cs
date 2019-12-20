@@ -5,8 +5,8 @@ using Crest;
 
 public class ShipMovement : MonoBehaviour
 {
-    [HideInInspector] public bool m_Active; 
-    [HideInInspector] public bool m_Dead; 
+    private bool Active; 
+    private bool Dead; 
     [HideInInspector] public float m_MaxSpeed = 1f;
     [HideInInspector] public float m_TurnSpeed = 1f;
     public AudioSource m_MovementAudio;
@@ -93,7 +93,7 @@ public class ShipMovement : MonoBehaviour
     private void FixedUpdate() {
         // This is run every physics step instead of every frame
         // Move and turn the tank.
-        if (m_Active && !m_Dead) {
+        if (Active && !Dead) {
             if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
             } else if(Input.GetAxis ("VerticalShip") == -1){
@@ -208,13 +208,20 @@ public class ShipMovement : MonoBehaviour
         // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
         LocalRealRotation = TurnInputValue * LocalRealSpeed;
         // Debug.Log ("- TurnInputValue - :"+ TurnInputValue);
-        m_Buoyancy.RotationInput = LocalRealRotation;
+        m_Buoyancy.SetRotationInput(LocalRealRotation);
     }
 
     IEnumerator PauseTurnIncrementation(){
         RotationIncrementation = false;
         yield return new WaitForSeconds(0.5f);
         RotationIncrementation = true;
+    }
+
+    public void SetActive(bool activate) {
+        Active = activate;
+    }
+    public void SetDead(bool death) {
+        Dead = death;
     }
 
     public float GetCurrentSpeedStep(){

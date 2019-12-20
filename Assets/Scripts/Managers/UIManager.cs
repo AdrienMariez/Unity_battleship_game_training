@@ -116,6 +116,8 @@ namespace UI {
                 m_ShipSpeedStep.enabled = false;
                 m_ShipCurrentSpeed.enabled = false;
                 m_ShipTurningSpeed.enabled = false;
+                m_TurretsStatus.enabled = false;
+                m_TurretsTargetRange.enabled = false;
             }
         }
 

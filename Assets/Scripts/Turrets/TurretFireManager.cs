@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TurretFireManager : MonoBehaviour
 {
-    [HideInInspector] public bool m_Active;
+    private bool Active;
     private bool Dead;
     [Tooltip("Type of turret")] public TurretType m_TurretType;
     [Tooltip("Ammo used")] public GameObject m_Shell;
@@ -70,7 +70,7 @@ public class TurretFireManager : MonoBehaviour
         }else{
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
-        if (m_Active && !Dead) {
+        if (Active && !Dead) {
             // Debug.Log("Reloading :"+ Reloading);
             // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
             if (m_DirectorTurret)
@@ -129,6 +129,9 @@ public class TurretFireManager : MonoBehaviour
         }
     }
 
+    public void SetActive(bool activate) {
+        Active = activate;
+    }
     public void SetPreventFire(bool status){
         PreventFire = status;
     }

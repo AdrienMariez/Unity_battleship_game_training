@@ -95,9 +95,6 @@ MonoBehaviour:
   RaycastLayerMask:
     serializedVersion: 2
     m_Bits: 7987
-  RaycastRange: 1000
-  m_TargetPosition: {x: 0, y: 0, z: 0}
-  ActiveTarget: {fileID: 0}
 --- !u!1 &682091736796430029
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +108,7 @@ GameObject:
   - component: {fileID: 682091736788426959}
   - component: {fileID: 2071684446945677770}
   m_Layer: 10
-  m_Name: Main Camera
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

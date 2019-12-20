@@ -3,16 +3,15 @@
 public class TurretManager : MonoBehaviour
 {    
     public GameObject[] m_Turrets;
-    [HideInInspector] public bool m_Active;
+    private bool Active;
     private float TurretsRepairCrew;
     private float TargetRange;
-    private bool MapActive;
 
     private void Start() {
     }
 
     private void FixedUpdate() {
-        if (m_Active) {
+        if (Active) {
             
         }
         
@@ -22,14 +21,18 @@ public class TurretManager : MonoBehaviour
             } else {
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
             }
-            m_Turrets[i].GetComponent<TurretRotation>().m_Active = m_Active;
-            m_Turrets[i].GetComponent<TurretFireManager>().m_Active = m_Active;
         }
         // Debug.Log("TargetRange = "+ TargetRange);
     }
 
+    public void SetActive(bool activate) {
+        Active = activate;
+        for (int i = 0; i < m_Turrets.Length; i++){
+            m_Turrets[i].GetComponent<TurretRotation>().SetActive(Active);
+            m_Turrets[i].GetComponent<TurretFireManager>().SetActive(Active);
+        }
+    }
     public void SetMap(bool map) {
-        MapActive = map;
         for (int i = 0; i < m_Turrets.Length; i++) {
             m_Turrets[i].GetComponent<TurretRotation>().SetMap(map);
         }
