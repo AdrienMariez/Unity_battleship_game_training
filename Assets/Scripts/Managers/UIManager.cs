@@ -147,6 +147,7 @@ namespace UI {
         }
         
         public void SetMap(bool map) {
+            Debug.Log ("UIManager.SetMap(map) : "+map);
             DisplayGameUI = !map;
             DisplayMapUI = map;
         }
