@@ -55,7 +55,13 @@ public class ShipController : MonoBehaviour {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
+
         UI = GetComponent<ShipUI>();
+        float HP = Health.GetStartingHealth();
+        UI.SetStartingHealth(HP);
+        UI.SetCurrentHealth(HP);
+
+
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
             RepairRate = DamageControl.RepairRate;
@@ -77,6 +83,7 @@ public class ShipController : MonoBehaviour {
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
         CurrentHealth = Health.GetCurrentHealth();
+        UI.SetCurrentHealth(CurrentHealth);
         // if (CurrentHealth <= 0)
         //     CallDeath();
         // Debug.Log("CurrentHealth = "+ CurrentHealth);
