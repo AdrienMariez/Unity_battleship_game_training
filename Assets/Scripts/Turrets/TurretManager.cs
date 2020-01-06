@@ -11,9 +11,9 @@ public class TurretManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (Active) {
-            
-        }
+        /*if (Active) {
+            // TODO put here the manager to switch between turrets types
+        }*/
         
         for (int i = 0; i < m_Turrets.Length; i++){
             if (m_Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
 {
@@ -14,11 +15,13 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Maximum Range (m)")]
     public float m_MaxRange = 10000f;
     [Tooltip("Minimum Range (m)")]
-    public float m_MinRange = 1000f; 
+    public float m_MinRange = 1000f;
     [Tooltip("Muzzle velocity for the shell (m/s)")]
     public float m_MuzzleVelocity = 30f;        // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm gives a ratio of *0.58
     [Tooltip("Reload time, (seconds)")]
     public float m_ReloadTime = 5f;
+    [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] [Range(0.01f, 2f)]
+    public float m_Precision = 0.1f; 
     [Tooltip("Check this if the turret is a main turret (rangefinding is done with main turrets). You need to check only one turret par unit, but you can chack as many as you need as long as all Director turrets are of the same type.")]
     public bool m_DirectorTurret = false;
 
@@ -31,7 +34,7 @@ public class TurretFireManager : MonoBehaviour
     private bool PreventFire;
     private bool OutOfRange;
     private float targetRange;
-
+    private FreeLookCam FreeLookCam;
     public enum TurretType {
         Artillery,
         ArtilleryAA,
@@ -51,6 +54,7 @@ public class TurretFireManager : MonoBehaviour
 
     private void Start (){
         TurretRotation = GetComponent<TurretRotation>();
+        FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
     }
 
 
@@ -98,8 +102,12 @@ public class TurretFireManager : MonoBehaviour
 
     private void PreviewFire () {
         // For gameplay reasons, we cheat the physics here. The director(s) turrets will send their telemetric data to all other turrets
-        targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
-        // Debug.Log("Calculated fire range : "+ targetRange);
+        // targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
+        // if (debug) { Debug.Log("Calculated fire range : "+ targetRange); }
+        float targetPercentageRange = FreeLookCam.GetTiltPercentage();
+
+        targetRange = ((m_MaxRange - m_MinRange) / 100 * targetPercentageRange) + m_MinRange;
+        // if (debug) { Debug.Log("Calculated fire range : "+ targetRange); }
     }
 
     private void Fire () {
@@ -115,13 +123,10 @@ public class TurretFireManager : MonoBehaviour
             // DISABLED - shell ballistics moved in the ShellStat class.
             // rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
 
-            // ShellStat shellStats = shellInstance.GetComponent<ShellStat> ();
-            // shellStats.m_MaxRange = m_MaxRange;
-            shellInstance.GetComponent<ShellStat> ().m_MaxRange = m_MaxRange;
-            shellInstance.GetComponent<ShellStat> ().m_MinRange = m_MinRange;
-            shellInstance.GetComponent<ShellStat> ().targetRange = targetRange;
-            shellInstance.GetComponent<ShellStat> ().m_MuzzleVelocity = m_MuzzleVelocity * 0.58f;
-            shellInstance.GetComponent<ShellStat> ().AngleLaunchPercentage = TurretRotation.CurrentAnglePercentage;
+
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(targetRange);
+            shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
+            shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
 
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;

@@ -1015,10 +1015,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Turrets:
   - {fileID: 5630235499921555532}
-  m_Active: 0
-  m_Dead: 0
-  RepairRate: 0
-  TurretsRepairCrew: 0
 --- !u!1 &7484466486366397284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1218,11 @@ PrefabInstance:
       propertyPath: m_DirectorTurret
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 822810258184951640, guid: f8b52b59a9c0e684882fba8614e08478,
+        type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1910800031127695233, guid: f8b52b59a9c0e684882fba8614e08478,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1290,7 +1291,7 @@ PrefabInstance:
     - target: {fileID: 1938882384968223551, guid: f8b52b59a9c0e684882fba8614e08478,
         type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1938882384968223551, guid: f8b52b59a9c0e684882fba8614e08478,
         type: 3}

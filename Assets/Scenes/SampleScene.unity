@@ -3201,6 +3201,14 @@ PrefabInstance:
       propertyPath: RaycastLayerMask.m_Bits
       value: 106291
       objectReference: {fileID: 0}
+    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
+      propertyPath: m_TiltMax
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
+      propertyPath: m_TiltMin
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 682091736795053295, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -3455,10 +3463,40 @@ PrefabInstance:
       propertyPath: m_DirectorTurret
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6535678133232463350, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6535678133232463350, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6535678133232463350, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6571485985792651433, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6791043545745746195, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 6791043545745746195, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6791043545745746195, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 13.5
       objectReference: {fileID: 0}
     - target: {fileID: 7206456436928395692, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}

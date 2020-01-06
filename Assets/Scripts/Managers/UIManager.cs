@@ -60,15 +60,16 @@ namespace UI {
                 }
 
                 if (ActiveTarget.GetComponent<TurretManager>()){
-                    TurretTargetRange = Mathf.Round(FreeLookCam.GetTargetPointRange());
+                    // TurretTargetRange = Mathf.Round(FreeLookCam.GetTargetPointRange());
                     for (int i = 0; i < Turrets.Length; i++){
                         TurretStatus += Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
-                        if (TurretTargetRange > 99000f) {
-                            if (Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret)
+                        // if (TurretTargetRange > 99000f) {
+                        //     if (Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret)
+                        //     TurretTargetRange = Mathf.Round(Turrets[i].GetComponent<TurretFireManager>().GetTargetRange());
+                        // }
+
+                        if (Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret)
                             TurretTargetRange = Mathf.Round(Turrets[i].GetComponent<TurretFireManager>().GetTargetRange());
-                        }
-                        // if (Turrets[i].GetComponent<TurretFireManager>().m_DirectorTurret)
-                        //     TurretTargetRange = Turrets[i].GetComponent<TurretFireManager>().GetTargetRange();
                     }
                 }
 

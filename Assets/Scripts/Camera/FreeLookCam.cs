@@ -40,6 +40,7 @@ namespace FreeLookCamera {
 
         private float LookAngle;                    // The rig's y axis rotation.
         private float TiltAngle;                    // The pivot's x axis rotation.
+        private float CameraTiltPercentage;
 		private Vector3 AxisEulers;
 		private Quaternion AxisTargetRot;
 		private Quaternion TransformTargetRot;
@@ -112,6 +113,9 @@ namespace FreeLookCamera {
                 TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
                 TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
+
+            CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
+            // Debug.Log("targetDistance = "+ targetDistance);
         }
 
         public virtual void SetTarget(Transform newTransform) {
@@ -158,7 +162,7 @@ namespace FreeLookCamera {
 
 
             // and make sure the new value is within the tilt range
-            TiltAngle = Mathf.Clamp(TiltAngle, -m_TiltMin, m_TiltMax);
+            TiltAngle = Mathf.Clamp(TiltAngle, m_TiltMin, m_TiltMax);
 
             // Tilt input around X is applied to the pivot (the child of this object)
 			AxisTargetRot = Quaternion.Euler(TiltAngle, AxisEulers.y , AxisEulers.z);
@@ -189,6 +193,10 @@ namespace FreeLookCamera {
         }
         public Vector3 GetTargetPosition() {
             return TargetPosition;
+        }
+
+        public float GetTiltPercentage() {
+            return CameraTiltPercentage;
         }
         public float GetTargetPointRange() {
             float Range = Vector3.Distance(Target.position, TargetPosition);

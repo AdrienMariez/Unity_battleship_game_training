@@ -12,23 +12,20 @@ public class ShellStat : MonoBehaviour
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
     public float m_ArmorPenetration = 100f;
-    public float m_ExplosionForce = 1000f;              // The amount of force added to a tank at the centre of the explosion.
     public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
     public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
     private Rigidbody rb;
-    [HideInInspector] public float m_MaxRange;
-    [HideInInspector] public float m_MinRange;
-    [HideInInspector] public float m_MuzzleVelocity;
-    [HideInInspector] public float AngleLaunchPercentage;
-    [HideInInspector] public Vector3 startPosition;
+    private float MuzzleVelocity;
+    private Vector3 StartPosition;
 
     private float currentRange;                     // Distance between the shell and the starting point
-    [HideInInspector] public float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same
+    private float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same
     private float currentAltitudeGain;
     private float xBasis;
     private Vector3 V;
-    [HideInInspector] public Vector3 TargetPosition;
+    private Vector3 TargetPosition;
+    private float ShellPrecision;
     private bool RangePassed = false;
     private bool SelfDestruct = false;
 
@@ -37,11 +34,11 @@ public class ShellStat : MonoBehaviour
         // Destroy (gameObject, m_MaxLifeTime);
 
         rb = GetComponent<Rigidbody>();
-        currentAltitudeGain = rb.velocity.y;
-        startPosition = transform.position;
+        // currentAltitudeGain = rb.velocity.y;
+        StartPosition = transform.position;
 
         // Calculate target range by getting the percentage of vertical fire rotation of the turret
-        // targetRange = ((m_MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
+        // targetRange = ((MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
 
         xBasis = transform.eulerAngles.x;
         if (xBasis > 180)
@@ -50,20 +47,28 @@ public class ShellStat : MonoBehaviour
         xBasis = 360 - xBasis;
         xBasis -= 90;
 
-        // Make a vector in the direction of the facing of the shell, flattened on the Y axis
+        // Make a vector in the direction of the facing of the shell, flattened on the Y axis, if V.y was switched to 0.1f, it will target a high place target, so it could be used to fire on hih-placed land targets with some tweaks
         V = transform.TransformDirection(Vector3.forward);
         V.y = 0;
         V.Normalize();
         //Then create a point that is the target point of the cannon.
         TargetPosition = transform.position + V * targetRange;
 
+        float ShellPrecisionZ = Random.Range(-ShellPrecision, ShellPrecision);
+        TargetPosition.z += ShellPrecisionZ;
+
         // Debug.Log("targetRange = "+ targetRange);
-        // Debug.Log("TargetPosition = "+ TargetPosition);
+        Debug.Log("TargetPosition = "+ TargetPosition);
+
+        //Prebuild shell dispersion here
+        
+        // transform.eulerAngles.z += ShellPrecisionZ;
+        ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
     }
 
     private void FixedUpdate () {
-        // CalculateTrajectory ();
-        CalculateTrajectoryWithPoint ();
+        // CalculateTrajectoryWithPoint ();
+        CalculateTrajectoryWithRange ();
         if (transform.position.y <= 0f) {
             // Unparent the particles from the shell.
             m_ExplosionParticles.transform.parent = null;
@@ -90,14 +95,14 @@ public class ShellStat : MonoBehaviour
 
         // Lots of shiny drawray !
             //Blue : from firing spawn to target position
-            Debug.DrawRay(startPosition, TargetPosition - startPosition, Color.blue);
+            Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
             // Red : facing of shell
-            // Debug.DrawRay(transform.position, transform.forward * m_MaxRange, Color.red);
+            // Debug.DrawRay(transform.position, transform.forward * MaxRange, Color.red);
             // Green : The vector between the shell and the target
-            // Debug.DrawRay(transform.position, targetDir * m_MaxRange , Color.green);
+            // Debug.DrawRay(transform.position, targetDir * MaxRange , Color.green);
 
 
-        currentRange = Vector3.Distance(startPosition, transform.position);
+        currentRange = Vector3.Distance(StartPosition, transform.position);
 
         float distanceToTarget = targetRange - currentRange;
         float distanceToTargetRatio = (distanceToTarget*100) / targetRange;
@@ -142,7 +147,73 @@ public class ShellStat : MonoBehaviour
         }
 
         transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));
-        transform.Translate(0, 0, m_MuzzleVelocity * Time.deltaTime, Space.Self); 
+        transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
+    }
+
+    private void CalculateTrajectoryWithRange () {
+        // Create a vector between the current position and the target
+        Vector3 targetDir = TargetPosition - transform.position;
+
+        // Get the angle between the facing of the current position and the new vector
+        float signedAngle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.forward);
+        // Debug.Log("signedAngle = "+ signedAngle);
+
+        // Lots of shiny drawray !
+            //Blue : from firing spawn to target position
+            Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
+            // Red : facing of shell
+            Debug.DrawRay(transform.position, transform.forward * targetRange, Color.red);
+            // Green : The vector between the shell and the target
+            Debug.DrawRay(transform.position, targetDir * targetRange , Color.green);
+
+
+        currentRange = Vector3.Distance(StartPosition, transform.position);
+
+        float distanceToTarget = targetRange - currentRange;
+        float distanceToTargetRatio = (distanceToTarget * 100) / targetRange;
+
+        // Debug.Log("distanceToTarget = "+ distanceToTarget);
+        // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
+
+        // x is the only axis used to make the shell curves
+        float x = transform.eulerAngles.x;
+
+        //If the angle is not yet met and wasn't met...
+        if (!RangePassed) {
+            x = (distanceToTargetRatio * xBasis) / 100;
+
+            // This is not tested !!
+            // Theorically, if the shell overshots the target, we force it to peak his nose a bit downwards so he can "catch" the correct angle
+            if (distanceToTargetRatio < 20)
+                x -= (20 - distanceToTargetRatio);
+
+            // This prevents the shell from moving backwards
+            if (x<0)
+                x = 0;
+
+            // Debug.Log("x = "+ x);
+
+            // Convert X back into an euler angle
+            x += 90;
+            x = 360 - x;
+            x -= 180;
+            if (x < 0)
+                x += 360;
+        }
+        // When the estimated angle is close, build a little random X dispersion here, limited by ShellPrecision
+        if (signedAngle < ShellPrecision){
+            RangePassed = true;
+        }
+
+        if (distanceToTargetRatio < 0 && !SelfDestruct) {
+            // Engage auto destruct if the range is passed
+            // Debug.Log("engage self destruct !");
+            Destroy (gameObject, m_MaxLifeTime);
+            SelfDestruct = true;
+        }
+
+        transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));
+        transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter (Collider other) {
@@ -220,5 +291,16 @@ public class ShellStat : MonoBehaviour
         damage = Mathf.Max (0f, damage);
 
         return damage;
+    }
+
+    public void SetTargetRange(float range) {
+        targetRange = range;
+    }
+
+    public void SetMuzzleVelocity(float velocity) {
+        MuzzleVelocity = velocity;
+    }
+    public void SetPrecision(float precision) {
+        ShellPrecision = precision;
     }
 }

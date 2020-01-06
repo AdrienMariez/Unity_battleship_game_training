@@ -86,7 +86,7 @@ MonoBehaviour:
   m_TurnSpeed: 0.02
   m_TurnSmoothing: 0
   m_TiltMax: 75
-  m_TiltMin: 20
+  m_TiltMin: -20
   m_FieldOfViewFocus: 40
   m_TurnSpeedFocus: 0.2
   m_CameraDistance: 12
