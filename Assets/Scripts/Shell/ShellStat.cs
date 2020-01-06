@@ -54,11 +54,8 @@ public class ShellStat : MonoBehaviour
         //Then create a point that is the target point of the cannon.
         TargetPosition = transform.position + V * targetRange;
 
-        float ShellPrecisionZ = Random.Range(-ShellPrecision, ShellPrecision);
-        TargetPosition.z += ShellPrecisionZ;
-
         // Debug.Log("targetRange = "+ targetRange);
-        Debug.Log("TargetPosition = "+ TargetPosition);
+        // Debug.Log("TargetPosition = "+ TargetPosition);
 
         //Prebuild shell dispersion here
         
@@ -67,7 +64,6 @@ public class ShellStat : MonoBehaviour
     }
 
     private void FixedUpdate () {
-        // CalculateTrajectoryWithPoint ();
         CalculateTrajectoryWithRange ();
         if (transform.position.y <= 0f) {
             // Unparent the particles from the shell.
@@ -85,69 +81,6 @@ public class ShellStat : MonoBehaviour
             // Destroy the shell.
             Destroy (gameObject);
         }
-    }
-
-    private void CalculateTrajectoryWithPoint () {
-        // Create a vector between the current position and the target
-        Vector3 targetDir = TargetPosition - transform.position;
-        // Get the angle between the facing of the current position and the new vector
-        float angle = Vector3.Angle(targetDir, transform.forward);
-
-        // Lots of shiny drawray !
-            //Blue : from firing spawn to target position
-            Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
-            // Red : facing of shell
-            // Debug.DrawRay(transform.position, transform.forward * MaxRange, Color.red);
-            // Green : The vector between the shell and the target
-            // Debug.DrawRay(transform.position, targetDir * MaxRange , Color.green);
-
-
-        currentRange = Vector3.Distance(StartPosition, transform.position);
-
-        float distanceToTarget = targetRange - currentRange;
-        float distanceToTargetRatio = (distanceToTarget*100) / targetRange;
-
-        // Debug.Log("distanceToTarget = "+ distanceToTarget);
-        // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
-
-        // x is the only axis used to make the shell curves
-        float x = transform.eulerAngles.x;
-
-        //If the angle is not yet met and wasn't met...
-        if (angle > 0.1 && !RangePassed) {
-            x = (distanceToTargetRatio * xBasis) / 100;
-
-            // This is not tested !!
-            // Theorically, if the shell overshots the target, we force it to peak his nose a bit downwards so he can "catch" the correct angle
-            if (distanceToTargetRatio<20)
-                x -= (20 - distanceToTargetRatio);
-
-            // This prevents the shell from moving backwards
-            if (x<0)
-                x = 0;
-
-            // Debug.Log("x = "+ x);
-
-            // Convert X back into an euler angle
-            x += 90;
-            x = 360 - x;
-            x -= 180;
-            if (x < 0)
-                x += 360;
-        } else if (angle < 0.1){
-            RangePassed = true;
-            //If velocity was passed to the rigidbody, remove it here !
-            // rb.velocity=Vector3.zero;
-        }
-        if (distanceToTargetRatio < 0 && !SelfDestruct) {
-            // Engage auto destruct if the range is passed
-            // Debug.Log("engage self destruct !");
-            Destroy (gameObject, m_MaxLifeTime);
-            SelfDestruct = true;
-        }
-
-        transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));
-        transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
     }
 
     private void CalculateTrajectoryWithRange () {
@@ -200,7 +133,7 @@ public class ShellStat : MonoBehaviour
             if (x < 0)
                 x += 360;
         }
-        // When the estimated angle is close, build a little random X dispersion here, limited by ShellPrecision
+        // When the angle passes the ShellPrecision RNG, stop the gavity simulation
         if (signedAngle < ShellPrecision){
             RangePassed = true;
         }

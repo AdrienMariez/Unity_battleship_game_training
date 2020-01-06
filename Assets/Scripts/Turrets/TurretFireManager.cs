@@ -112,11 +112,19 @@ public class TurretFireManager : MonoBehaviour
 
     private void Fire () {
         for (int i = 0; i < m_FireMuzzles.Length; i++) {
+            //Build a lateral random factor for the shell launch
+            float shellPrecisionZ = Random.Range(-m_Precision, m_Precision);
+            Quaternion firingDirection = m_FireMuzzles[i].rotation;
+            firingDirection.z += shellPrecisionZ * 0.02f;
+
+            // if (debug) { Debug.Log("ShellPrecisionZ : "+ shellPrecisionZ); }
+            // if (debug) { Debug.Log("m_FireMuzzles[i].rotation : "+ firingDirection); }
+
             // Create an instance of the shell and store a reference to it's rigidbody.
             // Rigidbody shellInstance =
             //     Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation) as Rigidbody;
             GameObject shellInstance =
-                Instantiate (m_Shell, m_FireMuzzles[i].position, m_FireMuzzles[i].rotation);
+                Instantiate (m_Shell, m_FireMuzzles[i].position, firingDirection);
 
             Rigidbody rigid = shellInstance.GetComponent<Rigidbody> ();
             // Add velocity in the forward direction

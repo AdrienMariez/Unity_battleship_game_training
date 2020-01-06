@@ -237,7 +237,7 @@ MonoBehaviour:
   m_MinRange: 50
   m_MuzzleVelocity: 775
   m_ReloadTime: 10
-  m_Precision: 2
+  m_Precision: 1
   m_DirectorTurret: 0
   debug: 0
 --- !u!114 &536144026725449547
