@@ -18,7 +18,8 @@ namespace UI {
         public Text m_TurretsStatus;
             const string TurretsStatusDisplay = "{0}";
         public Text m_TurretsTargetRange;
-            const string TurretsTargetRangeDisplay = "Targeting range : {0}";
+            const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
+            const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
 
         private GameObject ActiveTarget;
         private string TargetType;
@@ -108,7 +109,12 @@ namespace UI {
                     m_TurretsStatus.enabled = true;
                     m_TurretsStatus.text = string.Format(TurretsStatusDisplay, TurretStatus); 
                     m_TurretsTargetRange.enabled = true;
-                    m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplay, TurretTargetRange); 
+                    if (TurretTargetRange > 999) {
+                        TurretTargetRange = (Mathf.Round(TurretTargetRange / 100)) / 10f;
+                        m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayKilometer, TurretTargetRange);
+                    } else {
+                        m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, TurretTargetRange);
+                    }
                 }
             } else {
                 m_UnitName.enabled = false;
@@ -147,7 +153,7 @@ namespace UI {
         }
         
         public void SetMap(bool map) {
-            Debug.Log ("UIManager.SetMap(map) : "+map);
+            // Debug.Log ("UIManager.SetMap(map) : "+map);
             DisplayGameUI = !map;
             DisplayMapUI = map;
         }
