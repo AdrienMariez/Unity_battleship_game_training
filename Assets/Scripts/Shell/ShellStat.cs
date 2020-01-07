@@ -23,8 +23,10 @@ public class ShellStat : MonoBehaviour
     private float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same
     private float currentAltitudeGain;
     private float xBasis;
+    private float x;
     private Vector3 V;
     private Vector3 TargetPosition;
+    private bool SignedAnglePositive = true;
     private float ShellPrecision;
     private bool RangePassed = false;
     private bool SelfDestruct = false;
@@ -54,12 +56,20 @@ public class ShellStat : MonoBehaviour
         //Then create a point that is the target point of the cannon.
         TargetPosition = transform.position + V * targetRange;
 
+        // get initial parameters of the shell, as using Vector3.SignedAngle is better than an Angle but can produce negative values. So we check first if the SignedAngle is + or -.
+
+        // Create a vector between the current position and the target
+        Vector3 targetDir = TargetPosition - transform.position;
+        // Get the angle between the facing of the current position and the new vector
+        float signedAngle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.forward);
+
+        if (signedAngle < 0)
+            SignedAnglePositive = false;
+
         // Debug.Log("targetRange = "+ targetRange);
         // Debug.Log("TargetPosition = "+ TargetPosition);
 
         //Prebuild shell dispersion here
-        
-        // transform.eulerAngles.z += ShellPrecisionZ;
         ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
     }
 
@@ -97,7 +107,7 @@ public class ShellStat : MonoBehaviour
             // Red : facing of shell
             Debug.DrawRay(transform.position, transform.forward * targetRange, Color.red);
             // Green : The vector between the shell and the target
-            Debug.DrawRay(transform.position, targetDir * targetRange , Color.green);
+            // Debug.DrawRay(transform.position, targetDir * targetRange , Color.green);
 
 
         currentRange = Vector3.Distance(StartPosition, transform.position);
@@ -107,14 +117,22 @@ public class ShellStat : MonoBehaviour
 
         // Debug.Log("distanceToTarget = "+ distanceToTarget);
         // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
+        // Debug.Log("signedAngle = "+ signedAngle);
 
-        // x is the only axis used to make the shell curves
-        float x = transform.eulerAngles.x;
+
 
         //If the angle is not yet met and wasn't met...
         if (!RangePassed) {
-            x = (distanceToTargetRatio * xBasis) / 100;
+            // Original calculation, worked but the shells didn't fly high enough
+            // x = (distanceToTargetRatio * xBasis) / 100;
 
+            // This CorrectedRatio (which should always be limited to 100) lets the shell fly high enough for all distance shells. after multiple tests, the simple multiplier makes a strange physics trajectory but works good ingame.  
+            float CorrectedRatio = 1.4f * distanceToTargetRatio;
+            if (CorrectedRatio > 100)
+                CorrectedRatio = 100;
+
+            x = (CorrectedRatio * xBasis) / 100;
+    
             // This is not tested !!
             // Theorically, if the shell overshots the target, we force it to peak his nose a bit downwards so he can "catch" the correct angle
             if (distanceToTargetRatio < 20)
@@ -124,7 +142,8 @@ public class ShellStat : MonoBehaviour
             if (x<0)
                 x = 0;
 
-            // Debug.Log("x = "+ x);
+            Debug.Log("New value = "+ x);
+            // Debug.Log("Original = "+ test2);
 
             // Convert X back into an euler angle
             x += 90;
@@ -134,9 +153,10 @@ public class ShellStat : MonoBehaviour
                 x += 360;
         }
         // When the angle passes the ShellPrecision RNG, stop the gavity simulation
-        if (signedAngle < ShellPrecision){
+        if (SignedAnglePositive & signedAngle < ShellPrecision)
             RangePassed = true;
-        }
+        if (!SignedAnglePositive & signedAngle > ShellPrecision)
+            RangePassed = true;
 
         if (distanceToTargetRatio < 0 && !SelfDestruct) {
             // Engage auto destruct if the range is passed
