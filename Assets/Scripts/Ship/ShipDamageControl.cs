@@ -8,10 +8,10 @@ public class ShipDamageControl : MonoBehaviour {
 
     private ShipController ShipController;
 
-    [HideInInspector] public float EngineRepairCrew;
-    [HideInInspector] public float FireRepairCrew;
-    [HideInInspector] public float WaterRepairCrew;
-    [HideInInspector] public float TurretsRepairCrew;
+    private float EngineRepairCrew;
+    private float FireRepairCrew;
+    private float WaterRepairCrew;
+    private float TurretsRepairCrew;
 
     private void Start() {
         EngineRepairCrew = 1;
@@ -22,10 +22,14 @@ public class ShipDamageControl : MonoBehaviour {
         ShipController = GetComponent<ShipController>();
         TurretsRepairCrew += RepairCrew;
 
-        ShipController.EngineRepairCrew = EngineRepairCrew;
-        ShipController.FireRepairCrew = FireRepairCrew;
-        ShipController.WaterRepairCrew = WaterRepairCrew;
-        ShipController.TurretsRepairCrew = TurretsRepairCrew;
+        ShipController.SetDamageControlEngine(EngineRepairCrew);
+        ShipController.SetDamageControlFire(FireRepairCrew);
+        ShipController.SetDamageControlWater(WaterRepairCrew);
+        ShipController.SetDamageControlTurrets(TurretsRepairCrew);
+    }
+
+    public float GetRepairRate() {
+        return RepairRate;
     }
 
 }

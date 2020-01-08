@@ -11,7 +11,8 @@ public class HitboxComponent : MonoBehaviour {
     [Header("Debug")]
         public bool debug = false;
     private float CurrentHealth;
-    [HideInInspector] public bool m_Dead;
+    private float RepairRate;
+    private bool Dead;
 
 
     private ShipController ShipController;
@@ -22,7 +23,7 @@ public class HitboxComponent : MonoBehaviour {
             m_ElementHealth = 1000000f;
         }
         CurrentHealth = m_ElementHealth;
-        m_Dead = false;
+        Dead = false;
         InitializeModules();
     }
 
@@ -30,10 +31,12 @@ public class HitboxComponent : MonoBehaviour {
         // Find ShipController
         ShipController = transform.parent.parent.parent.GetComponent<ShipController>();
 
+        RepairRate = ShipController.GetRepairRate();
+
         // Depending of the ElementType, send it to the ShipController
         if (m_ElementType == ShipController.ElementType.engine){
-            ShipController.engine = true;
-            ShipController.engineCount += 1;
+            ShipController.SetDamageControlEngineComponent(true);
+            ShipController.SetDamageControlEngineCount(1);
         }
     }
 
@@ -49,27 +52,27 @@ public class HitboxComponent : MonoBehaviour {
             if (CurrentHealth < 0)
                 CurrentHealth = 0;
 
-            if (CurrentHealth == 0 && !m_Dead) {
+            if (CurrentHealth == 0 && !Dead) {
                 ModuleDestroyed();
             }
             // This directly transfers damage to modules to the unit itself
-            else if (CurrentHealth > 0 && !m_Dead) {
+            else if (CurrentHealth > 0 && !Dead) {
                 ShipController.ApplyDamage(amount);
             }
-            else if (m_Dead) {
+            else if (Dead) {
                 RepairModule();
             }
         }
 
-        if (debug){
+        // if (debug){
             // Debug.Log("amount = "+ amount);
             // Debug.Log("m_ElementType = "+ m_ElementType);
             // Debug.Log("CurrentHealth = "+ CurrentHealth);
-        }
+        // }
     }
 
     private void ModuleDestroyed () {
-        m_Dead = true;
+        Dead = true;
         ShipController.ModuleDestroyed(m_ElementType);
     }
 
@@ -78,18 +81,18 @@ public class HitboxComponent : MonoBehaviour {
         float ModuleRepairRate;
         // If the module type is either engine, steering or a turret, accelerate the repair time of the module with damage control teams
         if (m_ElementType == ShipController.ElementType.engine || m_ElementType == ShipController.ElementType.steering) {
-            ModuleRepairRate = ShipController.RepairRate * ShipController.EngineRepairCrew * Time.deltaTime;
+            ModuleRepairRate = RepairRate * ShipController.GetEngineRepairCrew() * Time.deltaTime;
         }else if (m_ElementType == ShipController.ElementType.turret) {
-            ModuleRepairRate = ShipController.RepairRate * ShipController.TurretsRepairCrew * Time.deltaTime;
+            ModuleRepairRate = RepairRate * ShipController.GetTurretsRepairCrew() * Time.deltaTime;
         } else {
-            ModuleRepairRate = ShipController.RepairRate * Time.deltaTime;
+            ModuleRepairRate = RepairRate * Time.deltaTime;
         }
         CurrentHealth += ModuleRepairRate;
 
         // Stop repair and reactivate the module when full health is back
         if (CurrentHealth >= m_ElementHealth) {
             CurrentHealth = m_ElementHealth;
-            m_Dead = false;
+            Dead = false;
         }
     }
 }

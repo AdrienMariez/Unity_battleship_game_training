@@ -4,10 +4,8 @@ using Crest;
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
-
-    // [HideInInspector] public bool m_Active;
-    private bool m_Active;
-    [HideInInspector] public bool m_Dead;
+    private bool Active;
+    private bool Dead;
 
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
@@ -26,14 +24,14 @@ public class ShipController : MonoBehaviour {
     private float TargetpositionY = 0.0f;
     private float LeakRatio = 0.0f;
 
-    [HideInInspector] public bool engine = false;
-    [HideInInspector] public float engineCount = 0;
+    private bool engine = false;                    // Is there an engine dm component ? (aka can the engine be disabled ?)
+    private float engineCount = 0;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
 
-    [HideInInspector] public float RepairRate;
-    [HideInInspector] public float EngineRepairCrew;
-    [HideInInspector] public float FireRepairCrew;
-    [HideInInspector] public float WaterRepairCrew;
-    [HideInInspector] public float TurretsRepairCrew;
+    private float RepairRate;
+    private float EngineRepairCrew;
+    private float FireRepairCrew;
+    private float WaterRepairCrew;
+    private float TurretsRepairCrew;
 
     [HideInInspector] public float CurrentHealth;
 
@@ -51,7 +49,7 @@ public class ShipController : MonoBehaviour {
     }
 
     private void Start() {
-        m_Dead = false;
+        Dead = false;
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
@@ -64,7 +62,7 @@ public class ShipController : MonoBehaviour {
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
-            RepairRate = DamageControl.RepairRate;
+            RepairRate = DamageControl.GetRepairRate();
         }
         if (GetComponent<TurretManager>()) {
             Turrets = GetComponent<TurretManager>();
@@ -75,7 +73,7 @@ public class ShipController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-		// Debug.Log("m_Active :"+ m_Active);
+		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
         BuoyancyLoop();
     }
@@ -144,7 +142,7 @@ public class ShipController : MonoBehaviour {
                 TargetRotationX = CurrentRotationX;
             if (CurrentRotationZ != TargetRotationZ)
                 TargetRotationX = CurrentRotationZ;
-            if (!m_Dead)
+            if (!Dead)
                 BuoyancyRepair();
         }
     }
@@ -184,7 +182,7 @@ public class ShipController : MonoBehaviour {
         ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
 
         // Check death by taking in too much water
-        if (CurrentpositionY < -2 && !m_Dead)
+        if (CurrentpositionY < -2 && !Dead)
             CallDeath();
     }
     private void BuoyancyCorrectXZ(float ratio) {
@@ -207,7 +205,7 @@ public class ShipController : MonoBehaviour {
         ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         // Check death by taking in too much water
-        if (CurrentRotationX < -3  && !m_Dead|| CurrentRotationX > 3  && !m_Dead|| CurrentRotationZ < -15  && !m_Dead|| CurrentRotationZ > 15 && !m_Dead)
+        if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead)
             CallDeath();
     }
 
@@ -216,8 +214,8 @@ public class ShipController : MonoBehaviour {
     }
 
     public void CallDeath() {
-        // Debug.Log("DEATH"+m_Dead);
-        m_Dead = true;
+        // Debug.Log("DEATH"+Dead);
+        Dead = true;
         tag = "Untagged";
 
         // Sink the ship
@@ -244,11 +242,20 @@ public class ShipController : MonoBehaviour {
             UI.SetMap(map);
     }
     public void SetActive(bool activate) {
-        m_Active = activate;
+        Active = activate;
         if (GetComponent<TurretManager>())
-                Turrets.SetActive(m_Active);
-        Movement.SetActive(m_Active);
+                Turrets.SetActive(Active);
+        Movement.SetActive(Active);
         // UI is activated if the unit is NOT active.
-        UI.SetActive(!m_Active);
+        UI.SetActive(!Active);
     }
+    public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
+    public void SetDamageControlEngineCount(float setEngineCount){ engineCount += setEngineCount; }
+    public void SetDamageControlEngine(float setCrew){ EngineRepairCrew = setCrew; }
+    public void SetDamageControlFire(float setCrew){ FireRepairCrew = setCrew; }
+    public void SetDamageControlWater(float setCrew){ WaterRepairCrew = setCrew; }
+    public void SetDamageControlTurrets(float setCrew){ TurretsRepairCrew = setCrew; }
+    public float GetRepairRate() { return RepairRate; }
+    public float GetEngineRepairCrew() { return EngineRepairCrew; }
+    public float GetTurretsRepairCrew() { return TurretsRepairCrew; }
 }
