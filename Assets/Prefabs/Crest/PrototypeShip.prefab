@@ -176,7 +176,6 @@ MonoBehaviour:
   m_ElementArmor: 20
   m_ElementType: 0
   debug: 0
-  m_Dead: 0
 --- !u!1 &993795375933283818
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +237,6 @@ MonoBehaviour:
   m_ElementArmor: 120
   m_ElementType: 1
   debug: 0
-  m_Dead: 0
 --- !u!1 &1724336416537029660
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +390,6 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 8
   debug: 0
-  m_Dead: 0
 --- !u!1 &2367593099060703592
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +686,6 @@ MonoBehaviour:
   - {fileID: 7236919778627469554}
   - {fileID: 200954578029695150}
   - {fileID: 6535678133232496662}
-  m_Active: 0
 --- !u!114 &8757330345396271474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,14 +707,6 @@ MonoBehaviour:
   - {fileID: 8355142522631704766}
   - {fileID: 7249044125137320703}
   - {fileID: 5636582554979631985}
-  m_Dead: 0
-  engine: 0
-  engineCount: 0
-  RepairRate: 0
-  EngineRepairCrew: 0
-  FireRepairCrew: 0
-  WaterRepairCrew: 0
-  TurretsRepairCrew: 0
   CurrentHealth: 0
 --- !u!114 &8857893665739000309
 MonoBehaviour:
@@ -734,10 +722,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RepairRate: 3
   RepairCrew: 3
-  EngineRepairCrew: 0
-  FireRepairCrew: 0
-  WaterRepairCrew: 0
-  TurretsRepairCrew: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,8 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbffc2cc92332164e835867a590dea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
-  m_Dead: 0
   m_MaxSpeed: 1
   m_TurnSpeed: 1
   m_MovementAudio: {fileID: 6341268151872624709}
@@ -820,9 +802,6 @@ MonoBehaviour:
   _playerControlled: 1
   _engineBias: 0
   _turnBias: 0
-  SpeedInput: 0
-  RotationInput: 0
-  m_Dead: 0
 --- !u!114 &2323533620668912384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,7 +1230,6 @@ MonoBehaviour:
   m_ElementArmor: 100
   m_ElementType: 4
   debug: 0
-  m_Dead: 0
 --- !u!1 &5251643191496273279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,7 +1330,6 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 7
   debug: 0
-  m_Dead: 0
 --- !u!1 &7249044125137320703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,7 +1391,6 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 6
   debug: 0
-  m_Dead: 0
 --- !u!1 &7323605990610594148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1680,6 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 3
   debug: 0
-  m_Dead: 0
 --- !u!1 &8221208147222745231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,7 +1855,6 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 9
   debug: 0
-  m_Dead: 0
 --- !u!1001 &387310411779816050
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2855,6 +2829,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2661556145241615459}
     m_Modifications:
+    - target: {fileID: 6830250405678653116, guid: e730b8922e5f274478b87b2d73de623d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830250405678653116, guid: e730b8922e5f274478b87b2d73de623d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7299299942266185465, guid: e730b8922e5f274478b87b2d73de623d,
         type: 3}
       propertyPath: m_LocalPosition.x

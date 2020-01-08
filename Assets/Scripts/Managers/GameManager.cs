@@ -6,58 +6,110 @@ using UnityEngine.SceneManagement;
 // Monobehaviour marks that this script extends an existing class
 public class GameManager : MonoBehaviour
 {
+    public enum Teams {
+        Allies,
+        AlliesAI,
+        Axis,
+        AxisAI,
+        NeutralAI
+    }
+    public enum Nations {
+        US,
+        Japan,
+        GB,
+        Germany,
+        USSR,
+        China,
+        France
+    }
+
+    public Teams m_PlayerTeam;
+    public UnitManager[] m_Units; 
+
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
     public float m_EndDelay = 3f;               // The delay between the end of RoundPlaying and RoundEnding phases.
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
-    public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
-    public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
-
-    public int m_SinglePlayerTeam = 0;          // Team of the player (0 : Allies, 1 : Axis, 2 : Neutral)
-
-    //public GameObject[] PlayableUnits;
-
-    //public GameObject[] PlayerUnits;
-
-
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
-    private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
-    private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+
+    private int PlayableUnits;
+    private int EnemiesUnits;
+    private int WinsAllies;                     // How many Allies round victories this far ?
+    private int WinsAxis;                       // How many Axis round victories this far ?
+    private Teams RoundWinner;                  // Who won this particular round ?
+    private Teams GameWinner;                   // Who won the whole game ?
 
 
-    private void Start()
-    {
+
+
+
+    // public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
+    // public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    // private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
+    // private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+
+    //OK
+    private void Start() {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
 
-        SpawnAllTanks();
-        // SetCameraTargets();
+        SpawnAllUnits();
 
-        // Once the tanks have been created and the camera is using them as targets, start the game.
+        // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());
     }
 
+    //OK
+    private void SpawnAllUnits() {
+        // Reset counters
+        PlayableUnits = 0;
+        EnemiesUnits = 0;
 
-    private void SpawnAllTanks()
-    {
-        // For all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            // ... create them, set their player number and references needed for control.
-            m_Tanks[i].m_Instance =
-                Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
-            m_Tanks[i].m_PlayerNumber = i + 1;
-            m_Tanks[i].Setup();
+        // Setup each unit
+        for (int i = 0; i < m_Units.Length; i++) {
+            if (m_Units[i].m_UseSpawnpoint) {
+                // m_Units[i].m_Instance = Instantiate(m_Units[i].m_UnitPrefab, m_Units[i].m_SpawnPoint.position, m_Units[i].m_SpawnPoint.rotation) as GameObject;
+                m_Units[i].SetInstance(Instantiate(m_Units[i].m_UnitPrefab, m_Units[i].m_SpawnPoint.position, m_Units[i].m_SpawnPoint.rotation) as GameObject);
+            }
+            // TODO if not using a spawn point...
+
+            m_Units[i].Setup();
+
+            // Set the needed units to attain win conditions
+            if (m_PlayerTeam == Teams.Allies) {
+                if (m_Units[i].m_Team == Teams.Axis) {
+                    EnemiesUnits ++;
+                } else if (m_Units[i].m_Team == Teams.AxisAI) {
+                    EnemiesUnits ++;
+                }
+            } else {
+                if (m_Units[i].m_Team == Teams.Allies) {
+                    EnemiesUnits ++;
+                } else if (m_Units[i].m_Team == Teams.AlliesAI) {
+                    EnemiesUnits ++;
+                }
+            }
+
+            // Set the playable units the player must keep to attain win conditions
+            if (m_PlayerTeam == Teams.Allies) {
+                if (m_Units[i].m_Team == Teams.Allies) {
+                    PlayableUnits ++;
+                }
+            } else {
+                if (m_Units[i].m_Team == Teams.Axis) {
+                    PlayableUnits ++;
+                }
+            }
         }
     }
 
 
     // This is called from start and will run each phase of the game one after another.
-    private IEnumerator GameLoop ()
-    {
+    //OK
+    private IEnumerator GameLoop () {
         // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
         yield return StartCoroutine (RoundStarting ());
 
@@ -68,25 +120,22 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine (RoundEnding());
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (m_GameWinner != null)
-        {
+        if (GameWinner != Teams.NeutralAI) {
             // If there is a game winner, restart the level.
             SceneManager.LoadScene (0);
         }
-        else
-        {
+        else {
             // If there isn't a winner yet, restart this coroutine so the loop continues.
             // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
             StartCoroutine (GameLoop ());
         }
     }
 
-
-    private IEnumerator RoundStarting ()
-    {
+    //OK
+    private IEnumerator RoundStarting () {
         // As soon as the round starts reset the tanks and make sure they can't move.
-        ResetAllTanks ();
-        DisableTankControl ();
+        ResetAllUnits ();
+        DisableUnitsControl ();
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
@@ -96,17 +145,16 @@ public class GameManager : MonoBehaviour
         yield return m_StartWait;
     }
 
-
-    private IEnumerator RoundPlaying ()
-    {
+    //OK
+    private IEnumerator RoundPlaying () {
         // As soon as the round begins playing let the players control the tanks.
-        EnableTankControl ();
+        EnableUnitsControl ();
 
         // Clear the text from the screen.
         m_MessageText.text = string.Empty;
 
-        // While there is not one tank left...
-        while (!OneTankLeft())
+        // While there is not one side reduced to 0...
+        while (!NoUnitLeftOnOneSide())
         {
             // ... return on the next frame.
             yield return null;
@@ -114,23 +162,28 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator RoundEnding ()
-    {
+    private IEnumerator RoundEnding () {
         // Stop tanks from moving.
-        DisableTankControl ();
+        DisableUnitsControl ();
 
         // Clear the winner from the previous round.
-        m_RoundWinner = null;
+        RoundWinner = Teams.NeutralAI;
 
         // See if there is a winner now the round is over.
-        m_RoundWinner = GetRoundWinner ();
+        RoundWinner = GetRoundWinner ();
 
         // If there is a winner, increment their score.
-        if (m_RoundWinner != null)
-            m_RoundWinner.m_Wins++;
+        if (RoundWinner != Teams.NeutralAI){
+            if (RoundWinner == Teams.Allies) {
+                WinsAllies++;
+            }
+            if (RoundWinner == Teams.Axis) {
+                WinsAxis++;
+            }
+        }
 
         // Now the winner's score has been incremented, see if someone has one the game.
-        m_GameWinner = GetGameWinner ();
+        GameWinner = GetGameWinner ();
 
         // Get a message based on the scores and whether or not there is a game winner and display it.
         string message = EndMessage ();
@@ -141,112 +194,113 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // This is used to check if there is one or fewer tanks remaining and thus the round should end.
-    private bool OneTankLeft()
-    {
-        // Start the count of tanks left at zero.
-        int numTanksLeft = 0;
-
-        // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            // ... and if they are active, increment the counter.
-            if (m_Tanks[i].m_Instance.activeSelf)
-                numTanksLeft++;
+    //OK
+    private bool NoUnitLeftOnOneSide() {
+        // If there are still playable units or enemy units...
+        bool sideExterminated = false;
+        if (PlayableUnits > 0 && EnemiesUnits > 0) {
+            sideExterminated = true;
         }
-
-        // If there are one or fewer tanks remaining return true, otherwise return false.
-        return numTanksLeft <= 1;
+        return sideExterminated;
     }
 
 
     // This function is to find out if there is a winner of the round.
     // This function is called with the assumption that 1 or fewer tanks are currently active.
-    private TankManager GetRoundWinner()
-    {
-        // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            // ... and if one of them is active, it is the winner so return it.
-            if (m_Tanks[i].m_Instance.activeSelf)
-                return m_Tanks[i];
+    //OK
+    private Teams GetRoundWinner() {
+        // If the playable units are depleted, it is a player defeat
+        if (PlayableUnits == 0 && EnemiesUnits > 0) {
+            if (m_PlayerTeam == Teams.Allies) {
+                return Teams.Axis;
+            } else {
+                return Teams.Allies;
+            }
         }
-
-        // If none of the tanks are active it is a draw so return null.
-        return null;
+        // If the enemy units are depleted, it is a player victory
+        if (PlayableUnits > 0 && EnemiesUnits == 0) {
+            if (m_PlayerTeam == Teams.Allies) {
+                return Teams.Allies;
+            } else {
+                return Teams.Axis;
+            }
+        }
+        // If both player units and enemy units are depleted, it is a draw
+        return Teams.NeutralAI;
     }
 
 
     // This function is to find out if there is a winner of the game.
-    private TankManager GetGameWinner()
-    {
-        // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            // ... and if one of them has enough rounds to win the game, return it.
-            if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
-                return m_Tanks[i];
+    //OK
+    private Teams GetGameWinner() {
+        if (WinsAllies == m_NumRoundsToWin) {
+            return Teams.Allies;
+        }
+        if (WinsAxis == m_NumRoundsToWin) {
+            return Teams.Axis;
         }
 
         // If no tanks have enough rounds to win, return null.
-        return null;
+        return Teams.NeutralAI;
     }
 
 
     // Returns a string message to display at the end of each round.
-    private string EndMessage()
-    {
+    //OK
+    private string EndMessage() {
         // By default when a round ends there are no winners so the default end message is a draw.
         string message = "DRAW!";
 
         // If there is a winner then change the message to reflect that.
-        if (m_RoundWinner != null)
-            message = m_RoundWinner.m_ColoredPlayerText + " WINS THE ROUND!";
+        if (RoundWinner != null) {
+            if (RoundWinner == Teams.Allies) {
+                message = "Allies won the round.";
+            } else {
+                message = "Axis won the round.";
+            }
+        }
 
         // Add some line breaks after the initial message.
         message += "\n\n\n\n";
 
-        // Go through all the tanks and add each of their scores to the message.
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            message += m_Tanks[i].m_ColoredPlayerText + ": " + m_Tanks[i].m_Wins + " WINS\n";
-        }
+        // Display Teams scores :
+        message += "Allies victories : " + WinsAllies + " victories.\n";
+        message += "Axis victories : " + WinsAllies + " victories.\n";
 
         // If there is a game winner, change the entire message to reflect that.
-        if (m_GameWinner != null)
-            message = m_GameWinner.m_ColoredPlayerText + " WINS THE GAME!";
+        if (GameWinner != null) {
+            if (GameWinner == Teams.Allies) {
+                message = "Allies won the game !";
+            } else {
+                message = "Axis won the game !";
+            }
+        }
 
         return message;
     }
 
 
     // This function is used to turn all the tanks back on and reset their positions and properties.
-    private void ResetAllTanks()
-    {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].Reset();
+    //OK
+    private void ResetAllUnits() {
+        for (int i = 0; i < m_Units.Length; i++) {
+            m_Units[i].Reset();
         }
     }
 
-
-    private void EnableTankControl()
+    //OK
+    private void EnableUnitsControl()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].EnableControl();
+        for (int i = 0; i < m_Units.Length; i++) {
+            m_Units[i].EnableControl();
         }
-        // GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = true;
     }
 
-
-    private void DisableTankControl()
+    //OK
+    private void DisableUnitsControl()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            m_Tanks[i].DisableControl();
+        for (int i = 0; i < m_Units.Length; i++) {
+            m_Units[i].DisableControl();
         }
-        // Disable the PlayerManager while the units are disabled
-        // GameObject.Find("GameManager").GetComponent<PlayerManager>().m_Active = false;
     }
 }

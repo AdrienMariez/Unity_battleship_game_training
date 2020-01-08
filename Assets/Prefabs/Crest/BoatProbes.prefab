@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 6156407015885539292}
   m_Layer: 0
   m_Name: BoatProbes
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,6 @@ MonoBehaviour:
   _playerControlled: 0
   _engineBias: 1
   _turnBias: 0.5
-  m_Active: 0
 --- !u!54 &54707522104481946
 Rigidbody:
   m_ObjectHideFlags: 0

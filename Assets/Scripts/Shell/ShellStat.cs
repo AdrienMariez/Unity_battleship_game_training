@@ -142,8 +142,7 @@ public class ShellStat : MonoBehaviour
             if (x<0)
                 x = 0;
 
-            Debug.Log("New value = "+ x);
-            // Debug.Log("Original = "+ test2);
+            // Debug.Log("x = "+ x);
 
             // Convert X back into an euler angle
             x += 90;

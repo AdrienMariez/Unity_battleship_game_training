@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
 public class TankMovement : MonoBehaviour
-{
-    public int m_PlayerNumber = 1;         
+{        
     [HideInInspector] public bool m_Active; 
     public float m_Speed = 12f;            
     public float m_TurnSpeed = 180f;       
