@@ -1562,22 +1562,22 @@ MonoBehaviour:
   m_Units:
   - m_Team: 4
     m_Nation: 5
-    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+    m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 617844557}
   - m_Team: 4
     m_Nation: 5
-    m_UnitPrefab: {fileID: 1371779553471058, guid: b1b7facba95fcaf4eb07f93014681981,
+    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 1008810204}
+    m_SpawnPoint: {fileID: 1691915097}
   - m_Team: 4
     m_Nation: 5
-    m_UnitPrefab: {fileID: 1371779553471058, guid: b1b7facba95fcaf4eb07f93014681981,
+    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 1008810204}
+    m_SpawnPoint: {fileID: 1648268892}
   m_NumRoundsToWin: 5
   m_StartDelay: 1
   m_EndDelay: 2

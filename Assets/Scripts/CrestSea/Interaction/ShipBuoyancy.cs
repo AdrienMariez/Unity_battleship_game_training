@@ -83,7 +83,7 @@ namespace Crest
         private float SinkingZ;
 
 
-        private void Start() {
+        private void Awake() {
             _rb = GetComponent<Rigidbody>();
             _rb.centerOfMass = _centerOfMass;
 

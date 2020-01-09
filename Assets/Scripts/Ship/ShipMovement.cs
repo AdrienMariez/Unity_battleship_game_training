@@ -39,10 +39,10 @@ public class ShipMovement : MonoBehaviour
 
     private ShipBuoyancy m_Buoyancy;
 
-    private void Awake() {
+    private void Start() {
     }
 
-    private void Start()
+    private void Awake()
     {
         m_Buoyancy = GetComponent<ShipBuoyancy>();
         // Store the original pitch of the audio source.

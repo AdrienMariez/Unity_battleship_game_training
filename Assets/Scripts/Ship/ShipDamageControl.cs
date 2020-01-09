@@ -13,7 +13,7 @@ public class ShipDamageControl : MonoBehaviour {
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
 
-    private void Start() {
+    private void Awake() {
         EngineRepairCrew = 1;
         FireRepairCrew = 1;
         WaterRepairCrew = 1;

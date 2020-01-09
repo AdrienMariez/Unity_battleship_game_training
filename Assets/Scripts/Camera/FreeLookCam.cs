@@ -130,9 +130,9 @@ namespace FreeLookCamera {
             // if (Target == null) 
                 // ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
 
-            // Move the rig towards target position.
-            Target = ActiveTarget.transform;
+            // Target = ActiveTarget.transform;
 
+            // Move the rig towards target position.
             transform.position = Vector3.Lerp(transform.position, Target.position, deltaTime * m_MoveSpeed);
         }
 

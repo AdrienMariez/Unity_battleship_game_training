@@ -48,14 +48,15 @@ public class ShipController : MonoBehaviour {
         underwaterBackRight
     }
 
-    private void Start() {
+    private void Awake() {
         Dead = false;
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
+        float HP = Health.GetStartingHealth();
 
         UI = GetComponent<ShipUI>();
-        float HP = Health.GetStartingHealth();
+        UI.Init();
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 

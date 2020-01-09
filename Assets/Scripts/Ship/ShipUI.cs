@@ -11,11 +11,9 @@ public class ShipUI : MonoBehaviour {
     private GameObject ShipUISliderObject;
     private Slider ShipUISlider;
     private Transform CameraPosition;
-    // private float StartingHealth;
-    // private float CurrentHealth;
 
 
-    private void Start() {
+    public void Init() {
         CameraPosition = GameObject.Find("MainCamera").transform;
         ShipUITransform = this.gameObject.transform.GetChild(1).transform;
         ShipUIText = this.gameObject.transform.GetChild(1).GetChild(0).GetComponent<Text>();
@@ -26,18 +24,16 @@ public class ShipUI : MonoBehaviour {
 
     private void FixedUpdate() {
         if (Active) {
-            // ShipUIText.text = string.Format("{2}\n{0}/{1}", CurrentHealth,StartingHealth,this.name);
             ShipUITransform.LookAt(CameraPosition.position);
         }
     }
 
     public void SetStartingHealth(float FullHP) {
-        // StartingHealth = FullHP;
+        // Debug.Log (this.name+" - ShipUISlider -"+ShipUISlider);
         ShipUISlider.maxValue = FullHP;
         ShipUISlider.value = FullHP;
     }
     public void SetCurrentHealth(float HP) {
-        // CurrentHealth = HP;
         ShipUISlider.value = HP;
     }
     public void SetMap(bool map) {
