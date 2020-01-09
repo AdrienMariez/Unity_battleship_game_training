@@ -1558,22 +1558,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerTeam: 0
+  m_PlayerTeam: 2
   m_Units:
-  - m_Team: 4
-    m_Nation: 5
+  - m_Team: 2
+    m_Nation: 1
     m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 617844557}
-  - m_Team: 4
-    m_Nation: 5
+  - m_Team: 0
+    m_Nation: 0
     m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 1691915097}
-  - m_Team: 4
-    m_Nation: 5
+  - m_Team: 0
+    m_Nation: 0
     m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UseSpawnpoint: 1
@@ -2702,17 +2702,17 @@ PrefabInstance:
     - target: {fileID: 8974371313272786539, guid: 45d624a180faeca4fb0b6d7c176920df,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 298.9
+      value: -371.7
       objectReference: {fileID: 0}
     - target: {fileID: 8974371313272786539, guid: 45d624a180faeca4fb0b6d7c176920df,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 27.400002
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8974371313272786539, guid: 45d624a180faeca4fb0b6d7c176920df,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -68.7
+      value: -121.5
       objectReference: {fileID: 0}
     - target: {fileID: 8974371313272786539, guid: 45d624a180faeca4fb0b6d7c176920df,
         type: 3}

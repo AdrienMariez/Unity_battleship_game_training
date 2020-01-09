@@ -41,16 +41,6 @@ public class GameManager : MonoBehaviour
     private Teams RoundWinner;                  // Who won this particular round ?
     private Teams GameWinner;                   // Who won the whole game ?
 
-
-
-
-
-    // public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
-    // public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
-    // private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
-    // private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
-
-    //OK
     private void Start() {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
@@ -62,7 +52,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine (GameLoop ());
     }
 
-    //OK
     private void SpawnAllUnits() {
         // Reset counters
         PlayableUnits = 0;
@@ -106,9 +95,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     // This is called from start and will run each phase of the game one after another.
-    //OK
     private IEnumerator GameLoop () {
         // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
         yield return StartCoroutine (RoundStarting ());
@@ -131,7 +118,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //OK
     private IEnumerator RoundStarting () {
         // As soon as the round starts reset the tanks and make sure they can't move.
         ResetAllUnits ();
@@ -145,13 +131,13 @@ public class GameManager : MonoBehaviour
         yield return m_StartWait;
     }
 
-    //OK
     private IEnumerator RoundPlaying () {
         // As soon as the round begins playing let the players control the tanks.
         EnableUnitsControl ();
 
         // Clear the text from the screen.
-        m_MessageText.text = string.Empty;
+        m_MessageText.text = "Player remaining units : " + PlayableUnits +"\n";
+        m_MessageText.text += "Enemy remaining units : " + EnemiesUnits;
 
         // While there is not one side reduced to 0...
         while (!NoUnitLeftOnOneSide())
@@ -160,7 +146,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-
 
     private IEnumerator RoundEnding () {
         // Stop tanks from moving.
@@ -193,21 +178,15 @@ public class GameManager : MonoBehaviour
         yield return m_EndWait;
     }
 
-
-    //OK
     private bool NoUnitLeftOnOneSide() {
         // If there are still playable units or enemy units...
         bool sideExterminated = false;
-        if (PlayableUnits > 0 && EnemiesUnits > 0) {
+        if (PlayableUnits == 0 || EnemiesUnits == 0) {
             sideExterminated = true;
         }
         return sideExterminated;
     }
 
-
-    // This function is to find out if there is a winner of the round.
-    // This function is called with the assumption that 1 or fewer tanks are currently active.
-    //OK
     private Teams GetRoundWinner() {
         // If the playable units are depleted, it is a player defeat
         if (PlayableUnits == 0 && EnemiesUnits > 0) {
@@ -229,9 +208,6 @@ public class GameManager : MonoBehaviour
         return Teams.NeutralAI;
     }
 
-
-    // This function is to find out if there is a winner of the game.
-    //OK
     private Teams GetGameWinner() {
         if (WinsAllies == m_NumRoundsToWin) {
             return Teams.Allies;
@@ -246,7 +222,6 @@ public class GameManager : MonoBehaviour
 
 
     // Returns a string message to display at the end of each round.
-    //OK
     private string EndMessage() {
         // By default when a round ends there are no winners so the default end message is a draw.
         string message = "DRAW!";
@@ -280,15 +255,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // This function is used to turn all the tanks back on and reset their positions and properties.
-    //OK
+    // This function is used to turn all the units back on and reset their positions and properties.
     private void ResetAllUnits() {
         for (int i = 0; i < m_Units.Length; i++) {
             m_Units[i].Reset();
         }
     }
 
-    //OK
     private void EnableUnitsControl()
     {
         for (int i = 0; i < m_Units.Length; i++) {
@@ -296,7 +269,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //OK
     private void DisableUnitsControl()
     {
         for (int i = 0; i < m_Units.Length; i++) {
