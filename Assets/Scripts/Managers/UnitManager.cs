@@ -41,5 +41,9 @@ public class UnitManager {
 
     public void SetInstance(GameObject Object){
         m_Instance = Object;
+        if (m_Instance.GetComponent<ShipController>()) {
+            m_Instance.GetComponent<ShipController>().SetTag(m_Team);
+            Debug.Log("m_Instance :"+ m_Instance);
+        }
     }
 }

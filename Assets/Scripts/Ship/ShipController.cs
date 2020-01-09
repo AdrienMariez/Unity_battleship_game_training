@@ -256,6 +256,7 @@ public class ShipController : MonoBehaviour {
     public void SetDamageControlFire(float setCrew){ FireRepairCrew = setCrew; }
     public void SetDamageControlWater(float setCrew){ WaterRepairCrew = setCrew; }
     public void SetDamageControlTurrets(float setCrew){ TurretsRepairCrew = setCrew; }
+    public void SetTag(GameManager.Teams team){ gameObject.tag = "LandingZone"; }
     public float GetRepairRate() { return RepairRate; }
     public float GetEngineRepairCrew() { return EngineRepairCrew; }
     public float GetTurretsRepairCrew() { return TurretsRepairCrew; }
