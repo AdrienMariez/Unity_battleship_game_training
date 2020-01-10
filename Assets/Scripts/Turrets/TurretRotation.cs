@@ -4,7 +4,7 @@ using FreeLookCamera;
 
 public class TurretRotation : MonoBehaviour
 {    
-    private bool Active;
+    private bool Active = false;
     private bool Dead;
 
     [Header("Elements")]

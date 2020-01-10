@@ -3,7 +3,7 @@
 public class TurretManager : MonoBehaviour
 {    
     public GameObject[] m_Turrets;
-    private bool Active;
+    private bool Active = false;
     private float TurretsRepairCrew;
     private float TargetRange;
 

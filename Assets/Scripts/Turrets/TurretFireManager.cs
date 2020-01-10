@@ -4,7 +4,7 @@ using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
 {
-    private bool Active;
+    private bool Active = false;
     private bool Dead;
     [Tooltip("Type of turret")] public TurretType m_TurretType;
     [Tooltip("Ammo used")] public GameObject m_Shell;
@@ -142,23 +142,11 @@ public class TurretFireManager : MonoBehaviour
         }
     }
 
-    public void SetActive(bool activate) {
-        Active = activate;
-    }
-    public void SetPreventFire(bool status){
-        PreventFire = status;
-    }
-    public float GetTargetRange(){
-        return targetRange;
-    }
-
-    public void SetTargetRange(float range){
-        targetRange = range;
-    }
-
-    public void SetTurretDeath(bool IsShipDead) {
-        Dead = IsShipDead;
-    }
+    public void SetActive(bool activate) { Active = activate; }
+    public void SetPreventFire(bool status){ PreventFire = status; }
+    public float GetTargetRange(){ return targetRange; }
+    public void SetTargetRange(float range){ targetRange = range; }
+    public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public string GetTurretStatus() {
         string Status;
         if (Dead){

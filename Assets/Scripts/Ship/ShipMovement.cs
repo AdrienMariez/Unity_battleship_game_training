@@ -5,7 +5,7 @@ using Crest;
 
 public class ShipMovement : MonoBehaviour
 {
-    private bool Active; 
+    private bool Active = false; 
     private bool Dead; 
     [HideInInspector] public float m_MaxSpeed = 1f;
     [HideInInspector] public float m_TurnSpeed = 1f;

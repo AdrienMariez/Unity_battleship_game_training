@@ -4,13 +4,16 @@ using Crest;
 
 public class ShipUI : MonoBehaviour {
 
-    private bool Active;
+    private bool Active = true;
     private bool MapActive;
     private Transform ShipUITransform;
     private Text ShipUIText;
     private GameObject ShipUISliderObject;
     private Slider ShipUISlider;
     private Transform CameraPosition;
+
+    [Header("Debug")]
+        public bool debug = false;
 
 
     public void Init() {
@@ -23,6 +26,8 @@ public class ShipUI : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        // if (debug)
+        //     Debug.Log (this.name+" - ShipUISlider -"+ShipUISlider);
         if (Active) {
             ShipUITransform.LookAt(CameraPosition.position);
         }
