@@ -4,8 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // Monobehaviour marks that this script extends an existing class
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public enum Teams {
         Allies,
         AlliesAI,
@@ -41,30 +40,55 @@ public class GameManager : MonoBehaviour
     private Teams RoundWinner;                  // Who won this particular round ?
     private Teams GameWinner;                   // Who won the whole game ?
 
+    private PlayerManager PlayerManager;
+
     private void Start() {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
-
-        SpawnAllUnits();
+        PlayerManager = GetComponent<PlayerManager>();
 
         // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());
     }
 
-    private void SpawnAllUnits() {
+    // This is called from start and will run each phase of the game one after another.
+    private IEnumerator GameLoop () {
+        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+        yield return StartCoroutine (RoundStarting ());
+
+        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+        yield return StartCoroutine (RoundPlaying());
+
+        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+        yield return StartCoroutine (RoundEnding());
+
+        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+        if (GameWinner != Teams.NeutralAI) {
+            // If there is a game winner, restart the level.
+            SceneManager.LoadScene (0);
+        } else {
+            // If there isn't a winner yet, restart this coroutine so the loop continues.
+            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+            StartCoroutine (GameLoop ());
+        }
+    }
+
+    private IEnumerator RoundStarting () {
         // Reset counters
         PlayableUnits = 0;
         EnemiesUnits = 0;
 
         // Setup each unit
         for (int i = 0; i < m_Units.Length; i++) {
+            m_Units[i].Destroy();
+
             if (m_Units[i].m_UseSpawnpoint) {
-                // m_Units[i].m_Instance = Instantiate(m_Units[i].m_UnitPrefab, m_Units[i].m_SpawnPoint.position, m_Units[i].m_SpawnPoint.rotation) as GameObject;
                 m_Units[i].SetInstance(Instantiate(m_Units[i].m_UnitPrefab, m_Units[i].m_SpawnPoint.position, m_Units[i].m_SpawnPoint.rotation) as GameObject);
             }
             // TODO if not using a spawn point...
 
+            m_Units[i].SetGameManager(this);
             m_Units[i].Setup();
 
             // Set the needed units to attain win conditions
@@ -93,35 +117,12 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    // This is called from start and will run each phase of the game one after another.
-    private IEnumerator GameLoop () {
-        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
-        yield return StartCoroutine (RoundStarting ());
-
-        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
-        yield return StartCoroutine (RoundPlaying());
-
-        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
-        yield return StartCoroutine (RoundEnding());
-
-        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (GameWinner != Teams.NeutralAI) {
-            // If there is a game winner, restart the level.
-            SceneManager.LoadScene (0);
-        }
-        else {
-            // If there isn't a winner yet, restart this coroutine so the loop continues.
-            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
-            StartCoroutine (GameLoop ());
-        }
-    }
-
-    private IEnumerator RoundStarting () {
-        // As soon as the round starts reset the tanks and make sure they can't move.
+        // As soon as the round starts reset the units and make sure they can't move.
         ResetAllUnits ();
         DisableUnitsControl ();
+
+        // Reset the camera
+        PlayerManager.Reset();
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
@@ -136,8 +137,7 @@ public class GameManager : MonoBehaviour
         EnableUnitsControl ();
 
         // Clear the text from the screen.
-        m_MessageText.text = "Player remaining units : " + PlayableUnits +"\n";
-        m_MessageText.text += "Enemy remaining units : " + EnemiesUnits;
+        m_MessageText.text = GameMessage();
 
         // While there is not one side reduced to 0...
         while (!NoUnitLeftOnOneSide())
@@ -254,6 +254,12 @@ public class GameManager : MonoBehaviour
         return message;
     }
 
+    private string GameMessage() {
+        string message = "Player units : " + PlayableUnits +"\n";
+        message += "Enemy units : " + EnemiesUnits;
+
+        return message;
+    }
 
     // This function is used to turn all the units back on and reset their positions and properties.
     private void ResetAllUnits() {
@@ -262,17 +268,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void EnableUnitsControl()
-    {
+    private void EnableUnitsControl() {
         for (int i = 0; i < m_Units.Length; i++) {
             m_Units[i].EnableControl();
         }
     }
 
-    private void DisableUnitsControl()
-    {
+    private void DisableUnitsControl() {
         for (int i = 0; i < m_Units.Length; i++) {
             m_Units[i].DisableControl();
         }
+    }
+
+    public Teams GetPlayer(){
+        return m_PlayerTeam;
+    }
+
+    public void SetUnitDeath(int Unit, string Tag) {
+        // Set the needed units to attain win conditions
+        // Debug.Log("number :"+ Unit);
+        // Debug.Log("Tag :"+ Tag);
+
+        if (m_PlayerTeam == Teams.Allies) {
+            if (Tag == Teams.Allies.ToString("g")) {
+                PlayableUnits += Unit;
+            } else if (Tag == Teams.Axis.ToString("g")) {
+                EnemiesUnits += Unit;
+            } else if (Tag == Teams.AxisAI.ToString("g")) {
+                EnemiesUnits += Unit;
+            }
+        } else if (m_PlayerTeam == Teams.Axis) {
+            if (Tag == Teams.Axis.ToString("g")) {
+                PlayableUnits += Unit;
+            } else if (Tag == Teams.Allies.ToString("g")) {
+                EnemiesUnits += Unit;
+            } else if (Tag == Teams.AlliesAI.ToString("g")) {
+                EnemiesUnits += Unit;
+            }
+        }
+        m_MessageText.text = GameMessage();
     }
 }

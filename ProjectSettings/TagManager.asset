@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - LandingZone
+  - Allies
+  - Axis
+  - AlliesAI
+  - AxisAI
+  - NeutralAI
   layers:
   - Default
   - TransparentFX

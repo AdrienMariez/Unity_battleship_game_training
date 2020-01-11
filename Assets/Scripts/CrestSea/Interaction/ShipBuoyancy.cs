@@ -290,15 +290,9 @@ namespace Crest
                 SinkingZ = z;
         }
 
-        public void SetSpeedInput(float Speed){
-            SpeedInput = Speed;
-        }
-        public void SetRotationInput(float Rotation){
-            RotationInput = Rotation;
-        }
-        public void SetDead(bool death) {
-            Dead = death;
-        }
+        public void SetSpeedInput(float Speed){ SpeedInput = Speed; }
+        public void SetRotationInput(float Rotation){ RotationInput = Rotation; }
+        public void SetDead(bool death) { Dead = death; }
         public float GetRealSpeed(){
             float Speed = _enginePower * SpeedInput;
             return Speed;

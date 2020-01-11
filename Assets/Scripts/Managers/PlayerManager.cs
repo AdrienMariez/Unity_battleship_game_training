@@ -16,10 +16,14 @@ public class PlayerManager : MonoBehaviour
     private GameObject ActiveTarget;
     private bool MapActive;
     private FreeLookCam FreeLookCamera;
+    private GameManager GameManager;
+    private GameManager.Teams PlayerTeam;
     private UIManager UIManager;
 
     private void Start() {
         FreeLookCamera = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
+        GameManager = GetComponent<GameManager>();
+        PlayerTeam = GameManager.GetPlayer();
         UIManager = GetComponent<UIManager>();
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
@@ -66,7 +70,8 @@ public class PlayerManager : MonoBehaviour
 
     private void FindAllPossibleTargets() {
         // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
-        PlayerUnits = GameObject.FindGameObjectsWithTag("Player");
+        // PlayerUnits = GameObject.FindGameObjectsWithTag("Player");
+        PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
         // Debug.Log ("Playable units : "+ PlayerUnits.Length);
     }
 
@@ -114,6 +119,8 @@ public class PlayerManager : MonoBehaviour
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
 
+    public void SetPlayer(GameManager.Teams PlayerTeam){}
+
     public void SetMap(bool map) {
         MapActive = map;
         if (map)
@@ -125,4 +132,5 @@ public class PlayerManager : MonoBehaviour
             ActiveTarget.GetComponent<ShipController>().SetMap(map);
         }
     }
+    public void Reset(){Start();}
 }

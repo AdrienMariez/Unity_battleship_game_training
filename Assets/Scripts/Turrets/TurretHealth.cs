@@ -82,6 +82,8 @@ public class TurretHealth : MonoBehaviour {
         if (IsShipDead) {
             SetRepairRate(0f);
             SetTurretRepairRate(0f);
+        } else {
+            CurrentHealth = m_ElementHealth;
         }
     }
 }

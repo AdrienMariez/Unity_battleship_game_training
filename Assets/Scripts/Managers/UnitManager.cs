@@ -35,15 +35,26 @@ public class UnitManager {
         m_Instance.transform.position = m_SpawnPoint.position;
         m_Instance.transform.rotation = m_SpawnPoint.rotation;
 
-        m_Instance.SetActive (false);
-        m_Instance.SetActive (true);
+        m_Instance.SetActive(false);
+        m_Instance.SetActive(true);
     }
 
-    public void SetInstance(GameObject Object){
-        m_Instance = Object;
+    public void SetInstance(GameObject gameobj){
+        m_Instance = gameobj;
+
+        //send tag to ships
         if (m_Instance.GetComponent<ShipController>()) {
-            m_Instance.GetComponent<ShipController>().SetTag(m_Team);
-            Debug.Log("m_Instance :"+ m_Instance);
+            m_Instance.GetComponent<ShipController>().SetTag(m_Team.ToString("g"));
+            // Debug.Log("m_Instance :"+ m_Instance);
         }
     }
+    public void Destroy() {
+        if (m_Instance) {
+            if (m_Instance.GetComponent<ShipController>()) {
+                m_Instance.GetComponent<ShipController>().DestroyUnit();
+            }
+        }
+    }
+
+    public void SetGameManager(GameManager gameManager){ m_Instance.GetComponent<ShipController>().SetGameManager(gameManager); }
 }

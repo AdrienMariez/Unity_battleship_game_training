@@ -14,8 +14,7 @@ public class ShipHealth : MonoBehaviour
     private ShipController m_ShipController;
 
 
-    private void Awake ()
-    {
+    private void Awake () {
         CurrentHealth = m_StartingHealth;
         m_Dead = false;
         m_ShipController = GetComponent<ShipController>();

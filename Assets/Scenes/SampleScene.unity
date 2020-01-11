@@ -763,8 +763,8 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 60
-    m_Alignment: 4
+    m_MaxSize: 40
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1433,6 +1433,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901553886}
   m_CullTransparentMesh: 0
+--- !u!1 &904021149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 904021150}
+  m_Layer: 0
+  m_Name: SpawnPoint5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &904021150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904021149}
+  m_LocalRotation: {x: 0, y: 0.92990494, z: 0, w: 0.3678}
+  m_LocalPosition: {x: -179.42, y: 0, z: 113.24}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1620906255}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 136.84, z: 0}
 --- !u!1 &1008810203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,7 +1588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerTeam: 2
+  m_PlayerTeam: 0
   m_Units:
   - m_Team: 2
     m_Nation: 1
@@ -1568,16 +1598,16 @@ MonoBehaviour:
     m_SpawnPoint: {fileID: 617844557}
   - m_Team: 0
     m_Nation: 0
-    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+    m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
     m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 1691915097}
+    m_SpawnPoint: {fileID: 1008810204}
   - m_Team: 0
     m_Nation: 0
-    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+    m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
     m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 1648268892}
+    m_SpawnPoint: {fileID: 904021150}
   m_NumRoundsToWin: 5
   m_StartDelay: 1
   m_EndDelay: 2
@@ -2284,6 +2314,7 @@ Transform:
   - {fileID: 1691915097}
   - {fileID: 1008810204}
   - {fileID: 617844557}
+  - {fileID: 904021150}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3010,6 +3041,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2323533620668912384, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2486853652969784457, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3033,7 +3069,7 @@ PrefabInstance:
     - target: {fileID: 2661556145241615459, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22
+      value: -213
       objectReference: {fileID: 0}
     - target: {fileID: 2661556145241615459, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
@@ -3043,7 +3079,7 @@ PrefabInstance:
     - target: {fileID: 2661556145241615459, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: -82
       objectReference: {fileID: 0}
     - target: {fileID: 2661556145241615459, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
@@ -3533,6 +3569,11 @@ PrefabInstance:
     - target: {fileID: 1999832219657983792, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2323533620668912384, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: debug
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2661556144751186934, guid: bbac4ebb287bca44fa8b36fe1f451c2f,

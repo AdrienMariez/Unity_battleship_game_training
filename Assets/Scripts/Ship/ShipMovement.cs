@@ -217,20 +217,10 @@ public class ShipMovement : MonoBehaviour
         RotationIncrementation = true;
     }
 
-    public void SetActive(bool activate) {
-        Active = activate;
-    }
-    public void SetDead(bool death) {
-        Dead = death;
-    }
+    public void SetActive(bool activate) { Active = activate; }
+    public void SetDead(bool death) { Dead = death; }
 
-    public float GetCurrentSpeedStep(){
-        return m_CurrentSpeedStep;
-    }
-    public float GetLocalRealSpeed(){
-        return LocalRealSpeed;
-    }
-    public float GetLocalRealRotation(){
-        return LocalRealRotation;
-    }
+    public float GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
+    public float GetLocalRealSpeed(){ return LocalRealSpeed; }
+    public float GetLocalRealRotation(){ return LocalRealRotation; }
 }

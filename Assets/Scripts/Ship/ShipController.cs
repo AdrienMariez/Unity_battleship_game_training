@@ -4,9 +4,10 @@ using Crest;
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
-    private bool Active;
+    private bool Active = false;
     private bool Dead;
 
+    private GameManager GameManager;
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
     private ShipHealth Health;
@@ -32,6 +33,7 @@ public class ShipController : MonoBehaviour {
     private float FireRepairCrew;
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
+    private string unitTag;
 
     [HideInInspector] public float CurrentHealth;
 
@@ -77,6 +79,13 @@ public class ShipController : MonoBehaviour {
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
         BuoyancyLoop();
+
+        // The following is used to kill an active ship for debug purposes
+        if (Active && !Dead) {
+            if (Input.GetAxis ("VerticalShip") == 1){
+                CallDeath();
+            }
+        }
     }
 
     public void ApplyDamage(float damage) {
@@ -215,6 +224,9 @@ public class ShipController : MonoBehaviour {
     }
 
     public void CallDeath() {
+        if (GameManager)
+            GameManager.SetUnitDeath(-1, unitTag);
+
         // Debug.Log("DEATH"+Dead);
         Dead = true;
         tag = "Untagged";
@@ -250,14 +262,21 @@ public class ShipController : MonoBehaviour {
         // UI is activated if the unit is NOT active.
         UI.SetActive(!Active);
     }
+    
+    public void SetTag(string team){
+        unitTag = team;
+        gameObject.tag = unitTag;
+    }
+    public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
     public void SetDamageControlEngineCount(float setEngineCount){ engineCount += setEngineCount; }
     public void SetDamageControlEngine(float setCrew){ EngineRepairCrew = setCrew; }
     public void SetDamageControlFire(float setCrew){ FireRepairCrew = setCrew; }
     public void SetDamageControlWater(float setCrew){ WaterRepairCrew = setCrew; }
     public void SetDamageControlTurrets(float setCrew){ TurretsRepairCrew = setCrew; }
-    public void SetTag(GameManager.Teams team){ gameObject.tag = "LandingZone"; }
-    public float GetRepairRate() { return RepairRate; }
-    public float GetEngineRepairCrew() { return EngineRepairCrew; }
-    public float GetTurretsRepairCrew() { return TurretsRepairCrew; }
+    public bool GetDeath(){ return Dead; }
+    public float GetRepairRate(){ return RepairRate; }
+    public float GetEngineRepairCrew(){ return EngineRepairCrew; }
+    public float GetTurretsRepairCrew(){ return TurretsRepairCrew; }
+    public void DestroyUnit(){ Destroy (gameObject); }
 }
