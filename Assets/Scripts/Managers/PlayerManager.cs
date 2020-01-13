@@ -115,7 +115,6 @@ public class PlayerManager : MonoBehaviour
         }
         FreeLookCamera.SetActiveTarget(ActiveTarget);
         UIManager.SetActiveTarget(ActiveTarget);
-        // UI.UITest.SetActiveTarget(ActiveTarget);
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
 

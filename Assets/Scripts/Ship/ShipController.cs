@@ -81,11 +81,11 @@ public class ShipController : MonoBehaviour {
         BuoyancyLoop();
 
         // The following is used to kill an active ship for debug purposes
-        if (Active && !Dead) {
-            if (Input.GetAxis ("VerticalShip") == 1){
-                CallDeath();
-            }
-        }
+        // if (Active && !Dead) {
+        //     if (Input.GetAxis ("VerticalShip") == 1){
+        //         CallDeath();
+        //     }
+        // }
     }
 
     public void ApplyDamage(float damage) {
@@ -261,6 +261,10 @@ public class ShipController : MonoBehaviour {
         Movement.SetActive(Active);
         // UI is activated if the unit is NOT active.
         UI.SetActive(!Active);
+        // Damage Control can be shown if active
+        if (GetComponent<ShipDamageControl>()) {
+            DamageControl.SetActive(Active);
+        }
     }
     
     public void SetTag(string team){

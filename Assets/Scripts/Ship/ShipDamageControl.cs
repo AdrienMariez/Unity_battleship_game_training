@@ -2,7 +2,7 @@ using UnityEngine;
 using Crest;
 
 public class ShipDamageControl : MonoBehaviour {
-
+    private bool Active = false;
     public float RepairRate = 3;
     public float RepairCrew = 3;
 
@@ -12,6 +12,8 @@ public class ShipDamageControl : MonoBehaviour {
     private float FireRepairCrew;
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
+
+    private bool DmgCtrlOpen = false;
 
     private void Awake() {
         EngineRepairCrew = 1;
@@ -28,8 +30,26 @@ public class ShipDamageControl : MonoBehaviour {
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
 
+    protected void Update() {
+        if (Active) {
+            if (Input.GetButtonDown ("OpenDamageControl")) {
+                SetOpenDmgCtrl(!DmgCtrlOpen);
+            }
+        }
+        if (DmgCtrlOpen) {
+            // Update damage control panel ?
+        }
+    }
+
+    protected void SetOpenDmgCtrl(bool open) {
+        DmgCtrlOpen = open;
+    }
+
+    public void SetActive(bool activate) {
+        Active = activate;
+    }
+
     public float GetRepairRate() {
         return RepairRate;
     }
-
 }
