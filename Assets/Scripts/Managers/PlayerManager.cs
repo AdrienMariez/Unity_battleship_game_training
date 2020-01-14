@@ -106,6 +106,7 @@ public class PlayerManager : MonoBehaviour
                 if (i == CurrentTarget) {
                     // PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                     PlayerUnits[i].GetComponent<ShipController>().SetActive(true);
+                    PlayerUnits[i].GetComponent<ShipController>().SetMap(MapActive);
                     UIManager.SetTargetType("Ship");
                 } else {
                     PlayerUnits[i].GetComponent<ShipController>().SetActive(false);

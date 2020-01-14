@@ -1,19 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Crest;
 
 public class ShipUI : MonoBehaviour {
 
     private bool Active = true;
-    private bool MapActive;
     private Transform ShipUITransform;
     private Text ShipUIText;
     private GameObject ShipUISliderObject;
     private Slider ShipUISlider;
     private Transform CameraPosition;
 
-    [Header("Debug")]
-        public bool debug = false;
+    // [Header("Debug")]
+    //     public bool debug = false;
 
 
     public void Init() {
@@ -38,12 +36,8 @@ public class ShipUI : MonoBehaviour {
         ShipUISlider.maxValue = FullHP;
         ShipUISlider.value = FullHP;
     }
-    public void SetCurrentHealth(float HP) {
-        ShipUISlider.value = HP;
-    }
-    public void SetMap(bool map) {
-        MapActive = map;
-    }
+    public void SetCurrentHealth(float HP) { ShipUISlider.value = HP; }
+    public void SetName(string name) { ShipUIText.text = name; }
     public void SetActive(bool activate) {
         Active = activate;
         ShipUIText.enabled = Active;

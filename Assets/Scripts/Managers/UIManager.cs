@@ -6,6 +6,7 @@ using Crest;
 
 namespace UI {
     public class UIManager : MonoBehaviour {
+        [Header("Units UI")]
         public Text m_UnitName;
         public Text m_UnitHP;
             const string HPDisplay = "{0}/{1} HP";
@@ -42,7 +43,6 @@ namespace UI {
                 float CurrentRotation = -200;
                 string TurretStatus = "";
                 float TurretTargetRange = -200;
-
 
                 if (TargetType == "Tank") {
                     if (ActiveTarget.GetComponent<TankHealth>())

@@ -775,7 +775,6 @@ MonoBehaviour:
   m_ElementArmor: 30
   m_ElementType: 0
   debug: 0
-  m_Dead: 0
 --- !u!1 &4036194036648923335
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,14 +861,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShipComponents:
   - {fileID: 3641422958090581612}
-  m_Dead: 0
-  engine: 0
-  engineCount: 0
-  RepairRate: 0
-  EngineRepairCrew: 0
-  FireRepairCrew: 0
-  WaterRepairCrew: 0
-  TurretsRepairCrew: 0
   CurrentHealth: 0
 --- !u!114 &225537522
 MonoBehaviour:
@@ -905,9 +896,6 @@ MonoBehaviour:
   _playerControlled: 1
   _engineBias: 1
   _turnBias: 0.1
-  SpeedInput: 0
-  RotationInput: 0
-  m_Dead: 0
 --- !u!114 &9072288217827135263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,12 +922,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754885def86a1a0499138431163ec791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
+    type: 3}
   RepairRate: 3
   RepairCrew: 3
-  EngineRepairCrew: 0
-  FireRepairCrew: 0
-  WaterRepairCrew: 0
-  TurretsRepairCrew: 0
 --- !u!114 &8119844244652148746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -952,8 +938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbffc2cc92332164e835867a590dea62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
-  m_Dead: 0
   m_MaxSpeed: 1
   m_TurnSpeed: 1
   m_MovementAudio: {fileID: 4820114647795486464}

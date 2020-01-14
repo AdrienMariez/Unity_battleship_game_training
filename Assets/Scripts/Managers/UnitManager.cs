@@ -10,6 +10,7 @@ public class UnitManager {
     public GameManager.Teams m_Team;
     public GameManager.Nations m_Nation;
     public GameObject m_UnitPrefab;                         // The unit itself
+    public string m_UnitName;
     public bool m_UseSpawnpoint;                            // Should the game use a spawnpoint for spawning ?
     public Transform m_SpawnPoint;                          // The position and direction the unit will have when it spawns.
     private GameObject m_Instance;                          // A reference to the instance of the tank when it is created.
@@ -45,6 +46,7 @@ public class UnitManager {
         //send tag to ships
         if (m_Instance.GetComponent<ShipController>()) {
             m_Instance.GetComponent<ShipController>().SetTag(m_Team.ToString("g"));
+            m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
             // Debug.Log("m_Instance :"+ m_Instance);
         }
     }

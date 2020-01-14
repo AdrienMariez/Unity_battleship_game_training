@@ -251,8 +251,9 @@ public class ShipController : MonoBehaviour {
     public void SetMap(bool map) {
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
-        if (GetComponent<ShipUI>())
-            UI.SetMap(map);
+        if (GetComponent<ShipDamageControl>()) {
+            DamageControl.SetMap(map);
+        }
     }
     public void SetActive(bool activate) {
         Active = activate;
@@ -262,14 +263,20 @@ public class ShipController : MonoBehaviour {
         // UI is activated if the unit is NOT active.
         UI.SetActive(!Active);
         // Damage Control can be shown if active
-        if (GetComponent<ShipDamageControl>()) {
+        if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
-        }
     }
     
     public void SetTag(string team){
         unitTag = team;
         gameObject.tag = unitTag;
+    }
+    public void SetName(string name){
+        gameObject.name = name;
+        UI.SetName(name);
+        if (GetComponent<ShipDamageControl>()) {
+            DamageControl.SetName(name);
+        }
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }

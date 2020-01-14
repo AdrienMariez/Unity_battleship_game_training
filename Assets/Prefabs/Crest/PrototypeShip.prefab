@@ -720,6 +720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754885def86a1a0499138431163ec791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
+    type: 3}
   RepairRate: 3
   RepairCrew: 3
 --- !u!114 &336099227619419933

@@ -426,7 +426,7 @@ InputManager:
     descriptiveName: Open/close the damage control panel
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: ;
+    positiveButton: n
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

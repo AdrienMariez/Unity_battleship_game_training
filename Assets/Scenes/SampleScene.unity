@@ -390,7 +390,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: turrets
 --- !u!222 &244442192
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: range
 --- !u!222 &432068553
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: hp
 --- !u!222 &497072926
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1016,7 +1016,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: turning
 --- !u!222 &657300855
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1160,6 +1160,72 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2661556144605333969}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &837096955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 837096958}
+  - component: {fileID: 837096957}
+  - component: {fileID: 837096956}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &837096956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837096955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &837096957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837096955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &837096958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837096955}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &850671227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,7 +1397,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: speed step (ship)
 --- !u!222 &883861623
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1424,7 +1490,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: speed
 --- !u!222 &901553890
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1594,18 +1660,21 @@ MonoBehaviour:
     m_Nation: 1
     m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
+    m_UnitName: South Dakota
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 617844557}
   - m_Team: 0
     m_Nation: 0
     m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
+    m_UnitName: Fuso
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 1008810204}
   - m_Team: 0
     m_Nation: 0
     m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
       type: 3}
+    m_UnitName: Yamashiro
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 904021150}
   m_NumRoundsToWin: 5
@@ -2261,7 +2330,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: name
 --- !u!222 &1530772739
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3694,6 +3763,21 @@ PrefabInstance:
     - target: {fileID: 6571485985792651433, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747636626848098314, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_PixelPerfect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747636626848098314, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_OverridePixelPerfect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747636626848098314, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
+        type: 3}
+      propertyPath: m_OverrideSorting
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6791043545745746195, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
