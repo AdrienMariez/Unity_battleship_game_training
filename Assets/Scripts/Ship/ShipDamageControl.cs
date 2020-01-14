@@ -25,7 +25,7 @@ public class ShipDamageControl : MonoBehaviour {
         UnsetCrew = RepairCrew;
 
         ShipController = GetComponent<ShipController>();
-        TurretsRepairCrew += RepairCrew;
+        // TurretsRepairCrew += RepairCrew;
 
         ShipController.SetDamageControlEngine(EngineRepairCrew);
         ShipController.SetDamageControlFire(FireRepairCrew);
@@ -52,6 +52,12 @@ public class ShipDamageControl : MonoBehaviour {
         m_DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
         m_DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
         m_DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>().text = UnsetCrew.ToString("g");
+        if (UnsetCrew > 0) {
+            m_DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
+            m_DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(true);
+            m_DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(true);
+            m_DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(true);
+        }
     }
 
     protected void CloseDmgCtrl() {
