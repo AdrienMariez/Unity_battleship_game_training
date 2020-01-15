@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour {
             // TODO if not using a spawn point...
 
             m_Units[i].SetGameManager(this);
+            m_Units[i].SetPlayerManager(PlayerManager);
             m_Units[i].Setup();
 
             // Set the needed units to attain win conditions
@@ -150,6 +151,8 @@ public class GameManager : MonoBehaviour {
     private IEnumerator RoundEnding () {
         // Stop tanks from moving.
         DisableUnitsControl ();
+
+        PlayerManager.Reset();
 
         // Clear the winner from the previous round.
         RoundWinner = Teams.NeutralAI;

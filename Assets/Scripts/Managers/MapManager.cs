@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
+    // This whole file should be moved into PlayerManager, as it should be instancied for each player in the future
     public Camera m_MapCamera;
     private bool MapStatus;
     private PlayerManager PlayerManager;
@@ -12,8 +13,6 @@ public class MapManager : MonoBehaviour
     private void Start() {
         PlayerManager = GameObject.Find("GameManager").GetComponent<PlayerManager>();
         MapStatus = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     protected void Update() {
@@ -25,12 +24,6 @@ public class MapManager : MonoBehaviour
 
     public void SetMap(bool Active) {
         m_MapCamera.enabled = Active;
-        if (Active) {
-            Cursor.lockState = CursorLockMode.None;
-        } else {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        Cursor.visible = Active;
         PlayerManager.SetMap(Active);
     }
 }

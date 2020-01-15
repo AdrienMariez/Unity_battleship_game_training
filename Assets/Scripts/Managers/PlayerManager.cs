@@ -14,7 +14,8 @@ public class PlayerManager : MonoBehaviour
     private int CurrentTarget = 0;
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
-    private bool MapActive;
+    private bool MapActive = false;
+    private bool DamageControl = false;
     private FreeLookCam FreeLookCamera;
     private GameManager GameManager;
     private GameManager.Teams PlayerTeam;
@@ -27,7 +28,6 @@ public class PlayerManager : MonoBehaviour
         UIManager = GetComponent<UIManager>();
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
-        MapActive = false;
     }
 
     protected void Update() {
@@ -104,19 +104,27 @@ public class PlayerManager : MonoBehaviour
             }
             else if (PlayerUnits[i].GetComponent<ShipController>()) {
                 if (i == CurrentTarget) {
-                    // PlayerUnits[i].GetComponent<ShipController>().m_Active = true;
                     PlayerUnits[i].GetComponent<ShipController>().SetActive(true);
                     PlayerUnits[i].GetComponent<ShipController>().SetMap(MapActive);
                     UIManager.SetTargetType("Ship");
                 } else {
                     PlayerUnits[i].GetComponent<ShipController>().SetActive(false);
-                    // PlayerUnits[i].GetComponent<ShipController>().m_Active = false;
                 } 
             }
         }
         FreeLookCamera.SetActiveTarget(ActiveTarget);
         UIManager.SetActiveTarget(ActiveTarget);
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
+    }
+
+    private void CheckCameraRotation(){
+        if (MapActive || DamageControl) {
+            FreeLookCamera.SetRotation(false);
+            FreeLookCamera.SetMouse(true);
+        } else {
+            FreeLookCamera.SetRotation(true);
+            FreeLookCamera.SetMouse(false);
+        }
     }
 
     public void SetPlayer(GameManager.Teams PlayerTeam){}
@@ -131,6 +139,11 @@ public class PlayerManager : MonoBehaviour
         if (ActiveTarget.GetComponent<ShipController>()) {
             ActiveTarget.GetComponent<ShipController>().SetMap(map);
         }
+        CheckCameraRotation();
+    }
+    public void SetDamageControl(bool damageControl){
+        DamageControl = damageControl;
+        CheckCameraRotation();
     }
     public void Reset(){Start();}
 }

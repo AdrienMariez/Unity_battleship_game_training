@@ -8,6 +8,7 @@ public class ShipController : MonoBehaviour {
     private bool Dead;
 
     private GameManager GameManager;
+    private PlayerManager PlayerManager;
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
     private ShipHealth Health;
@@ -35,7 +36,7 @@ public class ShipController : MonoBehaviour {
     private float TurretsRepairCrew;
     private string unitTag;
 
-    [HideInInspector] public float CurrentHealth;
+    private float CurrentHealth;
 
     public enum ElementType {
         hull,
@@ -255,6 +256,13 @@ public class ShipController : MonoBehaviour {
             DamageControl.SetMap(map);
         }
     }
+    public void SetDamageControl(bool damageControl) {
+        // Since it works like the map (disables gun control only), we just make the guns act like when the map is open
+        if (GetComponent<TurretManager>())
+            Turrets.SetDamageControl(damageControl);
+        
+        PlayerManager.SetDamageControl(damageControl);
+    }
     public void SetActive(bool activate) {
         Active = activate;
         if (GetComponent<TurretManager>())
@@ -279,6 +287,7 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
+    public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
     public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
     public void SetDamageControlEngineCount(float setEngineCount){ engineCount += setEngineCount; }
     public void SetDamageControlEngine(float setCrew){ EngineRepairCrew = setCrew; }

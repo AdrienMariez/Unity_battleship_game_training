@@ -59,4 +59,5 @@ public class UnitManager {
     }
 
     public void SetGameManager(GameManager gameManager){ m_Instance.GetComponent<ShipController>().SetGameManager(gameManager); }
+    public void SetPlayerManager(PlayerManager playerManager){ m_Instance.GetComponent<ShipController>().SetPlayerManager(playerManager); }
 }

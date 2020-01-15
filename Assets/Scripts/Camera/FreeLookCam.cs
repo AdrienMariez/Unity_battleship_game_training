@@ -45,16 +45,16 @@ namespace FreeLookCamera {
 		private Quaternion AxisTargetRot;
 		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
-        private PlayerManager PlayerManager;
+        private bool AllowCameraRotation;
 
         protected virtual void Start() {
-            if (Target == null) return;
-            targetRigidbody = Target.GetComponent<Rigidbody>();
-
 			AxisEulers = Axis.rotation.eulerAngles;
 
 	        AxisTargetRot = Axis.transform.localRotation;
 			TransformTargetRot = transform.localRotation;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Awake(){
@@ -94,12 +94,12 @@ namespace FreeLookCamera {
                 Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
 
-            if (ActiveTarget.GetComponent<AircraftController>() && Input.GetButton ("FreeCamera") || !ActiveTarget.GetComponent<AircraftController>()) {
-                // If it's a plane and free look is activated OR if it's anything but a plane, allow free cam
-                HandleRotationMovement();
-            } else {
-                // Otherwise, it's a plane. Keep the camera behind the unit.
+            if (ActiveTarget.GetComponent<AircraftController>() && !Input.GetButton ("FreeCamera")) {
+                // If it's a plane. Keep the camera behind the unit.
                 FollowPlaneMovement();
+            } else if (AllowCameraRotation){
+                // Allow free cam if the camera can turn
+                HandleRotationMovement();
             }
             
             // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
@@ -122,16 +122,7 @@ namespace FreeLookCamera {
             Target = newTransform;
         }
 
-        // public Transform GetTarget {
-        //     get { return Target; }
-        // }
-
         protected virtual void FollowTarget(float deltaTime) {
-            // if (Target == null) 
-                // ActiveTarget = GameObject.Find("GameManager").GetComponent<PlayerManager>().ActiveTarget;
-
-            // Target = ActiveTarget.transform;
-
             // Move the rig towards target position.
             transform.position = Vector3.Lerp(transform.position, Target.position, deltaTime * m_MoveSpeed);
         }
@@ -185,6 +176,18 @@ namespace FreeLookCamera {
 
             // Give it to the local camera rig transform
             transform.rotation = Quaternion.Euler(Target.rotation.eulerAngles.x, Target.rotation.eulerAngles.y, Target.rotation.eulerAngles.z);
+        }
+
+        public void SetRotation(bool set){
+            AllowCameraRotation = set;
+        }
+        public void SetMouse(bool set){
+            if (set) {
+                Cursor.lockState = CursorLockMode.None;
+            } else {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            Cursor.visible = set;
         }
 
         public void SetActiveTarget(GameObject TargetSent) {

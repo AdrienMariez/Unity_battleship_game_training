@@ -4,7 +4,7 @@ using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
 {
-    private bool Active = false;
+    private bool PlayerControl = false;
     private bool Dead;
     [Tooltip("Type of turret")] public TurretType m_TurretType;
     [Tooltip("Ammo used")] public GameObject m_Shell;
@@ -42,16 +42,6 @@ public class TurretFireManager : MonoBehaviour
         Torpedo
     }
 
-
-
-    private void OnEnable()
-    {
-        // When the tank is turned on, reset the launch force and the UI
-        // m_CurrentLaunchForce = m_MinLaunchForce;
-        // m_AimSlider.value = m_MinLaunchForce;
-    }
-
-
     private void Start (){
         TurretRotation = GetComponent<TurretRotation>();
         FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
@@ -74,12 +64,8 @@ public class TurretFireManager : MonoBehaviour
         }else{
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
-        if (Active && !Dead) {
-            // Debug.Log("Reloading :"+ Reloading);
+        if (PlayerControl) {
             // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
-            if (m_DirectorTurret)
-                PreviewFire ();
-
             // Debug.Log("Calculated fire range : "+ targetRange);
 
             if (Input.GetButtonDown ("FireMainWeapon") && !Reloading && !PreventFire && !OutOfRange) {
@@ -98,16 +84,6 @@ public class TurretFireManager : MonoBehaviour
                 // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
             }
         }
-    }
-
-    private void PreviewFire () {
-        // For gameplay reasons, we cheat the physics here. The director(s) turrets will send their telemetric data to all other turrets
-        // targetRange = ((m_MaxRange - m_MinRange) / 100 * TurretRotation.CurrentAnglePercentage) + m_MinRange;
-        // if (debug) { Debug.Log("Calculated fire range : "+ targetRange); }
-        float targetPercentageRange = FreeLookCam.GetTiltPercentage();
-
-        targetRange = ((m_MaxRange - m_MinRange) / 100 * targetPercentageRange) + m_MinRange;
-        // if (debug) { Debug.Log("Calculated fire range : "+ targetRange); }
     }
 
     private void Fire () {
@@ -142,9 +118,10 @@ public class TurretFireManager : MonoBehaviour
         }
     }
 
-    public void SetActive(bool activate) { Active = activate; }
+    public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
     public void SetPreventFire(bool status){ PreventFire = status; }
-    public float GetTargetRange(){ return targetRange; }
+    public float GetMaxRange(){ return m_MaxRange; }
+    public float GetMinRange(){ return m_MinRange; }
     public void SetTargetRange(float range){ targetRange = range; }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public string GetTurretStatus() {

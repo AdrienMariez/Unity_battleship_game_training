@@ -45,6 +45,9 @@ public class ShipDamageControl : MonoBehaviour {
         }
     }
     protected void OpenDmgCtrl() {
+        // Cursor.lockState = CursorLockMode.None;
+        // Cursor.visible = true;
+
         m_DamageControlInstance = Instantiate(m_DamageControlUI);
         m_DamageControlInstance.transform.Find("UnitName").GetComponent<Text>().text = UnitName;
         m_DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
@@ -52,21 +55,66 @@ public class ShipDamageControl : MonoBehaviour {
         m_DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
         m_DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
         m_DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>().text = UnsetCrew.ToString("g");
+
+        Button buttonEnginePos = m_DamageControlInstance.transform.Find("buttonEnginePos").GetComponent<Button>();
+		buttonEnginePos.onClick.AddListener(ButtonEnginePosOnClick);
+
+        CheckActiveButtons();
+    }
+
+    protected void CloseDmgCtrl() {
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
+
+        if (m_DamageControlInstance)
+            Destroy (m_DamageControlInstance);
+    } 
+
+    protected void CheckActiveButtons() {
+        if (EngineRepairCrew > 0) {
+            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(false);
+        }
+
+        if (FireRepairCrew > 0) {
+            m_DamageControlInstance.transform.Find("buttonFireNeg").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("buttonFireNeg").gameObject.SetActive(false);
+        }
+
+        if (WaterRepairCrew > 0) {
+            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(false);
+        }
+
+        if (TurretsRepairCrew > 0) {
+            m_DamageControlInstance.transform.Find("buttonTurretsNeg").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("buttonTurretsNeg").gameObject.SetActive(false);
+        }
+
         if (UnsetCrew > 0) {
             m_DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
             m_DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(true);
             m_DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(true);
             m_DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(false);
+            m_DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(false);
+            m_DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(false);
+            m_DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(false);
         }
     }
 
-    protected void CloseDmgCtrl() {
-        if (m_DamageControlInstance)
-            Destroy (m_DamageControlInstance);
-    } 
+    void ButtonEnginePosOnClick(){
+        Debug.Log ("ButtonEnginePosOnClick");
+    }
 
     public void SetOpenDmgCtrl(bool open) {
         DmgCtrlOpen = open;
+        ShipController.SetDamageControl(DmgCtrlOpen);
         if (DmgCtrlOpen) {
             OpenDmgCtrl();
         } else {

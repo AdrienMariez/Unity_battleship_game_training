@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using FreeLookCamera;
 
 public class TurretRotation : MonoBehaviour
-{    
-    private bool Active = false;
+{ 
+    private bool PlayerControl = false;
     private bool Dead;
 
     [Header("Elements")]
@@ -28,7 +27,6 @@ public class TurretRotation : MonoBehaviour
         public float rightTraverse = 60.0f; 
         private float localRightTraverse;
         public FireZonesManager[] NoFireZones;
-        private bool MapActive;
 
     [Header("Vertical elevation")]
         [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float elevationSpeed = 15.0f;
@@ -50,8 +48,6 @@ public class TurretRotation : MonoBehaviour
     private float currentAng;
     private float targetAngElev;
     private float currentAngElev;
-    private GameObject CameraPivot;
-    private FreeLookCam FreeLookCam;
     private Vector3 TargetPosition;
     private float CameraPercentage;
     private TurretFireManager TurretFireManager;
@@ -59,13 +55,8 @@ public class TurretRotation : MonoBehaviour
     private bool PreventFireVert = false;
     private float TotalAngleElevRatio;
     private float CurrentAngleElevRatio;
-    [HideInInspector] public float CurrentAnglePercentage;
-
-
 
     private void Awake(){
-        FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
-        CameraPivot = GameObject.Find("CameraPivot");
         TurretFireManager = GetComponent<TurretFireManager>();
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
         TurretEulerAngle = TurretTurret.transform.localRotation.eulerAngles.y;
@@ -89,13 +80,6 @@ public class TurretRotation : MonoBehaviour
             // Debug.Log("m_IdlePosition: " + m_IdlePosition);
         // }
     }
-
-    /* Those methods are not used but could be to allow to disable all turrets of a unit if needed
-        private void OnEnable () { 
-        }
-        private void OnDisable () {
-        }
-    */
 
     private void TurretAudio() {
         // TODO play turret rotation audio if the turret axis is moving
@@ -132,19 +116,12 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!Active) {
+        if (!PlayerControl) {
+            // Will need to change this for AI
             TargetPosition = m_IdlePointer.transform.position;
-        } else {
-            if (!Input.GetButton ("FreeCamera") && !MapActive) {
-                // Manual control activated
-
-                // Get the angle of the camera here
-                CameraPercentage = FreeLookCam.GetTiltPercentage();
-                // Get target point position here
-                TargetPosition = FreeLookCam.GetTargetPosition();
-            } 
         }
 
+        // if (PlayerContro && !Dead) {
         if (!Dead) {
             TurretRotate();
             CannonElevation();
@@ -153,7 +130,7 @@ public class TurretRotation : MonoBehaviour
         }
 
         // Check if anything can prevent the turret from firing
-        if (PreventFireHoriz || PreventFireVert || MapActive){
+        if (PreventFireHoriz || PreventFireVert || !PlayerControl){
             TurretFireManager.SetPreventFire(true);
         } else{
             TurretFireManager.SetPreventFire(false);
@@ -163,7 +140,6 @@ public class TurretRotation : MonoBehaviour
                 // Debug.Log("total: " + TotalAngleElevRatio);
                 // Debug.Log("percent sent: " + CurrentAngleElevRatio);
             // }
-            CurrentAnglePercentage = CurrentAngleElevRatio * 100 / (TotalAngleElevRatio);
         }
         
         // Reassign the new parent angle for future TurretRotate()
@@ -463,15 +439,8 @@ public class TurretRotation : MonoBehaviour
         // Update the turret angle
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
     }
-
-    public void SetActive(bool activate) {
-        Active = activate;
-    }
-    public void SetMap(bool map) {
-        MapActive = map;
-    }
-
-    public void SetTurretDeath(bool IsShipDead) {
-        Dead = IsShipDead;
-    }
+    public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
+    public void SetCameraPercentage(float percentage) { CameraPercentage = percentage; }
+    public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
 }
