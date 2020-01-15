@@ -58,6 +58,23 @@ public class ShipDamageControl : MonoBehaviour {
 
         Button buttonEnginePos = m_DamageControlInstance.transform.Find("buttonEnginePos").GetComponent<Button>();
 		buttonEnginePos.onClick.AddListener(ButtonEnginePosOnClick);
+        Button buttonEngineNeg = m_DamageControlInstance.transform.Find("buttonEngineNeg").GetComponent<Button>();
+		buttonEngineNeg.onClick.AddListener(ButtonEngineNegOnClick);
+
+        Button buttonFirePos = m_DamageControlInstance.transform.Find("buttonFirePos").GetComponent<Button>();
+		buttonFirePos.onClick.AddListener(ButtonFirePosOnClick);
+        Button buttonFireNeg = m_DamageControlInstance.transform.Find("buttonFireNeg").GetComponent<Button>();
+		buttonFireNeg.onClick.AddListener(ButtonFireNegOnClick);
+
+        Button buttonWaterPos = m_DamageControlInstance.transform.Find("buttonWaterPos").GetComponent<Button>();
+		buttonWaterPos.onClick.AddListener(ButtonWaterPosOnClick);
+        Button buttonWaterNeg = m_DamageControlInstance.transform.Find("buttonWaterNeg").GetComponent<Button>();
+		buttonWaterNeg.onClick.AddListener(ButtonWaterNegOnClick);
+
+        Button buttonTurretsPos = m_DamageControlInstance.transform.Find("buttonTurretsPos").GetComponent<Button>();
+		buttonTurretsPos.onClick.AddListener(ButtonTurretsPosOnClick);
+        Button buttonTurretsNeg = m_DamageControlInstance.transform.Find("buttonTurretsNeg").GetComponent<Button>();
+		buttonTurretsNeg.onClick.AddListener(ButtonTurretsNegOnClick);
 
         CheckActiveButtons();
     }
@@ -71,6 +88,8 @@ public class ShipDamageControl : MonoBehaviour {
     } 
 
     protected void CheckActiveButtons() {
+        m_DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>().text = UnsetCrew.ToString("g");
+
         if (EngineRepairCrew > 0) {
             m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(true);
         } else {
@@ -84,9 +103,9 @@ public class ShipDamageControl : MonoBehaviour {
         }
 
         if (WaterRepairCrew > 0) {
-            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(true);
+            m_DamageControlInstance.transform.Find("buttonWaterNeg").gameObject.SetActive(true);
         } else {
-            m_DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(false);
+            m_DamageControlInstance.transform.Find("buttonWaterNeg").gameObject.SetActive(false);
         }
 
         if (TurretsRepairCrew > 0) {
@@ -109,7 +128,60 @@ public class ShipDamageControl : MonoBehaviour {
     }
 
     void ButtonEnginePosOnClick(){
-        Debug.Log ("ButtonEnginePosOnClick");
+        UnsetCrew -= 1;
+        EngineRepairCrew += 1;
+        m_DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlEngine(EngineRepairCrew);
+    }
+    void ButtonEngineNegOnClick(){
+        UnsetCrew += 1;
+        EngineRepairCrew -= 1;
+        m_DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlEngine(EngineRepairCrew);
+    }
+    void ButtonFirePosOnClick(){
+        UnsetCrew -= 1;
+        FireRepairCrew += 1;
+        m_DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>().text = FireRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlFire(FireRepairCrew);
+    }
+    void ButtonFireNegOnClick(){
+        UnsetCrew += 1;
+        FireRepairCrew -= 1;
+        m_DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>().text = FireRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlFire(FireRepairCrew);
+    }
+    void ButtonWaterPosOnClick(){
+        UnsetCrew -= 1;
+        WaterRepairCrew += 1;
+        m_DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlWater(WaterRepairCrew);
+    }
+    void ButtonWaterNegOnClick(){
+        UnsetCrew += 1;
+        WaterRepairCrew -= 1;
+        m_DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlWater(WaterRepairCrew);
+    }
+    void ButtonTurretsPosOnClick(){
+        UnsetCrew -= 1;
+        TurretsRepairCrew += 1;
+        m_DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlTurrets(TurretsRepairCrew);
+    }
+    void ButtonTurretsNegOnClick(){
+        UnsetCrew += 1;
+        TurretsRepairCrew -= 1;
+        m_DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
+        CheckActiveButtons();
+        ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
 
     public void SetOpenDmgCtrl(bool open) {
