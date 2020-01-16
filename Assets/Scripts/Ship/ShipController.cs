@@ -224,33 +224,48 @@ public class ShipController : MonoBehaviour {
 
     public void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ ElementType);
+        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
         if (elementType == ElementType.engine) {
             EngineCount--;
             if (EngineCount == 0){
                 Movement.SetDead(true);
+                if (GetComponent<ShipDamageControl>())
+                    DamageControl.SetDamagedEngine(2);
             } else {
                 Movement.SetDamaged(EngineCount/EngineCountTotal);
+                if (GetComponent<ShipDamageControl>())
+                    DamageControl.SetDamagedEngine(1);
             }
         } else if (elementType == ElementType.steering) {
             Movement.SetAllowTurnInputChange(false);
-        } else if (elementType == ElementType.ammo) {
-            Health.AmmoExplosion();
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetDamagedSteering(true);
         } else if (elementType == ElementType.ammo) {
             Health.AmmoExplosion();
         } else if (elementType == ElementType.fuel) {
             Health.StartFire();
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetFireBurning(true);
         }
     }
     public void ModuleRepaired(ElementType elementType) {
         if (elementType == ElementType.engine) {
             EngineCount++;
-            if (EngineCount == 1)
+            if (EngineCount > 0)
                 Movement.SetDead(false);
+                if (GetComponent<ShipDamageControl>() && EngineCount < EngineCountTotal)
+                    DamageControl.SetDamagedEngine(1);
+                else
+                    DamageControl.SetDamagedEngine(0);
             Movement.SetDamaged(EngineCount/EngineCountTotal);
         } else if (elementType == ElementType.steering) {
             Movement.SetAllowTurnInputChange(true);
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetDamagedSteering(false);
         } else if (elementType == ElementType.fuel) {
             Health.EndFire();
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetFireBurning(false);
         }
     }
 
@@ -338,6 +353,8 @@ public class ShipController : MonoBehaviour {
             Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
     }
+    public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
+    public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
     // public float GetEngineRepairCrew(){ return EngineRepairCrew; }

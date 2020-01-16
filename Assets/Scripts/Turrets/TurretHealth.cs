@@ -13,7 +13,8 @@ public class TurretHealth : MonoBehaviour {
     private float TurretsRepairCrew;
     private TurretFireManager TurretFireManager;
     private TurretRotation TurretRotation;
-    [HideInInspector] public bool Dead;
+    private bool Dead;
+    private TurretManager TurretManager;
 
 
     private void Start () {
@@ -37,7 +38,7 @@ public class TurretHealth : MonoBehaviour {
             CurrentHealth = 0;
 
         if (CurrentHealth == 0 && !Dead) {
-            ModuleDestroyed();
+            TurretDestroyed();
         }
 
         // if (debug){
@@ -46,11 +47,11 @@ public class TurretHealth : MonoBehaviour {
         // }
     }
 
-    private void ModuleDestroyed () {
+    private void TurretDestroyed () {
         Dead = true;
         TurretFireManager.SetTurretDeath(true);
         TurretRotation.SetTurretDeath(true);
-        // ShipController.ModuleDestroyed(m_ElementType);
+        TurretManager.SetSingleTurretDeath(Dead);
     }
 
     private void RepairModule () {
@@ -86,4 +87,5 @@ public class TurretHealth : MonoBehaviour {
             CurrentHealth = m_ElementHealth;
         }
     }
+    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
 }
