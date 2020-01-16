@@ -5,7 +5,7 @@ public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
     private bool Active = false;
-    private bool Dead;
+    private bool Dead = false;
 
     private GameManager GameManager;
     private PlayerManager PlayerManager;
@@ -26,17 +26,14 @@ public class ShipController : MonoBehaviour {
     private float TargetpositionY = 0.0f;
     private float LeakRatio = 0.0f;
 
-    private bool engine = false;                    // Is there an engine dm component ? (aka can the engine be disabled ?)
-    private float engineCount = 0;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
+    private float EngineCount = -1;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
+    private float EngineCountTotal = -1;
 
     private float RepairRate;
     private float EngineRepairCrew;
     private float FireRepairCrew;
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
-    private string unitTag;
-
-    private float CurrentHealth;
 
     public enum ElementType {
         hull,
@@ -51,8 +48,8 @@ public class ShipController : MonoBehaviour {
         underwaterBackRight
     }
 
+
     private void Awake() {
-        Dead = false;
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
@@ -63,17 +60,26 @@ public class ShipController : MonoBehaviour {
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 
+        if (GetComponent<TurretManager>()) {
+            Turrets = GetComponent<TurretManager>();
+        }
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
             RepairRate = DamageControl.GetRepairRate();
         }
+
         if (GetComponent<TurretManager>()) {
-            Turrets = GetComponent<TurretManager>();
             Turrets.SetRepairRate(RepairRate);
-            Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
+
         ShipModel = this.gameObject.transform.GetChild(0);
+
+        for (int i = 0; i < m_ShipComponents.Length; i++) {
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetShipController(this);
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
+        }
     }
 
     private void FixedUpdate() {
@@ -91,11 +97,8 @@ public class ShipController : MonoBehaviour {
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
-        CurrentHealth = Health.GetCurrentHealth();
-        UI.SetCurrentHealth(CurrentHealth);
-        // if (CurrentHealth <= 0)
-        //     CallDeath();
-        // Debug.Log("CurrentHealth = "+ CurrentHealth);
+        float currentHealth = Health.GetCurrentHealth();
+        UI.SetCurrentHealth(currentHealth);
     }
 
     public void BuoyancyCompromised(ElementType ElementType, float damage) {
@@ -160,23 +163,22 @@ public class ShipController : MonoBehaviour {
 
     private void BuoyancyRepair() {
         if (CurrentpositionY < 0) {
-            TargetpositionY += RepairRate * WaterRepairCrew * Time.deltaTime;
-            BuoyancyCorrectY(WaterRepairCrew);
+            TargetpositionY += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
+            BuoyancyCorrectY((WaterRepairCrew + 1));
         }
 
         if (TargetRotationX > 0) {
-            TargetRotationX -= RepairRate * WaterRepairCrew * Time.deltaTime;
+            TargetRotationX -= RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
         } else if (TargetRotationX < 0) {
-            TargetRotationX += RepairRate * WaterRepairCrew * Time.deltaTime;
+            TargetRotationX += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
         }
         if (TargetRotationZ > 0) {
-            TargetRotationZ -= RepairRate * WaterRepairCrew * Time.deltaTime;
+            TargetRotationZ -= RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
         } else if (TargetRotationZ < 0) {
-            TargetRotationZ += RepairRate * WaterRepairCrew * Time.deltaTime;
+            TargetRotationZ += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
         }
-        if (TargetRotationX != 0 || TargetRotationZ != 0 )
-        {
-            BuoyancyCorrectXZ(WaterRepairCrew);
+        if (TargetRotationX != 0 || TargetRotationZ != 0 ) {
+            BuoyancyCorrectXZ((WaterRepairCrew + 1));
         }
     }
 
@@ -220,13 +222,41 @@ public class ShipController : MonoBehaviour {
             CallDeath();
     }
 
-    public void ModuleDestroyed(ElementType ElementType) {
+    public void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ ElementType);
+        if (elementType == ElementType.engine) {
+            EngineCount--;
+            if (EngineCount == 0){
+                Movement.SetDead(true);
+            } else {
+                Movement.SetDamaged(EngineCount/EngineCountTotal);
+            }
+        } else if (elementType == ElementType.steering) {
+            Movement.SetAllowTurnInputChange(false);
+        } else if (elementType == ElementType.ammo) {
+            Health.AmmoExplosion();
+        } else if (elementType == ElementType.ammo) {
+            Health.AmmoExplosion();
+        } else if (elementType == ElementType.fuel) {
+            Health.StartFire();
+        }
+    }
+    public void ModuleRepaired(ElementType elementType) {
+        if (elementType == ElementType.engine) {
+            EngineCount++;
+            if (EngineCount == 1)
+                Movement.SetDead(false);
+            Movement.SetDamaged(EngineCount/EngineCountTotal);
+        } else if (elementType == ElementType.steering) {
+            Movement.SetAllowTurnInputChange(true);
+        } else if (elementType == ElementType.fuel) {
+            Health.EndFire();
+        }
     }
 
     public void CallDeath() {
         if (GameManager)
-            GameManager.SetUnitDeath(-1, unitTag);
+            GameManager.SetUnitDeath(-1, gameObject.tag);
 
         // Debug.Log("DEATH"+Dead);
         Dead = true;
@@ -276,8 +306,7 @@ public class ShipController : MonoBehaviour {
     }
     
     public void SetTag(string team){
-        unitTag = team;
-        gameObject.tag = unitTag;
+        gameObject.tag = team;
     }
     public void SetName(string name){
         gameObject.name = name;
@@ -288,15 +317,30 @@ public class ShipController : MonoBehaviour {
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
-    public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
-    public void SetDamageControlEngineCount(float setEngineCount){ engineCount += setEngineCount; }
-    public void SetDamageControlEngine(float setCrew){ EngineRepairCrew = setCrew; }
-    public void SetDamageControlFire(float setCrew){ FireRepairCrew = setCrew; }
+    // public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
+    public void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
+    public void SetDamageControlEngine(float setCrew){
+        EngineRepairCrew = setCrew;
+        for (int i = 0; i < m_ShipComponents.Length; i++) {
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
+        }
+    }
+    public void SetDamageControlFire(float setCrew){
+        FireRepairCrew = setCrew;
+        for (int i = 0; i < m_ShipComponents.Length; i++) {
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
+        }
+    }
     public void SetDamageControlWater(float setCrew){ WaterRepairCrew = setCrew; }
-    public void SetDamageControlTurrets(float setCrew){ TurretsRepairCrew = setCrew; }
+    public void SetDamageControlTurrets(float setCrew){
+        TurretsRepairCrew = setCrew;
+        if (GetComponent<TurretManager>()) {
+            Turrets.SetTurretRepairRate(TurretsRepairCrew);
+        }
+    }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
-    public float GetEngineRepairCrew(){ return EngineRepairCrew; }
-    public float GetTurretsRepairCrew(){ return TurretsRepairCrew; }
+    // public float GetEngineRepairCrew(){ return EngineRepairCrew; }
+    // public float GetTurretsRepairCrew(){ return TurretsRepairCrew; }
     public void DestroyUnit(){ Destroy (gameObject); }
 }

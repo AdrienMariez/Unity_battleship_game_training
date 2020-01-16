@@ -12,43 +12,54 @@ public class HitboxComponent : MonoBehaviour {
         public bool debug = false;
     private float CurrentHealth;
     private float RepairRate;
-    private bool Dead;
+    private float EngineRepairRate;
+    private float FireRepairRate;
+    private bool ImmortalComponent = false;
+    private bool BuoyancyComponent = false;
+    private bool Dead = false;
 
 
     private ShipController ShipController;
 
 
     private void Start () {
-        if (m_ElementType == ShipController.ElementType.hull || m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
-            m_ElementHealth = 1000000f;
+        if (m_ElementType == ShipController.ElementType.hull) {
+            ImmortalComponent = true;
+        }
+        if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
+            BuoyancyComponent = true;
+            ImmortalComponent = true;
         }
         CurrentHealth = m_ElementHealth;
-        Dead = false;
-        InitializeModules();
     }
 
     public void InitializeModules () {
-        // Find ShipController
-        ShipController = transform.parent.parent.parent.GetComponent<ShipController>();
-
         RepairRate = ShipController.GetRepairRate();
 
         // Depending of the ElementType, send it to the ShipController
         if (m_ElementType == ShipController.ElementType.engine){
-            ShipController.SetDamageControlEngineComponent(true);
-            ShipController.SetDamageControlEngineCount(1);
+            // ShipController.SetDamageControlEngineComponent(true);
+            ShipController.SetDamageControlEngineCount();
+        }
+    }
+
+    private void FixedUpdate(){
+        if (Dead) {
+            RepairModule();
         }
     }
 
     public void TakeDamage (float amount) {
         // If a underwater armor is damaged, apply water damage
-        if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
+        if (ImmortalComponent) {
             ShipController.ApplyDamage(amount);
             ShipController.BuoyancyCompromised(m_ElementType, amount);
         } else {
             // Debug.Log("amount = "+ amount);
             // Reduce current health by the amount of damage done.
-            CurrentHealth -= amount;
+            if (!ImmortalComponent)
+                CurrentHealth -= amount;
+
             if (CurrentHealth < 0)
                 CurrentHealth = 0;
 
@@ -81,9 +92,12 @@ public class HitboxComponent : MonoBehaviour {
         float ModuleRepairRate;
         // If the module type is either engine, steering or a turret, accelerate the repair time of the module with damage control teams
         if (m_ElementType == ShipController.ElementType.engine || m_ElementType == ShipController.ElementType.steering) {
-            ModuleRepairRate = RepairRate * ShipController.GetEngineRepairCrew() * Time.deltaTime;
-        }else if (m_ElementType == ShipController.ElementType.turret) {
-            ModuleRepairRate = RepairRate * ShipController.GetTurretsRepairCrew() * Time.deltaTime;
+            ModuleRepairRate = RepairRate * (EngineRepairRate + 1) * Time.deltaTime;
+        } else if (m_ElementType == ShipController.ElementType.fuel) {
+            ModuleRepairRate = RepairRate * (FireRepairRate + 1) * Time.deltaTime;
+        }  else if (m_ElementType == ShipController.ElementType.ammo) {
+            // Make all ammo repair time a fixed time, otherwise ships with great damage control will end up with much more explosions than ships with none...
+            ModuleRepairRate = 1 * Time.deltaTime;
         } else {
             ModuleRepairRate = RepairRate * Time.deltaTime;
         }
@@ -91,8 +105,21 @@ public class HitboxComponent : MonoBehaviour {
 
         // Stop repair and reactivate the module when full health is back
         if (CurrentHealth >= m_ElementHealth) {
-            CurrentHealth = m_ElementHealth;
-            Dead = false;
+            ModuleRepaired ();
         }
     }
+
+    private void ModuleRepaired () {
+        CurrentHealth = m_ElementHealth;
+        Dead = false;
+        ShipController.ModuleRepaired(m_ElementType);
+    }
+
+    public void SetShipController(ShipController shipController){
+        ShipController = shipController;
+        InitializeModules();
+    }
+    public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }
+    public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
+    public ShipController.ElementType GetElementType(){ return m_ElementType; }
 }

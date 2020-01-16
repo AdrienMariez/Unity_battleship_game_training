@@ -55,7 +55,7 @@ public class TurretHealth : MonoBehaviour {
 
     private void RepairModule () {
         // If the module is destroyed, repair it to full health while keeping it disabled as long as it's not fully repaired
-        float ModuleRepairRate = RepairRate * TurretsRepairCrew * Time.deltaTime;
+        float ModuleRepairRate = RepairRate * (TurretsRepairCrew + 1) * Time.deltaTime;
         CurrentHealth += ModuleRepairRate;
 
         // Stop repair and reactivate the module when full health is back

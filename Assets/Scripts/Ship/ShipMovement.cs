@@ -6,7 +6,10 @@ using Crest;
 public class ShipMovement : MonoBehaviour
 {
     private bool Active = false; 
-    private bool Dead; 
+    private bool Dead = false; 
+    private bool Damaged = false;
+    private float DamagedRatio;
+    private bool AllowTurnInput = true;
     [HideInInspector] public float m_MaxSpeed = 1f;
     [HideInInspector] public float m_TurnSpeed = 1f;
     public AudioSource m_MovementAudio;
@@ -39,19 +42,13 @@ public class ShipMovement : MonoBehaviour
 
     private ShipBuoyancy m_Buoyancy;
 
-    private void Start() {
-    }
-
-    private void Awake()
-    {
+    private void Awake() {
         m_Buoyancy = GetComponent<ShipBuoyancy>();
         // Store the original pitch of the audio source.
         OriginalPitch = m_MovementAudio.pitch;
     }
 
-    private void Update()
-    {
-        // This is run every frame
+    private void Update() {
         // Store the player's input and make sure the audio for the engine is playing.
         EngineAudio ();
     }
@@ -124,6 +121,7 @@ public class ShipMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         OrderSystem = true;
     }
+
     private void SetTargetSpeed() {
         if (m_CurrentSpeedStep == 4) {
             LocalTargetSpeed = m_MaxSpeed;
@@ -192,16 +190,20 @@ public class ShipMovement : MonoBehaviour
 
     private void Move() {
         SetRealSpeed();
-        m_Buoyancy.SetSpeedInput(LocalRealSpeed);
+        if (Damaged){
+            m_Buoyancy.SetSpeedInput(LocalRealSpeed*DamagedRatio);
+        } else {
+            m_Buoyancy.SetSpeedInput(LocalRealSpeed);
+        }
     }
 
     private void Turn() {
         // float tempTurn = TurnInputValue;
         // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation){
+        if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput){
             TurnInputValue += 0.5f;
             StartCoroutine(PauseTurnIncrementation());
-        } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation){
+        } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput){
             TurnInputValue -= 0.5f;
             StartCoroutine(PauseTurnIncrementation());
         }
@@ -216,9 +218,17 @@ public class ShipMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         RotationIncrementation = true;
     }
-
+    public void SetDamaged(float proportion){
+        if (proportion == 1){
+            Damaged = false;
+        } else{
+            Damaged = true;
+            DamagedRatio = proportion;
+        }
+    }
     public void SetActive(bool activate) { Active = activate; }
     public void SetDead(bool death) { Dead = death; }
+    public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 
     public float GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
     public float GetLocalRealSpeed(){ return LocalRealSpeed; }
