@@ -27,6 +27,7 @@ namespace UI {
         float StartingHP = -200;
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
+        private bool CurrentUnitDead = false;
 
         private GameObject[] Turrets;
         private FreeLookCam FreeLookCam;
@@ -55,7 +56,7 @@ namespace UI {
                         CurrentHP = Mathf.Round(ActiveTarget.GetComponent<ShipHealth>().GetCurrentHealth());
                     if (ActiveTarget.GetComponent<ShipMovement>()){
                         SpeedStep = ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep();
-                        CurrentRotation = Mathf.Round(ActiveTarget.GetComponent<ShipMovement>().GetLocalRealRotation());
+                        CurrentRotation = ActiveTarget.GetComponent<ShipMovement>().GetLocalRealRotation();
                     }
                 }
 
@@ -142,15 +143,23 @@ namespace UI {
                 if (ActiveTarget.GetComponent<AircraftHealth>())
                     StartingHP = ActiveTarget.GetComponent<AircraftHealth>().GetStartingHealth();
             } else if (TargetType == "Ship") {
-                if (ActiveTarget.GetComponent<ShipHealth>())
-                    StartingHP = ActiveTarget.GetComponent<ShipHealth>().GetStartingHealth();
+                StartingHP = ActiveTarget.GetComponent<ShipHealth>().GetStartingHealth();
+                CurrentUnitDead = ActiveTarget.GetComponent<ShipController>().GetDeath();
             }
+            if (!CurrentUnitDead && !DisplayMapUI)
+                DisplayGameUI = true;
         }
         
         public void SetMap(bool map) {
-            // Debug.Log ("UIManager.SetMap(map) : "+map);
-            DisplayGameUI = !map;
             DisplayMapUI = map;
+            if (!CurrentUnitDead)
+                DisplayGameUI = !map;
+        }
+        public void SetCurrentUnitDead(bool isUnitDead) {
+            // If CurrentUnitDead == true, the game Display should not be shown ! Only the map should work.
+            CurrentUnitDead = isUnitDead;
+            if (!DisplayMapUI)
+                DisplayGameUI = !isUnitDead;
         }
     }
 }

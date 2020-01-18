@@ -145,5 +145,8 @@ public class PlayerManager : MonoBehaviour
         DamageControl = damageControl;
         CheckCameraRotation();
     }
+    public void SetCurrentUnitDead(bool isUnitDead){
+        UIManager.SetCurrentUnitDead(isUnitDead);
+    }
     public void Reset(){Start();}
 }

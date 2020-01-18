@@ -120,7 +120,7 @@ public class TurretManager : MonoBehaviour
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
         for (int i = 0; i < m_Turrets.Length; i++){
-            m_Turrets[i].GetComponent<TurretHealth>().SetTurretDeath(IsShipDead);
+            m_Turrets[i].GetComponent<TurretHealth>().SetShipDeath(IsShipDead);
             m_Turrets[i].GetComponent<TurretRotation>().SetTurretDeath(IsShipDead);
             m_Turrets[i].GetComponent<TurretFireManager>().SetTurretDeath(IsShipDead);
         }

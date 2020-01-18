@@ -48,7 +48,6 @@ public class ShipController : MonoBehaviour {
         underwaterBackRight
     }
 
-
     private void Awake() {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
@@ -289,9 +288,12 @@ public class ShipController : MonoBehaviour {
         }
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.SetShipDeath(true);
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
         UI.SetActive(false);
+        PlayerManager.SetCurrentUnitDead(true);
     }
 
     public void SetMap(bool map) {
@@ -302,7 +304,6 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetDamageControl(bool damageControl) {
-        // Since it works like the map (disables gun control only), we just make the guns act like when the map is open
         if (GetComponent<TurretManager>())
             Turrets.SetDamageControl(damageControl);
         

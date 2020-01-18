@@ -13,19 +13,19 @@ public class TurretHealth : MonoBehaviour {
     private float TurretsRepairCrew;
     private TurretFireManager TurretFireManager;
     private TurretRotation TurretRotation;
-    private bool Dead;
+    private bool Dead = false;
+    private bool ShipDead = false;
     private TurretManager TurretManager;
 
 
     private void Start () {
         CurrentHealth = m_ElementHealth;
-        Dead = false;
         TurretFireManager = GetComponent<TurretFireManager>();
         TurretRotation = GetComponent<TurretRotation>();
     }
 
     private void FixedUpdate(){
-        if (Dead) {
+        if (Dead && !ShipDead) {
             RepairModule();
         }
     }
@@ -61,14 +61,19 @@ public class TurretHealth : MonoBehaviour {
 
         // Stop repair and reactivate the module when full health is back
         if (CurrentHealth >= m_ElementHealth) {
-            CurrentHealth = m_ElementHealth;
-            Dead = false;
-            TurretFireManager.SetTurretDeath(true);
-            TurretRotation.SetTurretDeath(true);
+            TurretRepaired();
         }
         // if (debug){
         //     Debug.Log("Repairing... = "+ CurrentHealth);
         // }
+    }
+
+    private void TurretRepaired(){
+        CurrentHealth = m_ElementHealth;
+        Dead = false;
+        TurretFireManager.SetTurretDeath(false);
+        TurretRotation.SetTurretDeath(false);
+        TurretManager.SetSingleTurretDeath(Dead);
     }
 
     public void SetRepairRate(float Rate) {
@@ -78,8 +83,8 @@ public class TurretHealth : MonoBehaviour {
         TurretsRepairCrew = Rate;
     }
 
-    public void SetTurretDeath(bool IsShipDead) {
-        Dead = IsShipDead;
+    public void SetShipDeath(bool IsShipDead) {
+        ShipDead = IsShipDead;
         if (IsShipDead) {
             SetRepairRate(0f);
             SetTurretRepairRate(0f);

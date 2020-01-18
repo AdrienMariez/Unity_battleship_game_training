@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class ShipDamageControl : MonoBehaviour {
     private bool Active = false;
+    private bool ShipDead = false;
     private bool MapActive = false;
     public GameObject m_DamageControlUI;
     public float RepairRate = 3;
@@ -41,14 +42,9 @@ public class ShipDamageControl : MonoBehaviour {
     }
 
     protected void Update() {
-        if (Active && !MapActive) {
-            if (Input.GetButtonDown ("OpenDamageControl")) {
-                // Debug.Log("DmgCtrlOpen :"+ DmgCtrlOpen);
+        if (Active && !MapActive && !ShipDead) {
+            if (Input.GetButtonDown ("OpenDamageControl")) 
                 SetOpenDmgCtrl(!DmgCtrlOpen);
-            }
-        }
-        if (DmgCtrlOpen) {
-            // Update damage control panel ?
         }
     }
     protected void OpenDmgCtrl() {
@@ -83,9 +79,15 @@ public class ShipDamageControl : MonoBehaviour {
         Button buttonTurretsNeg = m_DamageControlInstance.transform.Find("buttonTurretsNeg").GetComponent<Button>();
 		buttonTurretsNeg.onClick.AddListener(ButtonTurretsNegOnClick);
 
+        DisplayDamagedEngine();
+        DisplayDamagedSteering();
+        DisplayFireBurning();
+        DisplayBuoyancyCompromised();
+        DisplayDamagedTurrets();
+
         if (DamagedTurrets > 0) {
             // String : "X damaged turrets on Y total"
-            m_DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = DamagedTurrets.ToString("g") + "/" + TotalTurrets.ToString("g");
+            m_DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = DamagedTurrets.ToString("g") + "/" + TotalTurrets.ToString("g")+" turrets HS";
             m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
         } else {
             m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
@@ -210,6 +212,11 @@ public class ShipDamageControl : MonoBehaviour {
         if (!Active)
             SetOpenDmgCtrl(false);
     }
+    public void SetShipDeath(bool deathStatus) {
+        ShipDead = deathStatus;
+        if (ShipDead)
+            SetOpenDmgCtrl(false);
+    }
     public void SetMap(bool map) {
         MapActive = map;
         if (MapActive)
@@ -217,47 +224,72 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetName(string name) { UnitName = name; }
     public void SetDamagedEngine(int status){
-        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
         EngineStatus = status;
-        // if (DmgCtrlOpen)
-        //     if (EngineStatus == 2)
-        //     else if (EngineStatus == 1)
-        //     else
+        if (DmgCtrlOpen)
+            DisplayDamagedEngine();
+    }
+    private void DisplayDamagedEngine(){
+        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
+        if (EngineStatus == 2){
+            m_DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "Engine\n";
+            m_DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text += "HS";
+            m_DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);}
+        else if (EngineStatus == 1){
+            m_DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "Engine\n";
+            m_DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "damaged";
+            m_DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);}
+        else{
+            m_DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(false);}
     }
     public void SetDamagedSteering(bool status){
-        // Status : false : fixed and running / true : damaged
         SteeringStatus = status;
-        // if (DmgCtrlOpen)
-        //     if (SteeringStatus)
-        //     else
+        if (DmgCtrlOpen)
+            DisplayDamagedSteering();
+    }
+    private void DisplayDamagedSteering(){
+        // Status : false : fixed and running / true : damaged
+        if (SteeringStatus)
+            m_DamageControlInstance.transform.Find("SteeringDamaged").gameObject.SetActive(true);
+        else
+            m_DamageControlInstance.transform.Find("SteeringDamaged").gameObject.SetActive(false);
     }
     public void SetFireBurning(bool status){
         FireStatus = status;
         if (DmgCtrlOpen){
-            // if (FireStatus)
-            // else
+            DisplayFireBurning();
         }
+    }
+    private void DisplayFireBurning(){
+        if (FireStatus)
+            m_DamageControlInstance.transform.Find("FireDamaged").gameObject.SetActive(true);
+        else
+            m_DamageControlInstance.transform.Find("FireDamaged").gameObject.SetActive(false);
     }
     public void SetBuoyancyCompromised(bool status){
         WaterStatus = status;
-        if (DmgCtrlOpen){
-            // if (WaterStatus)
-            // else
-        }
+        if (DmgCtrlOpen)
+            DisplayBuoyancyCompromised();
+    }
+    private void DisplayBuoyancyCompromised(){
+        if (WaterStatus)
+            m_DamageControlInstance.transform.Find("WaterDamaged").gameObject.SetActive(true);
+        else
+            m_DamageControlInstance.transform.Find("WaterDamaged").gameObject.SetActive(false);
     }
     public void SetTotalTurrets(int turrets){
         TotalTurrets = turrets;
     }
     public void SetDamagedTurrets(int turrets){
         DamagedTurrets = turrets;
-
-        if (DmgCtrlOpen){   
-            if (turrets < TotalTurrets) {
-                m_DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = turrets.ToString("g") + "/" + TotalTurrets.ToString("g");
-                m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
-            } else {
-                m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
-            }
+        if (DmgCtrlOpen)  
+            DisplayDamagedTurrets();
+    }
+    private void DisplayDamagedTurrets(){
+        if (DamagedTurrets < TotalTurrets) {
+            m_DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = DamagedTurrets.ToString("g") + "/" + TotalTurrets.ToString("g");
+            m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
+        } else {
+            m_DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
         }
     }
 

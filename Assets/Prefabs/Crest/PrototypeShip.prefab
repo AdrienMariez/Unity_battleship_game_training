@@ -707,7 +707,6 @@ MonoBehaviour:
   - {fileID: 8355142522631704766}
   - {fileID: 7249044125137320703}
   - {fileID: 5636582554979631985}
-  CurrentHealth: 0
 --- !u!114 &8857893665739000309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1983,6 +1982,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Turret_Cruiser_prototype (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061420820093156919, guid: 19da4dec1cc8b7b429c93feade326c38,
+        type: 3}
+      propertyPath: debug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8933853122373449585, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
