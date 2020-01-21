@@ -830,8 +830,38 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1620906255}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 50.7, z: 0}
+--- !u!1 &619213908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 619213909}
+  m_Layer: 0
+  m_Name: SpawnPoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &619213909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619213908}
+  m_LocalRotation: {x: 0, y: 0.92990494, z: 0, w: 0.3678}
+  m_LocalPosition: {x: 545.3, y: 5.42, z: 128.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1620906255}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 136.84, z: 0}
 --- !u!1 &657300851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,7 +1438,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1620906255}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 136.84, z: 0}
 --- !u!1 &1008810203
 GameObject:
@@ -1438,7 +1468,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1620906255}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 136.84, z: 0}
 --- !u!1 &1063848003
 GameObject:
@@ -1559,13 +1589,13 @@ MonoBehaviour:
     m_UnitName: Yamashiro
     m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 904021150}
-  - m_Team: 2
-    m_Nation: 1
-    m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+  - m_Team: 0
+    m_Nation: 0
+    m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UnitName: Kaga
     m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 1694713051}
+    m_SpawnPoint: {fileID: 619213909}
   m_NumRoundsToWin: 5
   m_StartDelay: 1
   m_EndDelay: 2
@@ -2166,7 +2196,7 @@ GameObject:
   - component: {fileID: 1530772739}
   - component: {fileID: 1530772738}
   - component: {fileID: 1530772737}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: UnitName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2286,6 +2316,7 @@ Transform:
   - {fileID: 1691915097}
   - {fileID: 2124331260}
   - {fileID: 2022928761}
+  - {fileID: 619213909}
   - {fileID: 1008810204}
   - {fileID: 617844557}
   - {fileID: 904021150}
@@ -2414,7 +2445,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1620906255}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 281.56, z: 0}
 --- !u!1 &1694905400
 GameObject:
@@ -3236,6 +3267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 57143
+      objectReference: {fileID: 0}
+    - target: {fileID: 682091736795053295, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
+        type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 682091736796430027, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}

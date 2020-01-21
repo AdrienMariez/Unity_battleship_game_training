@@ -46,6 +46,7 @@ namespace FreeLookCamera {
 		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
         private bool AllowCameraRotation;
+        private bool DisplayUI = true;
 
         protected virtual void Start() {
 			AxisEulers = Axis.rotation.eulerAngles;
@@ -204,6 +205,14 @@ namespace FreeLookCamera {
         public float GetTargetPointRange() {
             float Range = Vector3.Distance(Target.position, TargetPosition);
             return Range;
+        }
+        public void SetHideUI(){
+            DisplayUI = !DisplayUI;
+            if (DisplayUI) {
+                Cam.cullingMask |= 1 << LayerMask.NameToLayer("UI");
+            } else {
+                Cam.cullingMask &=  ~(1 << LayerMask.NameToLayer("UI"));
+            }
         }
     }
 }

@@ -182,10 +182,10 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
-    m_Name: Jump
-    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    m_Name: HideUI
+    descriptiveName: Hide/display all UI elements
     descriptiveNegativeName: 
-    negativeButton: ','
+    negativeButton: b
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 

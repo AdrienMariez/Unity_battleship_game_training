@@ -20,10 +20,12 @@ public class TurretManager : MonoBehaviour
 
     private int TotalTurrets = 0;
     private int WorkingTurrets;
+    string TurretStatus = "";
 
     private void Start() {
         FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
-        ShipController = GetComponent<ShipController>();
+        if (GetComponent<ShipController>())
+            ShipController = GetComponent<ShipController>();
         float MaxR;
         float MinR;
         for (int i = 0; i < m_Turrets.Length; i++){
@@ -37,7 +39,8 @@ public class TurretManager : MonoBehaviour
             m_Turrets[i].GetComponent<TurretHealth>().SetTurretManager(this);
         }
         WorkingTurrets = TotalTurrets;
-        ShipController.SetTotalTurrets(TotalTurrets);
+        if (GetComponent<ShipController>())
+            ShipController.SetTotalTurrets(TotalTurrets);
     }
 
     private void FixedUpdate() {
@@ -56,12 +59,15 @@ public class TurretManager : MonoBehaviour
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
             bool turretDead = false;
-
+            TurretStatus = "";
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
                 m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(CameraPercentage);
                 m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
+                TurretStatus += m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
             }
+            if (GetComponent<ShipController>())
+                ShipController.SetTurretStatus(TurretStatus);
         }
 
         /*if (PlayerControl) {
@@ -115,7 +121,8 @@ public class TurretManager : MonoBehaviour
         } else{
             WorkingTurrets++;
         }
-        ShipController.SetDamagedTurrets(TotalTurrets - WorkingTurrets);
+        if (GetComponent<ShipController>())
+            ShipController.SetDamagedTurrets(TotalTurrets - WorkingTurrets);
     }
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
@@ -128,6 +135,9 @@ public class TurretManager : MonoBehaviour
 
     public GameObject[] GetTurrets() {
         return m_Turrets;
+    }
+    public string GetTurretStatus() {
+        return TurretStatus;
     }
     public float GetTargetRange() {
         return TargetRange;

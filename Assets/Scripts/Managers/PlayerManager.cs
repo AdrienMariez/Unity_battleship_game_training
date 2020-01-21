@@ -26,19 +26,26 @@ public class PlayerManager : MonoBehaviour
         GameManager = GetComponent<GameManager>();
         PlayerTeam = GameManager.GetPlayer();
         UIManager = GetComponent<UIManager>();
+        UIManager.SetFreeLookCamera(FreeLookCamera);
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
     }
 
     protected void Update() {
-        // Look if the unit is changed, otherwise, do nothing
-        if (Input.GetButtonDown ("SetNextUnit")) {
+        if (Input.GetButtonDown ("HideUI"))
+            SetHideUI();
+
+        if (Input.GetButtonDown ("SetNextUnit"))
             SetNextTarget();
-        }
-        if (Input.GetButtonDown ("SetPreviousUnit")) {
+        if (Input.GetButtonDown ("SetPreviousUnit"))
             SetPreviousTarget();
-        }
         //Debug.Log ("Current target : "+ CurrentTarget);
+    }
+
+    private void SetHideUI(){
+        // This is used to hide all UI elements
+        FreeLookCamera.SetHideUI();
+        UIManager.SetHideUI();
     }
 
     private void SetNextTarget() {
@@ -145,8 +152,10 @@ public class PlayerManager : MonoBehaviour
         DamageControl = damageControl;
         CheckCameraRotation();
     }
-    public void SetCurrentUnitDead(bool isUnitDead){
-        UIManager.SetCurrentUnitDead(isUnitDead);
-    }
+    public void SetCurrentUnitHealth(float health){ UIManager.SetCurrentUnitHealth(health); }
+    public void SetCurrentUnitDead(bool isUnitDead){ UIManager.SetCurrentUnitDead(isUnitDead); }
+    public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
+    public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
+    public void SetTurretStatus(string status){ UIManager.SetTurretStatus(status); }
     public void Reset(){Start();}
 }

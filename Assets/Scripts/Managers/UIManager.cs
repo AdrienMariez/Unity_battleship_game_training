@@ -24,87 +24,37 @@ namespace UI {
 
         private GameObject ActiveTarget;
         private string TargetType;
-        float StartingHP = -200;
+        private float StartingHP;
+        private float SpeedStep;
+        private float CurrentRotation;
+        private float CurrentHP;
+        private float TurretTargetRange;
+        private string TurretStatus = "";
+        private bool CurrentUnitDead = false;
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
-        private bool CurrentUnitDead = false;
+        private bool DisplayUI = true;
 
         private GameObject[] Turrets;
         private FreeLookCam FreeLookCam;
 
-        private void Start() {
-            FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
-        }
-
         private void Update() {
             if (DisplayGameUI) {
-                float CurrentHP = -200;
-                float SpeedStep = -200;
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
-                float CurrentRotation = -200;
-                string TurretStatus = "";
-                float TurretTargetRange = -200;
+                m_ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
                 if (TargetType == "Tank") {
-                    if (ActiveTarget.GetComponent<TankHealth>())
-                        CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());
+                    CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());
+                    if (ActiveTarget.GetComponent<TurretManager>()) {
+                        TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretStatus();
+                        m_TurretsStatus.text = string.Format(TurretsStatusDisplay, TurretStatus);
+                    }
                 } else if (TargetType == "Aircraft") {
-                    if (ActiveTarget.GetComponent<AircraftHealth>())
-                        CurrentHP = Mathf.Round(ActiveTarget.GetComponent<AircraftHealth>().GetCurrentHealth());
-                } else if (TargetType == "Ship") {
-                    if (ActiveTarget.GetComponent<ShipHealth>())
-                        CurrentHP = Mathf.Round(ActiveTarget.GetComponent<ShipHealth>().GetCurrentHealth());
-                    if (ActiveTarget.GetComponent<ShipMovement>()){
-                        SpeedStep = ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep();
-                        CurrentRotation = ActiveTarget.GetComponent<ShipMovement>().GetLocalRealRotation();
-                    }
+                    CurrentHP = Mathf.Round(ActiveTarget.GetComponent<AircraftHealth>().GetCurrentHealth());
                 }
 
-                if (ActiveTarget.GetComponent<TurretManager>()){
-                    // TurretTargetRange = Mathf.Round(FreeLookCam.GetTargetPointRange());
+                if (ActiveTarget.GetComponent<TurretManager>()) {
                     TurretTargetRange = ActiveTarget.GetComponent<TurretManager>().GetTargetRange();
-                    for (int i = 0; i < Turrets.Length; i++){
-                        TurretStatus += Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
-                    }
-                }
-
-                m_UnitName.enabled = true;
-
-                if (CurrentHP < 0 || StartingHP < 0) {
-                    m_UnitHP.enabled = false;
-                } else {
-                    m_UnitHP.enabled = true;
-                    m_UnitHP.text = string.Format(HPDisplay, CurrentHP, StartingHP); 
-                }
-
-                if (SpeedStep == -200) {
-                    m_ShipSpeedStep.enabled = false;
-                } else {
-                    m_ShipSpeedStep.enabled = true;
-                    m_ShipSpeedStep.text = string.Format(ShipSpeedStepDisplay, SpeedStep);
-                }
-
-                if (CurrentSpeed == -2000) {
-                    m_ShipCurrentSpeed.enabled = false;
-                } else {
-                    m_ShipCurrentSpeed.enabled = true;
-                    m_ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed); 
-                }
-
-                if (CurrentRotation == -200) {
-                    m_ShipTurningSpeed.enabled = false;
-                } else {
-                    m_ShipTurningSpeed.enabled = true;
-                    m_ShipTurningSpeed.text = string.Format(ShipTurningSpeedDisplay, CurrentRotation); 
-                }
-
-                if (!ActiveTarget.GetComponent<TurretManager>()) {
-                    m_TurretsStatus.enabled = false;
-                    m_TurretsTargetRange.enabled = false;
-                } else {
-                    m_TurretsStatus.enabled = true;
-                    m_TurretsStatus.text = string.Format(TurretsStatusDisplay, TurretStatus); 
-                    m_TurretsTargetRange.enabled = true;
                     if (TurretTargetRange > 999) {
                         TurretTargetRange = (Mathf.Round(TurretTargetRange / 100)) / 10f;
                         m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayKilometer, TurretTargetRange);
@@ -112,17 +62,44 @@ namespace UI {
                         m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, TurretTargetRange);
                     }
                 }
-            } else {
-                m_UnitName.enabled = false;
-                m_UnitHP.enabled = false;
-                m_ShipSpeedStep.enabled = false;
-                m_ShipCurrentSpeed.enabled = false;
-                m_ShipTurningSpeed.enabled = false;
-                m_TurretsStatus.enabled = false;
-                m_TurretsTargetRange.enabled = false;
             }
         }
 
+        public void SetHideUI(){
+            DisplayUI = !DisplayUI;
+            SetDisplayGameUI();
+        }
+
+        private void SetDisplayGameUI(){
+            m_UnitName.enabled = false;
+            m_UnitHP.enabled = false;
+            m_ShipSpeedStep.enabled = false;
+            m_ShipCurrentSpeed.enabled = false;
+            m_ShipTurningSpeed.enabled = false;
+            m_TurretsStatus.enabled = false;
+            m_TurretsTargetRange.enabled = false;
+
+            // Debug.Log (DisplayGameUI+" - "+DisplayMapUI+" - "+DisplayUI);
+
+            if (DisplayGameUI && !DisplayMapUI && DisplayUI){
+                m_UnitName.enabled = true;
+                m_UnitHP.enabled = true;
+                if (TargetType == "Tank") {
+                    
+                } else if (TargetType == "Aircraft") {
+                    
+                } else if (TargetType == "Ship") {
+                    m_ShipSpeedStep.enabled = true;
+                    m_ShipCurrentSpeed.enabled = true;
+                    m_ShipTurningSpeed.enabled = true;
+                }
+                if (ActiveTarget.GetComponent<TurretManager>()) {
+                    m_TurretsStatus.enabled = true;
+                    m_TurretsTargetRange.enabled = true;
+                }
+            }
+
+        }
 
         public void SetTargetType(string Type) {
             TargetType = Type;
@@ -134,7 +111,6 @@ namespace UI {
             if (ActiveTarget.GetComponent<TurretManager>()) {
                 Turrets = ActiveTarget.GetComponent<TurretManager>().GetTurrets();
             }
-            StartingHP = -200;
 
             if (TargetType == "Tank") {
                 if (ActiveTarget.GetComponent<TankHealth>())
@@ -144,22 +120,29 @@ namespace UI {
                     StartingHP = ActiveTarget.GetComponent<AircraftHealth>().GetStartingHealth();
             } else if (TargetType == "Ship") {
                 StartingHP = ActiveTarget.GetComponent<ShipHealth>().GetStartingHealth();
+                SetCurrentUnitHealth(ActiveTarget.GetComponent<ShipHealth>().GetCurrentHealth());
+                ChangeSpeedStep(ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep());
                 CurrentUnitDead = ActiveTarget.GetComponent<ShipController>().GetDeath();
             }
-            if (!CurrentUnitDead && !DisplayMapUI)
-                DisplayGameUI = true;
+            SetDisplayGameUI();
         }
         
+        public void SetFreeLookCamera(FreeLookCam freeLookCam){ FreeLookCam = freeLookCam; }
         public void SetMap(bool map) {
             DisplayMapUI = map;
             if (!CurrentUnitDead)
                 DisplayGameUI = !map;
+            SetDisplayGameUI();
         }
+        public void SetCurrentUnitHealth(float health){ CurrentHP = health; m_UnitHP.text = string.Format(HPDisplay, CurrentHP, StartingHP); }
+        public void ChangeSpeedStep(int currentSpeedStep){ SpeedStep = currentSpeedStep; m_ShipSpeedStep.text = string.Format(ShipSpeedStepDisplay, SpeedStep); }
+        public void SetRotationInput(float rotation){ CurrentRotation = rotation; m_ShipTurningSpeed.text = string.Format(ShipTurningSpeedDisplay, CurrentRotation); }
+        public void SetTurretStatus(string status){ TurretStatus = status; m_TurretsStatus.text = string.Format(TurretsStatusDisplay, TurretStatus); }
         public void SetCurrentUnitDead(bool isUnitDead) {
             // If CurrentUnitDead == true, the game Display should not be shown ! Only the map should work.
             CurrentUnitDead = isUnitDead;
-            if (!DisplayMapUI)
-                DisplayGameUI = !isUnitDead;
+            DisplayGameUI = !isUnitDead;
+            SetDisplayGameUI();
         }
     }
 }

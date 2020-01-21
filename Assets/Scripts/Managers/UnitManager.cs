@@ -48,6 +48,9 @@ public class UnitManager {
             m_Instance.GetComponent<ShipController>().SetTag(m_Team.ToString("g"));
             m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
             // Debug.Log("m_Instance :"+ m_Instance);
+        } else {
+            // Todo : change this for different unit types
+            m_Instance.gameObject.tag = m_Team.ToString("g");
         }
     }
     public void Destroy() {
@@ -58,6 +61,14 @@ public class UnitManager {
         }
     }
 
-    public void SetGameManager(GameManager gameManager){ m_Instance.GetComponent<ShipController>().SetGameManager(gameManager); }
-    public void SetPlayerManager(PlayerManager playerManager){ m_Instance.GetComponent<ShipController>().SetPlayerManager(playerManager); }
+    public void SetGameManager(GameManager gameManager){ 
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetGameManager(gameManager);
+        }
+    }
+    public void SetPlayerManager(PlayerManager playerManager){
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetPlayerManager(playerManager);
+        }
+    }
 }

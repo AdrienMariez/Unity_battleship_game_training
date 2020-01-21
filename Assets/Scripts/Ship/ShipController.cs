@@ -59,18 +59,16 @@ public class ShipController : MonoBehaviour {
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 
-        if (GetComponent<TurretManager>()) {
+        if (GetComponent<TurretManager>())
             Turrets = GetComponent<TurretManager>();
-        }
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
             RepairRate = DamageControl.GetRepairRate();
         }
 
-        if (GetComponent<TurretManager>()) {
+        if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);
-        }
 
         ShipModel = this.gameObject.transform.GetChild(0);
 
@@ -355,7 +353,19 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
+    public void SetTurretStatus(string status){ PlayerManager.SetTurretStatus(status); }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
+    public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
+    public void SetRotationInput(float rotation){
+        Buoyancy.SetRotationInput(rotation);
+        if (Active && !Dead)
+            PlayerManager.SetRotationInput(rotation);
+    }
+    public void ChangeSpeedStep(int currentSpeedStep){
+        if (Active && !Dead)
+            PlayerManager.ChangeSpeedStep(currentSpeedStep);
+    }
+    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
     // public float GetEngineRepairCrew(){ return EngineRepairCrew; }

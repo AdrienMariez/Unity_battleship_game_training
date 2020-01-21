@@ -12,7 +12,7 @@ public class ShipHealth : MonoBehaviour {
     private AudioSource m_ExplosionAudio;               // The audio source to play when the tank explodes.
     private ParticleSystem m_ExplosionParticles;        // The particle system the will play when the tank is destroyed.
 
-    private ShipController m_ShipController;
+    private ShipController ShipController;
 
     private int Fires = 0;
     private float FireDamage;
@@ -20,7 +20,7 @@ public class ShipHealth : MonoBehaviour {
 
     private void Awake () {
         CurrentHealth = m_StartingHealth;
-        m_ShipController = GetComponent<ShipController>();
+        ShipController = GetComponent<ShipController>();
         // Instantiate the explosion prefab and get a reference to the particle system on it.
         m_ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
 
@@ -46,6 +46,7 @@ public class ShipHealth : MonoBehaviour {
             // Debug.Log("CurrentHealth = "+ CurrentHealth);
         // }
         CheckDeath ();
+        ShipController.SetCurrentHealth(CurrentHealth);
     }
 
     private void CheckDeath () {
@@ -72,7 +73,7 @@ public class ShipHealth : MonoBehaviour {
         // Turn the tank off.
         // gameObject.SetActive (false);
 
-        m_ShipController.CallDeath();
+        ShipController.CallDeath();
     }
 
     public void AmmoExplosion(){
@@ -88,14 +89,8 @@ public class ShipHealth : MonoBehaviour {
         Fires--;
         FireDamage = Fires * (m_StartingHealth * 0.01f) * Time.deltaTime;
     }
-    private void Burning(){
-        ApplyDamage (FireDamage);
-    }
-
-    public float GetCurrentHealth(){
-        return CurrentHealth;
-    }
-    public float GetStartingHealth(){
-        return m_StartingHealth;
-    }
+    private void Burning(){ ApplyDamage (FireDamage); }
+    
+    public float GetCurrentHealth(){ return CurrentHealth; }
+    public float GetStartingHealth(){ return m_StartingHealth; }
 }

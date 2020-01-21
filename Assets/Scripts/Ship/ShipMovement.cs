@@ -40,10 +40,10 @@ public class ShipMovement : MonoBehaviour
     private float LocalRealRotation;            // The real final rotation of the ship.
     private bool RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
 
-    private ShipBuoyancy m_Buoyancy;
+    private ShipController ShipController;
 
     private void Awake() {
-        m_Buoyancy = GetComponent<ShipBuoyancy>();
+        ShipController = GetComponent<ShipController>();
         // Store the original pitch of the audio source.
         OriginalPitch = m_MovementAudio.pitch;
     }
@@ -105,14 +105,17 @@ public class ShipMovement : MonoBehaviour
         if (Step > 0 && m_CurrentSpeedStep < 4 && OrderSystem) {
             m_CurrentSpeedStep = m_CurrentSpeedStep +1;
             // Debug.Log (m_CurrentSpeedStep+" - m_CurrentSpeedStep -");
+            // Those methods are not out of the if/else statement to prevent useless method calls if conditions not set
             SetTargetSpeed();
             StartCoroutine(PauseOrderSystem());
+            ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
         }
-        else if(Step < 0 && m_CurrentSpeedStep > -4 && OrderSystem) {
+        else if (Step < 0 && m_CurrentSpeedStep > -4 && OrderSystem) {
             m_CurrentSpeedStep = m_CurrentSpeedStep -1;
             // Debug.Log (m_CurrentSpeedStep+" - m_CurrentSpeedStep -");
             SetTargetSpeed();
             StartCoroutine(PauseOrderSystem());
+            ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
         }
     }
 
@@ -191,9 +194,9 @@ public class ShipMovement : MonoBehaviour
     private void Move() {
         SetRealSpeed();
         if (Damaged){
-            m_Buoyancy.SetSpeedInput(LocalRealSpeed*DamagedRatio);
+            ShipController.SetSpeedInput(LocalRealSpeed*DamagedRatio);
         } else {
-            m_Buoyancy.SetSpeedInput(LocalRealSpeed);
+            ShipController.SetSpeedInput(LocalRealSpeed);
         }
     }
 
@@ -210,7 +213,7 @@ public class ShipMovement : MonoBehaviour
         // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
         LocalRealRotation = TurnInputValue * LocalRealSpeed;
         // Debug.Log ("- TurnInputValue - :"+ TurnInputValue);
-        m_Buoyancy.SetRotationInput(LocalRealRotation);
+        ShipController.SetRotationInput(LocalRealRotation);
     }
 
     IEnumerator PauseTurnIncrementation(){
@@ -230,7 +233,7 @@ public class ShipMovement : MonoBehaviour
     public void SetDead(bool death) { Dead = death; }
     public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 
-    public float GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
+    public int GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
     public float GetLocalRealSpeed(){ return LocalRealSpeed; }
-    public float GetLocalRealRotation(){ return LocalRealRotation; }
+    // public float GetLocalRealRotation(){ return LocalRealRotation; }
 }
