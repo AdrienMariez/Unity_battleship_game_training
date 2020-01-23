@@ -1,0 +1,64 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using System.IO;
+using UnityEngine.SceneManagement;
+
+public class MenuButtonsControl : MonoBehaviour {
+    public GameObject m_MenuUI;
+    private GameObject MenuUIInstance;
+    public GameObject m_OptionsUI;
+    private GameObject OptionsUIInstance;
+
+    void Start() {
+        OpenMainMenu();
+    }
+
+    protected void Update() {
+        
+    }
+
+    protected void OpenMainMenu() {
+        MenuUIInstance = Instantiate(m_MenuUI);
+        Button ButtonScenario1 = MenuUIInstance.transform.Find("ButtonScenario1").GetComponent<Button>();
+		ButtonScenario1.onClick.AddListener(ButtonScenario1OnClick);
+        Button ButtonScenario2 = MenuUIInstance.transform.Find("ButtonScenario2").GetComponent<Button>();
+		ButtonScenario2.onClick.AddListener(ButtonScenario2OnClick);
+        Button ButtonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
+		ButtonOptions.onClick.AddListener(ButtonOptionsOnClick);
+    }
+    protected void CloseMainMenu() {
+        if (MenuUIInstance)
+            Destroy (MenuUIInstance);
+    }
+    void ButtonScenario1OnClick(){
+        Debug.Log ("Button Scenario 1 Clicked !");
+        string sceneName = "ROTS_scenario_1";
+        Application.LoadLevel(sceneName);
+    }
+    void ButtonScenario2OnClick(){
+        Debug.Log ("Button Scenario 2 Clicked !");
+        string sceneName = "ROTS_scenario_2";
+        Application.LoadLevel(sceneName);
+    }
+    void ButtonOptionsOnClick(){
+        Debug.Log ("Button Options Clicked !");
+        CloseMainMenu();
+        OpenOptionsMenu();
+    }
+
+    protected void OpenOptionsMenu() {
+        OptionsUIInstance = Instantiate(m_OptionsUI);
+        Button ButtonMainMenu = OptionsUIInstance.transform.Find("ButtonMainMenu").GetComponent<Button>();
+		ButtonMainMenu.onClick.AddListener(ButtonMainMenuOnClick);
+    }
+    protected void CloseOptionsMenu() {
+        if (OptionsUIInstance)
+            Destroy (OptionsUIInstance);
+    }
+    void ButtonMainMenuOnClick(){
+        Debug.Log ("Back to main menu.");
+        CloseOptionsMenu();
+        OpenMainMenu();
+    }
+}
