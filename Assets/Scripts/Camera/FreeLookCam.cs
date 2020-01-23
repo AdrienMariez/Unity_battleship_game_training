@@ -45,7 +45,7 @@ namespace FreeLookCamera {
 		private Quaternion AxisTargetRot;
 		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
-        private bool AllowCameraRotation;
+        private bool AllowCameraRotation = true;
         private bool DisplayUI = true;
 
         protected virtual void Start() {
@@ -73,19 +73,6 @@ namespace FreeLookCamera {
 
         protected void Update() {
             // Debug.Log ("m_Axis   : "+ m_Axis);
-
-            // Set camera position relative to the target
-            if (ActiveTarget.GetComponent<TargetCameraParameters>()) {
-                m_CameraDistance = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraDistance;
-                m_CameraHeight = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraHeight;
-                m_CameraLateralOffset = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
-            } else {
-                m_CameraDistance = 12;
-                m_CameraHeight = 2;
-                m_CameraLateralOffset = 0;
-            }
-
-            Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
 
             if (Input.GetButton ("FocusCamera")){
                 Cam.fieldOfView = m_FieldOfViewFocus;
@@ -194,6 +181,19 @@ namespace FreeLookCamera {
         public void SetActiveTarget(GameObject TargetSent) {
             ActiveTarget = TargetSent;
             Target = ActiveTarget.transform;
+
+            // Set camera position relative to the target
+            if (ActiveTarget.GetComponent<TargetCameraParameters>()) {
+                m_CameraDistance = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraDistance;
+                m_CameraHeight = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraHeight;
+                m_CameraLateralOffset = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
+            } else {
+                m_CameraDistance = 12;
+                m_CameraHeight = 2;
+                m_CameraLateralOffset = 0;
+            }
+
+            Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
         }
         public Vector3 GetTargetPosition() {
             return TargetPosition;

@@ -103,7 +103,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: HorizontalPlane
-    descriptiveName: Horizontal move for planes
+    descriptiveName: Horizontal axis for planes
     descriptiveNegativeName: 
     negativeButton: k
     positiveButton: m
@@ -119,7 +119,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: VerticalPlane
-    descriptiveName: Vertical move for planes
+    descriptiveName: Vertical axis for planes
     descriptiveNegativeName: 
     negativeButton: l
     positiveButton: o
@@ -151,7 +151,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: HorizontalGround
-    descriptiveName: Horizontal move for ground units
+    descriptiveName: Horizontal axis for ground units
     descriptiveNegativeName: 
     negativeButton: k
     positiveButton: m
@@ -167,7 +167,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: Horizontal
-    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    descriptiveName: '-'
     descriptiveNegativeName: 
     negativeButton: k
     positiveButton: m
@@ -199,7 +199,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: HorizontalShip
-    descriptiveName: Horizontal move for naval units
+    descriptiveName: Horizontal axis for naval units
     descriptiveNegativeName: 
     negativeButton: k
     positiveButton: m
@@ -215,7 +215,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: VerticalGround
-    descriptiveName: Vertical move for ground units
+    descriptiveName: Vertical axis for ground units
     descriptiveNegativeName: 
     negativeButton: l
     positiveButton: o
@@ -231,7 +231,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: Vertical
-    descriptiveName: USED FOR PREFAB CAR TO REMOVE
+    descriptiveName: '-'
     descriptiveNegativeName: 
     negativeButton: l
     positiveButton: o
@@ -247,7 +247,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: Mouse ScrollWheel
-    descriptiveName: USED FOR PREFAB TANK TO REMOVE
+    descriptiveName: '-'
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -263,7 +263,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: VerticalShip
-    descriptiveName: Vertical move for naval units
+    descriptiveName: Vertical axis for naval units
     descriptiveNegativeName: 
     negativeButton: l
     positiveButton: o
