@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour {
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
     public float m_EndDelay = 3f;               // The delay between the end of RoundPlaying and RoundEnding phases.
-    public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
@@ -127,7 +126,8 @@ public class GameManager : MonoBehaviour {
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
-        m_MessageText.text = "ROUND " + m_RoundNumber;
+        // m_MessageText.text = "ROUND " + m_RoundNumber;
+        PlayerManager.SetScoreMessage("ROUND " + m_RoundNumber);
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_StartWait;
@@ -137,8 +137,8 @@ public class GameManager : MonoBehaviour {
         // As soon as the round begins playing let the players control the tanks.
         EnableUnitsControl ();
 
-        // Clear the text from the screen.
-        m_MessageText.text = GameMessage();
+        // Show score on the screen.
+        PlayerManager.SetScoreMessage(GameMessage());
 
         // While there is not one side reduced to 0...
         while (!NoUnitLeftOnOneSide())
@@ -174,8 +174,7 @@ public class GameManager : MonoBehaviour {
         GameWinner = GetGameWinner ();
 
         // Get a message based on the scores and whether or not there is a game winner and display it.
-        string message = EndMessage ();
-        m_MessageText.text = message;
+        PlayerManager.SetScoreMessage(EndMessage ());
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_EndWait;
@@ -309,6 +308,6 @@ public class GameManager : MonoBehaviour {
                 EnemiesUnits += Unit;
             }
         }
-        m_MessageText.text = GameMessage();
+        PlayerManager.SetScoreMessage(GameMessage());
     }
 }

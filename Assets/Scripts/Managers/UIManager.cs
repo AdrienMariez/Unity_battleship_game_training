@@ -7,6 +7,7 @@ using Crest;
 namespace UI {
     public class UIManager : MonoBehaviour {
         [Header("Units UI")]
+        public Text m_Score;
         public Text m_UnitName;
         public Text m_UnitHP;
             const string HPDisplay = "{0}/{1} HP";
@@ -71,6 +72,7 @@ namespace UI {
         }
 
         private void SetDisplayGameUI(){
+            m_Score.enabled = false;
             m_UnitName.enabled = false;
             m_UnitHP.enabled = false;
             m_ShipSpeedStep.enabled = false;
@@ -82,6 +84,7 @@ namespace UI {
             // Debug.Log (DisplayGameUI+" - "+DisplayMapUI+" - "+DisplayUI);
 
             if (DisplayGameUI && !DisplayMapUI && DisplayUI){
+                m_Score.enabled = true;
                 m_UnitName.enabled = true;
                 m_UnitHP.enabled = true;
                 if (TargetType == "Tank") {
@@ -97,6 +100,8 @@ namespace UI {
                     m_TurretsStatus.enabled = true;
                     m_TurretsTargetRange.enabled = true;
                 }
+            } else if (!DisplayGameUI && DisplayMapUI && DisplayUI){
+                m_Score.enabled = true;
             }
 
         }
@@ -134,6 +139,7 @@ namespace UI {
                 DisplayGameUI = !map;
             SetDisplayGameUI();
         }
+        public void SetScoreMessage(string message) { m_Score.text = message; }
         public void SetCurrentUnitHealth(float health){ CurrentHP = health; m_UnitHP.text = string.Format(HPDisplay, CurrentHP, StartingHP); }
         public void ChangeSpeedStep(int currentSpeedStep){ SpeedStep = currentSpeedStep; m_ShipSpeedStep.text = string.Format(ShipSpeedStepDisplay, SpeedStep); }
         public void SetRotationInput(float rotation){ CurrentRotation = rotation; m_ShipTurningSpeed.text = string.Format(ShipTurningSpeedDisplay, CurrentRotation); }

@@ -136,6 +136,7 @@ public class PlayerManager : MonoBehaviour
 
     public void SetPlayer(GameManager.Teams PlayerTeam){}
 
+    public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap(bool map) {
         MapActive = map;
         if (map)
