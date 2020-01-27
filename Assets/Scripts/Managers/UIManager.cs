@@ -147,16 +147,21 @@ namespace UI {
         protected void OpenPauseUI(){
             PauseUIInstance = Instantiate(m_PauseUI);
 
-            Button buttonBackToMenu = PauseUIInstance.transform.Find("ButtonBackToMenu").GetComponent<Button>();
-            buttonBackToMenu.onClick.AddListener(ButtonBackToMenuOnClick);
             Button buttonResumeGame = PauseUIInstance.transform.Find("ButtonResumeGame").GetComponent<Button>();
             buttonResumeGame.onClick.AddListener(ButtonResumeGameOnClick);
+            Button buttonBackToMenu = PauseUIInstance.transform.Find("ButtonBackToMenu").GetComponent<Button>();
+            buttonBackToMenu.onClick.AddListener(ButtonBackToMenuOnClick);
+            Button buttonBackToDesktop = PauseUIInstance.transform.Find("ButtonBackToDesktop").GetComponent<Button>();
+            buttonBackToDesktop.onClick.AddListener(ButtonBackToDesktopOnClick);
+        }
+        protected void ButtonResumeGameOnClick(){
+            PlayerManager.SetPause();
         }
         protected void ButtonBackToMenuOnClick(){
             PlayerManager.EndGame();
         }
-        protected void ButtonResumeGameOnClick(){
-            PlayerManager.SetPause();
+        protected void ButtonBackToDesktopOnClick(){
+            Application.Quit();
         }
         protected void ClosePauseUI(){
             if (PauseUIInstance)

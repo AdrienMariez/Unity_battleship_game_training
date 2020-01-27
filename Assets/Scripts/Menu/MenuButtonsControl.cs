@@ -22,12 +22,14 @@ public class MenuButtonsControl : MonoBehaviour {
 
     protected void OpenMainMenu() {
         MenuUIInstance = Instantiate(m_MenuUI);
-        Button ButtonScenario1 = MenuUIInstance.transform.Find("ButtonScenario1").GetComponent<Button>();
-		ButtonScenario1.onClick.AddListener(ButtonScenario1OnClick);
-        Button ButtonScenario2 = MenuUIInstance.transform.Find("ButtonScenario2").GetComponent<Button>();
-		ButtonScenario2.onClick.AddListener(ButtonScenario2OnClick);
-        Button ButtonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
-		ButtonOptions.onClick.AddListener(ButtonOptionsOnClick);
+        Button buttonScenario1 = MenuUIInstance.transform.Find("ButtonScenario1").GetComponent<Button>();
+		buttonScenario1.onClick.AddListener(ButtonScenario1OnClick);
+        Button buttonScenario2 = MenuUIInstance.transform.Find("ButtonScenario2").GetComponent<Button>();
+		buttonScenario2.onClick.AddListener(ButtonScenario2OnClick);
+        Button buttonExit = MenuUIInstance.transform.Find("ButtonExit").GetComponent<Button>();
+		buttonExit.onClick.AddListener(ButtonExitOnClick);
+        Button buttonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
+		buttonOptions.onClick.AddListener(ButtonOptionsOnClick);
     }
     protected void CloseMainMenu() {
         if (MenuUIInstance)
@@ -43,6 +45,11 @@ public class MenuButtonsControl : MonoBehaviour {
         string sceneName = "ROTS_scenario_2";
         Application.LoadLevel(sceneName);
     }
+    void ButtonExitOnClick(){
+        // Debug.Log ("Exit Options Clicked !");
+        Application.Quit();
+    }
+
     void ButtonOptionsOnClick(){
         // Debug.Log ("Button Options Clicked !");
         CloseMainMenu();

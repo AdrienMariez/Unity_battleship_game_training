@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour {
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (GameWinner != Teams.NeutralAI) {
-            // If there is a game winner, restart the level.
-            SceneManager.LoadScene (0);
+            // If there is a game winner, close the scenario
+            EndGame();
         } else {
             // If there isn't a winner yet, restart this coroutine so the loop continues.
             // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
