@@ -6,72 +6,8 @@ InputManager:
   serializedVersion: 2
   m_Axes:
   - serializedVersion: 3
-    m_Name: HorizontalUI
-    descriptiveName: Horizontal keyboard axis for UI
-    descriptiveNegativeName: 
-    negativeButton: a
-    positiveButton: d
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 3
-    dead: 0.001
-    sensitivity: 3
-    snap: 1
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: VerticalUI
-    descriptiveName: Vertical keyboard axis for UI
-    descriptiveNegativeName: 
-    negativeButton: s
-    positiveButton: w
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 3
-    dead: 0.001
-    sensitivity: 3
-    snap: 1
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Submit
-    descriptiveName: Submit keyboard button for UI
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: space
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Cancel
-    descriptiveName: Cancel keyboard button for UI
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: escape
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Mouse X
-    descriptiveName: Horiz. axis for the mouse
+    descriptiveName: Control - Horiz. axis for the mouse
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -87,7 +23,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: Mouse Y
-    descriptiveName: Vert. axis for the mouse
+    descriptiveName: Control - Vert. axis for the mouse
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -102,205 +38,13 @@ InputManager:
     axis: 1
     joyNum: 2
   - serializedVersion: 3
-    m_Name: HorizontalPlane
-    descriptiveName: Horizontal axis for planes
-    descriptiveNegativeName: 
-    negativeButton: k
-    positiveButton: m
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: VerticalPlane
-    descriptiveName: Vertical axis for planes
-    descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: FireMainPlane
-    descriptiveName: Fire Button for planes
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: mouse 0
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: HorizontalGround
-    descriptiveName: Horizontal axis for ground units
-    descriptiveNegativeName: 
-    negativeButton: k
-    positiveButton: m
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: Horizontal
-    descriptiveName: '-'
-    descriptiveNegativeName: 
-    negativeButton: k
-    positiveButton: m
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: HideUI
-    descriptiveName: Hide/display all UI elements
-    descriptiveNegativeName: 
-    negativeButton: b
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: HorizontalShip
-    descriptiveName: Horizontal axis for naval units
-    descriptiveNegativeName: 
-    negativeButton: k
-    positiveButton: m
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: VerticalGround
-    descriptiveName: Vertical axis for ground units
-    descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: Vertical
-    descriptiveName: '-'
-    descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: Mouse ScrollWheel
-    descriptiveName: '-'
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 1
-    axis: 2
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: VerticalShip
-    descriptiveName: Vertical axis for naval units
-    descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: FireMainWeapon
-    descriptiveName: Main fire button for units
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: mouse 0
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
     m_Name: SetNextUnit
-    descriptiveName: Look and control the next unit
+    descriptiveName: Control - Switch to the next unit
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: p
+    positiveButton: e
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: p
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -311,60 +55,12 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: SetPreviousUnit
-    descriptiveName: Look and control the previous unit
+    descriptiveName: Control - Switch to the previous unit
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: i
+    positiveButton: q
     altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: SetWeaponArtillery
-    descriptiveName: Set the weapon as artillery
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: _
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: SetWeaponAA
-    descriptiveName: Set AA as the current firemode
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: SetWeaponTorpedoes
-    descriptiveName: Set torpedoes as the current firemode
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: i
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -375,12 +71,12 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: FreeCamera
-    descriptiveName: Look around the unit freely
+    descriptiveName: Camera - Free Camera
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: j
+    positiveButton: f
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: j
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -391,7 +87,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: FocusCamera
-    descriptiveName: Zoom & Slow down Free camera move
+    descriptiveName: Camera - Zoom in
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: mouse 1
@@ -407,28 +103,12 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: OpenMap
-    descriptiveName: Open/close the map
+    descriptiveName: Control - Open/close the map
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: ','
+    positiveButton: m
     altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: OpenDamageControl
-    descriptiveName: Open/close the damage control panel
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: n
-    altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: ','
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -439,10 +119,10 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: PauseMenu
-    descriptiveName: Pause teh game/ open menu
+    descriptiveName: Control - Pause the game
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: a
+    positiveButton: escape
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -452,4 +132,324 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HideUI
+    descriptiveName: Camera - Hide/display all UI elements
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: r
+    altNegativeButton: 
+    altPositiveButton: b
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HorizontalShip
+    descriptiveName: Naval units - Horizontal axis
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: k
+    altPositiveButton: m
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: VerticalShip
+    descriptiveName: Naval units - Vertical axis
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: l
+    altPositiveButton: o
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: OpenDamageControl
+    descriptiveName: Naval units - Open/close the damage control panel
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: z
+    altNegativeButton: 
+    altPositiveButton: n
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HorizontalGround
+    descriptiveName: Ground Units - Horizontal axis
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: k
+    altPositiveButton: m
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: VerticalGround
+    descriptiveName: Ground Units - Vertical axis
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: l
+    altPositiveButton: o
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HorizontalPlane
+    descriptiveName: Air Units - Horizontal axis
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: k
+    altPositiveButton: m
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: VerticalPlane
+    descriptiveName: Air Units - Vertical axis
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: l
+    altPositiveButton: o
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: FireMainPlane
+    descriptiveName: Air Units - Fire Button
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: mouse 0
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: FireMainWeapon
+    descriptiveName: Control - Main fire button
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: mouse 0
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: SetWeaponArtillery
+    descriptiveName: Naval units - Set artillery as the current firemode
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 8
+    altNegativeButton: 
+    altPositiveButton: 8
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: SetWeaponAA
+    descriptiveName: Naval units - Set AA as the current firemode
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 9
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: SetWeaponTorpedoes
+    descriptiveName: Naval units - Set torpedoes as the current firemode
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 0
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HorizontalUI
+    descriptiveName: Unused - Horizontal keyboard axis for UI
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: VerticalUI
+    descriptiveName: Unused - Vertical keyboard axis for UI
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Submit
+    descriptiveName: Unused - Submit keyboard button for UI
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: space
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Cancel
+    descriptiveName: Unused - Cancel keyboard button for UI
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: escape
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Horizontal
+    descriptiveName: Unused - Horizontal
+    descriptiveNegativeName: 
+    negativeButton: k
+    positiveButton: m
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Vertical
+    descriptiveName: Unused - Vertical
+    descriptiveNegativeName: 
+    negativeButton: l
+    positiveButton: o
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Mouse ScrollWheel
+    descriptiveName: Unused - Mouse ScrollWheel
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 1
+    axis: 2
     joyNum: 2
