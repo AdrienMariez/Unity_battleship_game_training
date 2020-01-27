@@ -6,6 +6,7 @@ public class TurretManager : MonoBehaviour
     public GameObject[] m_Turrets;
     private bool Active = false;
     private bool Dead = false;
+    private bool Pause = false;
     private bool Map = false;
     private bool DamageControl = false;
     private bool FreeCamera = false;
@@ -78,7 +79,7 @@ public class TurretManager : MonoBehaviour
     }
 
     private void SetPlayerControl(){
-        if (Active && !Map && !DamageControl && !Dead && !FreeCamera) {
+        if (Active && !Map && !DamageControl && !Dead && !FreeCamera && !Pause) {
             PlayerControl = true;
         } else {
             PlayerControl = false;
@@ -95,6 +96,10 @@ public class TurretManager : MonoBehaviour
     }
     public void SetMap(bool map) {
         Map = map;
+        SetPlayerControl();
+    }
+    public void SetPause() {
+        Pause = !Pause;
         SetPlayerControl();
     }
     public void SetDamageControl(bool damageControl) {

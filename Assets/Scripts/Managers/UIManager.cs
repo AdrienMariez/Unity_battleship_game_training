@@ -37,7 +37,11 @@ namespace UI {
         private bool DisplayUI = true;
 
         private GameObject[] Turrets;
+        PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
+
+        public GameObject m_PauseUI;
+        private GameObject PauseUIInstance;
 
         private void Update() {
             if (DisplayGameUI) {
@@ -131,7 +135,35 @@ namespace UI {
             }
             SetDisplayGameUI();
         }
-        
+
+        public void SetPauseUI(bool pause) {
+            if (pause){
+                OpenPauseUI();
+            } else {
+                ClosePauseUI();
+            }
+        }
+
+        protected void OpenPauseUI(){
+            PauseUIInstance = Instantiate(m_PauseUI);
+
+            Button buttonBackToMenu = PauseUIInstance.transform.Find("ButtonBackToMenu").GetComponent<Button>();
+            buttonBackToMenu.onClick.AddListener(ButtonBackToMenuOnClick);
+            Button buttonResumeGame = PauseUIInstance.transform.Find("ButtonResumeGame").GetComponent<Button>();
+            buttonResumeGame.onClick.AddListener(ButtonResumeGameOnClick);
+        }
+        protected void ButtonBackToMenuOnClick(){
+            PlayerManager.EndGame();
+        }
+        protected void ButtonResumeGameOnClick(){
+            PlayerManager.SetPause();
+        }
+        protected void ClosePauseUI(){
+            if (PauseUIInstance)
+                Destroy (PauseUIInstance);
+        }
+
+        public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
         public void SetFreeLookCamera(FreeLookCam freeLookCam){ FreeLookCam = freeLookCam; }
         public void SetMap(bool map) {
             DisplayMapUI = map;

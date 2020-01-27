@@ -310,4 +310,9 @@ public class GameManager : MonoBehaviour {
         }
         PlayerManager.SetScoreMessage(GameMessage());
     }
+
+    public void EndGame() {
+        string sceneName = "MainMenuScene3d";
+        Application.LoadLevel(sceneName);
+    }
 }

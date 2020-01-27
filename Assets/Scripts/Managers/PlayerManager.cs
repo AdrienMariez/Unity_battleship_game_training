@@ -14,38 +14,63 @@ public class PlayerManager : MonoBehaviour
     private int CurrentTarget = 0;
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
+    private bool Pause = false;
     private bool MapActive = false;
     private bool DamageControl = false;
-    private FreeLookCam FreeLookCamera;
+    public FreeLookCam m_FreeLookCamera;
+    public Camera m_MapCamera;
     private GameManager GameManager;
     private GameManager.Teams PlayerTeam;
     private UIManager UIManager;
 
     private void Start() {
-        FreeLookCamera = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
         GameManager = GetComponent<GameManager>();
         PlayerTeam = GameManager.GetPlayer();
         UIManager = GetComponent<UIManager>();
-        UIManager.SetFreeLookCamera(FreeLookCamera);
+        UIManager.SetPlayerManager(this);
+        UIManager.SetFreeLookCamera(m_FreeLookCamera);
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
     }
 
     protected void Update() {
-        if (Input.GetButtonDown ("HideUI"))
-            SetHideUI();
+        if (!Pause) {     
+            if (Input.GetButtonDown ("HideUI"))
+                SetHideUI();
 
-        if (Input.GetButtonDown ("SetNextUnit"))
-            SetNextTarget();
-        if (Input.GetButtonDown ("SetPreviousUnit"))
-            SetPreviousTarget();
-        //Debug.Log ("Current target : "+ CurrentTarget);
+            if (Input.GetButtonDown ("OpenMap")) {
+                SetMap();
+            }
+
+            if (Input.GetButtonDown ("SetNextUnit"))
+                SetNextTarget();
+            if (Input.GetButtonDown ("SetPreviousUnit"))
+                SetPreviousTarget();
+            //Debug.Log ("Current target : "+ CurrentTarget);
+        }
+
+        if (Input.GetButtonDown ("PauseMenu"))
+            SetPause();
     }
 
     private void SetHideUI(){
         // This is used to hide all UI elements
-        FreeLookCamera.SetHideUI();
+        m_FreeLookCamera.SetHideUI();
         UIManager.SetHideUI();
+    }
+
+    public void SetPause() {
+        Pause = !Pause;
+        UIManager.SetPauseUI(Pause);
+        if (Pause) {
+            Time.timeScale = Mathf.Approximately(Time.timeScale, 0.0f) ? 1.0f : 0.0f;                   
+        } else {
+            Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f; 
+        }
+        if (ActiveTarget.GetComponent<ShipController>()) {
+            ActiveTarget.GetComponent<ShipController>().SetPause(Pause);
+        }
+        CheckCameraRotation();
     }
 
     private void SetNextTarget() {
@@ -119,33 +144,35 @@ public class PlayerManager : MonoBehaviour
                 } 
             }
         }
-        FreeLookCamera.SetActiveTarget(ActiveTarget);
+        m_FreeLookCamera.SetActiveTarget(ActiveTarget);
         UIManager.SetActiveTarget(ActiveTarget);
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
 
     private void CheckCameraRotation(){
-        if (MapActive || DamageControl) {
-            FreeLookCamera.SetRotation(false);
-            FreeLookCamera.SetMouse(true);
+        if (MapActive || DamageControl || Pause) {
+            m_FreeLookCamera.SetRotation(false);
+            m_FreeLookCamera.SetMouse(true);
         } else {
-            FreeLookCamera.SetRotation(true);
-            FreeLookCamera.SetMouse(false);
+            m_FreeLookCamera.SetRotation(true);
+            m_FreeLookCamera.SetMouse(false);
         }
     }
 
     public void SetPlayer(GameManager.Teams PlayerTeam){}
 
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
-    public void SetMap(bool map) {
-        MapActive = map;
-        if (map)
+    public void SetMap() {
+        MapActive = !MapActive;
+        if (MapActive)
             SetEnabledUnit(PlayerUnits.Length);
 
-        UIManager.SetMap(map);
+        UIManager.SetMap(MapActive);
+
+        m_MapCamera.enabled = MapActive;
 
         if (ActiveTarget.GetComponent<ShipController>()) {
-            ActiveTarget.GetComponent<ShipController>().SetMap(map);
+            ActiveTarget.GetComponent<ShipController>().SetMap(MapActive);
         }
         CheckCameraRotation();
     }
@@ -158,5 +185,12 @@ public class PlayerManager : MonoBehaviour
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
     public void SetTurretStatus(string status){ UIManager.SetTurretStatus(status); }
+
     public void Reset(){Start();}
+    public void EndGame(){
+        if (Pause){
+            SetPause();
+        }
+        GameManager.EndGame();
+    }
 }

@@ -1555,6 +1555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6e48ba226ad2444bc8ebafec51c5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FreeLookCamera: {fileID: 2090002808}
+  m_MapCamera: {fileID: 850671230}
 --- !u!114 &1091423347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,6 +1577,8 @@ MonoBehaviour:
   m_ShipTurningSpeed: {fileID: 657300854}
   m_TurretsStatus: {fileID: 244442191}
   m_TurretsTargetRange: {fileID: 432068552}
+  m_PauseUI: {fileID: 2857608438053203770, guid: c6848c63a56ee124b943be9809d20048,
+    type: 3}
 --- !u!114 &1091423348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,7 +1591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c48f123888c3144c9d79a03f1c15036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MapCamera: {fileID: 850671230}
 --- !u!1 &1145907926
 GameObject:
   m_ObjectHideFlags: 0
@@ -2448,6 +2451,18 @@ Terrain:
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
   m_GroupingID: 0
   m_AllowAutoConnect: 1
+--- !u!114 &2090002808 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
+    type: 3}
+  m_PrefabInstance: {fileID: 682091737878302279}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 735bab2d2f4646445a813c830c7555ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &682091737878302279
 PrefabInstance:
   m_ObjectHideFlags: 0

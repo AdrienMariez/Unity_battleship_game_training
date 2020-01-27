@@ -438,11 +438,11 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
-    m_Name: Empty
-    descriptiveName: keep empty to disable control over non focused units !
+    m_Name: PauseMenu
+    descriptiveName: Pause teh game/ open menu
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
+    positiveButton: a
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

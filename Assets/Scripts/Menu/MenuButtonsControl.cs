@@ -12,6 +12,8 @@ public class MenuButtonsControl : MonoBehaviour {
 
     void Start() {
         OpenMainMenu();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     protected void Update() {
@@ -32,17 +34,17 @@ public class MenuButtonsControl : MonoBehaviour {
             Destroy (MenuUIInstance);
     }
     void ButtonScenario1OnClick(){
-        Debug.Log ("Button Scenario 1 Clicked !");
+        // Debug.Log ("Button Scenario 1 Clicked !");
         string sceneName = "ROTS_scenario_1";
         Application.LoadLevel(sceneName);
     }
     void ButtonScenario2OnClick(){
-        Debug.Log ("Button Scenario 2 Clicked !");
+        // Debug.Log ("Button Scenario 2 Clicked !");
         string sceneName = "ROTS_scenario_2";
         Application.LoadLevel(sceneName);
     }
     void ButtonOptionsOnClick(){
-        Debug.Log ("Button Options Clicked !");
+        // Debug.Log ("Button Options Clicked !");
         CloseMainMenu();
         OpenOptionsMenu();
     }

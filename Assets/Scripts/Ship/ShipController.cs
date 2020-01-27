@@ -366,9 +366,12 @@ public class ShipController : MonoBehaviour {
             PlayerManager.ChangeSpeedStep(currentSpeedStep);
     }
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
+    public void SetPause(bool pause){
+        DamageControl.SetPause();
+        if (GetComponent<TurretManager>())
+            Turrets.SetPause();
+    }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
-    // public float GetEngineRepairCrew(){ return EngineRepairCrew; }
-    // public float GetTurretsRepairCrew(){ return TurretsRepairCrew; }
     public void DestroyUnit(){ Destroy (gameObject); }
 }
