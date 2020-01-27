@@ -31,7 +31,7 @@ namespace UI {
         private float CurrentHP;
         private float TurretTargetRange;
         private string TurretStatus = "";
-        private bool CurrentUnitDead = false;
+        private bool CurrentUnitDead;
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
         private bool DisplayUI = true;
@@ -104,7 +104,8 @@ namespace UI {
                     m_TurretsStatus.enabled = true;
                     m_TurretsTargetRange.enabled = true;
                 }
-            } else if (!DisplayGameUI && DisplayMapUI && DisplayUI){
+            // } else if (!DisplayGameUI && DisplayMapUI && DisplayUI){
+            } else if (DisplayGameUI){
                 m_Score.enabled = true;
             }
 
@@ -176,7 +177,11 @@ namespace UI {
                 DisplayGameUI = !map;
             SetDisplayGameUI();
         }
-        public void SetScoreMessage(string message) { m_Score.text = message; }
+        public void SetScoreMessage(string message) {
+            // This contradicts a bit the No UI toogle but better gameplay than a cosmetic error
+            m_Score.enabled = true;
+            m_Score.text = message;
+        }
         public void SetCurrentUnitHealth(float health){ CurrentHP = health; m_UnitHP.text = string.Format(HPDisplay, CurrentHP, StartingHP); }
         public void ChangeSpeedStep(int currentSpeedStep){ SpeedStep = currentSpeedStep; m_ShipSpeedStep.text = string.Format(ShipSpeedStepDisplay, SpeedStep); }
         public void SetRotationInput(float rotation){ CurrentRotation = rotation; m_ShipTurningSpeed.text = string.Format(ShipTurningSpeedDisplay, CurrentRotation); }

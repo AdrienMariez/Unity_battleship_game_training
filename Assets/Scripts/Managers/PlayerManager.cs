@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         FindAllPossibleTargets();
         SetEnabledUnit(PlayerUnits.Length);
+        UIManager.SetCurrentUnitDead(false);                // If the level has restarted, set the unit as not dead (no other check)
     }
 
     protected void Update() {

@@ -18,6 +18,11 @@ public class UnitManager {
 
 
     public void Setup () {
+        m_Instance.transform.position = m_SpawnPoint.position;
+        m_Instance.transform.rotation = m_SpawnPoint.rotation;
+
+        m_Instance.SetActive(false);
+        m_Instance.SetActive(true);
     }
 
 

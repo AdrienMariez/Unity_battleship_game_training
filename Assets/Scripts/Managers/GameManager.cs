@@ -64,7 +64,8 @@ public class GameManager : MonoBehaviour {
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (GameWinner != Teams.NeutralAI) {
-            // If there is a game winner, close the scenario
+            // If there is a game winner, restart the level.
+            // SceneManager.LoadScene (0);
             EndGame();
         } else {
             // If there isn't a winner yet, restart this coroutine so the loop continues.
@@ -149,10 +150,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator RoundEnding () {
-        // Stop tanks from moving.
+        // Disable units
         DisableUnitsControl ();
-
-        PlayerManager.Reset();
 
         // Clear the winner from the previous round.
         RoundWinner = Teams.NeutralAI;
@@ -228,7 +227,7 @@ public class GameManager : MonoBehaviour {
         // By default when a round ends there are no winners so the default end message is a draw.
         string message = "DRAW!";
 
-        // If there is a winner then change the message to reflect that.
+        // If there is a round winner...
         if (RoundWinner != null) {
             if (RoundWinner == Teams.Allies) {
                 message = "Allies won the round.";
@@ -236,16 +235,8 @@ public class GameManager : MonoBehaviour {
                 message = "Axis won the round.";
             }
         }
-
-        // Add some line breaks after the initial message.
-        message += "\n\n\n\n";
-
-        // Display Teams scores :
-        message += "Allies victories : " + WinsAllies + " victories.\n";
-        message += "Axis victories : " + WinsAllies + " victories.\n";
-
-        // If there is a game winner, change the entire message to reflect that.
-        if (GameWinner != null) {
+        // If there is a game winner...
+        if (GameWinner != Teams.NeutralAI) {
             if (GameWinner == Teams.Allies) {
                 message = "Allies won the game !";
             } else {
@@ -253,12 +244,44 @@ public class GameManager : MonoBehaviour {
             }
         }
 
+        // Add some line breaks after the initial message.
+        message += "\n\n\n\n";
+
+        // Display Teams scores :
+        // Does not display correct score for unsolved reasons (TODO)
+        // message += "Allies victories : " + WinsAllies + " victories.\n";
+        // message += "Axis victories : " + WinsAllies + " victories.\n";
+    
+
         return message;
     }
 
     private string GameMessage() {
-        string message = "Player units : " + PlayableUnits +"\n";
-        message += "Enemy units : " + EnemiesUnits;
+        string message;
+
+        if (PlayableUnits >  1) {
+            message = "Player units : " + PlayableUnits +"\n";
+        } else {
+            message = "Player unit : " + PlayableUnits +"\n";
+        }
+
+        if (m_PlayerTeam == Teams.Allies) {
+            message += "Wins : "+ WinsAllies +"/"+ m_NumRoundsToWin +"\n";
+        } else {
+            message += "Wins : "+ WinsAxis +"/"+ m_NumRoundsToWin +"\n";
+        }
+
+        if (PlayableUnits >  1) {
+            message += "Enemy units : " + EnemiesUnits +"\n";
+        } else {
+            message += "Enemy unit : " + EnemiesUnits +"\n";
+        }
+
+        if (m_PlayerTeam == Teams.Allies) {
+            message += "Wins : "+ WinsAxis +"/"+ m_NumRoundsToWin +"\n";
+        } else {
+            message += "Wins : "+ WinsAllies +"/"+ m_NumRoundsToWin +"\n";
+        }
 
         return message;
     }

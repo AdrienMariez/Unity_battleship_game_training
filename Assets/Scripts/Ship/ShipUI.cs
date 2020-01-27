@@ -5,6 +5,7 @@ public class ShipUI : MonoBehaviour {
 
     private bool Active = true;
     private Transform ShipUITransform;
+    private Text ShipUIDistance;
     private Text ShipUIText;
     private GameObject ShipUISliderObject;
     private Slider ShipUISlider;
