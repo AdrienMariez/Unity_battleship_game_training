@@ -1,24 +1,39 @@
 using UnityEngine;
+using System.Collections;
 
 public class ShipAI : MonoBehaviour {
     private bool AIActive = true;
     private Vector3 AIGroundTargetPosition;
     private string Team;
     private string Name;                // For debug purposes
+    private float TurnInputLimit = 0;
+    private bool PauseRotation = true;
     private GameObject TargetUnit;
+    private ShipController ShipController;
     public enum ShipMoveStates {
         Patrol,
         Circle,
         approach
     }
     private void Awake () {
+        ShipController = GetComponent<ShipController>();
     }
 
     private void FixedUpdate(){
+        if (AIActive && PauseRotation) {
+            RotateTarget();
+            StartCoroutine(PauseRotate());
+        }
+    }
+    IEnumerator PauseRotate(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        PauseRotation = false;
+        yield return new WaitForSeconds(3);
+        PauseRotation = true;
     }
 
     private void GetTargets(){
-        Debug.Log("Unit : "+ Name +"Team = "+ Team);
+        // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
 
         float range = 0f;
         if (Team == "Allies" || Team == "AlliesAI") {
@@ -51,11 +66,28 @@ public class ShipAI : MonoBehaviour {
                 }
             }
         }
-        Debug.Log("Unit : "+ Name +"TargetUnit = "+ TargetUnit);
+        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
+    }
+
+    private void RotateTarget(){
+        // For the moment, just circle the Target
+        Vector3 targetDir = gameObject.transform.position - TargetUnit.transform.position;
+        Vector3 forward = gameObject.transform.forward;
+        float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
+
+        if (angle > 95 && angle > 0 && TurnInputLimit < 1 || angle > -85 && angle < 0 && TurnInputLimit < 1) {
+            ShipController.SetAIturn(-0.5f);
+        } else if (angle < 85  && angle > 0 && TurnInputLimit > -1 || angle < -95 && angle < 0 && TurnInputLimit > -1) {
+            ShipController.SetAIturn(0.5f);
+        } else {
+            ShipController.SetAIturn(0);
+        }
+        // Debug.Log("angle : "+ angle);
     }
 
     private void AISwitchMoveState(){
-        // If 
+        // For the moment, just go at full speed
+        ShipController.SetAISpeed(4);
     }
 
     public Vector3 GetAIGroundTargetPosition(){
@@ -71,4 +103,5 @@ public class ShipAI : MonoBehaviour {
             AISwitchMoveState();
         }
     }
+    public void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
 }

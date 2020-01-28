@@ -96,6 +96,17 @@ public class ShipMovement : MonoBehaviour
             } else if(Input.GetAxis ("VerticalShip") == -1){
                 ChangeSpeedStep(-1);
             }
+            // Determine the number of degrees to be turned based on the input, speed and time between frames.
+            if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput){
+                TurnInputValue += 0.5f;
+                StartCoroutine(PauseTurnIncrementation());
+            } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput){
+                TurnInputValue -= 0.5f;
+                StartCoroutine(PauseTurnIncrementation());
+            }
+            Move ();
+            Turn ();
+        } else if (!Dead){
             Move ();
             Turn ();
         }
@@ -201,15 +212,6 @@ public class ShipMovement : MonoBehaviour
     }
 
     private void Turn() {
-        // float tempTurn = TurnInputValue;
-        // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput){
-            TurnInputValue += 0.5f;
-            StartCoroutine(PauseTurnIncrementation());
-        } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput){
-            TurnInputValue -= 0.5f;
-            StartCoroutine(PauseTurnIncrementation());
-        }
         // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
         LocalRealRotation = TurnInputValue * LocalRealSpeed;
         // Debug.Log ("- TurnInputValue - :"+ TurnInputValue);
@@ -235,5 +237,24 @@ public class ShipMovement : MonoBehaviour
 
     public int GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
     public float GetLocalRealSpeed(){ return LocalRealSpeed; }
-    // public float GetLocalRealRotation(){ return LocalRealRotation; }
+    public void SetAISpeed(int speedStep) {
+        m_CurrentSpeedStep = speedStep;
+        // Debug.Log("m_CurrentSpeedStep : "+ m_CurrentSpeedStep);
+        SetTargetSpeed();
+        StartCoroutine(PauseOrderSystem());
+        ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
+    }
+    public void SetAIturn(float turn) {
+        if (turn == 0.5f && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput && !Dead){
+            TurnInputValue += 0.5f;
+            StartCoroutine(PauseTurnIncrementation());
+        } else if(turn  == -0.5f && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput && !Dead){
+            TurnInputValue -= 0.5f;
+            StartCoroutine(PauseTurnIncrementation());
+        } else if (turn == 0 && RotationIncrementation && AllowTurnInput && !Dead){
+            TurnInputValue = 0;
+            StartCoroutine(PauseTurnIncrementation());
+        }
+        ShipController.SetAITurnInputValue(TurnInputValue);
+    }
 }

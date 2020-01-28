@@ -21,14 +21,14 @@ public class MapManager : MonoBehaviour {
         if (MapActive) {
             Vector3 targetPosition = MapCamera.transform.position;
             if (Input.GetAxis ("HorizontalMap") == 1) {
-                targetPosition.x += 5;
+                targetPosition.x += 20;
             } else if (Input.GetAxis ("HorizontalMap") == -1) {
-                targetPosition.x += -5;
+                targetPosition.x += -20;
             }
             if (Input.GetAxis ("VerticalMap") == 1) {
-                targetPosition.z += 5;
+                targetPosition.z += 20;
             } else if (Input.GetAxis ("VerticalMap") == -1) {
-                targetPosition.z += -5;
+                targetPosition.z += -20;
             }
             MapCamera.transform.position = targetPosition;
 

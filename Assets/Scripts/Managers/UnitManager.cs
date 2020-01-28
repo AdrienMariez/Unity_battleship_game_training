@@ -45,7 +45,7 @@ public class UnitManager {
         m_Instance.SetActive(true);
     }
 
-    public void SetInstance(GameObject gameobj){
+    public void SetInstance(GameObject gameobj) {
         m_Instance = gameobj;
 
         //send tag to ships
@@ -66,24 +66,24 @@ public class UnitManager {
         }
     }
 
-    // public void SetUnactive(){
-    //     if (m_Instance.GetComponent<ShipController>()){
-    //         m_Instance.GetComponent<ShipController>().SetActive(false);
-    //     }
-    // }
+    public void SetUnactive() {
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetActive(false);
+        }
+    }
 
-    public void SetUnitName(){ 
+    public void SetUnitName() { 
         if (m_Instance.GetComponent<ShipController>()){
             m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
         }
     }
 
-    public void SetGameManager(GameManager gameManager){ 
+    public void SetGameManager(GameManager gameManager) { 
         if (m_Instance.GetComponent<ShipController>()){
             m_Instance.GetComponent<ShipController>().SetGameManager(gameManager);
         }
     }
-    public void SetPlayerManager(PlayerManager playerManager){
+    public void SetPlayerManager(PlayerManager playerManager) {
         if (m_Instance.GetComponent<ShipController>()){
             m_Instance.GetComponent<ShipController>().SetPlayerManager(playerManager);
         }

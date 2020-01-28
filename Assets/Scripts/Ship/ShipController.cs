@@ -378,6 +378,9 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetPause();
     }
+    public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
+    public void SetAIturn(float turn){ Movement.SetAIturn(turn); Debug.Log("turn : "+ turn); }
+    public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
     public Vector3 GetAIGroundTargetPosition(){
         Vector3 AIGroundTargetPosition = ShipAI.GetAIGroundTargetPosition();
         return AIGroundTargetPosition;

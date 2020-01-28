@@ -96,12 +96,12 @@ public class GameManager : MonoBehaviour {
             if (m_PlayerTeam == Teams.Allies) {
                 if (m_Units[i].m_Team == Teams.Axis || m_Units[i].m_Team == Teams.AxisAI) {
                     EnemiesUnits ++;
-                    // m_Units[i].SetUnactive();
+                    m_Units[i].SetUnactive();
                 }
             } else {
                 if (m_Units[i].m_Team == Teams.Allies || m_Units[i].m_Team == Teams.AlliesAI) {
                     EnemiesUnits ++;
-                    // m_Units[i].SetUnactive();
+                    m_Units[i].SetUnactive();
                 }
             }
 
