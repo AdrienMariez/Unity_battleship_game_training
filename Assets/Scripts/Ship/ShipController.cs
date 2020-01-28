@@ -317,6 +317,8 @@ public class ShipController : MonoBehaviour {
         Movement.SetActive(Active);
         // UI is activated if the unit is NOT active.
         UI.SetActive(!Active);
+
+        ShipAI.SetAIActive(!Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
@@ -324,6 +326,7 @@ public class ShipController : MonoBehaviour {
     
     public void SetTag(string team){
         gameObject.tag = team;
+        ShipAI.SetUnitTeam(team);
     }
     public void SetName(string name){
         gameObject.name = name;
@@ -331,6 +334,7 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<ShipDamageControl>()) {
             DamageControl.SetName(name);
         }
+        ShipAI.SetName(name);
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }

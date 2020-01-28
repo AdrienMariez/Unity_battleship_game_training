@@ -94,16 +94,14 @@ public class GameManager : MonoBehaviour {
 
             // Set the needed units to attain win conditions
             if (m_PlayerTeam == Teams.Allies) {
-                if (m_Units[i].m_Team == Teams.Axis) {
+                if (m_Units[i].m_Team == Teams.Axis || m_Units[i].m_Team == Teams.AxisAI) {
                     EnemiesUnits ++;
-                } else if (m_Units[i].m_Team == Teams.AxisAI) {
-                    EnemiesUnits ++;
+                    // m_Units[i].SetUnactive();
                 }
             } else {
-                if (m_Units[i].m_Team == Teams.Allies) {
+                if (m_Units[i].m_Team == Teams.Allies || m_Units[i].m_Team == Teams.AlliesAI) {
                     EnemiesUnits ++;
-                } else if (m_Units[i].m_Team == Teams.AlliesAI) {
-                    EnemiesUnits ++;
+                    // m_Units[i].SetUnactive();
                 }
             }
 
@@ -118,6 +116,10 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        for (int i = 0; i < m_Units.Length; i++) {
+            m_Units[i].SetUnitName();
+        }
+
         // As soon as the round starts reset the units and make sure they can't move.
         ResetAllUnits ();
         DisableUnitsControl ();

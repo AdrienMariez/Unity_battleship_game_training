@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour
         if (Pause) {
             Time.timeScale = Mathf.Approximately(Time.timeScale, 0.0f) ? 1.0f : 0.0f;                   
         } else {
-            Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f; 
+            Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f;
         }
         if (ActiveTarget.GetComponent<ShipController>()) {
             ActiveTarget.GetComponent<ShipController>().SetPause(Pause);

@@ -87,15 +87,14 @@ public class TurretManager : MonoBehaviour
             PlayerControl = false;
         }
         if (!PlayerControl) {
-            if (GetComponent<ShipController>())
-                AIGroundTargetPosition = ShipController.GetAIGroundTargetPosition();
+            // if (GetComponent<ShipController>())
+            //     AIGroundTargetPosition = ShipController.GetAIGroundTargetPosition();
         }
         for (int i = 0; i < m_Turrets.Length; i++) {
             m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
             m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
-            if (!PlayerControl) {
-                m_Turrets[i].GetComponent<TurretRotation>().SetAIGroundTargetPosition(AIGroundTargetPosition);
-            }
+            // if (!PlayerControl)
+            //     m_Turrets[i].GetComponent<TurretRotation>().SetAIGroundTargetPosition(AIGroundTargetPosition);
         }
     }
 

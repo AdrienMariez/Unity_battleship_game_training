@@ -152,7 +152,7 @@ namespace UI {
             buttonResumeGame.onClick.AddListener(ButtonResumeGameOnClick);
             Button buttonBackToMenu = PauseUIInstance.transform.Find("ButtonBackToMenu").GetComponent<Button>();
             buttonBackToMenu.onClick.AddListener(ButtonBackToMenuOnClick);
-            Button buttonBackToDesktop = PauseUIInstance.transform.Find("ButtonBackToDesktop").GetComponent<Button>();
+            Button buttonBackToDesktop = PauseUIInstance.transform.Find("ButtonCloseGame").GetComponent<Button>();
             buttonBackToDesktop.onClick.AddListener(ButtonBackToDesktopOnClick);
         }
         protected void ButtonResumeGameOnClick(){

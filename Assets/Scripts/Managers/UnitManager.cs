@@ -51,7 +51,7 @@ public class UnitManager {
         //send tag to ships
         if (m_Instance.GetComponent<ShipController>()) {
             m_Instance.GetComponent<ShipController>().SetTag(m_Team.ToString("g"));
-            m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
+            // m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
             // Debug.Log("m_Instance :"+ m_Instance);
         } else {
             // Todo : change this for different unit types
@@ -63,6 +63,18 @@ public class UnitManager {
             if (m_Instance.GetComponent<ShipController>()) {
                 m_Instance.GetComponent<ShipController>().DestroyUnit();
             }
+        }
+    }
+
+    // public void SetUnactive(){
+    //     if (m_Instance.GetComponent<ShipController>()){
+    //         m_Instance.GetComponent<ShipController>().SetActive(false);
+    //     }
+    // }
+
+    public void SetUnitName(){ 
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
         }
     }
 

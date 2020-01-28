@@ -14,6 +14,7 @@ public class MenuButtonsControl : MonoBehaviour {
         OpenMainMenu();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Time.timeScale = 1.0f;
     }
 
     protected void Update() {
