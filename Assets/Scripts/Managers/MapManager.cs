@@ -3,27 +3,50 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MapManager : MonoBehaviour
-{
-    // This whole file should be moved into PlayerManager, as it should be instancied for each player in the future
-    // public Camera m_MapCamera;
-    // private bool MapStatus;
-    // private PlayerManager PlayerManager;
+public class MapManager : MonoBehaviour {
+    private bool MapActive = false;
+    private Camera MapCamera;
+    private PlayerManager PlayerManager;
+    private GameObject SeaMap;
 
-    // private void Start() {
-    //     PlayerManager = GameObject.Find("GameManager").GetComponent<PlayerManager>();
-    //     MapStatus = false;
-    // }
+    private void Start() {
+        SeaMap = GameObject.Find("MapSea");
+    }
 
-    // protected void Update() {
-    //     if (Input.GetButtonDown ("OpenMap")) {
-    //         MapStatus = !MapStatus;
-    //         SetMap(MapStatus);
-    //     }
-    // }
+    private void InitMap() {
 
-    // public void SetMap(bool Active) {
-    //     m_MapCamera.enabled = Active;
-    //     PlayerManager.SetMap(Active);
-    // }
+    }
+
+    protected void Update() {
+        if (MapActive) {
+            Vector3 targetPosition = MapCamera.transform.position;
+            if (Input.GetAxis ("HorizontalMap") == 1) {
+                targetPosition.x += 5;
+            } else if (Input.GetAxis ("HorizontalMap") == -1) {
+                targetPosition.x += -5;
+            }
+            if (Input.GetAxis ("VerticalMap") == 1) {
+                targetPosition.z += 5;
+            } else if (Input.GetAxis ("VerticalMap") == -1) {
+                targetPosition.z += -5;
+            }
+            MapCamera.transform.position = targetPosition;
+
+            targetPosition.y = 0;
+            SeaMap.transform.position = targetPosition;
+        }
+    }
+
+    public void SetMapCamera(Camera camera){ MapCamera = camera; }
+    public void SetInitialPosition(GameObject target) {
+        Vector3 targetPosition = target.transform.position;
+        targetPosition.y = 2000;
+        MapCamera.transform.position = targetPosition;
+    }
+    public void SetMap(bool active) {
+        MapActive = active;
+        if (MapActive) {
+            InitMap();
+        }
+    }
 }

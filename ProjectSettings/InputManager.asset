@@ -103,7 +103,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: OpenMap
-    descriptiveName: Control - Open/close the map
+    descriptiveName: Map - Open/close
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: m
@@ -116,6 +116,54 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: HorizontalMap
+    descriptiveName: Map - Navigate Horizontally
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: left
+    altPositiveButton: right
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: VerticalMap
+    descriptiveName: Map - Navigate Vertically
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: down
+    altPositiveButton: up
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Mouse ScrollWheel
+    descriptiveName: Map - Mouse ScrollWheel to zoom in/out
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 1
+    axis: 2
     joyNum: 2
   - serializedVersion: 3
     m_Name: PauseMenu
@@ -405,51 +453,3 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Horizontal
-    descriptiveName: Unused - Horizontal
-    descriptiveNegativeName: 
-    negativeButton: k
-    positiveButton: m
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: Vertical
-    descriptiveName: Unused - Vertical
-    descriptiveNegativeName: 
-    negativeButton: l
-    positiveButton: o
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: Mouse ScrollWheel
-    descriptiveName: Unused - Mouse ScrollWheel
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 1
-    axis: 2
-    joyNum: 2

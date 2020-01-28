@@ -354,7 +354,7 @@ Transform:
   m_GameObject: {fileID: 765108942}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1000}
+  m_LocalScale: {x: 500, y: 1, z: 500}
   m_Children: []
   m_Father: {fileID: 764306140}
   m_RootOrder: 2
@@ -413,7 +413,7 @@ MeshCollider:
   m_GameObject: {fileID: 765108942}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -448,8 +448,8 @@ MonoBehaviour:
   m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
+  m_HorizontalAxis: HorizontalMap
+  m_VerticalAxis: VerticalMap
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
@@ -509,7 +509,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850671227}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 997.4, z: 0}
+  m_LocalPosition: {x: 0, y: 2000, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 764306140}
@@ -538,7 +538,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2100
   field of view: 34
   orthographic: 1
   orthographic size: 1000
@@ -686,6 +686,7 @@ GameObject:
   - component: {fileID: 1091423343}
   - component: {fileID: 1091423346}
   - component: {fileID: 1091423347}
+  - component: {fileID: 1091423348}
   - component: {fileID: 1091423345}
   m_Layer: 0
   m_Name: GameManager
@@ -872,6 +873,18 @@ MonoBehaviour:
   m_TurretsTargetRange: {fileID: 432068552}
   m_PauseUI: {fileID: 2857608438053203770, guid: c6848c63a56ee124b943be9809d20048,
     type: 3}
+--- !u!114 &1091423348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091423342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c48f123888c3144c9d79a03f1c15036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1145907927 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3767798349071585902, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
@@ -1349,37 +1362,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 764306140}
     m_Modifications:
-    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
-      propertyPath: RaycastLayerMask.m_Bits
-      value: 106291
-      objectReference: {fileID: 0}
-    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
-      propertyPath: m_TiltMax
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
-      propertyPath: m_TiltMin
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 682091736795053295, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-        type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 57143
-      objectReference: {fileID: 0}
     - target: {fileID: 682091736796430027, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
       propertyPath: m_Name
       value: FreeLookCameraRig
-      objectReference: {fileID: 0}
-    - target: {fileID: 682091736796430029, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-        type: 3}
-      propertyPath: m_Name
-      value: MainCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 682091736796430029, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
@@ -1434,11 +1420,6 @@ PrefabInstance:
     - target: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 682091736796586733, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

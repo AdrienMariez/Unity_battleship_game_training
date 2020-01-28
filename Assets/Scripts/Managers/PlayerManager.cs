@@ -22,10 +22,13 @@ public class PlayerManager : MonoBehaviour
     private GameManager GameManager;
     private GameManager.Teams PlayerTeam;
     private UIManager UIManager;
+    private MapManager MapManager;
 
     private void Start() {
         GameManager = GetComponent<GameManager>();
         PlayerTeam = GameManager.GetPlayer();
+        MapManager = GetComponent<MapManager>();
+        MapManager.SetMapCamera(m_MapCamera);
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
@@ -169,6 +172,9 @@ public class PlayerManager : MonoBehaviour
             SetEnabledUnit(PlayerUnits.Length);
 
         UIManager.SetMap(MapActive);
+
+        MapManager.SetInitialPosition(ActiveTarget);
+        MapManager.SetMap(MapActive);
 
         m_MapCamera.enabled = MapActive;
 
