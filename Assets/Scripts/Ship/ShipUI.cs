@@ -4,12 +4,15 @@ using UnityEngine.UI;
 public class ShipUI : MonoBehaviour {
 
     private bool Active = true;
+    private Canvas ShipUIObj;
     private Transform ShipUITransform;
     private Text ShipUIDistance;
     private Text ShipUIText;
-    private GameObject ShipUISliderObject;
     private Slider ShipUISlider;
     private Transform CameraPosition;
+
+    const string RangeDisplayMeter = "{0} m";
+    const string RangeDisplayKilometer = "{0} km";
 
     // [Header("Debug")]
     //     public bool debug = false;
@@ -17,10 +20,11 @@ public class ShipUI : MonoBehaviour {
 
     public void Init() {
         CameraPosition = GameObject.Find("MainCamera").transform;
+        ShipUIObj = this.gameObject.transform.GetChild(1).GetComponent<Canvas>();
         ShipUITransform = this.gameObject.transform.GetChild(1).transform;
-        ShipUIText = this.gameObject.transform.GetChild(1).GetChild(0).GetComponent<Text>();
-        ShipUISliderObject = ShipUITransform.GetChild(1).gameObject;
-        ShipUISlider = ShipUITransform.GetChild(1).GetComponent<Slider>();
+        ShipUIDistance = ShipUITransform.Find("UnitDistance").GetComponent<Text>();
+        ShipUIText = ShipUITransform.Find("UnitName").GetComponent<Text>();
+        ShipUISlider = ShipUITransform.Find("HealthSlider").GetComponent<Slider>();
         ShipUIText.text = this.name;
     }
 
@@ -28,6 +32,13 @@ public class ShipUI : MonoBehaviour {
         // if (debug)
         //     Debug.Log (this.name+" - ShipUISlider -"+ShipUISlider);
         if (Active) {
+            float distance = (ShipUITransform.position - CameraPosition.position).magnitude;
+            if (distance > 999) {
+                distance = (Mathf.Round(distance / 100)) / 10f;
+                ShipUIDistance.text = string.Format(RangeDisplayKilometer, distance);
+            } else {
+                ShipUIDistance.text = string.Format(RangeDisplayMeter, distance);
+            }
             ShipUITransform.LookAt(CameraPosition.position);
         }
     }
@@ -41,7 +52,6 @@ public class ShipUI : MonoBehaviour {
     public void SetName(string name) { ShipUIText.text = name; }
     public void SetActive(bool activate) {
         Active = activate;
-        ShipUIText.enabled = Active;
-        ShipUISliderObject.SetActive(Active);
+        ShipUIObj.enabled = Active;
     }
 }

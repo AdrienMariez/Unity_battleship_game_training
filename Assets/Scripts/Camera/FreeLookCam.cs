@@ -35,7 +35,7 @@ namespace FreeLookCamera {
             [Tooltip("Layer to filter what the raycast will hit.")] public LayerMask RaycastLayerMask;
             private GameObject m_RaycastProjector;
         public RaycastHit RaycastHit;
-        private GameObject TargetCircle;
+        // private GameObject TargetCircle;
         private Vector3 TargetPosition;
 
         private float LookAngle;                    // The rig's y axis rotation.
@@ -64,7 +64,7 @@ namespace FreeLookCamera {
             Axis = Pivot.parent;
 
             m_RaycastProjector = GameObject.Find("RaycastProjector");
-            TargetCircle = GameObject.Find("TargetCircle");
+            // TargetCircle = GameObject.Find("TargetCircle");
         }
 
         private void FixedUpdate() { 
@@ -94,11 +94,11 @@ namespace FreeLookCamera {
             
             if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
-                TargetCircle.transform.position = RaycastHit.point;
+                // TargetCircle.transform.position = RaycastHit.point;
                 TargetPosition = RaycastHit.point;
             } else {
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
-                TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                // TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
                 TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
 

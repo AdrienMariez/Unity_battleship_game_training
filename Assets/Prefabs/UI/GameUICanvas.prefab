@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 3767798348354721908}
   - component: {fileID: 3767798348354721909}
   - component: {fileID: 3767798348354721906}
-  m_Layer: 13
+  m_Layer: 5
   m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 3767798349424985530}
   - component: {fileID: 3767798349424985531}
   - component: {fileID: 3767798349424985528}
-  m_Layer: 16
+  m_Layer: 5
   m_Name: UnitName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
