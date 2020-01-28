@@ -14,6 +14,7 @@ public class ShipController : MonoBehaviour {
     private ShipHealth Health;
     private TurretManager Turrets;
     private ShipDamageControl DamageControl;
+    private ShipAI ShipAI;
     private ShipUI UI;
     private Transform ShipModel;
 
@@ -77,6 +78,8 @@ public class ShipController : MonoBehaviour {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
+
+        ShipAI = GetComponent<ShipAI>();
     }
 
     private void FixedUpdate() {
@@ -370,6 +373,10 @@ public class ShipController : MonoBehaviour {
         DamageControl.SetPause();
         if (GetComponent<TurretManager>())
             Turrets.SetPause();
+    }
+    public Vector3 GetAIGroundTargetPosition(){
+        Vector3 AIGroundTargetPosition = ShipAI.GetAIGroundTargetPosition();
+        return AIGroundTargetPosition;
     }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }

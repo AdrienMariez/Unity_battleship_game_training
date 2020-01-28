@@ -440,6 +440,7 @@ public class TurretRotation : MonoBehaviour
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
     }
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    public void SetAIGroundTargetPosition(Vector3 groundTargetPosition) {  }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public void SetCameraPercentage(float percentage) { CameraPercentage = percentage; }
     public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
