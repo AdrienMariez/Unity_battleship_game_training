@@ -53,6 +53,7 @@ public class ShipController : MonoBehaviour {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
+        ShipAI = GetComponent<ShipAI>();
         float HP = Health.GetStartingHealth();
 
         UI = GetComponent<ShipUI>();
@@ -62,6 +63,7 @@ public class ShipController : MonoBehaviour {
 
         if (GetComponent<TurretManager>())
             Turrets = GetComponent<TurretManager>();
+            ShipAI.SetTurretManager(Turrets);
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
@@ -78,8 +80,6 @@ public class ShipController : MonoBehaviour {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
-
-        ShipAI = GetComponent<ShipAI>();
     }
 
     private void FixedUpdate() {
@@ -379,12 +379,8 @@ public class ShipController : MonoBehaviour {
             Turrets.SetPause();
     }
     public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
-    public void SetAIturn(float turn){ Movement.SetAIturn(turn); Debug.Log("turn : "+ turn); }
+    public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
     public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
-    public Vector3 GetAIGroundTargetPosition(){
-        Vector3 AIGroundTargetPosition = ShipAI.GetAIGroundTargetPosition();
-        return AIGroundTargetPosition;
-    }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
     public void DestroyUnit(){ Destroy (gameObject); }

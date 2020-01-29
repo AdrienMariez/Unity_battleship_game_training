@@ -3,13 +3,14 @@ using System.Collections;
 
 public class ShipAI : MonoBehaviour {
     private bool AIActive = true;
-    private Vector3 AIGroundTargetPosition;
     private string Team;
     private string Name;                // For debug purposes
     private float TurnInputLimit = 0;
     private bool PauseRotation = true;
     private GameObject TargetUnit;
     private ShipController ShipController;
+    private TurretManager TurretManager;
+    private bool TurretManagerPresent = false;
     public enum ShipMoveStates {
         Patrol,
         Circle,
@@ -22,6 +23,9 @@ public class ShipAI : MonoBehaviour {
     private void FixedUpdate(){
         if (AIActive && PauseRotation) {
             RotateTarget();
+            if (TurretManager) {
+                TurretManager.SetAITargetToFireOn(TargetUnit);
+            }
             StartCoroutine(PauseRotate());
         }
     }
@@ -90,10 +94,6 @@ public class ShipAI : MonoBehaviour {
         ShipController.SetAISpeed(4);
     }
 
-    public Vector3 GetAIGroundTargetPosition(){
-        return AIGroundTargetPosition;
-    }
-
     public void SetUnitTeam(string team){ Team = team; }
     public void SetName(string name) { Name = name; GetTargets(); }
     public void SetAIActive(bool activate) {
@@ -104,4 +104,5 @@ public class ShipAI : MonoBehaviour {
         }
     }
     public void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
+    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; TurretManagerPresent = true; }
 }

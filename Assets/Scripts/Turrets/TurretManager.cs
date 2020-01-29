@@ -23,7 +23,7 @@ public class TurretManager : MonoBehaviour
     private int WorkingTurrets;
     string TurretStatus = "";
 
-    private Vector3 AIGroundTargetPosition;
+    private GameObject AITargetUnit;
 
     private void Start() {
         FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
@@ -61,7 +61,7 @@ public class TurretManager : MonoBehaviour
 
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
-            bool turretDead = false;
+            // bool turretDead = false;
             TurretStatus = "";
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
@@ -87,14 +87,11 @@ public class TurretManager : MonoBehaviour
             PlayerControl = false;
         }
         if (!PlayerControl) {
-            // if (GetComponent<ShipController>())
-            //     AIGroundTargetPosition = ShipController.GetAIGroundTargetPosition();
+            
         }
         for (int i = 0; i < m_Turrets.Length; i++) {
             m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
             m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
-            // if (!PlayerControl)
-            //     m_Turrets[i].GetComponent<TurretRotation>().SetAIGroundTargetPosition(AIGroundTargetPosition);
         }
     }
 
@@ -154,5 +151,9 @@ public class TurretManager : MonoBehaviour
     }
     public float GetTargetRange() {
         return TargetRange;
+    }
+
+    public void SetAITargetToFireOn(GameObject targetUnit) {
+        AITargetUnit = targetUnit;
     }
 }

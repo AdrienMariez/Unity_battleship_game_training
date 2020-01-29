@@ -337,7 +337,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        string sceneName = "MainMenuScene3d";
-        Application.LoadLevel(sceneName);
+        // string sceneName = "MainMenuScene3d";
+        // Application.LoadLevel(sceneName);
+        SceneManager.LoadScene("MainMenuScene3d", LoadSceneMode.Single);
     }
 }
