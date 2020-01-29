@@ -94,6 +94,7 @@ public class TurretManager : MonoBehaviour
     private void SetPlayerControl(){
         if (Active && !Map && !DamageControl && !Dead && !FreeCamera && !Pause) {
             PlayerControl = true;
+            AIControl = false;
         } else {
             PlayerControl = false;
             if (AITargetRange < MaxRange && AITargetRange > MinRange) {

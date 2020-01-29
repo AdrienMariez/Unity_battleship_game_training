@@ -301,6 +301,10 @@ public class TurretRotation : MonoBehaviour
                 currentAngElev += elevationSpeed * Time.fixedDeltaTime;
             }
         */
+        if (CameraPercentage + 30 > 100)
+            CameraPercentage = 100;
+        else
+            CameraPercentage += 30;
 
         targetAngElev = (CameraPercentage * (upTraverse - downTraverse) / 100) + downTraverse;
 
