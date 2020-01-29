@@ -41,10 +41,8 @@ public class PlayerManager : MonoBehaviour
         if (!Pause) {     
             if (Input.GetButtonDown ("HideUI"))
                 SetHideUI();
-
-            if (Input.GetButtonDown ("OpenMap")) {
+            if (Input.GetButtonDown ("OpenMap"))
                 SetMap();
-            }
 
             if (Input.GetButtonDown ("SetNextUnit"))
                 SetNextTarget();

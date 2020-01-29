@@ -56,6 +56,8 @@ public class TurretRotation : MonoBehaviour
     private float TotalAngleElevRatio;
     private float CurrentAngleElevRatio;
 
+    private bool AIControl = false;
+
     private void Awake(){
         TurretFireManager = GetComponent<TurretFireManager>();
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
@@ -116,8 +118,7 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!PlayerControl) {
-            // Will need to change this for AI
+        if (!PlayerControl && !AIControl){
             TargetPosition = m_IdlePointer.transform.position;
         }
 
@@ -130,7 +131,7 @@ public class TurretRotation : MonoBehaviour
         }
 
         // Check if anything can prevent the turret from firing
-        if (PreventFireHoriz || PreventFireVert || !PlayerControl){
+        if (PreventFireHoriz || PreventFireVert){
             TurretFireManager.SetPreventFire(true);
         } else{
             TurretFireManager.SetPreventFire(false);
@@ -440,6 +441,7 @@ public class TurretRotation : MonoBehaviour
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
     }
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    public void SetAIControl(bool aiControl) { AIControl = aiControl; }
     public void SetAIGroundTargetPosition(Vector3 groundTargetPosition) {  }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public void SetCameraPercentage(float percentage) { CameraPercentage = percentage; }

@@ -18,16 +18,18 @@ public class ShipAI : MonoBehaviour {
     }
     private void Awake () {
         ShipController = GetComponent<ShipController>();
+        GetTargets();
     }
 
     private void FixedUpdate(){
+        // Debug.Log("Unit : "+ Name +" - AIActive = "+ AIActive);
         if (AIActive && PauseRotation) {
             RotateTarget();
-            if (TurretManager) {
-                TurretManager.SetAITargetToFireOn(TargetUnit);
-            }
-            StartCoroutine(PauseRotate());
         }
+        if (TurretManager)
+            SetAITargetRange();
+            TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
+        StartCoroutine(PauseRotate());
     }
     IEnumerator PauseRotate(){
         // Coroutine created to prevent too much calculus for ship behaviour
@@ -70,7 +72,14 @@ public class ShipAI : MonoBehaviour {
                 }
             }
         }
+        if (TurretManager)
+            TurretManager.SetAITargetRange(range);
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
+    }
+
+    private void SetAITargetRange(){
+        float distance = (gameObject.transform.position - TargetUnit.transform.position).magnitude;
+        TurretManager.SetAITargetRange(distance);
     }
 
     private void RotateTarget(){

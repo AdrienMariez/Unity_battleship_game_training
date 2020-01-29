@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
+using System.Collections;
 using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
@@ -33,7 +34,7 @@ public class TurretFireManager : MonoBehaviour
     private TurretRotation TurretRotation;
     private bool PreventFire;
     private bool OutOfRange;
-    private float targetRange;
+    private float TargetRange;
     private FreeLookCam FreeLookCam;
     public enum TurretType {
         Artillery,
@@ -41,6 +42,9 @@ public class TurretFireManager : MonoBehaviour
         AA,
         Torpedo
     }
+
+    private bool AIControl = false;
+    private bool AIPauseFire = false;
 
     private void Start (){
         TurretRotation = GetComponent<TurretRotation>();
@@ -50,7 +54,7 @@ public class TurretFireManager : MonoBehaviour
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
-        if (targetRange > m_MaxRange) {
+        if (TargetRange > m_MaxRange) {
             OutOfRange = true;
         }else{
             OutOfRange = false;
@@ -64,26 +68,38 @@ public class TurretFireManager : MonoBehaviour
         }else{
             GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
         }
-        if (PlayerControl) {
-            // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
-            // Debug.Log("Calculated fire range : "+ targetRange);
-
-            if (Input.GetButtonDown ("FireMainWeapon") && !Reloading && !PreventFire && !OutOfRange) {
+        if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
+            if (Input.GetButtonDown ("FireMainWeapon")) {
                 //start the reloading process immediately
                 Reloading = true;
                 ReloadingTimer = m_ReloadTime;
                 // ... launch the shell.
                 Fire ();
             }
-            if (Reloading && ReloadingTimer > 0) {
-                ReloadingTimer-= Time.deltaTime;
-                if (ReloadingTimer <= 0) {
-                    ReloadingTimer = 0;
-                    Reloading = !Reloading;
-                }
-                // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
-            }
         }
+        if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead && !AIPauseFire) {
+            //start the reloading process immediately
+            Reloading = true;
+            ReloadingTimer = m_ReloadTime;
+            // ... launch the shell.
+            Fire ();
+        }
+
+        if (Reloading && ReloadingTimer > 0) {
+            ReloadingTimer-= Time.deltaTime;
+            if (ReloadingTimer <= 0) {
+                ReloadingTimer = 0;
+                Reloading = !Reloading;
+            }
+            // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
+            // Debug.Log("Calculated fire range : "+ TargetRange);
+        }
+    }
+
+    IEnumerator PauseFire(){
+        AIPauseFire = true;
+        yield return new WaitForSeconds(2);
+        AIPauseFire = false;
     }
 
     private void Fire () {
@@ -108,7 +124,7 @@ public class TurretFireManager : MonoBehaviour
             // rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
 
 
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(targetRange);
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
             shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
             shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
 
@@ -119,10 +135,11 @@ public class TurretFireManager : MonoBehaviour
     }
 
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    public void SetAIControl(bool aiControl) { AIControl = aiControl; StartCoroutine(PauseFire()); }
     public void SetPreventFire(bool status){ PreventFire = status; }
     public float GetMaxRange(){ return m_MaxRange; }
     public float GetMinRange(){ return m_MinRange; }
-    public void SetTargetRange(float range){ targetRange = range; }
+    public void SetTargetRange(float range){ TargetRange = range; }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public string GetTurretStatus() {
         string Status;

@@ -318,6 +318,7 @@ public class ShipController : MonoBehaviour {
         // UI is activated if the unit is NOT active.
         UI.SetActive(!Active);
 
+        // Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
         ShipAI.SetAIActive(!Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())

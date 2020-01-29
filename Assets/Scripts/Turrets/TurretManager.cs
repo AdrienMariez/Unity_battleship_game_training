@@ -23,7 +23,9 @@ public class TurretManager : MonoBehaviour
     private int WorkingTurrets;
     string TurretStatus = "";
 
-    private GameObject AITargetUnit;
+    private bool AIControl = false;
+    private Vector3 AITargetPosition;
+    private float AITargetRange;
 
     private void Start() {
         FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
@@ -44,6 +46,7 @@ public class TurretManager : MonoBehaviour
         WorkingTurrets = TotalTurrets;
         if (GetComponent<ShipController>())
             ShipController.SetTotalTurrets(TotalTurrets);
+        SetPlayerControl();
     }
 
     private void FixedUpdate() {
@@ -61,7 +64,6 @@ public class TurretManager : MonoBehaviour
 
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
-            // bool turretDead = false;
             TurretStatus = "";
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
@@ -71,6 +73,15 @@ public class TurretManager : MonoBehaviour
             }
             if (GetComponent<ShipController>())
                 ShipController.SetTurretStatus(TurretStatus);
+        }
+        if (!PlayerControl && AIControl) {
+            float fakeCameraPercentage = AITargetRange * 100 / (MaxRange - MinRange);
+            // Debug.Log("AITargetUnit.transform.position = "+ AITargetUnit.transform.position);
+            for (int i = 0; i < m_Turrets.Length; i++){
+                m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
+                m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(fakeCameraPercentage);
+                m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
+            }
         }
 
         /*if (PlayerControl) {
@@ -85,13 +96,18 @@ public class TurretManager : MonoBehaviour
             PlayerControl = true;
         } else {
             PlayerControl = false;
-        }
-        if (!PlayerControl) {
-            
+            if (AITargetRange < MaxRange && AITargetRange > MinRange) {
+                AIControl = true;
+            } else {
+                AIControl = false;
+            }
         }
         for (int i = 0; i < m_Turrets.Length; i++) {
             m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
             m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
+
+            m_Turrets[i].GetComponent<TurretRotation>().SetAIControl(AIControl);
+            m_Turrets[i].GetComponent<TurretFireManager>().SetAIControl(AIControl);
         }
     }
 
@@ -153,7 +169,13 @@ public class TurretManager : MonoBehaviour
         return TargetRange;
     }
 
-    public void SetAITargetToFireOn(GameObject targetUnit) {
-        AITargetUnit = targetUnit;
+    public void SetAITargetToFireOn(Vector3 targetPosition) {
+        AITargetPosition = targetPosition;
+        // A bit of cheating here, before a correct fake camera angle can be implemented
+        targetPosition.y += 500;
+        AITargetPosition = targetPosition;
+    }
+    public void SetAITargetRange(float targetRange) {
+        AITargetRange = targetRange;
     }
 }
