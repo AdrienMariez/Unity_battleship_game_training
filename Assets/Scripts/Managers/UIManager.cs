@@ -15,8 +15,7 @@ namespace UI {
             const string ShipSpeedStepDisplay = "Speed Order : {0}";
         public Text m_ShipCurrentSpeed;
             const string ShipCurrentSpeedDisplay = "{0} km/h";
-        public Text m_ShipTurningSpeed;
-            const string ShipTurningSpeedDisplay = "Direction : {0}";
+        public Slider m_ShipTurningSpeed;
         public Text m_TurretsStatus;
             const string TurretsStatusDisplay = "{0}";
         public Text m_TurretsTargetRange;
@@ -83,7 +82,7 @@ namespace UI {
             m_UnitHP.enabled = false;
             m_ShipSpeedStep.enabled = false;
             m_ShipCurrentSpeed.enabled = false;
-            m_ShipTurningSpeed.enabled = false;
+            m_ShipTurningSpeed.gameObject.SetActive(false);
             m_TurretsStatus.enabled = false;
             m_TurretsTargetRange.enabled = false;
             m_Visor.enabled = false;
@@ -102,7 +101,7 @@ namespace UI {
                 } else if (TargetType == "Ship") {
                     m_ShipSpeedStep.enabled = true;
                     m_ShipCurrentSpeed.enabled = true;
-                    m_ShipTurningSpeed.enabled = true;
+                    m_ShipTurningSpeed.gameObject.SetActive(true);
                 }
                 if (ActiveTarget.GetComponent<TurretManager>()) {
                     m_TurretsStatus.enabled = true;
@@ -188,7 +187,10 @@ namespace UI {
         }
         public void SetCurrentUnitHealth(float health){ CurrentHP = health; m_UnitHP.text = string.Format(HPDisplay, CurrentHP, StartingHP); }
         public void ChangeSpeedStep(int currentSpeedStep){ SpeedStep = currentSpeedStep; m_ShipSpeedStep.text = string.Format(ShipSpeedStepDisplay, SpeedStep); }
-        public void SetRotationInput(float rotation){ CurrentRotation = rotation; m_ShipTurningSpeed.text = string.Format(ShipTurningSpeedDisplay, CurrentRotation); }
+        public void SetRotationInput(float rotation){
+            CurrentRotation = rotation;
+            m_ShipTurningSpeed.value = CurrentRotation;
+        }
         public void SetTurretStatus(string status){ TurretStatus = status; m_TurretsStatus.text = string.Format(TurretsStatusDisplay, TurretStatus); }
         public void SetCurrentUnitDead(bool isUnitDead) {
             // If CurrentUnitDead == true, the game Display should not be shown ! Only the map should work.

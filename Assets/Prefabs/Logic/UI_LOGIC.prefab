@@ -97,7 +97,7 @@ MonoBehaviour:
   m_UnitHP: {fileID: 6283074087607305416}
   m_ShipSpeedStep: {fileID: 6283074087187486627}
   m_ShipCurrentSpeed: {fileID: 6283074087205445940}
-  m_ShipTurningSpeed: {fileID: 6283074086977839779}
+  m_ShipTurningSpeed: {fileID: 4637938734785539956}
   m_TurretsStatus: {fileID: 6283074087358749594}
   m_TurretsTargetRange: {fileID: 6283074087672342557}
   m_Visor: {fileID: 7773891753365187002}
@@ -506,6 +506,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6283074086803692809}
     m_Modifications:
+    - target: {fileID: 3546417141643263120, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546417141643263120, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546417141643263120, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -135
+      objectReference: {fileID: 0}
     - target: {fileID: 3767798348160687348, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -936,6 +951,31 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 295
       objectReference: {fileID: 0}
+    - target: {fileID: 6185900842910489865, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185900842910489865, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185900842910489865, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048432980175111145, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048432980175111145, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d037b4b3af8a8dc4fab0e46a259a43e2, type: 3}
 --- !u!224 &6283074086388503810 stripped
@@ -1004,16 +1044,16 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6283074086977839779 stripped
+--- !u!114 &4637938734785539956 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3767798348553627087, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
+  m_CorrespondingSourceObject: {fileID: 2532529878616221720, guid: d037b4b3af8a8dc4fab0e46a259a43e2,
     type: 3}
   m_PrefabInstance: {fileID: 7167512021772076908}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6283074087358749594 stripped
