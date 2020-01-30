@@ -38,11 +38,13 @@ public class MenuButtonsControl : MonoBehaviour {
     }
     void ButtonScenario1OnClick(){
         // Debug.Log ("Button Scenario 1 Clicked !");
-        SceneManager.LoadScene("ROTS_scenario_1", LoadSceneMode.Single);
+        string sceneName = "ROTS_scenario_1";
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     void ButtonScenario2OnClick(){
         // Debug.Log ("Button Scenario 2 Clicked !");
-        SceneManager.LoadScene("ROTS_scenario_2", LoadSceneMode.Single);
+        string sceneName = "ROTS_scenario_2";
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     void ButtonExitOnClick(){
         // Debug.Log ("Exit Options Clicked !");

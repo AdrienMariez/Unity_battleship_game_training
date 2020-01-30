@@ -5,6 +5,7 @@ public class ShipAI : MonoBehaviour {
     private bool AIActive = true;
     private string Team;
     private string Name;                // For debug purposes
+    private bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
     private float TurnInputLimit = 0;
     private bool PauseRotation = true;
     private GameObject TargetUnit;
@@ -22,14 +23,27 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void FixedUpdate(){
-        // Debug.Log("Unit : "+ Name +" - AIActive = "+ AIActive);
-        if (AIActive && PauseRotation) {
-            RotateTarget();
+        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit.transform.position);
+
+        // If AI is fighting but its target is dead, find another one immediately
+        if (Stressed && TargetUnit == null) {
+            GetTargets();
         }
-        if (TurretManager)
-            SetAITargetRange();
-            TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-        StartCoroutine(PauseRotate());
+        // If AI is fighting, do business with the opposing ship 
+        // Todo : add a check for if a target is found but out of range
+        else if (Stressed && TargetUnit != null) {
+            if (PauseRotation && AIActive) 
+                RotateTarget();
+                GetTargets();
+                StartCoroutine(PauseRotate());
+            if (TurretManager)
+                SetAITargetRange();
+                TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
+        }
+        // If AI doesn't find any opponent, change stance
+        else if (AIActive) {
+            IdleGoForward();
+        }
     }
     IEnumerator PauseRotate(){
         // Coroutine created to prevent too much calculus for ship behaviour
@@ -40,8 +54,10 @@ public class ShipAI : MonoBehaviour {
 
     private void GetTargets(){
         // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
-
+        Stressed = false;
+        TargetUnit = null;
         float range = 0f;
+
         if (Team == "Allies" || Team == "AlliesAI") {
             string[] tagsToTarget = { "Axis", "AxisAI" };
             foreach (string tag in tagsToTarget) {
@@ -72,8 +88,15 @@ public class ShipAI : MonoBehaviour {
                 }
             }
         }
-        if (TurretManager)
-            TurretManager.SetAITargetRange(range);
+
+        // If a target was found, stress the unit and activate turrets AI
+        if (TargetUnit != null){
+            Stressed = true;
+            if (TurretManager)
+                TurretManager.SetAIHasTarget(true);
+        } else {
+            TurretManager.SetAIHasTarget(true);
+        }
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
     }
 
@@ -83,7 +106,9 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void RotateTarget(){
-        // For the moment, just circle the Target
+        // For the moment, just circle the Target at full speed
+        ShipController.SetAISpeed(4);
+
         Vector3 targetDir = gameObject.transform.position - TargetUnit.transform.position;
         Vector3 forward = gameObject.transform.forward;
         float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
@@ -98,19 +123,17 @@ public class ShipAI : MonoBehaviour {
         // Debug.Log("angle : "+ angle);
     }
 
-    private void AISwitchMoveState(){
-        // For the moment, just go at full speed
+    private void IdleGoForward(){
         ShipController.SetAISpeed(4);
+        ShipController.SetAIturn(0);
     }
 
     public void SetUnitTeam(string team){ Team = team; }
     public void SetName(string name) { Name = name; GetTargets(); }
     public void SetAIActive(bool activate) {
         AIActive = activate;
-        if (AIActive) {
+        if (AIActive)
             GetTargets();
-            AISwitchMoveState();
-        }
     }
     public void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; TurretManagerPresent = true; }

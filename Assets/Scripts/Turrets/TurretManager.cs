@@ -24,6 +24,7 @@ public class TurretManager : MonoBehaviour
     string TurretStatus = "";
 
     private bool AIControl = false;
+    private bool AIHasATarget = false;
     private Vector3 AITargetPosition;
     private float AITargetRange;
 
@@ -50,13 +51,8 @@ public class TurretManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (Active && Input.GetButtonDown ("FreeCamera")) { 
-            SetFreeCamera(true);
-        }
-        if (Active && Input.GetButtonUp ("FreeCamera")) { 
-            SetFreeCamera(false);
-        }
-
+        if (Input.GetButtonDown ("FreeCamera"))
+            SetFreeCamera();
 
         if (PlayerControl) {
             // Get the angle of the camera here
@@ -65,23 +61,33 @@ public class TurretManager : MonoBehaviour
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
             TurretStatus = "";
+
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
                 m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(CameraPercentage);
                 m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
                 TurretStatus += m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
             }
+
             if (GetComponent<ShipController>())
                 ShipController.SetTurretStatus(TurretStatus);
+
         }
         if (!PlayerControl && AIControl) {
             float fakeCameraPercentage = AITargetRange * 100 / (MaxRange - MinRange);
-            // Debug.Log("AITargetUnit.transform.position = "+ AITargetUnit.transform.position);
+            TurretStatus = "F - ";
+            // Debug.Log("AITargetPosition = "+ AITargetPosition);
+
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
                 m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(fakeCameraPercentage);
                 m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
+                if(Active)
+                    TurretStatus += m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
             }
+
+            if (Active && GetComponent<ShipController>())
+                ShipController.SetTurretStatus(TurretStatus);
         }
 
         /*if (PlayerControl) {
@@ -97,7 +103,7 @@ public class TurretManager : MonoBehaviour
             AIControl = false;
         } else {
             PlayerControl = false;
-            if (AITargetRange < MaxRange && AITargetRange > MinRange) {
+            if (AIHasATarget) {
                 AIControl = true;
             } else {
                 AIControl = false;
@@ -128,8 +134,8 @@ public class TurretManager : MonoBehaviour
         DamageControl = damageControl;
         SetPlayerControl();
     }
-    public void SetFreeCamera(bool freeCam) {
-        FreeCamera = freeCam;
+    public void SetFreeCamera() {
+        FreeCamera = !FreeCamera;
         SetPlayerControl();
     }
     public void SetRepairRate(float Rate) {
@@ -176,7 +182,6 @@ public class TurretManager : MonoBehaviour
         targetPosition.y += 500;
         AITargetPosition = targetPosition;
     }
-    public void SetAITargetRange(float targetRange) {
-        AITargetRange = targetRange;
-    }
+    public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; }
+    public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
 }

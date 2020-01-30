@@ -46,6 +46,7 @@ namespace FreeLookCamera {
 		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
         private bool AllowCameraRotation = true;
+        private bool FreeCam;
         private bool DisplayUI = true;
 
         protected virtual void Start() {
@@ -56,6 +57,7 @@ namespace FreeLookCamera {
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            FreeCam = false;
         }
 
         private void Awake(){
@@ -67,43 +69,45 @@ namespace FreeLookCamera {
             // TargetCircle = GameObject.Find("TargetCircle");
         }
 
-        private void FixedUpdate() { 
-                FollowTarget(Time.deltaTime);
-        }
-
         protected void Update() {
             // Debug.Log ("m_Axis   : "+ m_Axis);
+            if (ActiveTarget != null) {
+                FollowTarget(Time.deltaTime);
 
-            if (Input.GetButton ("FocusCamera")){
-                Cam.fieldOfView = m_FieldOfViewFocus;
-                Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
-            } else {
-                Cam.fieldOfView = m_FieldOfView;
-                Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            }
+                if (Input.GetButton ("FocusCamera")){
+                    Cam.fieldOfView = m_FieldOfViewFocus;
+                    Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
+                } else {
+                    Cam.fieldOfView = m_FieldOfView;
+                    Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
 
-            if (ActiveTarget.GetComponent<AircraftController>() && !Input.GetButton ("FreeCamera")) {
-                // If it's a plane. Keep the camera behind the unit.
-                FollowPlaneMovement();
-            } else if (AllowCameraRotation){
-                // Allow free cam if the camera can turn
-                HandleRotationMovement();
-            }
-            
-            // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
-            
-            if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
-                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
-                // TargetCircle.transform.position = RaycastHit.point;
-                TargetPosition = RaycastHit.point;
-            } else {
-                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
-                // TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
-                TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
-            }
+                if (Input.GetButtonDown ("FreeCamera"))
+                    SetFreeCam();
 
-            CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
-            // Debug.Log("targetDistance = "+ targetDistance);
+                if (ActiveTarget.GetComponent<AircraftController>() && !FreeCam) {
+                    // If it's a plane. Keep the camera behind the unit.
+                    FollowPlaneMovement();
+                } else if (AllowCameraRotation){
+                    // Allow free cam if the camera can turn
+                    HandleRotationMovement();
+                }
+                
+                // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
+                
+                if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
+                    Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
+                    // TargetCircle.transform.position = RaycastHit.point;
+                    TargetPosition = RaycastHit.point;
+                } else {
+                    Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
+                    // TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                    TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                }
+
+                CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
+                // Debug.Log("targetDistance = "+ targetDistance);
+            }
         }
 
         public virtual void SetTarget(Transform newTransform) {
@@ -114,7 +118,6 @@ namespace FreeLookCamera {
             // Move the rig towards target position.
             transform.position = Vector3.Lerp(transform.position, Target.position, deltaTime * m_MoveSpeed);
         }
-
 
         private void HandleRotationMovement() {
 			if(Time.timeScale < float.Epsilon)
@@ -166,9 +169,8 @@ namespace FreeLookCamera {
             transform.rotation = Quaternion.Euler(Target.rotation.eulerAngles.x, Target.rotation.eulerAngles.y, Target.rotation.eulerAngles.z);
         }
 
-        public void SetRotation(bool set){
-            AllowCameraRotation = set;
-        }
+        private void SetFreeCam(){ FreeCam = !FreeCam; }
+        public void SetRotation(bool set){ AllowCameraRotation = set; }
         public void SetMouse(bool set){
             if (set) {
                 Cursor.lockState = CursorLockMode.None;

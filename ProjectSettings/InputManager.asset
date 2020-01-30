@@ -71,7 +71,7 @@ InputManager:
     joyNum: 2
   - serializedVersion: 3
     m_Name: FreeCamera
-    descriptiveName: Camera - Free Camera
+    descriptiveName: Camera - toogle the free camera
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: f

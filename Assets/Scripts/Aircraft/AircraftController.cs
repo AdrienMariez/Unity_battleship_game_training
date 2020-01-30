@@ -59,9 +59,14 @@ using UnityEngine;
 
         public void Move(float rollInput, float pitchInput, float yawInput, float throttleInput, bool airBrakes)
         {
-            // transfer input parameters into properties.s
-            RollInput = rollInput;
-            PitchInput = pitchInput;
+            // Transfer input parameters into properties
+            if (rollInput == 100) {
+                RollInput = 0;
+                PitchInput = 0;
+            } else {
+                RollInput = rollInput;
+                PitchInput = pitchInput;
+            }
             YawInput = yawInput;
             ThrottleInput = throttleInput;
             AirBrakes = airBrakes;

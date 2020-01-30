@@ -82,8 +82,7 @@ public class PlayerManager : MonoBehaviour
         //If we overflow, get back to the beginning
         if (CurrentTarget >= (PlayerUnits.Length-1)) {
             CurrentTarget = 0;
-        }
-        else {
+        } else {
             CurrentTarget += 1;
         }
         
@@ -95,8 +94,7 @@ public class PlayerManager : MonoBehaviour
 
         if (CurrentTarget <= 0) {
             CurrentTarget = PlayerUnits.Length-1;
-        }
-        else {
+        } else {
             CurrentTarget -= 1;
         }
         SetEnabledUnit(PlayerUnits.Length);
@@ -112,6 +110,8 @@ public class PlayerManager : MonoBehaviour
     private void SetEnabledUnit(int PlayerUnitsLength) {
         ActiveTarget = PlayerUnits[CurrentTarget];
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
+        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
+        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
         UIManager.SetTargetType("Unknown");
 
         for (int i = 0; i < PlayerUnitsLength; i++){

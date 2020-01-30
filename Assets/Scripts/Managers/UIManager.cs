@@ -23,6 +23,8 @@ namespace UI {
             const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
             const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
 
+        public Text m_Visor;
+
         private GameObject ActiveTarget;
         private string TargetType;
         private float StartingHP;
@@ -44,7 +46,7 @@ namespace UI {
         private GameObject PauseUIInstance;
 
         private void Update() {
-            if (DisplayGameUI) {
+            if (DisplayGameUI && ActiveTarget != null) {
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
                 m_ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
@@ -84,6 +86,7 @@ namespace UI {
             m_ShipTurningSpeed.enabled = false;
             m_TurretsStatus.enabled = false;
             m_TurretsTargetRange.enabled = false;
+            m_Visor.enabled = false;
 
             // Debug.Log (DisplayGameUI+" - "+DisplayMapUI+" - "+DisplayUI);
 
@@ -91,6 +94,7 @@ namespace UI {
                 m_Score.enabled = true;
                 m_UnitName.enabled = true;
                 m_UnitHP.enabled = true;
+                m_Visor.enabled = true;
                 if (TargetType == "Tank") {
                     
                 } else if (TargetType == "Aircraft") {

@@ -294,7 +294,8 @@ public class ShipController : MonoBehaviour {
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
         UI.SetActive(false);
-        PlayerManager.SetCurrentUnitDead(true);
+        if (Active)
+            PlayerManager.SetCurrentUnitDead(true);
     }
 
     public void SetMap(bool map) {
