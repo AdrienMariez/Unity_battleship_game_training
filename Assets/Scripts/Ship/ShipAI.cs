@@ -7,7 +7,7 @@ public class ShipAI : MonoBehaviour {
     private string Name;                // For debug purposes
     private bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
     private float TurnInputLimit = 0;
-    private bool PauseRotation = true;
+    private bool PauseOrder = false;
     private GameObject TargetUnit;
     private ShipController ShipController;
     private TurretManager TurretManager;
@@ -23,33 +23,33 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void FixedUpdate(){
-        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit.transform.position);
-
         // If AI is fighting but its target is dead, find another one immediately
         if (Stressed && TargetUnit == null) {
             GetTargets();
         }
         // If AI is fighting, do business with the opposing ship 
         // Todo : add a check for if a target is found but out of range
-        else if (Stressed && TargetUnit != null) {
-            if (PauseRotation && AIActive) 
-                RotateTarget();
-                GetTargets();
-                StartCoroutine(PauseRotate());
+        else if (Stressed && TargetUnit) {
             if (TurretManager)
                 SetAITargetRange();
                 TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
+            if (!PauseOrder && AIActive) 
+                RotateTarget();
+                GetTargets();
+                StartCoroutine(PauseOrders());
         }
         // If AI doesn't find any opponent, change stance
         else if (AIActive) {
+            if (!PauseOrder && AIActive) 
             IdleGoForward();
+            StartCoroutine(PauseOrders());
         }
     }
-    IEnumerator PauseRotate(){
+    IEnumerator PauseOrders(){
         // Coroutine created to prevent too much calculus for ship behaviour
-        PauseRotation = false;
+        PauseOrder = true;
         yield return new WaitForSeconds(3);
-        PauseRotation = true;
+        PauseOrder = false;
     }
 
     private void GetTargets(){

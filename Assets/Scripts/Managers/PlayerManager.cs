@@ -38,6 +38,8 @@ public class PlayerManager : MonoBehaviour
     }
 
     protected void Update() {
+        if (ActiveTarget == null)
+            SetNextTarget();
         if (!Pause) {     
             if (Input.GetButtonDown ("HideUI"))
                 SetHideUI();

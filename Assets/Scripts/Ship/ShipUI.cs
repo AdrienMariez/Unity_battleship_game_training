@@ -53,6 +53,7 @@ public class ShipUI : MonoBehaviour {
                 ShipMapUIDistance.text = string.Format(RangeDisplayMeter, distance);
             }
             ShipUITransform.LookAt(CameraPosition.position);
+            ShipMapUITransform.eulerAngles = new Vector3(-90.0f, 180.0f, 0.0f);
         }
     }
 
