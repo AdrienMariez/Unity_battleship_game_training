@@ -19,7 +19,7 @@ public class ShipAI : MonoBehaviour {
     }
     private void Awake () {
         ShipController = GetComponent<ShipController>();
-        GetTargets();
+        // GetTargets();
     }
 
     private void FixedUpdate(){
@@ -33,10 +33,13 @@ public class ShipAI : MonoBehaviour {
             if (TurretManager)
                 SetAITargetRange();
                 TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-            if (!PauseOrder && AIActive) 
-                RotateTarget();
+            if (!PauseOrder) {
+                if (AIActive) {
+                    RotateTarget();
+                }
                 GetTargets();
                 StartCoroutine(PauseOrders());
+            }
         }
         // If AI doesn't find any opponent, change stance
         else if (AIActive) {
@@ -90,12 +93,15 @@ public class ShipAI : MonoBehaviour {
         }
 
         // If a target was found, stress the unit and activate turrets AI
-        if (TargetUnit != null){
+        if (TargetUnit != null && TurretManager){
+            // Debug.Log("Unit : "+ Name +" - TargetUnit : "+ TargetUnit);
             Stressed = true;
             if (TurretManager)
                 TurretManager.SetAIHasTarget(true);
         } else {
-            TurretManager.SetAIHasTarget(true);
+            // Debug.Log("Unit : "+ Name);
+            if (TurretManager)
+                TurretManager.SetAIHasTarget(true);
         }
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
     }
@@ -132,8 +138,8 @@ public class ShipAI : MonoBehaviour {
     public void SetName(string name) { Name = name; GetTargets(); }
     public void SetAIActive(bool activate) {
         AIActive = activate;
-        if (AIActive)
-            GetTargets();
+        // if (AIActive)
+        //     GetTargets();
     }
     public void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; TurretManagerPresent = true; }

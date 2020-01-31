@@ -619,14 +619,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2661556145241615459}
   - component: {fileID: 2661556145241615460}
-  - component: {fileID: 3144006090107495224}
   - component: {fileID: 8757330345396271474}
-  - component: {fileID: 8857893665739000309}
   - component: {fileID: 336099227619419933}
   - component: {fileID: 375208000063036731}
   - component: {fileID: 4216330087480367784}
   - component: {fileID: 2323533620668912384}
   - component: {fileID: 2712527079116648786}
+  - component: {fileID: 8857893665739000309}
+  - component: {fileID: 3144006090107495224}
   - component: {fileID: 8237782044557327271}
   - component: {fileID: 6341268151872624709}
   m_Layer: 0
@@ -667,28 +667,6 @@ MonoBehaviour:
   m_CameraDistance: 100
   m_CameraHeight: 30
   m_CameraLateralOffset: 0
---- !u!114 &3144006090107495224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f92342036ea94734aa7ff4c74a465d75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Turrets:
-  - {fileID: 4852412968781588570}
-  - {fileID: 1261749266295785072}
-  - {fileID: 4117942979366499351}
-  - {fileID: 179028127626804327}
-  - {fileID: 5107108582245613630}
-  - {fileID: 4552187030503714623}
-  - {fileID: 7236919778627469554}
-  - {fileID: 200954578029695150}
-  - {fileID: 6535678133232496662}
 --- !u!114 &8757330345396271474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,22 +688,6 @@ MonoBehaviour:
   - {fileID: 8355142522631704766}
   - {fileID: 7249044125137320703}
   - {fileID: 5636582554979631985}
---- !u!114 &8857893665739000309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754885def86a1a0499138431163ec791, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
-    type: 3}
-  RepairRate: 3
-  RepairCrew: 3
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -830,6 +792,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e2d05e7c905e044bf8c77187cefd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8857893665739000309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661556145241615456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754885def86a1a0499138431163ec791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
+    type: 3}
+  RepairRate: 3
+  RepairCrew: 3
+--- !u!114 &3144006090107495224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661556145241615456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92342036ea94734aa7ff4c74a465d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Turrets:
+  - {fileID: 4852412968781588570}
+  - {fileID: 1261749266295785072}
+  - {fileID: 4117942979366499351}
+  - {fileID: 179028127626804327}
+  - {fileID: 5107108582245613630}
+  - {fileID: 4552187030503714623}
+  - {fileID: 7236919778627469554}
+  - {fileID: 200954578029695150}
+  - {fileID: 6535678133232496662}
 --- !u!54 &8237782044557327271
 Rigidbody:
   m_ObjectHideFlags: 0

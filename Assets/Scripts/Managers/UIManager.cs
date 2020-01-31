@@ -65,7 +65,8 @@ namespace UI {
                         TurretTargetRange = (Mathf.Round(TurretTargetRange / 100)) / 10f;
                         m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayKilometer, TurretTargetRange);
                     } else {
-                        m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, TurretTargetRange);
+                        // TurretTargetRange = Mathf.Round(TurretTargetRange);
+                        m_TurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, Mathf.Round(TurretTargetRange));
                     }
                 }
             }
