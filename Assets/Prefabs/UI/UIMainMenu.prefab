@@ -1501,7 +1501,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Options
+  m_Text: How to play
 --- !u!114 &7892985638644240114
 MonoBehaviour:
   m_ObjectHideFlags: 0

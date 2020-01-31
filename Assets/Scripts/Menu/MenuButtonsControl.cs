@@ -9,6 +9,7 @@ public class MenuButtonsControl : MonoBehaviour {
     private GameObject MenuUIInstance;
     public GameObject m_OptionsUI;
     private GameObject OptionsUIInstance;
+    private bool DisplayHelpImage = false;
 
     void Start() {
         OpenMainMenu();
@@ -73,6 +74,9 @@ public class MenuButtonsControl : MonoBehaviour {
 
     protected void OpenOptionsMenu() {
         OptionsUIInstance = Instantiate(m_OptionsUI);
+        DisplayHelpImage = false;
+        Button ButtonDisplayHelp = OptionsUIInstance.transform.Find("ButtonDisplayHelp").GetComponent<Button>();
+		ButtonDisplayHelp.onClick.AddListener(ButtonDisplayHelpOnClick);
         Button ButtonMainMenu = OptionsUIInstance.transform.Find("ButtonMainMenu").GetComponent<Button>();
 		ButtonMainMenu.onClick.AddListener(ButtonMainMenuOnClick);
     }
@@ -80,8 +84,12 @@ public class MenuButtonsControl : MonoBehaviour {
         if (OptionsUIInstance)
             Destroy (OptionsUIInstance);
     }
+    void ButtonDisplayHelpOnClick(){
+        DisplayHelpImage = !DisplayHelpImage;
+        OptionsUIInstance.transform.Find("ImageHelp").gameObject.SetActive(DisplayHelpImage);
+    }
     void ButtonMainMenuOnClick(){
-        Debug.Log ("Back to main menu.");
+        // Debug.Log ("Back to main menu.");
         CloseOptionsMenu();
         OpenMainMenu();
     }
