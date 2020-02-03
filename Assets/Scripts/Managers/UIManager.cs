@@ -88,7 +88,7 @@ namespace UI {
             m_TurretsTargetRange.enabled = false;
             m_Visor.enabled = false;
 
-            // Debug.Log (DisplayGameUI+" - "+DisplayMapUI+" - "+DisplayUI);
+            // Debug.Log (DisplayGameUI+" - "+!DisplayMapUI+" - "+DisplayUI);
 
             if (DisplayGameUI && !DisplayMapUI && DisplayUI){
                 m_Score.enabled = true;
@@ -138,7 +138,6 @@ namespace UI {
                 ChangeSpeedStep(ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep());
                 CurrentUnitDead = ActiveTarget.GetComponent<ShipController>().GetDeath();
             }
-            SetDisplayGameUI();
         }
 
         public void SetPauseUI(bool pause) {

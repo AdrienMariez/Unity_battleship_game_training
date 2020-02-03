@@ -121,10 +121,10 @@ InputManager:
     m_Name: HorizontalMap
     descriptiveName: Map - Navigate Horizontally
     descriptiveNegativeName: 
-    negativeButton: a
-    positiveButton: d
-    altNegativeButton: left
-    altPositiveButton: right
+    negativeButton: left
+    positiveButton: right
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -137,10 +137,10 @@ InputManager:
     m_Name: VerticalMap
     descriptiveName: Map - Navigate Vertically
     descriptiveNegativeName: 
-    negativeButton: s
-    positiveButton: w
-    altNegativeButton: down
-    altPositiveButton: up
+    negativeButton: down
+    positiveButton: up
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -203,8 +203,8 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: a
     positiveButton: d
-    altNegativeButton: k
-    altPositiveButton: m
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -219,8 +219,8 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: s
     positiveButton: w
-    altNegativeButton: l
-    altPositiveButton: o
+    altNegativeButton: 
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
