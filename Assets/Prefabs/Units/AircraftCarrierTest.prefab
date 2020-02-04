@@ -1056,6 +1056,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a061fd6183f97ea4c817b1b4402515a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_UnitName: {fileID: 4494080055764097807, guid: 0feffdfcb2b04ff47819ecd277edb1c2,
+    type: 3}
+  m_UnitDistance: {fileID: 3835573356130547971, guid: f060a9708bc3842409a6114e3be521a2,
+    type: 3}
+  m_UnitHealth: {fileID: 1249305936027395649, guid: c36c139c6d6ee224da0ec469ca3b5a80,
+    type: 3}
+  m_MapUnitName: {fileID: 465840837921445169, guid: 880e0b12bf2718d47a86cd2c6c99913d,
+    type: 3}
+  m_MapUnitDistance: {fileID: 7694528954705614530, guid: 1debc675aded9654aacad3456c573465,
+    type: 3}
+  m_MapUnitHealth: {fileID: 6431504518210083437, guid: 996b509c26c286a4caa3a6de10be81ff,
+    type: 3}
 --- !u!114 &5875044249289738296
 MonoBehaviour:
   m_ObjectHideFlags: 0

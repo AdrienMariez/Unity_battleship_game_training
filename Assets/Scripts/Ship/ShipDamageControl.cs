@@ -199,7 +199,7 @@ public class ShipDamageControl : MonoBehaviour {
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
 
-    public void SetOpenDmgCtrl(bool open) {
+    private void SetOpenDmgCtrl(bool open) {
         DmgCtrlOpen = open;
         ShipController.SetDamageControl(DmgCtrlOpen);
         if (DmgCtrlOpen) {

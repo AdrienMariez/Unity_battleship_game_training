@@ -293,12 +293,13 @@ public class ShipController : MonoBehaviour {
             DamageControl.SetShipDeath(true);
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
-        UI.SetActive(false);
+        UI.SetDead();
         if (Active)
             PlayerManager.SetCurrentUnitDead(true);
     }
 
     public void SetMap(bool map) {
+        UI.SetMapActive(map);
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
         if (GetComponent<ShipDamageControl>()) {
@@ -337,6 +338,10 @@ public class ShipController : MonoBehaviour {
             DamageControl.SetName(name);
         }
         ShipAI.SetName(name);
+    }
+
+    public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){
+        UI.SetPlayerCanvas(playerCanvas, playerMapCanvas);
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }

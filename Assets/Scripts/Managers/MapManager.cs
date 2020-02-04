@@ -8,9 +8,14 @@ public class MapManager : MonoBehaviour {
     private Camera MapCamera;
     private PlayerManager PlayerManager;
     private GameObject SeaMap;
+    private Canvas PlayerCanvas;
+    private Canvas PlayerMapCanvas;
 
     private void Start() {
         SeaMap = GameObject.Find("MapSea");
+        PlayerCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
+        PlayerMapCanvas = GameObject.Find("UIMapCanvas").GetComponent<Canvas>();
+        PlayerMapCanvas.enabled = false;
     }
 
     private void InitMap() {
@@ -48,5 +53,7 @@ public class MapManager : MonoBehaviour {
         if (MapActive) {
             InitMap();
         }
+        PlayerCanvas.enabled = !MapActive;
+        PlayerMapCanvas.enabled = MapActive;
     }
 }

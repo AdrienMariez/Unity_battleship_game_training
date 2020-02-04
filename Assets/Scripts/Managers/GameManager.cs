@@ -40,12 +40,16 @@ public class GameManager : MonoBehaviour {
     private Teams GameWinner;                   // Who won the whole game ?
 
     private PlayerManager PlayerManager;
+    private GameObject PlayerCanvas;
+    private GameObject PlayerMapCanvas;
 
     private void Start() {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
         PlayerManager = GetComponent<PlayerManager>();
+        PlayerCanvas = GameObject.Find("UICanvas");
+        PlayerMapCanvas = GameObject.Find("UIMapCanvas");
 
         // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());
@@ -89,6 +93,7 @@ public class GameManager : MonoBehaviour {
             // TODO if not using a spawn point...
 
             m_Units[i].SetGameManager(this);
+            m_Units[i].SetPlayerCanvas(PlayerCanvas, PlayerMapCanvas);
             m_Units[i].SetPlayerManager(PlayerManager);
             m_Units[i].Setup();
 

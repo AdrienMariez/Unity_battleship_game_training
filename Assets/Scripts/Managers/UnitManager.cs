@@ -72,12 +72,6 @@ public class UnitManager {
         }
     }
 
-    public void SetUnitName() { 
-        if (m_Instance.GetComponent<ShipController>()){
-            m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
-        }
-    }
-
     public void SetGameManager(GameManager gameManager) { 
         if (m_Instance.GetComponent<ShipController>()){
             m_Instance.GetComponent<ShipController>().SetGameManager(gameManager);
@@ -86,6 +80,17 @@ public class UnitManager {
     public void SetPlayerManager(PlayerManager playerManager) {
         if (m_Instance.GetComponent<ShipController>()){
             m_Instance.GetComponent<ShipController>().SetPlayerManager(playerManager);
+        }
+    }
+
+    public void SetUnitName() { 
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
+        }
+    }
+    public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas) { 
+        if (m_Instance.GetComponent<ShipController>()){
+            m_Instance.GetComponent<ShipController>().SetPlayerCanvas(playerCanvas, playerMapCanvas);
         }
     }
 }
