@@ -75,8 +75,7 @@ public class ShipAI : MonoBehaviour {
                     }
                 }
             }
-        }
-        if (Team == "Axis" || Team == "AxisAI") {
+        } else if (Team == "Axis" || Team == "AxisAI") {
             string[] tagsToTarget = { "Allies", "AlliesAI" };
             foreach (string tag in tagsToTarget) {
                 GameObject[] possibleTargetUnits = GameObject.FindGameObjectsWithTag (tag);

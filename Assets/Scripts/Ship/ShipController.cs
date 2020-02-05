@@ -329,6 +329,7 @@ public class ShipController : MonoBehaviour {
     
     public void SetTag(string team){
         gameObject.tag = team;
+        UI.SetUnitTeam(team);
         ShipAI.SetUnitTeam(team);
     }
     public void SetName(string name){
@@ -390,5 +391,5 @@ public class ShipController : MonoBehaviour {
     public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
-    public void DestroyUnit(){ Destroy (gameObject); }
+    public void DestroyUnit(){ UI.SetDead(); Destroy (gameObject); }
 }

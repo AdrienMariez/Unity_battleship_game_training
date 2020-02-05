@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 841204910930812165}
   - component: {fileID: 2627530035976649786}
   - component: {fileID: 3387605477644487729}
+  - component: {fileID: 114906648695623824}
   m_Layer: 13
   m_Name: MapUnitName
   m_TagString: Untagged
@@ -71,7 +72,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 18
+    m_MaxSize: 25
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -130,4 +131,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 0.3, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &114906648695623824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465840837921445169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: -0.3, y: 1}
   m_UseGraphicAlpha: 1

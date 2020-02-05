@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ShipUI : MonoBehaviour {
     private bool Dead = false;
-    private bool Active = true;
+    private bool Active = false;
     private bool MapActive = false;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
@@ -11,24 +11,26 @@ public class ShipUI : MonoBehaviour {
     private Camera MapCam;
 
     public GameObject m_UnitName;
-        private GameObject m_UnitNameInstance;
+        private GameObject UnitNameInstance;
     public GameObject m_UnitDistance;
-        private GameObject m_UnitDistanceInstance;
+        private GameObject UnitDistanceInstance;
     public GameObject m_UnitHealth;
-        private GameObject m_UnitHealthInstance;
+        private GameObject UnitHealthInstance;
     public GameObject m_MapUnitName;
-        private GameObject m_MapUnitNameInstance;
+        private GameObject MapUnitNameInstance;
     public GameObject m_MapUnitDistance;
-        private GameObject m_MapUnitDistanceInstance;
+        private GameObject MapUnitDistanceInstance;
     public GameObject m_MapUnitHealth;
-        private GameObject m_MapUnitHealthInstance;
+        private GameObject MapUnitHealthInstance;
 
     private string Name;
+    private string Team;
+    private string DistanceString;
+    private float MaximumHealth;
+    private float CurrentHealth;
 
     const string RangeDisplayMeter = "{0} m";
     const string RangeDisplayKilometer = "{0} km";
-
-    private Vector3 ScreenPos;
 
     // [Header("Debug")]
     //     public bool debug = false;
@@ -41,50 +43,53 @@ public class ShipUI : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        // if (debug)
-        //     Debug.Log (this.name+" - ShipUISlider -"+ShipUISlider);
-        // if (Active) {
-        //     float distance = (ShipUITransform.position - CameraPosition.position).magnitude;
-        //     if (distance > 999) {
-        //         distance = (Mathf.Round(distance / 100)) / 10f;
-        //         ShipUIDistance.text = string.Format(RangeDisplayKilometer, distance);
-        //         ShipMapUIDistance.text = string.Format(RangeDisplayKilometer, distance);
-        //     } else {
-        //         ShipUIDistance.text = string.Format(RangeDisplayMeter, Mathf.Round(distance));
-        //         ShipMapUIDistance.text = string.Format(RangeDisplayMeter, Mathf.Round(distance));
-        //     }
-        //     ShipUITransform.LookAt(CameraPosition.position);
-        //     ShipMapUITransform.eulerAngles = new Vector3(-90.0f, 180.0f, 0.0f);
-        // }
-        // if (Active) {
-        //     m_UnitNameInstance.transform.position = Cam.WorldToScreenPoint(transform.position);
-        //     m_UnitDistanceInstance.transform.position = Cam.WorldToScreenPoint(transform.position);
-        //     m_UnitHealthInstance.transform.position = Cam.WorldToScreenPoint(transform.position);
-        // }
-        // if (MapActive) {
-        //     m_MapUnitNameInstance.transform.position = MapCam.WorldToScreenPoint(transform.position);
-        //     m_MapUnitDistanceInstance.transform.position = MapCam.WorldToScreenPoint(transform.position);
-        //     m_MapUnitHealthInstance.transform.position = MapCam.WorldToScreenPoint(transform.position);
-        // }
-        ScreenPos = Cam.WorldToScreenPoint(transform.position);
-        Debug.Log(Name + " is " + ScreenPos.x + " pixels from the left");
-        Debug.Log(Name + " is " + ScreenPos.y + " pixels from the top");
-        Debug.Log(Name + " is " + ScreenPos.y + " pixels from the camera");
-        if (m_UnitNameInstance)
-            m_UnitNameInstance.transform.position = Cam.WorldToScreenPoint(this.transform.position);
-        if (m_MapUnitNameInstance)
-            m_MapUnitNameInstance.transform.position = MapCam.WorldToScreenPoint(this.transform.position);
+        if (!Active && MapActive && !Dead){
+            DistanceString = "Played unit";
+            // Debug.Log (Name+" - DistanceString -"+DistanceString);
+        } else if (Active && !Dead || MapActive && !Dead) {
+            float distance = (transform.position - Cam.transform.position).magnitude;
+            if (distance > 999) {
+                distance = (Mathf.Round(distance / 100)) / 10f;
+                DistanceString = string.Format(RangeDisplayKilometer, distance);
+            } else {
+                DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
+            }
+        }
+        // Debug.Log (" - Name : "+Name+" - Active : "+Active+" - MapActive : "+MapActive+" - Dead : "+Dead);
+
+        if (Active){
+            Vector3 screenPos = Cam.WorldToScreenPoint(transform.position);
+            Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 50f));
+            Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 30f));
+            Vector3 vectorHealth = new Vector2(screenPos.x, (screenPos.y + 10f));
+            UnitNameInstance.transform.position  = vectorName;
+            UnitDistanceInstance.transform.position  = vectorDistance;
+            UnitHealthInstance.transform.position  = vectorHealth;
+
+            UnitDistanceInstance.GetComponent<Text>().text = DistanceString;
+        }
+        if (MapActive){
+            Vector3 screenMapPos = MapCam.WorldToScreenPoint(transform.position);
+            Vector3 vectorMapName = new Vector2(screenMapPos.x, (screenMapPos.y + 50f));
+            Vector3 vectorMapDistance = new Vector2(screenMapPos.x, (screenMapPos.y + 30f));
+            Vector3 vectorMapHealth = new Vector2(screenMapPos.x, (screenMapPos.y + 10f));
+            MapUnitNameInstance.transform.position  = vectorMapName;
+            MapUnitDistanceInstance.transform.position  = vectorMapDistance;
+            MapUnitHealthInstance.transform.position  = vectorMapHealth;
+
+            MapUnitDistanceInstance.GetComponent<Text>().text = DistanceString;
+        }
     }
 
     private void SetDisplay() {
         if (!Dead) {
             if (Active) {
-                if (!m_UnitNameInstance)
+                if (!UnitNameInstance)
                     DisplayUI();
             } else {
                 DestroyUI();
             }
-            if (!m_MapUnitNameInstance)
+            if (!MapUnitNameInstance)
                     DisplayMapUI();
         } else {
             DestroyUI();
@@ -93,66 +98,92 @@ public class ShipUI : MonoBehaviour {
     }
 
     private void DisplayUI() {
-        m_UnitNameInstance = Instantiate(m_UnitName, PlayerCanvas.transform);
-        m_UnitDistanceInstance = Instantiate(m_UnitDistance, PlayerCanvas.transform);
-        m_UnitHealthInstance = Instantiate(m_UnitHealth, PlayerCanvas.transform);
+        Active = true;
+        UnitNameInstance = Instantiate(m_UnitName, PlayerCanvas.transform);
+        UnitDistanceInstance = Instantiate(m_UnitDistance, PlayerCanvas.transform);
+        UnitHealthInstance = Instantiate(m_UnitHealth, PlayerCanvas.transform);
 
-        m_UnitNameInstance.GetComponent<Text>().text = Name;
+        if (Team == "Allies" || Team == "AlliesAI") {
+            UnitNameInstance.GetComponent<Text>().color = Color.blue;
+            UnitDistanceInstance.GetComponent<Text>().color = Color.blue;
+        } else if (Team == "Axis" || Team == "AxisAI") {
+            UnitNameInstance.GetComponent<Text>().color = Color.red;
+            UnitDistanceInstance.GetComponent<Text>().color = Color.red;
+        } else{
+            UnitNameInstance.GetComponent<Text>().color = Color.yellow;
+            UnitDistanceInstance.GetComponent<Text>().color = Color.yellow;
+        }
+
+        UnitNameInstance.GetComponent<Text>().text = Name;
+        UnitHealthInstance.GetComponent<Slider>().maxValue = MaximumHealth;
+        UnitHealthInstance.GetComponent<Slider>().value = CurrentHealth;
     }
 
     private void DestroyUI() {
-        if (m_UnitNameInstance)
-            Destroy (m_UnitNameInstance);
-        if (m_UnitDistanceInstance)
-            Destroy (m_UnitDistanceInstance);
-        if (m_UnitHealthInstance)
-            Destroy (m_UnitHealthInstance);
+        Active = false;
+        if (UnitNameInstance)
+            Destroy (UnitNameInstance);
+        if (UnitDistanceInstance)
+            Destroy (UnitDistanceInstance);
+        if (UnitHealthInstance)
+            Destroy (UnitHealthInstance);
     }
 
-    /*private void SetMapDisplay() {
-        if (MapActive) {
-            DisplayMapUI();
-        } else {
-            DestroyMapUI();
-        }
-    }*/
-
     private void DisplayMapUI() {
-        m_MapUnitNameInstance = Instantiate(m_MapUnitName, PlayerMapCanvas.transform);
-        m_MapUnitDistanceInstance = Instantiate(m_MapUnitDistance, PlayerMapCanvas.transform);
-        m_MapUnitHealthInstance = Instantiate(m_MapUnitHealth, PlayerMapCanvas.transform);
+        MapActive = true;
+        MapUnitNameInstance = Instantiate(m_MapUnitName, PlayerMapCanvas.transform);
+        MapUnitDistanceInstance = Instantiate(m_MapUnitDistance, PlayerMapCanvas.transform);
+        MapUnitHealthInstance = Instantiate(m_MapUnitHealth, PlayerMapCanvas.transform);
 
-        m_MapUnitNameInstance.GetComponent<Text>().text = Name;
+        if (Team == "Allies" || Team == "AlliesAI") {
+            MapUnitNameInstance.GetComponent<Text>().color = Color.blue;
+            MapUnitDistanceInstance.GetComponent<Text>().color = Color.blue;
+        } else if (Team == "Axis" || Team == "AxisAI") {
+            MapUnitNameInstance.GetComponent<Text>().color = Color.red;
+            MapUnitDistanceInstance.GetComponent<Text>().color = Color.red;
+        } else{
+            MapUnitNameInstance.GetComponent<Text>().color = Color.yellow;
+            MapUnitDistanceInstance.GetComponent<Text>().color = Color.yellow;
+        }
+
+        MapUnitNameInstance.GetComponent<Text>().text = Name;
+        MapUnitHealthInstance.GetComponent<Slider>().maxValue = MaximumHealth;
+        MapUnitHealthInstance.GetComponent<Slider>().value = CurrentHealth;
     }
 
     private void DestroyMapUI() {
-        if (m_MapUnitNameInstance)
-            Destroy (m_MapUnitNameInstance);
-        if (m_MapUnitDistanceInstance)
-            Destroy (m_MapUnitDistanceInstance);
-        if (m_MapUnitHealthInstance)
-            Destroy (m_MapUnitHealthInstance);
+        MapActive = false;
+        if (MapUnitNameInstance)
+            Destroy (MapUnitNameInstance);
+        if (MapUnitDistanceInstance)
+            Destroy (MapUnitDistanceInstance);
+        if (MapUnitHealthInstance)
+            Destroy (MapUnitHealthInstance);
     }
 
     public void SetStartingHealth(float FullHP) {
-        // Debug.Log (this.name+" - ShipUISlider -"+ShipUISlider);
         // ShipUISlider.maxValue = FullHP;
         // ShipUISlider.value = FullHP;
-        
-        // ShipMapUISlider.maxValue = FullHP;
-        // ShipMapUISlider.value = FullHP;
+        MaximumHealth = FullHP;
+        CurrentHealth = FullHP;
     }
     public void SetCurrentHealth(float HP) {
         // ShipUISlider.value = HP;
         // ShipMapUISlider.value = HP;
+        CurrentHealth = HP;
+        if (UnitHealthInstance)
+            UnitHealthInstance.GetComponent<Slider>().value = CurrentHealth;
+        if (MapUnitHealthInstance)
+            MapUnitHealthInstance.GetComponent<Slider>().value = CurrentHealth;
     }
     public void SetName(string name) {
         Name = name;
-        if (m_UnitNameInstance)
-            m_UnitNameInstance.GetComponent<Text>().text = Name;
-        if (m_MapUnitNameInstance)
-            m_MapUnitNameInstance.GetComponent<Text>().text = Name;
+        if (UnitNameInstance)
+            UnitNameInstance.GetComponent<Text>().text = Name;
+        if (MapUnitNameInstance)
+            MapUnitNameInstance.GetComponent<Text>().text = Name;
     }
+    public void SetUnitTeam(string team){ Team = team; }
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){
         PlayerCanvas = playerCanvas;
         PlayerMapCanvas = playerMapCanvas;
