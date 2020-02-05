@@ -1041,6 +1041,11 @@ PrefabInstance:
       propertyPath: m_Units.Array.data[0].m_UnitName
       value: Training ship 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_Team
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086803692809, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -102,13 +102,19 @@ public class ShipUI : MonoBehaviour {
         UnitNameInstance = Instantiate(m_UnitName, PlayerCanvas.transform);
         UnitDistanceInstance = Instantiate(m_UnitDistance, PlayerCanvas.transform);
         UnitHealthInstance = Instantiate(m_UnitHealth, PlayerCanvas.transform);
-
-        if (Team == "Allies" || Team == "AlliesAI") {
-            UnitNameInstance.GetComponent<Text>().color = Color.blue;
-            UnitDistanceInstance.GetComponent<Text>().color = Color.blue;
-        } else if (Team == "Axis" || Team == "AxisAI") {
-            UnitNameInstance.GetComponent<Text>().color = Color.red;
-            UnitDistanceInstance.GetComponent<Text>().color = Color.red;
+        // Debug.Log (Name+" - Team -"+Team);
+        if (Team == "Allies") {
+            UnitNameInstance.GetComponent<Text>().color = new Color(0f, 0.47f, 1f, 1f);
+            UnitDistanceInstance.GetComponent<Text>().color = new Color(0f, 0.47f, 1f, 1f);
+        } else if (Team == "AlliesAI") {
+            UnitNameInstance.GetComponent<Text>().color = new Color(0f, 0.1f, 1f, 1f);
+            UnitDistanceInstance.GetComponent<Text>().color = new Color(0f, 0.1f, 1f, 1f);
+        }  else if (Team == "Axis") {
+            UnitNameInstance.GetComponent<Text>().color = new Color(1f, 0.22f, 0.29f, 1f);
+            UnitDistanceInstance.GetComponent<Text>().color = new Color(1f, 0.22f, 0.29f, 1f);
+        }  else if (Team == "AxisAI") {
+            UnitNameInstance.GetComponent<Text>().color = new Color(1f, 0.0f, 0.0f, 0.49f);
+            UnitDistanceInstance.GetComponent<Text>().color = new Color(1f, 0.0f, 0.0f, 0.49f);
         } else{
             UnitNameInstance.GetComponent<Text>().color = Color.yellow;
             UnitDistanceInstance.GetComponent<Text>().color = Color.yellow;
@@ -135,12 +141,18 @@ public class ShipUI : MonoBehaviour {
         MapUnitDistanceInstance = Instantiate(m_MapUnitDistance, PlayerMapCanvas.transform);
         MapUnitHealthInstance = Instantiate(m_MapUnitHealth, PlayerMapCanvas.transform);
 
-        if (Team == "Allies" || Team == "AlliesAI") {
-            MapUnitNameInstance.GetComponent<Text>().color = Color.blue;
-            MapUnitDistanceInstance.GetComponent<Text>().color = Color.blue;
-        } else if (Team == "Axis" || Team == "AxisAI") {
-            MapUnitNameInstance.GetComponent<Text>().color = Color.red;
-            MapUnitDistanceInstance.GetComponent<Text>().color = Color.red;
+        if (Team == "Allies") {
+            MapUnitNameInstance.GetComponent<Text>().color = new Color(0f, 0.47f, 1f, 1f);
+            MapUnitDistanceInstance.GetComponent<Text>().color = new Color(0f, 0.47f, 1f, 1f);
+        } else if (Team == "AlliesAI") {
+            MapUnitNameInstance.GetComponent<Text>().color = new Color(0f, 0.1f, 1f, 1f);
+            MapUnitDistanceInstance.GetComponent<Text>().color = new Color(0f, 0.1f, 1f, 1f);
+        }  else if (Team == "Axis") {
+            MapUnitNameInstance.GetComponent<Text>().color = new Color(1f, 0.22f, 0.29f, 1f);
+            MapUnitDistanceInstance.GetComponent<Text>().color = new Color(1f, 0.22f, 0.29f, 1f);
+        }  else if (Team == "AxisAI") {
+            MapUnitNameInstance.GetComponent<Text>().color = new Color(1f, 0.0f, 0.0f, 0.49f);
+            MapUnitDistanceInstance.GetComponent<Text>().color = new Color(1f, 0.0f, 0.0f, 0.49f);
         } else{
             MapUnitNameInstance.GetComponent<Text>().color = Color.yellow;
             MapUnitDistanceInstance.GetComponent<Text>().color = Color.yellow;
