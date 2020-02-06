@@ -254,18 +254,18 @@ MonoBehaviour:
   m_IdlePointer: {fileID: 8933853122373449585}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  TurretTurret: {fileID: 3541568489413974844}
-  TurretCannon: {fileID: 5086371173920104713}
-  Parent: {fileID: 0}
-  rotationSpeed: 30
-  limitTraverse: 0
-  leftTraverse: 60
-  rightTraverse: 60
-  NoFireZones: []
-  elevationSpeed: 50
-  upTraverse: 133
-  downTraverse: 87
-  ElevationZones: []
+  m_TurretTurret: {fileID: 3541568489413974844}
+  m_TurretCannon: {fileID: 5086371173920104713}
+  m_Parent: {fileID: 0}
+  m_RotationSpeed: 15
+  m_LimitTraverse: 0
+  m_LeftTraverse: 60
+  m_RightTraverse: 60
+  m_NoFireZones: []
+  m_ElevationSpeed: 15
+  m_UpTraverse: 124
+  m_DownTraverse: 80
+  m_ElevationZones: []
   debug: 0
 --- !u!65 &4881369812155529996
 BoxCollider:

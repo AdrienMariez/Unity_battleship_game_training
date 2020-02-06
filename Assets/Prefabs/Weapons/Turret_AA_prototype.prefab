@@ -213,7 +213,6 @@ MonoBehaviour:
   m_ElementHealth: 200
   m_ElementArmor: 80
   debug: 0
-  Dead: 0
 --- !u!114 &1653871051627078444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
   m_TurretType: 2
   m_Shell: {fileID: 1340822690796195968, guid: ad2bdbd723113b442a208525b46cb72f, type: 3}
   m_FireMuzzles:
@@ -238,6 +236,7 @@ MonoBehaviour:
   m_MinRange: 50
   m_MuzzleVelocity: 775
   m_ReloadTime: 10
+  m_Precision: 0.1
   m_DirectorTurret: 0
   debug: 0
 --- !u!114 &536144026725449547
@@ -252,24 +251,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77726fdf0f1389429bf19cfcb65bbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
   m_IdlePointer: {fileID: 8933853122373449585}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  TurretTurret: {fileID: 3541568489413974844}
-  TurretCannon: {fileID: 5086371173920104713}
-  Parent: {fileID: 0}
-  rotationSpeed: 30
-  limitTraverse: 0
-  leftTraverse: 60
-  rightTraverse: 60
-  NoFireZones: []
-  elevationSpeed: 50
-  upTraverse: 133
-  downTraverse: 87
-  ElevationZones: []
+  m_TurretTurret: {fileID: 3541568489413974844}
+  m_TurretCannon: {fileID: 5086371173920104713}
+  m_Parent: {fileID: 0}
+  m_RotationSpeed: 15
+  m_LimitTraverse: 0
+  m_LeftTraverse: 60
+  m_RightTraverse: 60
+  m_NoFireZones: []
+  m_ElevationSpeed: 15
+  m_UpTraverse: 110
+  m_DownTraverse: 80
+  m_ElevationZones: []
   debug: 0
-  CurrentAnglePercentage: 0
 --- !u!65 &4881369812155529996
 BoxCollider:
   m_ObjectHideFlags: 0
