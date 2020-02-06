@@ -8,6 +8,7 @@ public class ShipUI : MonoBehaviour {
     private bool MapActive = false;
     private bool ActionPaused = false;
     private bool ShortActionPaused = false;
+    private bool BehindCamera = false;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
     private Camera Cam;
@@ -61,15 +62,32 @@ public class ShipUI : MonoBehaviour {
         // Debug.Log (" - Name : "+Name+" - Active : "+Active+" - MapActive : "+MapActive+" - Dead : "+Dead);
 
         if (Active && !ShortActionPaused){
-            Vector3 screenPos = Cam.WorldToScreenPoint(transform.position);
-            Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 50f));
-            Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 30f));
-            Vector3 vectorHealth = new Vector2(screenPos.x, (screenPos.y + 10f));
-            UnitNameInstance.transform.position  = vectorName;
-            UnitDistanceInstance.transform.position  = vectorDistance;
-            UnitHealthInstance.transform.position  = vectorHealth;
+            var heading = transform.position - Cam.transform.position;
+            if (Vector3.Dot(Cam.transform.forward, heading) > 0) {
+                if (BehindCamera){
+                    UnitNameInstance.SetActive(true);
+                    UnitDistanceInstance.SetActive(true);
+                    UnitHealthInstance.SetActive(true);
+                    BehindCamera = false;
+                }
+                // Debug.Log (Name+" - UI is in front -"+heading);
+                Vector3 screenPos = Cam.WorldToScreenPoint(transform.position);
+                Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 50f));
+                Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 30f));
+                Vector3 vectorHealth = new Vector2(screenPos.x, (screenPos.y + 10f));
+                UnitNameInstance.transform.position  = vectorName;
+                UnitDistanceInstance.transform.position  = vectorDistance;
+                UnitHealthInstance.transform.position  = vectorHealth;
 
-            UnitDistanceInstance.GetComponent<Text>().text = DistanceString;
+                UnitDistanceInstance.GetComponent<Text>().text = DistanceString;
+            } else {
+                if (!BehindCamera){
+                    UnitNameInstance.SetActive(false);
+                    UnitDistanceInstance.SetActive(false);
+                    UnitHealthInstance.SetActive(false);
+                    BehindCamera = true;
+                }
+            }
         }
         if (MapActive && !ShortActionPaused){
             Vector3 screenMapPos = MapCam.WorldToScreenPoint(transform.position);
