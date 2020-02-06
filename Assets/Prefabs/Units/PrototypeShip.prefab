@@ -2957,6 +2957,11 @@ PrefabInstance:
       propertyPath: ElevationZones.Array.data[0].DownTraverse
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 536144026725449547, guid: 19da4dec1cc8b7b429c93feade326c38,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 840146293658127578, guid: 19da4dec1cc8b7b429c93feade326c38,
         type: 3}
       propertyPath: m_Name

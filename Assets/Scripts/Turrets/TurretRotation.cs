@@ -9,7 +9,7 @@ public class TurretRotation : MonoBehaviour
     [Header("Elements")]
         [Tooltip ("Point to which the cannon will point when in idle position")]public Transform m_IdlePointer;
         [Tooltip ("Audio played when the turret is rotating.")]public AudioClip m_TurretRotationAudio;
-        [Tooltip ("PAxis of rotation for horizontal rotation of the turret.")]public Rigidbody TurretTurret;
+        [Tooltip ("Axis of rotation for horizontal rotation of the turret.")]public Rigidbody TurretTurret;
         [Tooltip ("Axis of rotation for the elevation of the cannon.")]public Rigidbody TurretCannon;
         [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]public Rigidbody Parent;
 
@@ -56,7 +56,10 @@ public class TurretRotation : MonoBehaviour
     private float TotalAngleElevRatio;
     private float CurrentAngleElevRatio;
 
+    private Vector3 TurretCannonLocalPosition;
+
     private bool AIControl = false;
+    private bool ActionPaused = false;
 
     private void Awake(){
         TurretFireManager = GetComponent<TurretFireManager>();
@@ -72,6 +75,8 @@ public class TurretRotation : MonoBehaviour
         TotalAngleElevRatio = upTraverse-downTraverse;
 
         currentAng = TurretTurret.transform.localRotation.eulerAngles.y;
+
+        TurretCannonLocalPosition = TurretCannon.transform.localPosition;
         
         // if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
@@ -126,7 +131,11 @@ public class TurretRotation : MonoBehaviour
         if (!Dead) {
             TurretRotate();
             CannonElevation();
-        } else {
+        }
+        // else if (!Dead && ActionPaused) {
+        //     CannonElevation();
+        // }
+        else {
             TurretStatic();
         }
 
@@ -145,6 +154,14 @@ public class TurretRotation : MonoBehaviour
         
         // Reassign the new parent angle for future TurretRotate()
         parentEulerAngles = Parent.transform.rotation.eulerAngles;
+        if (!ActionPaused)
+            StartCoroutine(PauseAction());
+    }
+
+    IEnumerator PauseAction(){
+        ActionPaused = true;
+        yield return new WaitForSeconds(0.1f);
+        ActionPaused = false;
     }
 
     private void TurretRotate() {
@@ -193,7 +210,10 @@ public class TurretRotation : MonoBehaviour
         // if (debug) { Debug.Log("currentAng = "+ currentAng); Debug.Log("targetAng = "+ targetAng); }
 
         // Update the turret angle
+        // if (!ActionPaused) {
         TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, currentAng, 0.0f));
+        TurretTurret.transform.localPosition = new Vector3 (0.0f, 0.0f, 0.0f);
+        // }
 
         Debug.DrawLine(TurretTurret.transform.position, TargetPosition, Color.green);
     }
@@ -284,23 +304,13 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void CannonElevation() {
-
         // Get parent current rotation rate
         float parentRotationAng = Parent.transform.rotation.eulerAngles.x-parentEulerAngles.x;
 
-        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - TurretCannon.transform.position).eulerAngles.x;
+        // float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - TurretCannon.transform.position).eulerAngles.x;
 
         currentAngElev = TurretCannon.transform.localRotation.eulerAngles.x;
 
-        /* legacy code
-            targetAngElev = TargetAngleWorld + parentEulerAngles.x;
-            targetAngElev = TargetAngleWorld;
-            if (currentAngElev > 180 && targetAngElev > 180 && currentAngElev > targetAngElev || currentAngElev < 180 && targetAngElev < 180 && currentAngElev > targetAngElev|| currentAngElev < 180 && targetAngElev > 180) {
-                currentAngElev -= elevationSpeed * Time.fixedDeltaTime;
-            } else {
-                currentAngElev += elevationSpeed * Time.fixedDeltaTime;
-            }
-        */
         if (CameraPercentage + 30 > 100)
             CameraPercentage = 100;
         else
@@ -318,11 +328,13 @@ public class TurretRotation : MonoBehaviour
         // if (debug) { Debug.Log("targetAngElev --- = "+ targetAngElev); }
         // if (debug) { Debug.Log("currentAngElev = "+ currentAngElev); }
 
-
-        if (currentAngElev > targetAngElev) {
-            currentAngElev -= elevationSpeed * Time.fixedDeltaTime;
+        float speed = elevationSpeed * Time.fixedDeltaTime;
+        if (currentAngElev < targetAngElev && currentAngElev + speed < targetAngElev) {
+            currentAngElev += speed;
+        } else if (currentAngElev > targetAngElev && currentAngElev - speed > targetAngElev) {
+            currentAngElev -= speed;
         } else {
-            currentAngElev += elevationSpeed * Time.fixedDeltaTime;
+            currentAngElev = targetAngElev;
         }
 
         PreventFireVert = CheckNoFireVertical(currentAngElev,targetAngElev);
@@ -350,6 +362,7 @@ public class TurretRotation : MonoBehaviour
         // }
 
         // Turn turret towards camera facing
+        // if (!ActionPaused)
         TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (currentAngElev, 0.0f, 0.0f));
 
         // Debug.DrawRay(TurretCannon.transform.position, TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
@@ -448,6 +461,10 @@ public class TurretRotation : MonoBehaviour
     public void SetAIControl(bool aiControl) { AIControl = aiControl; }
     public void SetAIGroundTargetPosition(Vector3 groundTargetPosition) {  }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
-    public void SetCameraPercentage(float percentage) { CameraPercentage = percentage; }
+    public void SetCameraPercentage(float percentage) {
+        percentage = (Mathf.Round(percentage));
+        if (CameraPercentage != percentage)
+            CameraPercentage = percentage;
+    }
     public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
 }

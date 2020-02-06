@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using FreeLookCamera;
+using System.Collections;
 
 public class TurretManager : MonoBehaviour
 {    
@@ -11,6 +12,7 @@ public class TurretManager : MonoBehaviour
     private bool DamageControl = false;
     private bool FreeCamera = false;
     private bool PlayerControl = false;
+    private bool ActionPaused = false;
     private FreeLookCam FreeLookCam;
     private ShipController ShipController;
     private float CameraPercentage;
@@ -54,9 +56,12 @@ public class TurretManager : MonoBehaviour
         if (Input.GetButtonDown ("FreeCamera"))
             SetFreeCamera();
 
+        
+
         if (PlayerControl) {
             // Get the angle of the camera here
             CameraPercentage = FreeLookCam.GetTiltPercentage();
+            // Debug.Log(CameraPercentage + " : CameraPercentage");
 
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
@@ -72,11 +77,12 @@ public class TurretManager : MonoBehaviour
             if (GetComponent<ShipController>())
                 ShipController.SetTurretStatus(TurretStatus);
 
+            // StartCoroutine(PauseAction());
         }
         if (!PlayerControl && AIControl) {
-            float fakeCameraPercentage = AITargetRange * 100 / (MaxRange - MinRange);
+            float fakeCameraPercentage = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
             TurretStatus = "F - ";
-            // Debug.Log("AITargetPosition = "+ AITargetPosition);
+            // Debug.Log("fakeCameraPercentage = "+ fakeCameraPercentage);
 
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
@@ -88,6 +94,8 @@ public class TurretManager : MonoBehaviour
 
             if (Active && GetComponent<ShipController>())
                 ShipController.SetTurretStatus(TurretStatus);
+
+            // StartCoroutine(PauseAction());
         }
 
         /*if (PlayerControl) {
@@ -96,6 +104,12 @@ public class TurretManager : MonoBehaviour
         
         // Debug.Log("TargetRange = "+ TargetRange);
     }
+
+    // IEnumerator PauseAction(){
+    //     ActionPaused = true;
+    //     yield return new WaitForSeconds(0.01f);
+    //     ActionPaused = false;
+    // }
 
     private void SetPlayerControl(){
         if (Active && !Map && !DamageControl && !Dead && !FreeCamera && !Pause) {

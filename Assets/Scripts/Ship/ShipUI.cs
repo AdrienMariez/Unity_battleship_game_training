@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ShipUI : MonoBehaviour {
     private bool Dead = false;
     private bool Active = false;
     private bool MapActive = false;
+    private bool ActionPaused = false;
+    private bool ShortActionPaused = false;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
     private Camera Cam;
@@ -43,10 +46,10 @@ public class ShipUI : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (!Active && MapActive && !Dead){
+        if (!Active && MapActive && !Dead && !ActionPaused){
             DistanceString = "Played unit";
             // Debug.Log (Name+" - DistanceString -"+DistanceString);
-        } else if (Active && !Dead || MapActive && !Dead) {
+        } else if (Active && !Dead && !ActionPaused || MapActive && !Dead && !ActionPaused) {
             float distance = (transform.position - Cam.transform.position).magnitude;
             if (distance > 999) {
                 distance = (Mathf.Round(distance / 100)) / 10f;
@@ -57,7 +60,7 @@ public class ShipUI : MonoBehaviour {
         }
         // Debug.Log (" - Name : "+Name+" - Active : "+Active+" - MapActive : "+MapActive+" - Dead : "+Dead);
 
-        if (Active){
+        if (Active && !ShortActionPaused){
             Vector3 screenPos = Cam.WorldToScreenPoint(transform.position);
             Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 50f));
             Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 30f));
@@ -68,7 +71,7 @@ public class ShipUI : MonoBehaviour {
 
             UnitDistanceInstance.GetComponent<Text>().text = DistanceString;
         }
-        if (MapActive){
+        if (MapActive && !ShortActionPaused){
             Vector3 screenMapPos = MapCam.WorldToScreenPoint(transform.position);
             Vector3 vectorMapName = new Vector2(screenMapPos.x, (screenMapPos.y + 50f));
             Vector3 vectorMapDistance = new Vector2(screenMapPos.x, (screenMapPos.y + 30f));
@@ -79,6 +82,24 @@ public class ShipUI : MonoBehaviour {
 
             MapUnitDistanceInstance.GetComponent<Text>().text = DistanceString;
         }
+        if (!ActionPaused && !Dead)
+            StartCoroutine(PauseAction());
+        if (!ShortActionPaused && !Dead)
+            StartCoroutine(PauseAction());
+    }
+
+    IEnumerator PauseAction(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        ActionPaused = true;
+        yield return new WaitForSeconds(0.5f);
+        ActionPaused = false;
+    }
+
+    IEnumerator PauseActionShort(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        ShortActionPaused = true;
+        yield return new WaitForSeconds(0.1f);
+        ShortActionPaused = false;
     }
 
     private void SetDisplay() {
