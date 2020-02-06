@@ -59,15 +59,15 @@ public class TurretFireManager : MonoBehaviour
         }else{
             OutOfRange = false;
         }
-        if (Dead){
-            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.black);
-        }else if  (PreventFire || OutOfRange){
-            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
-        }else if (Reloading){
-            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
-        }else{
-            GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
-        }
+        // if (Dead){
+        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.black);
+        // }else if  (PreventFire || OutOfRange){
+        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+        // }else if (Reloading){
+        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
+        // }else{
+        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
+        // }
         if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
             if (Input.GetButtonDown ("FireMainWeapon")) {
                 //start the reloading process immediately
