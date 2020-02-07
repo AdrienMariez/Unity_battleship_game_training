@@ -8,15 +8,20 @@ public class ShipDamageControl : MonoBehaviour {
     private bool MapActive = false;
     public GameObject m_DamageControlUI;
     public float RepairRate = 3;
-    public float RepairCrew = 3;
+    public int RepairCrew = 3;
 
     private ShipController ShipController;
 
-    private float EngineRepairCrew = 0;
-    private float FireRepairCrew = 0;
-    private float WaterRepairCrew = 0;
-    private float TurretsRepairCrew = 0;
-    private float UnsetCrew = 0;
+    private int EngineRepairCrew = 0;
+    private int FireRepairCrew = 0;
+    private int WaterRepairCrew = 0;
+    private int TurretsRepairCrew = 0;
+    private int UnsetCrew = 0;
+    private Text EngineCrewText;
+    private Text FireCrewText;
+    private Text WaterCrewText;
+    private Text TurretsCrewText;
+    private Text UnsetCrewText;
     private string UnitName;
 
     private int EngineStatus = 0;
@@ -53,12 +58,13 @@ public class ShipDamageControl : MonoBehaviour {
         // Cursor.visible = true;
 
         DamageControlInstance = Instantiate(m_DamageControlUI);
-        DamageControlInstance.transform.Find("UnitName").GetComponent<Text>().text = UnitName;
-        DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
-        DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>().text = FireRepairCrew.ToString("g");
-        DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
-        DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
-        DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>().text = UnsetCrew.ToString("g");
+        // DamageControlInstance.transform.Find("UnitName").GetComponent<Text>().text = UnitName;
+
+        EngineCrewText = DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>();
+        FireCrewText = DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>();
+        WaterCrewText = DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>();
+        TurretsCrewText = DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>();
+        UnsetCrewText = DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>();
 
         Button buttonEnginePos = DamageControlInstance.transform.Find("buttonEnginePos").GetComponent<Button>();
 		buttonEnginePos.onClick.AddListener(ButtonEnginePosOnClick);
@@ -80,19 +86,12 @@ public class ShipDamageControl : MonoBehaviour {
         Button buttonTurretsNeg = DamageControlInstance.transform.Find("buttonTurretsNeg").GetComponent<Button>();
 		buttonTurretsNeg.onClick.AddListener(ButtonTurretsNegOnClick);
 
+        SetCrewDisplay();
         DisplayDamagedEngine();
         DisplayDamagedSteering();
         DisplayFireBurning();
         DisplayBuoyancyCompromised();
         DisplayDamagedTurrets();
-
-        if (DamagedTurrets > 0) {
-            // String : "X damaged turrets on Y total"
-            DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = DamagedTurrets.ToString("g") + "/" + TotalTurrets.ToString("g")+" turrets HS";
-            DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
-        } else {
-            DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
-        }
 
         CheckActiveButtons();
     }
@@ -103,98 +102,151 @@ public class ShipDamageControl : MonoBehaviour {
     } 
 
     protected void CheckActiveButtons() {
-        DamageControlInstance.transform.Find("UnsetCrewCount").GetComponent<Text>().text = UnsetCrew.ToString("g");
+        SetCrewDisplay();
 
+        if (EngineRepairCrew == RepairCrew) {
+            DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(false);
+        } else {
+            DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
+        }
         if (EngineRepairCrew > 0) {
             DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(true);
         } else {
             DamageControlInstance.transform.Find("buttonEngineNeg").gameObject.SetActive(false);
         }
 
+        if (FireRepairCrew == RepairCrew) {
+            DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(false);
+        } else {
+            DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(true);
+        }
         if (FireRepairCrew > 0) {
             DamageControlInstance.transform.Find("buttonFireNeg").gameObject.SetActive(true);
         } else {
             DamageControlInstance.transform.Find("buttonFireNeg").gameObject.SetActive(false);
         }
 
+        if (WaterRepairCrew == RepairCrew) {
+            DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(false);
+        } else {
+            DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(true);
+        }
         if (WaterRepairCrew > 0) {
             DamageControlInstance.transform.Find("buttonWaterNeg").gameObject.SetActive(true);
         } else {
             DamageControlInstance.transform.Find("buttonWaterNeg").gameObject.SetActive(false);
         }
 
+        if (TurretsRepairCrew == RepairCrew) {
+            DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(false);
+        } else {
+            DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(true);
+        }
         if (TurretsRepairCrew > 0) {
             DamageControlInstance.transform.Find("buttonTurretsNeg").gameObject.SetActive(true);
         } else {
             DamageControlInstance.transform.Find("buttonTurretsNeg").gameObject.SetActive(false);
         }
 
-        if (UnsetCrew > 0) {
-            DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
-            DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(true);
-            DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(true);
-            DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(true);
-        } else {
-            DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(false);
-            DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(false);
-            DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(false);
-            DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(false);
-        }
+        // if (UnsetCrew > 0) {
+            // DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
+            // DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(true);
+            // DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(true);
+            // DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(true);
+        // } else {
+        //     DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(false);
+        //     DamageControlInstance.transform.Find("buttonFirePos").gameObject.SetActive(false);
+        //     DamageControlInstance.transform.Find("buttonWaterPos").gameObject.SetActive(false);
+        //     DamageControlInstance.transform.Find("buttonTurretsPos").gameObject.SetActive(false);
+        // }
     }
 
     void ButtonEnginePosOnClick(){
-        UnsetCrew -= 1;
+        // UnsetCrew -= 1;
+        if (UnsetCrew > 0) {
+            UnsetCrew -= 1;
+        } else {
+            if (TurretsRepairCrew > 0) {
+                TurretsRepairCrew -= 1;
+            } else if (WaterRepairCrew > 0) {
+                WaterRepairCrew -= 1;
+            } else {
+                FireRepairCrew -= 1;
+            }
+        }
         EngineRepairCrew += 1;
-        DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlEngine(EngineRepairCrew);
     }
     void ButtonEngineNegOnClick(){
         UnsetCrew += 1;
         EngineRepairCrew -= 1;
-        DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>().text = EngineRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlEngine(EngineRepairCrew);
     }
     void ButtonFirePosOnClick(){
-        UnsetCrew -= 1;
+        if (UnsetCrew > 0) {
+            UnsetCrew -= 1;
+        } else {
+            if (TurretsRepairCrew > 0) {
+                TurretsRepairCrew -= 1;
+            } else if (EngineRepairCrew > 0) {
+                EngineRepairCrew -= 1;
+            } else {
+                WaterRepairCrew -= 1;
+            }
+        }
         FireRepairCrew += 1;
-        DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>().text = FireRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlFire(FireRepairCrew);
     }
     void ButtonFireNegOnClick(){
         UnsetCrew += 1;
         FireRepairCrew -= 1;
-        DamageControlInstance.transform.Find("FireCrewCount").GetComponent<Text>().text = FireRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlFire(FireRepairCrew);
     }
     void ButtonWaterPosOnClick(){
-        UnsetCrew -= 1;
+        if (UnsetCrew > 0) {
+            UnsetCrew -= 1;
+        } else {
+            if (TurretsRepairCrew > 0) {
+                TurretsRepairCrew -= 1;
+            } else if (EngineRepairCrew > 0) {
+                EngineRepairCrew -= 1;
+            } else {
+                FireRepairCrew -= 1;
+            }
+        }
         WaterRepairCrew += 1;
-        DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlWater(WaterRepairCrew);
     }
     void ButtonWaterNegOnClick(){
         UnsetCrew += 1;
         WaterRepairCrew -= 1;
-        DamageControlInstance.transform.Find("WaterCrewCount").GetComponent<Text>().text = WaterRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlWater(WaterRepairCrew);
     }
     void ButtonTurretsPosOnClick(){
-        UnsetCrew -= 1;
+        if (UnsetCrew > 0) {
+            UnsetCrew -= 1;
+        } else {
+            if (EngineRepairCrew > 0) {
+                EngineRepairCrew -= 1;
+            } else if (WaterRepairCrew > 0) {
+                WaterRepairCrew -= 1;
+            } else {
+                FireRepairCrew -= 1;
+            }
+        }
         TurretsRepairCrew += 1;
-        DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
     void ButtonTurretsNegOnClick(){
         UnsetCrew += 1;
         TurretsRepairCrew -= 1;
-        DamageControlInstance.transform.Find("TurretsCrewCount").GetComponent<Text>().text = TurretsRepairCrew.ToString("g");
         CheckActiveButtons();
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
@@ -207,6 +259,13 @@ public class ShipDamageControl : MonoBehaviour {
         } else {
             CloseDmgCtrl();
         }
+    }
+    protected void SetCrewDisplay() {
+        EngineCrewText.text = EngineRepairCrew.ToString("g");
+        FireCrewText.text = FireRepairCrew.ToString("g");
+        WaterCrewText.text = WaterRepairCrew.ToString("g");
+        TurretsCrewText.text = TurretsRepairCrew.ToString("g");
+        UnsetCrewText.text = UnsetCrew.ToString("g");
     }
     public void SetActive(bool activate) {
         Active = activate;
@@ -234,16 +293,19 @@ public class ShipDamageControl : MonoBehaviour {
     }
     private void DisplayDamagedEngine(){
         // Status : 0 : fixed and running / 1 : damaged / 2 : dead
-        if (EngineStatus == 2){
-            DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "Engine\n";
-            DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text += "HS";
-            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);}
-        else if (EngineStatus == 1){
-            DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "Engine\n";
-            DamageControlInstance.transform.Find("EngineDamaged").GetComponent<Text>().text = "damaged";
-            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);}
-        else{
-            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(false);}
+        if (EngineStatus == 2) {
+            DamageControlInstance.transform.Find("EngineOk").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("EngineDestroyed").gameObject.SetActive(true);
+        } else if (EngineStatus == 1) {
+            DamageControlInstance.transform.Find("EngineOk").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);
+            DamageControlInstance.transform.Find("EngineDestroyed").gameObject.SetActive(false);
+        } else {
+            DamageControlInstance.transform.Find("EngineOk").gameObject.SetActive(true);
+            DamageControlInstance.transform.Find("EngineDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("EngineDestroyed").gameObject.SetActive(false);
+        }
     }
     public void SetDamagedSteering(bool status){
         SteeringStatus = status;
@@ -252,10 +314,13 @@ public class ShipDamageControl : MonoBehaviour {
     }
     private void DisplayDamagedSteering(){
         // Status : false : fixed and running / true : damaged
-        if (SteeringStatus)
+        if (SteeringStatus) {
             DamageControlInstance.transform.Find("SteeringDamaged").gameObject.SetActive(true);
-        else
+            DamageControlInstance.transform.Find("SteeringOk").gameObject.SetActive(false);
+        } else {
             DamageControlInstance.transform.Find("SteeringDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("SteeringOk").gameObject.SetActive(true);
+        }
     }
     public void SetFireBurning(bool status){
         FireStatus = status;
@@ -264,10 +329,13 @@ public class ShipDamageControl : MonoBehaviour {
         }
     }
     private void DisplayFireBurning(){
-        if (FireStatus)
+        if (FireStatus) {
             DamageControlInstance.transform.Find("FireDamaged").gameObject.SetActive(true);
-        else
+            DamageControlInstance.transform.Find("FireOk").gameObject.SetActive(false);
+        } else {
             DamageControlInstance.transform.Find("FireDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("FireOk").gameObject.SetActive(true);
+        }
     }
     public void SetBuoyancyCompromised(bool status){
         WaterStatus = status;
@@ -275,13 +343,17 @@ public class ShipDamageControl : MonoBehaviour {
             DisplayBuoyancyCompromised();
     }
     private void DisplayBuoyancyCompromised(){
-        if (WaterStatus)
+        if (WaterStatus) {
             DamageControlInstance.transform.Find("WaterDamaged").gameObject.SetActive(true);
-        else
+            DamageControlInstance.transform.Find("WaterOk").gameObject.SetActive(false);
+        } else {
             DamageControlInstance.transform.Find("WaterDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("WaterOk").gameObject.SetActive(true);
+        }
     }
     public void SetTotalTurrets(int turrets){
         TotalTurrets = turrets;
+        DamagedTurrets = turrets;
     }
     public void SetDamagedTurrets(int turrets){
         DamagedTurrets = turrets;
@@ -290,10 +362,11 @@ public class ShipDamageControl : MonoBehaviour {
     }
     private void DisplayDamagedTurrets(){
         if (DamagedTurrets < TotalTurrets) {
-            DamageControlInstance.transform.Find("TurretsDamaged").GetComponent<Text>().text = DamagedTurrets.ToString("g") + "/" + TotalTurrets.ToString("g");
             DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
+            DamageControlInstance.transform.Find("TurretsOk").gameObject.SetActive(false);
         } else {
             DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
+            DamageControlInstance.transform.Find("TurretsOk").gameObject.SetActive(true);
         }
     }
 

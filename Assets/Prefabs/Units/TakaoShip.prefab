@@ -817,7 +817,7 @@ MonoBehaviour:
   m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
     type: 3}
   RepairRate: 3
-  RepairCrew: 3
+  RepairCrew: 5
 --- !u!114 &3144006090107495224
 MonoBehaviour:
   m_ObjectHideFlags: 0
