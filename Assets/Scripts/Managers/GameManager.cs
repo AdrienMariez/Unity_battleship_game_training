@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour {
         PlayerCanvas = GameObject.Find("UICanvas");
         PlayerMapCanvas = GameObject.Find("UIMapCanvas");
 
+        PlayerManager.SetPlayerCanvas(PlayerCanvas,PlayerMapCanvas);
+
         // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());
     }
