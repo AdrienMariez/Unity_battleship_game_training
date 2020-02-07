@@ -353,7 +353,7 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetTotalTurrets(int turrets){
         TotalTurrets = turrets;
-        DamagedTurrets = turrets;
+        DamagedTurrets = 0;
     }
     public void SetDamagedTurrets(int turrets){
         DamagedTurrets = turrets;
@@ -361,7 +361,7 @@ public class ShipDamageControl : MonoBehaviour {
             DisplayDamagedTurrets();
     }
     private void DisplayDamagedTurrets(){
-        if (DamagedTurrets < TotalTurrets) {
+        if (DamagedTurrets > 0) {
             DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
             DamageControlInstance.transform.Find("TurretsOk").gameObject.SetActive(false);
         } else {
