@@ -41,6 +41,7 @@ namespace UI {
             const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
             const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
             private float TurretTargetRange;
+        private Text DisplayTurretsAIControl;
 
         private GameObject ActiveTarget;
         private string TargetType; 
@@ -160,7 +161,13 @@ namespace UI {
 
             DisplayTurretsStatus = TurretUIInstance.transform.Find("TurretsStatus").gameObject;
             DisplayTurretsTargetRange = TurretUIInstance.transform.Find("TurretsTargetRange").GetComponent<Text>();
+            DisplayTurretsAIControl = TurretUIInstance.transform.Find("TurretsAIControl").GetComponent<Text>();
             CreateTurretsStatusDisplay();
+            if (FreeCamera) {
+                DisplayTurretsAIControl.text = "AI-controlled";
+            } else {
+                DisplayTurretsAIControl.text = "";
+            }
         }
         private void CloseTurretUI() {
            if (TurretUIInstance)
@@ -265,6 +272,13 @@ namespace UI {
 
         public void SetFreeCamera(bool freeCamera) {
             FreeCamera = freeCamera;
+            if (TurretUIInstance) {
+                if (FreeCamera) {
+                    DisplayTurretsAIControl.text = "AI-controlled";
+                } else {
+                    DisplayTurretsAIControl.text = "";
+                }
+            }
         }
 
         protected void OpenPauseUI(){

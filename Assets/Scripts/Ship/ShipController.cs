@@ -27,6 +27,7 @@ public class ShipController : MonoBehaviour {
     private float TargetRotationZ = 0.0f;
     private float TargetpositionY = 0.0f;
     private float LeakRatio = 0.0f;
+    private bool TakingWater = false;
 
     private float EngineCount = -1;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
     private float EngineCountTotal = -1;
@@ -122,10 +123,14 @@ public class ShipController : MonoBehaviour {
         }
 
         LeakRatio += damage * 0.003f;
+        TakingWater = true;
 
         ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+
+        if (DamageControl)
+            DamageControl.SetBuoyancyCompromised(TakingWater);
 
         // Debug.Log("ShipModel :"+ ShipModel);
         // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
@@ -150,13 +155,18 @@ public class ShipController : MonoBehaviour {
 
         } else {
             //If the leak is corrected...
-            // Reset targets if the ship was still taking water
-            if (CurrentpositionY != TargetpositionY)
-                TargetpositionY = CurrentpositionY;
-            if (CurrentRotationX != TargetRotationX)
-                TargetRotationX = CurrentRotationX;
-            if (CurrentRotationZ != TargetRotationZ)
-                TargetRotationX = CurrentRotationZ;
+            if (TakingWater){
+                // Reset targets if the ship was still taking water
+                if (CurrentpositionY != TargetpositionY)
+                    TargetpositionY = CurrentpositionY;
+                if (CurrentRotationX != TargetRotationX)
+                    TargetRotationX = CurrentRotationX;
+                if (CurrentRotationZ != TargetRotationZ)
+                    TargetRotationX = CurrentRotationZ;
+                TakingWater = false;
+                if (DamageControl)
+                    DamageControl.SetBuoyancyCompromised(TakingWater);
+            }
             if (!Dead)
                 BuoyancyRepair();
         }
@@ -349,25 +359,26 @@ public class ShipController : MonoBehaviour {
     public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
     // public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
     public void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
-    public void SetDamageControlEngine(float setCrew){
+    public void SetDamageControlEngine(int setCrew){
         EngineRepairCrew = setCrew;
         for (int i = 0; i < m_ShipComponents.Length; i++) {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
         }
     }
-    public void SetDamageControlFire(float setCrew){
+    public void SetDamageControlFire(int setCrew){
         FireRepairCrew = setCrew;
         for (int i = 0; i < m_ShipComponents.Length; i++) {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
     }
-    public void SetDamageControlWater(float setCrew){ WaterRepairCrew = setCrew; }
-    public void SetDamageControlTurrets(float setCrew){
+    public void SetDamageControlWater(int setCrew){ WaterRepairCrew = setCrew; }
+    public void SetDamageControlTurrets(int setCrew){
         TurretsRepairCrew = setCrew;
         if (GetComponent<TurretManager>()) {
             Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
     }
+    public void SetDamageControlUnset(int setCrew){ Health.SetDamageControlUnset(setCrew); }
     public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }

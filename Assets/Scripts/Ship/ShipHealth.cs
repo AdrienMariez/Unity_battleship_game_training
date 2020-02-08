@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ShipHealth : MonoBehaviour {
     private bool Dead = false;
@@ -16,6 +17,8 @@ public class ShipHealth : MonoBehaviour {
 
     private int Fires = 0;
     private float FireDamage;
+    private int UnsetCrew;
+    private bool AutorepairPaused = false;
 
 
     private void Awake () {
@@ -36,16 +39,31 @@ public class ShipHealth : MonoBehaviour {
     private void FixedUpdate(){
         if (Fires > 0) {
             Burning();
+        } else if (!AutorepairPaused && CurrentHealth < m_StartingHealth && !Dead) {
+            AutoRepair();
         }
+    }
+
+    IEnumerator PauseAutorepair(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        AutorepairPaused = true;
+        yield return new WaitForSeconds(3);
+        AutorepairPaused = false;
     }
 
     public void ApplyDamage (float damage) {
         CurrentHealth -= damage;
+        CheckDeath ();
+        ShipController.SetCurrentHealth(CurrentHealth);
+        StartCoroutine(PauseAutorepair());
+    }
+
+    private void AutoRepair () {
+        CurrentHealth += (UnsetCrew + 1 )* Time.deltaTime;
         // if (CurrentHealth > 0){
             // Debug.Log("damage = "+ damage);
             // Debug.Log("CurrentHealth = "+ CurrentHealth);
         // }
-        CheckDeath ();
         ShipController.SetCurrentHealth(CurrentHealth);
     }
 
@@ -88,9 +106,11 @@ public class ShipHealth : MonoBehaviour {
     public void EndFire() {
         Fires--;
         FireDamage = Fires * (m_StartingHealth * 0.01f) * Time.deltaTime;
+        StartCoroutine(PauseAutorepair());
     }
     private void Burning(){ ApplyDamage (FireDamage); }
     
     public float GetCurrentHealth(){ return CurrentHealth; }
     public float GetStartingHealth(){ return m_StartingHealth; }
+    public void SetDamageControlUnset(int setCrew){ UnsetCrew = setCrew; }
 }

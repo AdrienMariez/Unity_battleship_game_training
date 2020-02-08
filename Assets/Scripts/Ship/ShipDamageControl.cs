@@ -45,6 +45,7 @@ public class ShipDamageControl : MonoBehaviour {
         ShipController.SetDamageControlFire(FireRepairCrew);
         ShipController.SetDamageControlWater(WaterRepairCrew);
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
+        ShipController.SetDamageControlUnset(UnsetCrew);
     }
 
     protected void Update() {
@@ -147,6 +148,8 @@ public class ShipDamageControl : MonoBehaviour {
         } else {
             DamageControlInstance.transform.Find("buttonTurretsNeg").gameObject.SetActive(false);
         }
+
+        ShipController.SetDamageControlUnset(UnsetCrew);
 
         // if (UnsetCrew > 0) {
             // DamageControlInstance.transform.Find("buttonEnginePos").gameObject.SetActive(true);
