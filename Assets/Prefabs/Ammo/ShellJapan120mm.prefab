@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 141361556250576905}
   - component: {fileID: 8691260403152571579}
   m_Layer: 2
-  m_Name: Shell_Fuso_main
+  m_Name: ShellJapan120mm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340822690796195968}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06319443, y: 2.501, z: 1.6180441}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1340822690363721080}
@@ -159,7 +159,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6221f2fbc7212d94cb9c069ee262d824, type: 2}
+  - {fileID: 2100000, guid: db9ceca9e86a2724aaa5c3df2991dba7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -262,13 +262,13 @@ MonoBehaviour:
   m_HitMask:
     serializedVersion: 2
     m_Bits: 40448
-  m_Weight: 673.5
+  m_Weight: 20.6
   m_ExplosionParticles: {fileID: 1340822690344244516}
   m_ExplosionAudio: {fileID: 1420939521431360152}
-  m_MaxDamage: 100
-  m_ArmorPenetration: 100
+  m_MaxDamage: 20
+  m_ArmorPenetration: 30
   m_MaxLifeTime: 3
-  m_ExplosionRadius: 20
+  m_ExplosionRadius: 10
 --- !u!96 &8691260403152571579
 TrailRenderer:
   serializedVersion: 2

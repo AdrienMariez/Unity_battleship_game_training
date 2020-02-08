@@ -346,9 +346,9 @@ InputManager:
     descriptiveName: Naval units - Set artillery as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 8
+    positiveButton: 1
     altNegativeButton: 
-    altPositiveButton: 8
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -362,8 +362,8 @@ InputManager:
     descriptiveName: Naval units - Set AA as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
-    altNegativeButton: 9
+    positiveButton: 2
+    altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
     dead: 0.001
@@ -378,7 +378,7 @@ InputManager:
     descriptiveName: Naval units - Set torpedoes as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 0
+    positiveButton: 3
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

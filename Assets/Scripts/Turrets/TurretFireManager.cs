@@ -20,12 +20,11 @@ public class TurretFireManager : MonoBehaviour
     public float m_MinRange = 1000f;
     [Tooltip("Muzzle velocity for the shell (m/s)")]
     public float m_MuzzleVelocity = 30f;        // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm gives a ratio of *0.58
-    [Tooltip("Reload time, (seconds)")]
+    [Tooltip("Reload time (seconds)")]
     public float m_ReloadTime = 5f;
     [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] [Range(0.01f, 2f)]
     public float m_Precision = 0.1f; 
     [Tooltip("Check this if the turret is a main turret (rangefinding is done with main turrets). You need to check only one turret par unit, but you can chack as many as you need as long as all Director turrets are of the same type.")]
-    public bool m_DirectorTurret = false;
 
     [Header("Debug")]
         public bool debug = false;
