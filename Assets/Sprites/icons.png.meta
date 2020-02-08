@@ -15,7 +15,7 @@ TextureImporter:
     21300020: uiTurretsOk
     21300022: uiTurretsReload
     21300024: uiTurretsNotOk
-    21300026: uiTurretsHs
+    21300026: uiTurretsDead
     21300028: dcTurretsDmg
   externalObjects: {}
   serializedVersion: 9
@@ -339,7 +339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: uiTurretsHs
+      name: uiTurretsDead
       rect:
         serializedVersion: 2
         x: 560
@@ -367,7 +367,7 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -387,7 +387,7 @@ TextureImporter:
         width: 40
         height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

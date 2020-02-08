@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 // using UnityEngine.UI;
 using System.Collections;
-using FreeLookCamera;
+// using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
 {
+    private bool Active = false;
     private bool PlayerControl = false;
     private bool Dead;
     [Tooltip("Type of turret")] public TurretType m_TurretType;
@@ -31,11 +32,14 @@ public class TurretFireManager : MonoBehaviour
         
     private bool Reloading;
     private float ReloadingTimer;
+    private TurretManager TurretManager;
+    private int TurretNumber;
     private TurretRotation TurretRotation;
     private bool PreventFire;
     private bool OutOfRange;
     private float TargetRange;
-    private FreeLookCam FreeLookCam;
+    // private FreeLookCam FreeLookCam;
+    private TurretManager.TurretStatusType TurretStatus;
     public enum TurretType {
         Artillery,
         ArtilleryAA,
@@ -48,7 +52,7 @@ public class TurretFireManager : MonoBehaviour
 
     private void Start (){
         TurretRotation = GetComponent<TurretRotation>();
-        FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
+        // FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
     }
 
 
@@ -56,33 +60,28 @@ public class TurretFireManager : MonoBehaviour
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
         if (TargetRange > m_MaxRange) {
             OutOfRange = true;
+            CheckTurretStatus(TurretManager.TurretStatusType.PreventFire);
         }else{
             OutOfRange = false;
         }
-        // if (Dead){
-        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.black);
-        // }else if  (PreventFire || OutOfRange){
-        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
-        // }else if (Reloading){
-        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.yellow);
-        // }else{
-        //     GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
-        // }
         if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
+            CheckTurretStatus(TurretManager.TurretStatusType.Ready);
             if (Input.GetButtonDown ("FireMainWeapon")) {
                 //start the reloading process immediately
                 Reloading = true;
                 ReloadingTimer = m_ReloadTime;
+                CheckTurretStatus(TurretManager.TurretStatusType.Reloading);
                 // ... launch the shell.
                 Fire ();
             }
-        }
-        if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead && !AIPauseFire) {
+        } else if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead && !AIPauseFire) {
+            CheckTurretStatus(TurretManager.TurretStatusType.Ready);
             //start the reloading process immediately
             Reloading = true;
             ReloadingTimer = m_ReloadTime;
             // ... launch the shell.
             Fire ();
+            CheckTurretStatus(TurretManager.TurretStatusType.Reloading);
         }
 
         if (Reloading && ReloadingTimer > 0) {
@@ -93,6 +92,20 @@ public class TurretFireManager : MonoBehaviour
             }
             // Debug.Log("ReloadingTimer :"+ ReloadingTimer);
             // Debug.Log("Calculated fire range : "+ TargetRange);
+        }
+
+        if (Active) {
+            if (Dead){
+                TurretStatus = TurretManager.TurretStatusType.Dead;
+            }else if  (PreventFire || OutOfRange){
+                TurretStatus = TurretManager.TurretStatusType.PreventFire;
+            }else if (Reloading){
+                TurretStatus = TurretManager.TurretStatusType.Reloading;
+            }else{
+                TurretStatus = TurretManager.TurretStatusType.Ready;
+            }
+
+
         }
     }
 
@@ -135,23 +148,52 @@ public class TurretFireManager : MonoBehaviour
     }
 
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    public void SetActive(bool activate) {
+        Active = activate;
+    }
     public void SetAIControl(bool aiControl) { AIControl = aiControl; StartCoroutine(PauseFire()); }
-    public void SetPreventFire(bool status){ PreventFire = status; }
+    public void SetPreventFire(bool status){
+        PreventFire = status;
+        if (PreventFire)
+            CheckTurretStatus(TurretManager.TurretStatusType.PreventFire);
+    }
     public float GetMaxRange(){ return m_MaxRange; }
     public float GetMinRange(){ return m_MinRange; }
     public void SetTargetRange(float range){ TargetRange = range; }
-    public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
-    public string GetTurretStatus() {
-        string Status;
-        if (Dead){
-            Status = "0";
-        }else if  (PreventFire || OutOfRange){
-            Status = "1";
-        }else if (Reloading){
-            Status = "2";
-        }else{
-            Status = "3";
-        }
-        return Status;
+    public void SetTurretDeath(bool IsShipDead) {
+        Dead = IsShipDead;
+        if (Dead)
+            CheckTurretStatus(TurretManager.TurretStatusType.Dead);
     }
+
+    private void CheckTurretStatus(TurretManager.TurretStatusType statusType) {
+        if (Active && statusType != TurretStatus) {
+            if (Dead){
+                statusType = TurretManager.TurretStatusType.Dead;
+            }else if  (PreventFire || OutOfRange){
+                statusType = TurretManager.TurretStatusType.PreventFire;
+            }else if (Reloading){
+                statusType = TurretManager.TurretStatusType.Reloading;
+            }else{
+                statusType = TurretManager.TurretStatusType.Ready;
+            }
+            TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
+        }
+        TurretStatus = statusType;
+    }
+    public TurretManager.TurretStatusType GetTurretStatus() {
+        TurretManager.TurretStatusType status;
+        if (Dead){
+            status = TurretManager.TurretStatusType.Dead;
+        }else if  (PreventFire || OutOfRange){
+            status = TurretManager.TurretStatusType.PreventFire;
+        }else if (Reloading){
+            status = TurretManager.TurretStatusType.Reloading;
+        }else{
+            status = TurretManager.TurretStatusType.Ready;
+        }
+        return status;
+    }
+    public void SetTurretNumber(int turretNumber){ TurretNumber = turretNumber; }
+    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
 }

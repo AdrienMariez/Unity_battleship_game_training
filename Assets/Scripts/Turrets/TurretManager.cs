@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using FreeLookCamera;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TurretManager : MonoBehaviour
 {    
@@ -23,7 +24,16 @@ public class TurretManager : MonoBehaviour
 
     private int TotalTurrets = 0;
     private int WorkingTurrets;
-    string TurretStatus = "";
+    // private string TurretStatus = "";
+    public enum TurretStatusType {
+        Ready,
+        Reloading,
+        PreventFire,
+        Dead
+    }
+    // public List <TurretStatusType> TurretStatus = new List<TurretStatusType>();
+    private List <TurretStatusType> TurretStatus = new List<TurretStatusType>();
+    // private TurretStatusType[] TurretStatus;
 
     private bool AIControl = false;
     private bool AIHasATarget = false;
@@ -45,6 +55,8 @@ public class TurretManager : MonoBehaviour
             if (MinR < MinRange)
                 MinRange = MinR;
             m_Turrets[i].GetComponent<TurretHealth>().SetTurretManager(this);
+            m_Turrets[i].GetComponent<TurretFireManager>().SetTurretManager(this);
+            m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(i);
         }
         WorkingTurrets = TotalTurrets;
         if (GetComponent<ShipController>())
@@ -56,8 +68,6 @@ public class TurretManager : MonoBehaviour
         if (Input.GetButtonDown ("FreeCamera"))
             SetFreeCamera();
 
-        
-
         if (PlayerControl) {
             // Get the angle of the camera here
             CameraPercentage = FreeLookCam.GetTiltPercentage();
@@ -65,36 +75,24 @@ public class TurretManager : MonoBehaviour
 
             TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
             TargetPosition = FreeLookCam.GetTargetPosition();
-            TurretStatus = "";
 
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
                 m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(CameraPercentage);
                 m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
-                TurretStatus += m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
             }
-
-            if (GetComponent<ShipController>())
-                ShipController.SetTurretStatus(TurretStatus);
-
             // StartCoroutine(PauseAction());
         }
         if (!PlayerControl && AIControl) {
             float fakeCameraPercentage = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
-            TurretStatus = "F - ";
+            // TurretStatus = "F - ";
             // Debug.Log("fakeCameraPercentage = "+ fakeCameraPercentage);
 
             for (int i = 0; i < m_Turrets.Length; i++){
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
                 m_Turrets[i].GetComponent<TurretRotation>().SetCameraPercentage(fakeCameraPercentage);
                 m_Turrets[i].GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
-                if(Active)
-                    TurretStatus += m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus();
             }
-
-            if (Active && GetComponent<ShipController>())
-                ShipController.SetTurretStatus(TurretStatus);
-
             // StartCoroutine(PauseAction());
         }
 
@@ -134,6 +132,9 @@ public class TurretManager : MonoBehaviour
 
     public void SetActive(bool activate) {
         Active = activate;
+        for (int i = 0; i < m_Turrets.Length; i++){
+            m_Turrets[i].GetComponent<TurretFireManager>().SetActive(activate);
+        }
         SetPlayerControl();
     }
     public void SetMap(bool map) {
@@ -180,10 +181,20 @@ public class TurretManager : MonoBehaviour
         }
     }
 
+    public void SetSingleTurretStatus(TurretStatusType status, int turretNumber){
+        if (Active && GetComponent<ShipController>())
+                ShipController.SetSingleTurretStatus(status, turretNumber);
+    }
+
     public GameObject[] GetTurrets() {
         return m_Turrets;
     }
-    public string GetTurretStatus() {
+
+    public List <TurretStatusType> GetTurretsStatus() {
+        TurretStatus.Clear();
+        for (int i = 0; i < m_Turrets.Length; i++){
+            TurretStatus.Add(m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus());
+        }
         return TurretStatus;
     }
     public float GetTargetRange() {

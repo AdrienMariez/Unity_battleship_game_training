@@ -1,5 +1,6 @@
 using UnityEngine;
 using Crest;
+using System.Collections.Generic;
 
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
@@ -368,7 +369,8 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
-    public void SetTurretStatus(string status){ PlayerManager.SetTurretStatus(status); }
+    // public void SetTurretStatus(List <TurretManager.TurretStatusType> status){ PlayerManager.SetTurretStatus(status); }
+    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
-// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using FreeLookCamera;
 using UI;
+using System.Collections.Generic;
 
 // This class stores the currently played unit and allows to enable player controls for units or disable them
 public class PlayerManager : MonoBehaviour
@@ -193,7 +193,8 @@ public class PlayerManager : MonoBehaviour
     public void SetCurrentUnitDead(bool isUnitDead){ UIManager.SetCurrentUnitDead(isUnitDead); }
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
-    public void SetTurretStatus(string status){ UIManager.SetTurretStatus(status); }
+    // public void SetTurretStatus(List <TurretManager.TurretStatusType> status){ UIManager.SetTurretStatus(status); }
+    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
 
     public void Reset(){Start();}
     public void EndGame(){
