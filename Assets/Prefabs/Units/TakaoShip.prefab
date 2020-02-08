@@ -816,6 +816,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
     type: 3}
+  m_DamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
+    type: 3}
   RepairRate: 3
   RepairCrew: 5
 --- !u!114 &3144006090107495224

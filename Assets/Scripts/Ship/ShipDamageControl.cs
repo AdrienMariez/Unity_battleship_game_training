@@ -7,6 +7,10 @@ public class ShipDamageControl : MonoBehaviour {
     private bool ShipDead = false;
     private bool MapActive = false;
     public GameObject m_DamageControlUI;
+    private GameObject DamageControlInstance;
+
+    public GameObject m_DamageControlAlertUI;
+    private GameObject DamageControlAlertInstance;
     public float RepairRate = 3;
     public int RepairCrew = 3;
 
@@ -32,7 +36,6 @@ public class ShipDamageControl : MonoBehaviour {
     private int DamagedTurrets = 0;
 
     private bool DmgCtrlOpen = false;
-    private GameObject DamageControlInstance;
 
 
     private void Awake() {
@@ -254,6 +257,48 @@ public class ShipDamageControl : MonoBehaviour {
         ShipController.SetDamageControlTurrets(TurretsRepairCrew);
     }
 
+    private void SetAlertsDamageControlDisplay() {
+        // Debug.Log("SetAlertsDamageControlDisplay()");
+        if (Active && EngineStatus > 0 || Active && SteeringStatus || Active && FireStatus || Active && WaterStatus || Active && DamagedTurrets > 0) {
+            if (!DamageControlAlertInstance) {
+                DamageControlAlertInstance = Instantiate(m_DamageControlAlertUI);
+            }
+            if (EngineStatus == 2) {
+                DamageControlAlertInstance.transform.Find("EngineDestroyed").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("EngineDestroyed").gameObject.SetActive(false);
+            }
+            if (EngineStatus == 1) {
+                DamageControlAlertInstance.transform.Find("EngineDamaged").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("EngineDamaged").gameObject.SetActive(false);
+            }
+            if (SteeringStatus) {
+                DamageControlAlertInstance.transform.Find("SteeringDamaged").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("SteeringDamaged").gameObject.SetActive(false);
+            }
+            if (FireStatus) {
+                DamageControlAlertInstance.transform.Find("FireDamaged").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("FireDamaged").gameObject.SetActive(false);
+            }
+            if (WaterStatus) {
+                DamageControlAlertInstance.transform.Find("WaterDamaged").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("WaterDamaged").gameObject.SetActive(false);
+            }
+            if (DamagedTurrets > 0) {
+                DamageControlAlertInstance.transform.Find("TurretsDamaged").gameObject.SetActive(true);
+            } else {
+                DamageControlAlertInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
+            }
+        } else {
+            if (DamageControlAlertInstance)
+                Destroy (DamageControlAlertInstance);
+        }
+    }
+
     private void SetOpenDmgCtrl(bool open) {
         DmgCtrlOpen = open;
         ShipController.SetDamageControl(DmgCtrlOpen);
@@ -272,6 +317,7 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetActive(bool activate) {
         Active = activate;
+        SetAlertsDamageControlDisplay();
         if (!Active)
             SetOpenDmgCtrl(false);
     }
@@ -291,6 +337,7 @@ public class ShipDamageControl : MonoBehaviour {
     public void SetName(string name) { UnitName = name; }
     public void SetDamagedEngine(int status){
         EngineStatus = status;
+        SetAlertsDamageControlDisplay();
         if (DmgCtrlOpen)
             DisplayDamagedEngine();
     }
@@ -312,6 +359,7 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetDamagedSteering(bool status){
         SteeringStatus = status;
+        SetAlertsDamageControlDisplay();
         if (DmgCtrlOpen)
             DisplayDamagedSteering();
     }
@@ -327,9 +375,9 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetFireBurning(bool status){
         FireStatus = status;
-        if (DmgCtrlOpen){
+        SetAlertsDamageControlDisplay();
+        if (DmgCtrlOpen)
             DisplayFireBurning();
-        }
     }
     private void DisplayFireBurning(){
         if (FireStatus) {
@@ -342,6 +390,7 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetBuoyancyCompromised(bool status){
         WaterStatus = status;
+        SetAlertsDamageControlDisplay();
         if (DmgCtrlOpen)
             DisplayBuoyancyCompromised();
     }
@@ -360,6 +409,7 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetDamagedTurrets(int turrets){
         DamagedTurrets = turrets;
+        SetAlertsDamageControlDisplay();
         if (DmgCtrlOpen)  
             DisplayDamagedTurrets();
     }
