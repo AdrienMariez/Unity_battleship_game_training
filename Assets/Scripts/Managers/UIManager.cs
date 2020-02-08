@@ -22,9 +22,7 @@ namespace UI {
             // private GameObject PlayerMapCanvas;
         [Header("Turrets status icons")]
             public GameObject TurretStatusSprites;
-            // public Sprite TurretReload;
-            // public Sprite TurretNotOk;
-            // public Sprite TurretDead;
+            public float IconsSpacing = 22;
         private Text Score;
             private string CurrentScore;
         private Text UnitName;
@@ -38,9 +36,7 @@ namespace UI {
         private Slider ShipTurningSpeed;
             private float CurrentRotation;
         private GameObject DisplayTurretsStatus;
-            // const string TurretsStatusDisplay = "{0}";
             private List <TurretManager.TurretStatusType> TurretStatus;
-            // private GameObject[] Turrets;
         private Text DisplayTurretsTargetRange;
             const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
             const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
@@ -49,6 +45,7 @@ namespace UI {
         private GameObject ActiveTarget;
         private string TargetType; 
         private bool CurrentUnitDead;
+        private bool FreeCamera = false;
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
         private bool DisplayUI = true;
@@ -62,13 +59,12 @@ namespace UI {
         private void Update() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
-                ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
+                // ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
                 if (TargetType == "Tank") {
                     CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());
                     if (ActiveTarget.GetComponent<TurretManager>()) {
                         // Heavy load ! to change if tanks are worked on !
-                        TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
                         CreateTurretsStatusDisplay();
                     }
                 } else if (TargetType == "Aircraft") {
@@ -164,9 +160,7 @@ namespace UI {
 
             DisplayTurretsStatus = TurretUIInstance.transform.Find("TurretsStatus").gameObject;
             DisplayTurretsTargetRange = TurretUIInstance.transform.Find("TurretsTargetRange").GetComponent<Text>();
-            TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
             CreateTurretsStatusDisplay();
-            // CreateTurretsStatusDisplay();
         }
         private void CloseTurretUI() {
            if (TurretUIInstance)
@@ -192,10 +186,9 @@ namespace UI {
         public void SetActiveTarget(GameObject Target) {
             ActiveTarget = Target;
             // m_UnitName.text = ActiveTarget.name;
-            if (ActiveTarget.GetComponent<TurretManager>()) {
-                // Turrets = ActiveTarget.GetComponent<TurretManager>().GetTurrets();
-                TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
-            }
+            // if (ActiveTarget.GetComponent<TurretManager>()) {
+            //     CreateTurretsStatusDisplay();
+            // }
 
             if (TargetType == "Tank") {
                 if (ActiveTarget.GetComponent<TankHealth>())
@@ -209,21 +202,35 @@ namespace UI {
                 ChangeSpeedStep(ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep());
                 CurrentUnitDead = ActiveTarget.GetComponent<ShipController>().GetDeath();
             }
+
+            SetOpenUI();
         }
 
         protected void CreateTurretsStatusDisplay() {
-            // Debug.Log(TurretStatus.Count + " : TurretStatus");
+            // Remove previous iteration
             foreach (Transform child in DisplayTurretsStatus.transform) {
                 GameObject.Destroy(child.gameObject);
             }
 
+            TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
 
+            // Prepare the positions for the display, initial position will place the first icon, and the others will follow
+            float position = 0;
+            if (TurretStatus.Count % 2 == 0) {
+                position = (TurretStatus.Count*IconsSpacing)/2 - (IconsSpacing/2);
+            } else {
+                position = (TurretStatus.Count*IconsSpacing)/2;
+            }
 
+            // Loop for each position
             for (int i = 0; i < TurretStatus.Count; i++) {
-                // Debug.Log ("i : "+ i);
                 // Debug.Log ("i : "+ TurretStatus[i]);
                 GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
-
+                Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
+                positionning.x = 0;
+                positionning.x = position;
+                DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
+                position -= IconsSpacing;
                 CreateSingleTurretStatusDisplay(TurretStatus[i], i);
             }
         }
@@ -243,12 +250,6 @@ namespace UI {
                 DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
             }
         }
-
-        // public void SetTurretStatus(List <TurretManager.TurretStatusType> status){
-        //     TurretStatus = status;
-        //     if (TurretUIInstance) 
-        //         CreateTurretsStatusDisplay();
-        // }
         public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
             if (TurretUIInstance) 
                 CreateSingleTurretStatusDisplay(status, turretNumber);
@@ -260,6 +261,10 @@ namespace UI {
             } else {
                 ClosePauseUI();
             }
+        }
+
+        public void SetFreeCamera(bool freeCamera) {
+            FreeCamera = freeCamera;
         }
 
         protected void OpenPauseUI(){

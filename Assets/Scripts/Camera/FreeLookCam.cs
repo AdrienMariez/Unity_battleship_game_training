@@ -46,7 +46,7 @@ namespace FreeLookCamera {
 		private Quaternion TransformTargetRot;
         private GameObject ActiveTarget;
         private bool AllowCameraRotation = true;
-        private bool FreeCam;
+        private bool FreeCamera = false;
         private bool DisplayUI = true;
 
         protected virtual void Start() {
@@ -57,7 +57,6 @@ namespace FreeLookCamera {
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            FreeCam = false;
         }
 
         private void Awake(){
@@ -82,10 +81,7 @@ namespace FreeLookCamera {
                     Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
 
-                if (Input.GetButtonDown ("FreeCamera"))
-                    SetFreeCam();
-
-                if (ActiveTarget.GetComponent<AircraftController>() && !FreeCam) {
+                if (ActiveTarget.GetComponent<AircraftController>() && !FreeCamera) {
                     // If it's a plane. Keep the camera behind the unit.
                     FollowPlaneMovement();
                 } else if (AllowCameraRotation){
@@ -170,7 +166,7 @@ namespace FreeLookCamera {
             transform.rotation = Quaternion.Euler(Target.rotation.eulerAngles.x, Target.rotation.eulerAngles.y, Target.rotation.eulerAngles.z);
         }
 
-        private void SetFreeCam(){ FreeCam = !FreeCam; }
+        public void SetFreeCamera(bool freeCamera) { FreeCamera = freeCamera; }
         public void SetRotation(bool set){ AllowCameraRotation = set; }
         public void SetMouse(bool set){
             if (set) {

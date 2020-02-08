@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     private bool Pause = false;
     private bool MapActive = false;
     private bool DamageControl = false;
+    private bool FreeCamera = false;
     public FreeLookCam m_FreeLookCamera;
     public Camera m_MapCamera;
     private GameManager GameManager;
@@ -46,6 +47,9 @@ public class PlayerManager : MonoBehaviour
             if (Input.GetButtonDown ("OpenMap"))
                 SetMap();
 
+            if (Input.GetButtonDown ("FreeCamera"))
+                SetFreeCamera();
+
             if (Input.GetButtonDown ("SetNextUnit"))
                 SetNextTarget();
             if (Input.GetButtonDown ("SetPreviousUnit"))
@@ -61,6 +65,17 @@ public class PlayerManager : MonoBehaviour
         // This is used to hide all UI elements
         m_FreeLookCamera.SetHideUI();
         UIManager.SetHideUI();
+    }
+
+    private void SetFreeCamera(){
+        FreeCamera = !FreeCamera;
+        // This is used to allow the player to not play (good riddance)
+        m_FreeLookCamera.SetFreeCamera(FreeCamera);
+        UIManager.SetFreeCamera(FreeCamera);
+
+        if (ActiveTarget.GetComponent<TurretManager>()) {
+            ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
+        }
     }
 
     public void SetPause() {
@@ -151,6 +166,10 @@ public class PlayerManager : MonoBehaviour
         m_FreeLookCamera.SetActiveTarget(ActiveTarget);
         UIManager.SetActiveTarget(ActiveTarget);
         UIManager.SetCurrentUnitDead(false);
+
+        if (ActiveTarget.GetComponent<TurretManager>()) {
+            ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
+        }
         //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
     }
 
@@ -193,7 +212,6 @@ public class PlayerManager : MonoBehaviour
     public void SetCurrentUnitDead(bool isUnitDead){ UIManager.SetCurrentUnitDead(isUnitDead); }
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
-    // public void SetTurretStatus(List <TurretManager.TurretStatusType> status){ UIManager.SetTurretStatus(status); }
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
 
     public void Reset(){Start();}

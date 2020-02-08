@@ -65,9 +65,6 @@ public class TurretManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (Input.GetButtonDown ("FreeCamera"))
-            SetFreeCamera();
-
         if (PlayerControl) {
             // Get the angle of the camera here
             CameraPercentage = FreeLookCam.GetTiltPercentage();
@@ -149,8 +146,8 @@ public class TurretManager : MonoBehaviour
         DamageControl = damageControl;
         SetPlayerControl();
     }
-    public void SetFreeCamera() {
-        FreeCamera = !FreeCamera;
+    public void SetFreeCamera(bool freeCamera) {
+        FreeCamera = freeCamera;
         SetPlayerControl();
     }
     public void SetRepairRate(float Rate) {
@@ -207,6 +204,6 @@ public class TurretManager : MonoBehaviour
         targetPosition.y += 500;
         AITargetPosition = targetPosition;
     }
-    public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; }
+    public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; TargetRange = targetRange;}
     public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
 }

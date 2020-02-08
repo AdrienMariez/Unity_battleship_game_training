@@ -94,19 +94,17 @@ public class TurretFireManager : MonoBehaviour
             // Debug.Log("Calculated fire range : "+ TargetRange);
         }
 
-        if (Active) {
-            if (Dead){
-                TurretStatus = TurretManager.TurretStatusType.Dead;
-            }else if  (PreventFire || OutOfRange){
-                TurretStatus = TurretManager.TurretStatusType.PreventFire;
-            }else if (Reloading){
-                TurretStatus = TurretManager.TurretStatusType.Reloading;
-            }else{
-                TurretStatus = TurretManager.TurretStatusType.Ready;
-            }
-
-
-        }
+        // if (Active) {
+        //     if (Dead){
+        //         TurretStatus = TurretManager.TurretStatusType.Dead;
+        //     }else if  (PreventFire || OutOfRange){
+        //         TurretStatus = TurretManager.TurretStatusType.PreventFire;
+        //     }else if (Reloading){
+        //         TurretStatus = TurretManager.TurretStatusType.Reloading;
+        //     }else{
+        //         TurretStatus = TurretManager.TurretStatusType.Ready;
+        //     }
+        // }
     }
 
     IEnumerator PauseFire(){
@@ -167,17 +165,19 @@ public class TurretFireManager : MonoBehaviour
     }
 
     private void CheckTurretStatus(TurretManager.TurretStatusType statusType) {
-        if (Active && statusType != TurretStatus) {
+        if (Active) {
             if (Dead){
                 statusType = TurretManager.TurretStatusType.Dead;
-            }else if  (PreventFire || OutOfRange){
-                statusType = TurretManager.TurretStatusType.PreventFire;
             }else if (Reloading){
                 statusType = TurretManager.TurretStatusType.Reloading;
+            }else if  (PreventFire || OutOfRange){
+                statusType = TurretManager.TurretStatusType.PreventFire;
             }else{
                 statusType = TurretManager.TurretStatusType.Ready;
             }
-            TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
+            if (statusType != TurretStatus) {
+                TurretManager.SetSingleTurretStatus(statusType, TurretNumber);      
+            }
         }
         TurretStatus = statusType;
     }
