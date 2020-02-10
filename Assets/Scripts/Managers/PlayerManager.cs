@@ -213,6 +213,8 @@ public class PlayerManager : MonoBehaviour
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
+    public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) { UIManager.SetPlayerUITurretType(currentControlledTurret); }
+    public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
 
     public void Reset(){Start();}
     public void EndGame(){

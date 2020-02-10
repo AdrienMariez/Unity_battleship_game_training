@@ -356,8 +356,11 @@ public class ShipController : MonoBehaviour {
         UI.SetPlayerCanvas(playerCanvas, playerMapCanvas);
     }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
-    public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
-    // public void SetDamageControlEngineComponent(bool setEngine){ engine = setEngine; }
+    public void SetPlayerManager(PlayerManager playerManager){
+        PlayerManager = playerManager;
+        if (GetComponent<TurretManager>())
+            Turrets.SetPlayerManager(PlayerManager);
+    }
     public void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
     public void SetDamageControlEngine(int setCrew){
         EngineRepairCrew = setCrew;

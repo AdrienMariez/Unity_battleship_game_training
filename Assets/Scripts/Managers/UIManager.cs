@@ -35,6 +35,8 @@ namespace UI {
             const string ShipCurrentSpeedDisplay = "{0} km/h";
         private Slider ShipTurningSpeed;
             private float CurrentRotation;
+        private GameObject DisplayTurretsArtilleryAimer;
+        private GameObject DisplayTurretsAAAimer;
         private GameObject DisplayTurretsStatus;
             private List <TurretManager.TurretStatusType> TurretStatus;
         private Text DisplayTurretsTargetRange;
@@ -42,7 +44,10 @@ namespace UI {
             const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
             private float TurretTargetRange;
         private Text DisplayTurretsAIControl;
-
+        private GameObject DisplayTurretsCurrentArtillery;
+        private GameObject DisplayTurretsCurrentAA;
+        private GameObject DisplayTurretsCurrentTorpedoes;
+        private GameObject DisplayTurretsCurrentDepthCharges;
         private GameObject ActiveTarget;
         private string TargetType; 
         private bool CurrentUnitDead;
@@ -89,7 +94,6 @@ namespace UI {
             CloseGameUI();
             CloseTurretUI();
             if (DisplayGameUI && !DisplayMapUI && DisplayUI) {
-                // CloseMapUI();
                 if (TargetType == "Tank") {
                     OpenTankUI();
                 } else if (TargetType == "Aircraft") {
@@ -159,10 +163,17 @@ namespace UI {
         private void OpenTurretUI() {
             TurretUIInstance = Instantiate(m_TurretUI, PlayerUI.transform);
 
+            DisplayTurretsArtilleryAimer = TurretUIInstance.transform.Find("AimerArtillery").gameObject;
+            DisplayTurretsAAAimer = TurretUIInstance.transform.Find("AimerAA").gameObject;
             DisplayTurretsStatus = TurretUIInstance.transform.Find("TurretsStatus").gameObject;
             DisplayTurretsTargetRange = TurretUIInstance.transform.Find("TurretsTargetRange").GetComponent<Text>();
             DisplayTurretsAIControl = TurretUIInstance.transform.Find("TurretsAIControl").GetComponent<Text>();
+            DisplayTurretsCurrentArtillery = TurretUIInstance.transform.Find("TurretsCurrentShells").gameObject;
+            DisplayTurretsCurrentAA = TurretUIInstance.transform.Find("TurretsCurrentAA").gameObject;
+            DisplayTurretsCurrentTorpedoes = TurretUIInstance.transform.Find("TurretsCurrentTorpedoes").gameObject;
+            DisplayTurretsCurrentDepthCharges = TurretUIInstance.transform.Find("TurretsCurrentDepthCharges").gameObject;
             CreateTurretsStatusDisplay();
+            SetPlayerUITurretType(ActiveTarget.GetComponent<TurretManager>().GetCurrentTurretType());
             if (FreeCamera) {
                 DisplayTurretsAIControl.text = "AI-controlled";
             } else {
@@ -231,11 +242,12 @@ namespace UI {
 
             // Loop for each position
             for (int i = 0; i < TurretStatus.Count; i++) {
-                // Debug.Log ("i : "+ TurretStatus[i]);
+                // Debug.Log ("position : "+ position);
                 GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
-                positionning.x = 0;
+                // positionning.x = 0;
                 positionning.x = position;
+                Debug.Log ("positionning.x : "+ positionning.x);
                 DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
                 position -= IconsSpacing;
                 CreateSingleTurretStatusDisplay(TurretStatus[i], i);
@@ -257,9 +269,35 @@ namespace UI {
                 DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
             }
         }
-        public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
+        public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber) {
             if (TurretUIInstance) 
                 CreateSingleTurretStatusDisplay(status, turretNumber);
+        }
+        public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) {
+            if (TurretUIInstance) {
+                // Debug.Log ("currentControlledTurret : "+ currentControlledTurret);
+                DisplayTurretsArtilleryAimer.SetActive(false);
+                DisplayTurretsAAAimer.SetActive(false);
+                DisplayTurretsCurrentArtillery.SetActive(false);
+                DisplayTurretsCurrentAA.SetActive(false);
+                DisplayTurretsCurrentTorpedoes.SetActive(false);
+                DisplayTurretsCurrentDepthCharges.SetActive(false);
+                if (currentControlledTurret == TurretFireManager.TurretType.Artillery) {
+                    DisplayTurretsArtilleryAimer.SetActive(true);
+                    DisplayTurretsCurrentArtillery.SetActive(true);
+                }
+                if (currentControlledTurret == TurretFireManager.TurretType.AA) {
+                    DisplayTurretsAAAimer.SetActive(true);
+                    DisplayTurretsCurrentAA.SetActive(true);
+                }
+                if (currentControlledTurret == TurretFireManager.TurretType.Torpedo) {
+                    DisplayTurretsCurrentTorpedoes.SetActive(true);
+                }
+                if (currentControlledTurret == TurretFireManager.TurretType.DepthCharge) {
+                    DisplayTurretsCurrentDepthCharges.SetActive(true);
+                }
+                CreateTurretsStatusDisplay();
+            }
         }
 
         public void SetPauseUI(bool pause) {
@@ -274,8 +312,12 @@ namespace UI {
             FreeCamera = freeCamera;
             if (TurretUIInstance) {
                 if (FreeCamera) {
+                    DisplayTurretsAAAimer.GetComponent<Image>().enabled = false;
+                    DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = false;
                     DisplayTurretsAIControl.text = "AI-controlled";
                 } else {
+                    DisplayTurretsAAAimer.GetComponent<Image>().enabled = true;
+                    DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = true;
                     DisplayTurretsAIControl.text = "";
                 }
             }

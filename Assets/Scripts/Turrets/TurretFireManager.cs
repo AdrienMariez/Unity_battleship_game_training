@@ -43,7 +43,8 @@ public class TurretFireManager : MonoBehaviour
         Artillery,
         ArtilleryAA,
         AA,
-        Torpedo
+        Torpedo,
+        DepthCharge
     }
 
     private bool AIControl = false;
@@ -164,7 +165,7 @@ public class TurretFireManager : MonoBehaviour
     }
 
     private void CheckTurretStatus(TurretManager.TurretStatusType statusType) {
-        if (Active) {
+        if (PlayerControl) {
             if (Dead){
                 statusType = TurretManager.TurretStatusType.Dead;
             }else if (Reloading){
@@ -175,7 +176,10 @@ public class TurretFireManager : MonoBehaviour
                 statusType = TurretManager.TurretStatusType.Ready;
             }
             if (statusType != TurretStatus) {
-                TurretManager.SetSingleTurretStatus(statusType, TurretNumber);      
+                if (PlayerControl) {
+                    // Debug.Log ("TurretNumber : "+ TurretNumber);
+                    TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
+                }
             }
         }
         TurretStatus = statusType;
@@ -195,4 +199,5 @@ public class TurretFireManager : MonoBehaviour
     }
     public void SetTurretNumber(int turretNumber){ TurretNumber = turretNumber; }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
+    public TurretType GetTurretType() { return m_TurretType; }
 }

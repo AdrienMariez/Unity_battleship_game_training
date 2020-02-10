@@ -40,7 +40,7 @@ public class ShipHealth : MonoBehaviour {
         if (Fires > 0) {
             Burning();
         } else if (!AutorepairPaused && CurrentHealth < m_StartingHealth && !Dead) {
-            AutoRepair();
+            // AutoRepair();
         }
     }
 

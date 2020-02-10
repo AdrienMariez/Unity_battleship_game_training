@@ -17,6 +17,11 @@ TextureImporter:
     21300024: uiTurretsNotOk
     21300026: uiTurretsDead
     21300028: dcTurretsDmg
+    21300030: uiTurretsShells
+    21300032: uiTurretsTorpedoes
+    21300034: uiTurretsDepthCharge
+    21300036: UIVisorAA
+    21300038: UIVisorArtillery
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -394,6 +399,106 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 52eb4f0ceaa65f54e9e91b8ce709248b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: uiTurretsShells
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 760
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b4e1c980ecb52c429d13060c3b5d203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: uiTurretsTorpedoes
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 760
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5e6c58bd0a462a4b988fd69e666cd81
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: uiTurretsDepthCharge
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 760
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 048152e2cfaf182498a0ffc0c5e09534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIVisorAA
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a95c89d0c9c779944a8973883c5bf16c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIVisorArtillery
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 6
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06b05107b9dc86b488ad04a60924e718
       vertices: []
       indices: 
       edges: []

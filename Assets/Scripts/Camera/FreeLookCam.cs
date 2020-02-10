@@ -101,7 +101,6 @@ namespace FreeLookCamera {
                     TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
                 }
 
-                // CameraTiltPercentage = (Mathf.Round(100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin))));
                 CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
                 // Debug.Log("targetDistance = "+ targetDistance);
             }

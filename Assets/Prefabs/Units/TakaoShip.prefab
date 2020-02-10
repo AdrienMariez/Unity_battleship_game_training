@@ -2165,6 +2165,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: TurretJapan120mmType10AATwin (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.040000916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.2299995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f04d3da2ab0be5d4c908eab54dcd6901, type: 3}
 --- !u!1 &990176435151070033 stripped
@@ -2341,6 +2356,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -30
       objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: d59b4e35ff0b5de498afe7650730e119,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: d59b4e35ff0b5de498afe7650730e119,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.92
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d59b4e35ff0b5de498afe7650730e119, type: 3}
 --- !u!4 &1088379755457131292 stripped
@@ -2447,6 +2472,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret_Takao_Main_Y
       objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: d59b4e35ff0b5de498afe7650730e119,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -21.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d59b4e35ff0b5de498afe7650730e119, type: 3}
 --- !u!4 &2835768454875799420 stripped
@@ -2552,6 +2582,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Turret_Takao_Main_X
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: d59b4e35ff0b5de498afe7650730e119,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -21.099997
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d59b4e35ff0b5de498afe7650730e119, type: 3}
@@ -2663,6 +2698,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TurretJapan120mmType10AATwin
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.040000916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.2299995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.050001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f04d3da2ab0be5d4c908eab54dcd6901, type: 3}
@@ -2860,6 +2910,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TurretJapan120mmType10AATwin (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f04d3da2ab0be5d4c908eab54dcd6901, type: 3}
@@ -3087,6 +3152,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TurretJapan120mmType10AATwin (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.040000916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.2299995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f04d3da2ab0be5d4c908eab54dcd6901, type: 3}
