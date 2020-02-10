@@ -232,6 +232,19 @@ namespace UI {
 
             TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
 
+            // Loop for each position
+            for (int i = 0; i < TurretStatus.Count; i++) {
+                // Debug.Log ("position : "+ position);
+                GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
+            }
+            StartCoroutine(PauseAction());
+        }
+        IEnumerator PauseAction(){
+            yield return new WaitForSeconds(0.01f);
+            ChangeIconsPosition();
+        }
+        protected void ChangeIconsPosition(){
+
             // Prepare the positions for the display, initial position will place the first icon, and the others will follow
             float position = 0;
             if (TurretStatus.Count % 2 == 0) {
@@ -240,19 +253,13 @@ namespace UI {
                 position = (TurretStatus.Count*IconsSpacing)/2;
             }
 
-            // Debug.Log ("count : "+ TurretStatus.Count);
-            // Loop for each position
             for (int i = 0; i < TurretStatus.Count; i++) {
-                // Debug.Log ("position : "+ position);
-                GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
-                // positionning.x = 0;
                 positionning.x = position;
                 positionning.y = 0;
-                // Debug.Log ("count : "+ TurretStatus.Count);
                 DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
-                
                 position -= IconsSpacing;
+                
                 CreateSingleTurretStatusDisplay(TurretStatus[i], i);
             }
         }
@@ -275,6 +282,7 @@ namespace UI {
         public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber) {
             if (TurretUIInstance) 
                 CreateSingleTurretStatusDisplay(status, turretNumber);
+                // ChangePositionlmao();
         }
         public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) {
             if (TurretUIInstance) {

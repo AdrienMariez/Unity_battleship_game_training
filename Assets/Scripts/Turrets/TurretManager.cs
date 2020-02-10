@@ -272,8 +272,10 @@ public class TurretManager : MonoBehaviour
         for (int i = 0; i < m_Turrets.Length; i++) {
             if ((CurrentControlledTurretType == TurretFireManager.TurretType.Artillery || CurrentControlledTurretType == TurretFireManager.TurretType.AA) && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
                 TurretStatus.Add(m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus());
+                // Debug.Log ("added 1");
             } else if (m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == CurrentControlledTurretType) {
                 TurretStatus.Add(m_Turrets[i].GetComponent<TurretFireManager>().GetTurretStatus());
+                // Debug.Log ("added 2");
             }
         }
         // Debug.Log ("TurretStatus : "+ TurretStatus);
