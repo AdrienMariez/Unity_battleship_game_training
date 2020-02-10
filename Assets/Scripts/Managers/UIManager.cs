@@ -240,6 +240,7 @@ namespace UI {
                 position = (TurretStatus.Count*IconsSpacing)/2;
             }
 
+            // Debug.Log ("count : "+ TurretStatus.Count);
             // Loop for each position
             for (int i = 0; i < TurretStatus.Count; i++) {
                 // Debug.Log ("position : "+ position);
@@ -247,8 +248,10 @@ namespace UI {
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
                 // positionning.x = 0;
                 positionning.x = position;
-                Debug.Log ("positionning.x : "+ positionning.x);
+                positionning.y = 0;
+                // Debug.Log ("count : "+ TurretStatus.Count);
                 DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
+                
                 position -= IconsSpacing;
                 CreateSingleTurretStatusDisplay(TurretStatus[i], i);
             }
