@@ -1,0 +1,130 @@
+fileFormatVersion: 2
+guid: 5d0687137a34d804ba7bcf50f05fe082
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: takao_turret_01_gun
+    100002: takao_turret_02_gun
+    100004: takao_turret_basis
+    100006: //RootNode
+    100008: turret_b_02_gun
+    100010: turrets_a_c_x_details
+    100012: turrets_b_details
+    100014: turrets_y_details
+    400000: takao_turret_01_gun
+    400002: takao_turret_02_gun
+    400004: takao_turret_basis
+    400006: //RootNode
+    400008: turret_b_02_gun
+    400010: turrets_a_c_x_details
+    400012: turrets_b_details
+    400014: turrets_y_details
+    2100000: wire_088199225
+    2100002: wire_088177027
+    2300000: takao_turret_01_gun
+    2300002: takao_turret_02_gun
+    2300004: takao_turret_basis
+    2300006: turret_b_02_gun
+    2300008: turrets_a_c_x_details
+    2300010: turrets_b_details
+    2300012: turrets_y_details
+    3300000: takao_turret_01_gun
+    3300002: takao_turret_02_gun
+    3300004: takao_turret_basis
+    3300006: turret_b_02_gun
+    3300008: turrets_a_c_x_details
+    3300010: turrets_b_details
+    3300012: turrets_y_details
+    4300000: takao_turret_01_gun
+    4300002: takao_turret_02_gun
+    4300004: takao_turret_basis
+    4300006: turret_b_02_gun
+    4300008: turrets_a_c_x_details
+    4300010: turrets_b_details
+    4300012: turrets_y_details
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

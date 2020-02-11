@@ -76,14 +76,16 @@ public class TurretFireManager : MonoBehaviour
                 // ... launch the shell.
                 Fire ();
             }
-        } else if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead && !AIPauseFire) {
+        } else if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
             CheckTurretStatus();
-            //start the reloading process immediately
-            Reloading = true;
-            ReloadingTimer = m_ReloadTime;
-            // ... launch the shell.
-            Fire ();
-            CheckTurretStatus();
+            if (!AIPauseFire) {
+                //start the reloading process immediately
+                Reloading = true;
+                ReloadingTimer = m_ReloadTime;
+                // ... launch the shell.
+                Fire ();
+                CheckTurretStatus();    
+            }
         }
 
         if (Reloading && ReloadingTimer > 0) {

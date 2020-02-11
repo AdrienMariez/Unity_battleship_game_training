@@ -276,7 +276,7 @@ namespace UI {
             }
 
             for (int i = 0; i < TurretStatus.Count; i++) {
-                if (DisplayTurretsStatus.transform.GetChild(i).transform.position == null)
+                if (DisplayTurretsStatus.transform.GetChild(i) == null)
                     continue;
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
                 positionning.x = position;
