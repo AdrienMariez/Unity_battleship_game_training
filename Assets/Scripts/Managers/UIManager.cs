@@ -276,6 +276,8 @@ namespace UI {
             }
 
             for (int i = 0; i < TurretStatus.Count; i++) {
+                if (DisplayTurretsStatus.transform.GetChild(i).transform.position == null)
+                    continue;
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
                 positionning.x = position;
                 positionning.y = 0;
@@ -287,19 +289,21 @@ namespace UI {
         }
         protected void CreateSingleTurretStatusDisplay(TurretManager.TurretStatusType status, int turretNumber) {
             // Debug.Log ("status : "+ status);
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = false;         // Ready to fire
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = false;         // Reloading
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = false;         // Dead
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = false;         // Not ok
+            if (DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0) != null) {
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = false;         // Ready to fire
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = false;         // Reloading
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = false;         // Dead
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = false;         // Not ok
 
-            if (status == TurretManager.TurretStatusType.Ready) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = true;
-            } else if (status == TurretManager.TurretStatusType.Reloading) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = true;
-            } else if (status == TurretManager.TurretStatusType.Dead) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = true;
-            } else {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
+                if (status == TurretManager.TurretStatusType.Ready) {
+                    DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = true;
+                } else if (status == TurretManager.TurretStatusType.Reloading) {
+                    DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = true;
+                } else if (status == TurretManager.TurretStatusType.Dead) {
+                    DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = true;
+                } else {
+                    DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
+                }
             }
         }
         public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber) {

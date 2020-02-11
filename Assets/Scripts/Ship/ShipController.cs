@@ -405,5 +405,10 @@ public class ShipController : MonoBehaviour {
     public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
-    public void DestroyUnit(){ UI.SetDead(); Destroy (gameObject); }
+    public void DestroyUnit(){
+        UI.SetDead();
+        if (GetComponent<TurretManager>())
+            Turrets.SetDeath(true);
+        Destroy (gameObject);
+    }
 }
