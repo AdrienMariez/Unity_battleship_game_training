@@ -987,7 +987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a3cc88ef042461438ada2d8000de95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartingHealth: 200
+  m_StartingHealth: 1000
   m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
 --- !u!114 &8119844244652148746
 MonoBehaviour:

@@ -206,6 +206,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
+        UIManager.SetOverlayUI(DamageControl);
         CheckCameraRotation();
     }
     public void SetCurrentUnitHealth(float health){ UIManager.SetCurrentUnitHealth(health); }

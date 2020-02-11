@@ -22,6 +22,7 @@ TextureImporter:
     21300034: uiTurretsDepthCharge
     21300036: UIVisorAA
     21300038: UIVisorArtillery
+    21300040: uiTurretsAuto
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -287,10 +288,10 @@ TextureImporter:
       name: uiTurretsOk
       rect:
         serializedVersion: 2
-        x: 440
-        y: 760
-        width: 40
-        height: 40
+        x: 441
+        y: 761
+        width: 38
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -307,10 +308,10 @@ TextureImporter:
       name: uiTurretsReload
       rect:
         serializedVersion: 2
-        x: 480
-        y: 760
-        width: 40
-        height: 40
+        x: 481
+        y: 761
+        width: 38
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -327,10 +328,10 @@ TextureImporter:
       name: uiTurretsNotOk
       rect:
         serializedVersion: 2
-        x: 520
-        y: 760
-        width: 40
-        height: 40
+        x: 521
+        y: 761
+        width: 38
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -347,10 +348,10 @@ TextureImporter:
       name: uiTurretsDead
       rect:
         serializedVersion: 2
-        x: 560
-        y: 760
-        width: 40
-        height: 40
+        x: 561
+        y: 761
+        width: 38
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -499,6 +500,26 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 06b05107b9dc86b488ad04a60924e718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: uiTurretsAuto
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 760
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e38484bf86b72154fba129ee1f4eb69e
       vertices: []
       indices: 
       edges: []

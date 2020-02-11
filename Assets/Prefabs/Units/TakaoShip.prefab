@@ -2583,11 +2583,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret_Takao_Main_X
       objectReference: {fileID: 0}
-    - target: {fileID: 1653871051627078444, guid: d59b4e35ff0b5de498afe7650730e119,
-        type: 3}
-      propertyPath: m_TurretType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8933853122373449585, guid: d59b4e35ff0b5de498afe7650730e119,
         type: 3}
       propertyPath: m_LocalPosition.z

@@ -43,7 +43,7 @@ namespace UI {
             const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
             const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
             private float TurretTargetRange;
-        private Text DisplayTurretsAIControl;
+        private GameObject DisplayTurretsAIControl;
         private GameObject DisplayTurretsCurrentArtillery;
         private GameObject DisplayTurretsCurrentAA;
         private GameObject DisplayTurretsCurrentTorpedoes;
@@ -52,6 +52,7 @@ namespace UI {
         private string TargetType; 
         private bool CurrentUnitDead;
         private bool FreeCamera = false;
+        private bool OverlayUI = false;
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
         private bool DisplayUI = true;
@@ -65,7 +66,7 @@ namespace UI {
         private void Update() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
-                // ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
+                ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
                 if (TargetType == "Tank") {
                     CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());
@@ -167,18 +168,14 @@ namespace UI {
             DisplayTurretsAAAimer = TurretUIInstance.transform.Find("AimerAA").gameObject;
             DisplayTurretsStatus = TurretUIInstance.transform.Find("TurretsStatus").gameObject;
             DisplayTurretsTargetRange = TurretUIInstance.transform.Find("TurretsTargetRange").GetComponent<Text>();
-            DisplayTurretsAIControl = TurretUIInstance.transform.Find("TurretsAIControl").GetComponent<Text>();
+            DisplayTurretsAIControl = TurretUIInstance.transform.Find("TurretsAIControl").gameObject;
             DisplayTurretsCurrentArtillery = TurretUIInstance.transform.Find("TurretsCurrentShells").gameObject;
             DisplayTurretsCurrentAA = TurretUIInstance.transform.Find("TurretsCurrentAA").gameObject;
             DisplayTurretsCurrentTorpedoes = TurretUIInstance.transform.Find("TurretsCurrentTorpedoes").gameObject;
             DisplayTurretsCurrentDepthCharges = TurretUIInstance.transform.Find("TurretsCurrentDepthCharges").gameObject;
             CreateTurretsStatusDisplay();
             SetPlayerUITurretType(ActiveTarget.GetComponent<TurretManager>().GetCurrentTurretType());
-            if (FreeCamera) {
-                DisplayTurretsAIControl.text = "AI-controlled";
-            } else {
-                DisplayTurretsAIControl.text = "";
-            }
+            DisplayAITurretOverlay();
         }
         private void CloseTurretUI() {
            if (TurretUIInstance)
@@ -224,66 +221,6 @@ namespace UI {
             SetOpenUI();
         }
 
-        protected void CreateTurretsStatusDisplay() {
-            // Remove previous iteration
-            foreach (Transform child in DisplayTurretsStatus.transform) {
-                GameObject.Destroy(child.gameObject);
-            }
-
-            TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
-
-            // Loop for each position
-            for (int i = 0; i < TurretStatus.Count; i++) {
-                // Debug.Log ("position : "+ position);
-                GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
-            }
-            StartCoroutine(PauseAction());
-        }
-        IEnumerator PauseAction(){
-            yield return new WaitForSeconds(0.01f);
-            ChangeIconsPosition();
-        }
-        protected void ChangeIconsPosition(){
-
-            // Prepare the positions for the display, initial position will place the first icon, and the others will follow
-            float position = 0;
-            if (TurretStatus.Count % 2 == 0) {
-                position = (TurretStatus.Count*IconsSpacing)/2 - (IconsSpacing/2);
-            } else {
-                position = (TurretStatus.Count*IconsSpacing)/2;
-            }
-
-            for (int i = 0; i < TurretStatus.Count; i++) {
-                Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
-                positionning.x = position;
-                positionning.y = 0;
-                DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
-                position -= IconsSpacing;
-                
-                CreateSingleTurretStatusDisplay(TurretStatus[i], i);
-            }
-        }
-        protected void CreateSingleTurretStatusDisplay(TurretManager.TurretStatusType status, int turretNumber) {
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = false;         // Ready to fire
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = false;         // Reloading
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = false;         // Dead
-            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = false;         // Not ok
-
-            if (status == TurretManager.TurretStatusType.Ready) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = true;
-            } else if (status == TurretManager.TurretStatusType.Reloading) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = true;
-            } else if (status == TurretManager.TurretStatusType.Dead) {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = true;
-            } else {
-                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
-            }
-        }
-        public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber) {
-            if (TurretUIInstance) 
-                CreateSingleTurretStatusDisplay(status, turretNumber);
-                // ChangePositionlmao();
-        }
         public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) {
             if (TurretUIInstance) {
                 // Debug.Log ("currentControlledTurret : "+ currentControlledTurret);
@@ -310,6 +247,65 @@ namespace UI {
                 CreateTurretsStatusDisplay();
             }
         }
+        protected void CreateTurretsStatusDisplay() {
+            // Remove previous iteration
+            foreach (Transform child in DisplayTurretsStatus.transform) {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
+
+            // Loop for each position
+            for (int i = 0; i < TurretStatus.Count; i++) {
+                // Debug.Log ("position : "+ position);
+                GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
+            }
+            StartCoroutine(PauseAction());
+        }
+        IEnumerator PauseAction(){
+            yield return new WaitForSeconds(0.01f);
+            ChangeIconsPosition();
+        }
+        protected void ChangeIconsPosition(){
+            // Prepare the positions for the display, initial position will place the first icon, and the others will follow
+            float position = 0;
+            if (TurretStatus.Count % 2 == 0) {
+                position = (TurretStatus.Count*IconsSpacing)/2 - (IconsSpacing/2);
+            } else {
+                position = (TurretStatus.Count*IconsSpacing)/2;
+            }
+
+            for (int i = 0; i < TurretStatus.Count; i++) {
+                Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
+                positionning.x = position;
+                positionning.y = 0;
+                DisplayTurretsStatus.transform.GetChild(i).transform.localPosition = positionning;
+                position -= IconsSpacing;
+                // Debug.Log ("TurretStatus[i] : "+ TurretStatus[i]);
+                CreateSingleTurretStatusDisplay(TurretStatus[i], i);
+            }
+        }
+        protected void CreateSingleTurretStatusDisplay(TurretManager.TurretStatusType status, int turretNumber) {
+            // Debug.Log ("status : "+ status);
+            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = false;         // Ready to fire
+            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = false;         // Reloading
+            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = false;         // Dead
+            DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = false;         // Not ok
+
+            if (status == TurretManager.TurretStatusType.Ready) {
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(0).GetComponent<Image>().enabled = true;
+            } else if (status == TurretManager.TurretStatusType.Reloading) {
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(1).GetComponent<Image>().enabled = true;
+            } else if (status == TurretManager.TurretStatusType.Dead) {
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(2).GetComponent<Image>().enabled = true;
+            } else {
+                DisplayTurretsStatus.transform.GetChild(turretNumber).transform.GetChild(3).GetComponent<Image>().enabled = true;
+            }
+        }
+        public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber) {
+            if (TurretUIInstance) 
+                CreateSingleTurretStatusDisplay(status, turretNumber);
+        }
 
         public void SetPauseUI(bool pause) {
             if (pause){
@@ -321,15 +317,22 @@ namespace UI {
 
         public void SetFreeCamera(bool freeCamera) {
             FreeCamera = freeCamera;
+            DisplayAITurretOverlay();
+        }
+        public void SetOverlayUI(bool overlayUI){
+            OverlayUI = overlayUI;
+            DisplayAITurretOverlay();
+        }
+        private void DisplayAITurretOverlay(){
             if (TurretUIInstance) {
-                if (FreeCamera) {
+                if (FreeCamera || OverlayUI) {
                     DisplayTurretsAAAimer.GetComponent<Image>().enabled = false;
                     DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = false;
-                    DisplayTurretsAIControl.text = "AI-controlled";
+                    DisplayTurretsAIControl.GetComponent<Image>().enabled = true;
                 } else {
                     DisplayTurretsAAAimer.GetComponent<Image>().enabled = true;
                     DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = true;
-                    DisplayTurretsAIControl.text = "";
+                    DisplayTurretsAIControl.GetComponent<Image>().enabled = false;
                 }
             }
         }

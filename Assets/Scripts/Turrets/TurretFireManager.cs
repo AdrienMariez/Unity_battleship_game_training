@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 // using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 // using FreeLookCamera;
 
 public class TurretFireManager : MonoBehaviour
 {
     private bool Active = false;
     private bool PlayerControl = false;
+    private bool UIActive = false;
     private bool Dead;
     [Tooltip("Type of turret")] public TurretType m_TurretType;
     [Tooltip("Ammo used")] public GameObject m_Shell;
@@ -60,28 +62,28 @@ public class TurretFireManager : MonoBehaviour
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
         if (TargetRange > m_MaxRange) {
             OutOfRange = true;
-            CheckTurretStatus(TurretManager.TurretStatusType.PreventFire);
+            CheckTurretStatus();
         }else{
             OutOfRange = false;
         }
         if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
-            CheckTurretStatus(TurretManager.TurretStatusType.Ready);
+            CheckTurretStatus();
             if (Input.GetButtonDown ("FireMainWeapon")) {
                 //start the reloading process immediately
                 Reloading = true;
                 ReloadingTimer = m_ReloadTime;
-                CheckTurretStatus(TurretManager.TurretStatusType.Reloading);
+                CheckTurretStatus();
                 // ... launch the shell.
                 Fire ();
             }
         } else if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead && !AIPauseFire) {
-            CheckTurretStatus(TurretManager.TurretStatusType.Ready);
+            CheckTurretStatus();
             //start the reloading process immediately
             Reloading = true;
             ReloadingTimer = m_ReloadTime;
             // ... launch the shell.
             Fire ();
-            CheckTurretStatus(TurretManager.TurretStatusType.Reloading);
+            CheckTurretStatus();
         }
 
         if (Reloading && ReloadingTimer > 0) {
@@ -153,7 +155,7 @@ public class TurretFireManager : MonoBehaviour
     public void SetPreventFire(bool status){
         PreventFire = status;
         if (PreventFire)
-            CheckTurretStatus(TurretManager.TurretStatusType.PreventFire);
+            CheckTurretStatus();
     }
     public float GetMaxRange(){ return m_MaxRange; }
     public float GetMinRange(){ return m_MinRange; }
@@ -161,11 +163,12 @@ public class TurretFireManager : MonoBehaviour
     public void SetTurretDeath(bool IsShipDead) {
         Dead = IsShipDead;
         if (Dead)
-            CheckTurretStatus(TurretManager.TurretStatusType.Dead);
+            CheckTurretStatus();
     }
 
-    private void CheckTurretStatus(TurretManager.TurretStatusType statusType) {
-        if (PlayerControl) {
+    private void CheckTurretStatus() {
+        TurretManager.TurretStatusType statusType = TurretManager.TurretStatusType.Ready;
+        if (UIActive) {
             if (Dead){
                 statusType = TurretManager.TurretStatusType.Dead;
             }else if (Reloading){
@@ -176,10 +179,8 @@ public class TurretFireManager : MonoBehaviour
                 statusType = TurretManager.TurretStatusType.Ready;
             }
             if (statusType != TurretStatus) {
-                if (PlayerControl) {
-                    // Debug.Log ("TurretNumber : "+ TurretNumber);
-                    TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
-                }
+                // Debug.Log ("TurretNumber : "+ TurretNumber);
+                TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
             }
         }
         TurretStatus = statusType;
@@ -197,7 +198,17 @@ public class TurretFireManager : MonoBehaviour
         }
         return status;
     }
-    public void SetTurretNumber(int turretNumber){ TurretNumber = turretNumber; }
+    public void SetTurretNumber(int turretNumber) {
+        TurretNumber = turretNumber;
+        // Debug.Log ("TurretStatus : "+ TurretStatus);
+        // If the turrets are switched, wait a bit for the turrets UI to set up and force feed it the current values
+        if (PlayerControl) {
+            StartCoroutine(PauseAction());
+        }
+    }
+    IEnumerator PauseAction(){ yield return new WaitForSeconds(0.02f); ReturnActiveTurretsStatus(); }
+    public void ReturnActiveTurretsStatus() { TurretManager.SetSingleTurretStatus(TurretStatus, TurretNumber); }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
+    public void SetTurretUIActive(bool uiActive){ UIActive = uiActive; }
     public TurretType GetTurretType() { return m_TurretType; }
 }
