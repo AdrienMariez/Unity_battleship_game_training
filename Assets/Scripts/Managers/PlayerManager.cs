@@ -184,7 +184,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void SetPlayer(GameManager.Teams PlayerTeam){}
-    // public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas,playerMapCanvas); }
+    public void SetPlayerCanvas(GameObject playerCanvas){ UIManager.SetPlayerCanvas(playerCanvas); }
     
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap() {

@@ -56,6 +56,7 @@ namespace UI {
         private bool DisplayGameUI = true;
         private bool DisplayMapUI = false;
         private bool DisplayUI = true;
+        private GameObject PlayerCanvas;
         PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
 
@@ -367,10 +368,7 @@ namespace UI {
 
 
         public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
-        // public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas) {
-        //     PlayerCanvas = playerCanvas;
-        //     PlayerMapCanvas = playerMapCanvas;
-        // }
+        public void SetPlayerCanvas(GameObject playerCanvas) { PlayerCanvas = playerCanvas; }
         public void SetFreeLookCamera(FreeLookCam freeLookCam){ FreeLookCam = freeLookCam; }
         public void SetMap(bool map) {
             DisplayMapUI = map;
@@ -379,7 +377,6 @@ namespace UI {
             SetOpenUI();
         }
         public void SetScoreMessage(string message) {
-            // This contradicts a bit the No UI toogle but better gameplay than a cosmetic error
             CurrentScore = message;
             if (PlayerUIInstance)
                 Score.text = CurrentScore;
@@ -400,7 +397,11 @@ namespace UI {
             if (PlayerUIInstance)
                 ShipTurningSpeed.value = CurrentRotation;
         }
-        public void SetHideUI() { DisplayUI = !DisplayUI;  SetOpenUI(); }
+        public void SetHideUI() {
+            DisplayUI = !DisplayUI;
+            SetOpenUI();
+            PlayerCanvas.SetActive(DisplayUI);
+        }
         public void SetCurrentUnitDead(bool isUnitDead) {
             CurrentUnitDead = isUnitDead;
             DisplayGameUI = !isUnitDead;
