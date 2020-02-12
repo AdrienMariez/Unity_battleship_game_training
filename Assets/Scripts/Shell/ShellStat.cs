@@ -7,8 +7,12 @@ public class ShellStat : MonoBehaviour
 
     [Tooltip("Weight of the shell (kg)")]
     public float m_Weight = 100f;
-    public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
-    public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
+    // public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
+    // public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
+
+    public GameObject m_Explosion;
+    private GameObject ExplosionInstance;
+
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
     public float m_ArmorPenetration = 100f;
@@ -32,8 +36,7 @@ public class ShellStat : MonoBehaviour
     private bool SelfDestruct = false;
 
     private void Start () {
-        // If it isn't destroyed by then, destroy the shell after it's lifetime.
-        // Destroy (gameObject, m_MaxLifeTime);
+        ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
 
         rb = GetComponent<Rigidbody>();
         // currentAltitudeGain = rb.velocity.y;
@@ -77,17 +80,12 @@ public class ShellStat : MonoBehaviour
         CalculateTrajectoryWithRange ();
         if (transform.position.y <= 0f) {
             // Unparent the particles from the shell.
-            m_ExplosionParticles.transform.parent = null;
-
+            ExplosionInstance.transform.parent = null;
             // Play the particle system.
-            m_ExplosionParticles.Play();
-
+            ExplosionInstance.GetComponent<ParticleSystem>().Play();
             // Play the explosion sound effect.
-            m_ExplosionAudio.Play();
-
-            // Once the particles have finished, destroy the gameobject they are on.
-            Destroy (m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
-
+            ExplosionInstance.GetComponent<AudioSource>().Play();
+            Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
             // Destroy the shell.
             Destroy (gameObject);
         }
@@ -207,19 +205,10 @@ public class ShellStat : MonoBehaviour
 
         }
 
-        // Unparent the particles from the shell.
-        m_ExplosionParticles.transform.parent = null;
-
-        // Play the particle system.
-        m_ExplosionParticles.Play();
-
-        // Play the explosion sound effect.
-        m_ExplosionAudio.Play();
-
-        // Once the particles have finished, destroy the gameobject they are on.
-        Destroy (m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
-
-        // Destroy the shell.
+        ExplosionInstance.transform.parent = null;
+        ExplosionInstance.GetComponent<ParticleSystem>().Play();
+        ExplosionInstance.GetComponent<AudioSource>().Play();
+        Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
         Destroy (gameObject);
     }
 

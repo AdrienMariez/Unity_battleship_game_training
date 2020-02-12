@@ -262,20 +262,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 7680
   m_Weight: 50
-  m_ExplosionParticles: {fileID: 1340822690344244516}
-  m_ExplosionAudio: {fileID: 1420939521431360152}
+  m_Explosion: {fileID: 195792, guid: 0ba256c9af5f0c64494e78603e032d3c, type: 3}
   m_MaxDamage: 100
   m_ArmorPenetration: 100
-  m_ExplosionForce: 1000
   m_MaxLifeTime: 3
   m_ExplosionRadius: 5
-  m_MaxRange: 0
-  m_MinRange: 0
-  m_MuzzleVelocity: 0
-  AngleLaunchPercentage: 0
-  startPosition: {x: 0, y: 0, z: 0}
-  targetRange: 0
-  TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &1340822690364041266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -283,6 +274,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1340822690796620960}
     m_Modifications:
+    - target: {fileID: 113952, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: m_Name
       value: ShellExplosion
@@ -291,13 +286,9 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-      propertyPath: InitialModule.startSizeY.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-      propertyPath: InitialModule.startSizeZ.minMaxState
-      value: 3
+    - target: {fileID: 199372, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 486730, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -343,13 +334,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 199372, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-      propertyPath: m_Layer
-      value: 14
+    - target: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 113952, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-      propertyPath: m_Layer
-      value: 14
+    - target: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 19846844, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
@@ -370,18 +361,6 @@ GameObject:
 --- !u!4 &1340822690363721080 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 486730, guid: 89e78efe92dfe5a42837b392cdb0bf9e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1340822690364041266}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1340822690344244516 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1340822690364041266}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1420939521431360152 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 82120141312391850, guid: 89e78efe92dfe5a42837b392cdb0bf9e,
     type: 3}
   m_PrefabInstance: {fileID: 1340822690364041266}
   m_PrefabAsset: {fileID: 0}

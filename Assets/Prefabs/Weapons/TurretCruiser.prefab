@@ -251,7 +251,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -303,15 +303,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TurretType: 0
   m_Shell: {fileID: 1340822690336069318, guid: d0938696ece944a45a22f648952cedda, type: 3}
   m_FireMuzzles:
   - {fileID: 8699135032299974212}
   - {fileID: 7461538342622876328}
   m_ShootingAudio: {fileID: 4826301444893911567}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_LaunchVelocity: 120
+  m_MaxRange: 10000
+  m_MinRange: 1000
+  m_MuzzleVelocity: 30
   m_ReloadTime: 10
-  m_Active: 0
+  m_Precision: 0.1
+  debug: 0
 --- !u!114 &2237003021215925347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,23 +328,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77726fdf0f1389429bf19cfcb65bbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_IdlePointer: {fileID: 0}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  TurretTurret: {fileID: 2980687535624904724}
-  TurretCannon: {fileID: 6840336584733923873}
-  Parent: {fileID: 0}
-  rotationSpeed: 15
-  acceleration_Time: 0.2
-  bufferAngle: 5
-  limitTraverse: 0
-  leftTraverse: 60
-  rightTraverse: 60
-  elevationSpeed: 15
-  upTraverse: 15
-  downTraverse: 5
+  m_TurretTurret: {fileID: 0}
+  m_TurretCannon: {fileID: 0}
+  m_Parent: {fileID: 0}
+  m_RotationSpeed: 15
+  m_LimitTraverse: 0
+  m_LeftTraverse: 60
+  m_RightTraverse: 60
+  m_NoFireZones: []
+  m_ElevationSpeed: 15
+  m_UpTraverse: 110
+  m_DownTraverse: 80
+  m_ElevationZones: []
   debug: 0
-  m_TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3478227579681722969
 GameObject:
   m_ObjectHideFlags: 0

@@ -210,10 +210,6 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 100
   debug: 0
-  m_CurrentHealth: 0
-  RepairRate: 0
-  TurretsRepairCrew: 0
-  m_Dead: 0
 --- !u!114 &822810258184951640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
-  m_Dead: 0
+  m_TurretType: 0
   m_Shell: {fileID: 1340822690796195968, guid: d0938696ece944a45a22f648952cedda, type: 3}
   m_FireMuzzles:
   - {fileID: 9032721239661306136}
@@ -237,12 +232,8 @@ MonoBehaviour:
   m_MinRange: 10
   m_MuzzleVelocity: 30
   m_ReloadTime: 5
-  m_DirectorTurret: 0
+  m_Precision: 0.1
   debug: 0
-  m_Reloading: 0
-  PreventFire: 0
-  CurrentAngleElevRatio: 0
-  targetRange: 0
 --- !u!82 &5123216979890349395
 AudioSource:
   m_ObjectHideFlags: 0
@@ -300,7 +291,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -352,26 +343,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77726fdf0f1389429bf19cfcb65bbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Active: 0
-  m_Dead: 0
   m_IdlePointer: {fileID: 0}
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  TurretTurret: {fileID: 3224193198085467976}
-  TurretCannon: {fileID: 6561433242781259133}
-  Parent: {fileID: 0}
-  rotationSpeed: 15
-  limitTraverse: 0
-  leftTraverse: 60
-  rightTraverse: 60
-  NoFireZones: []
-  elevationSpeed: 15
-  upTraverse: 120
-  downTraverse: 60
-  ElevationZones: []
+  m_TurretTurret: {fileID: 0}
+  m_TurretCannon: {fileID: 0}
+  m_Parent: {fileID: 0}
+  m_RotationSpeed: 15
+  m_LimitTraverse: 0
+  m_LeftTraverse: 60
+  m_RightTraverse: 60
+  m_NoFireZones: []
+  m_ElevationSpeed: 15
+  m_UpTraverse: 110
+  m_DownTraverse: 80
+  m_ElevationZones: []
   debug: 0
-  m_TargetPosition: {x: 0, y: 0, z: 0}
-  CurrentAnglePercentage: 0
 --- !u!1 &3865778063621184773
 GameObject:
   m_ObjectHideFlags: 0
