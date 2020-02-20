@@ -830,14 +830,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\r\n- Only battleships are playable at the moment, use the damage control
+  m_Text: "\r\n- Only warships are playable at the moment, use the damage control
     panel to prevent fires, repair turrets and stop the floodings.\r\n- The turrets
     are controlled with the angle of the camera, the higher you look, the farther
-    you'll shoot !\r\n- The numbers under the range indicator at the bottom-center
-    of the screen is the turret status section: 0 indicates a dead turret; 1 a turret
-    that isn't in position to fire, 2 a turret reloading, 3 a turret ready to fire.\r\n-
-    Let the free camera toogled to let the AI fire on the enemy for you (you can see
-    if it is toogled with the little \"f\" next to the turrets status section)\r\n"
+    you'll shoot !\r\n- Let the free camera toogled to let the AI fire on the enemy
+    for you (if set an AUTO icon appears at the bottom of the screen).\n\nDefault
+    controls (QWERTY) :\nopen/close map: M\nopen/close damage control : F\nNext/previous
+    unit : Q,E\nMove ship : W,S,A,D\nSwitch weapons : 1,2,3"
 --- !u!114 &525222198129912380
 MonoBehaviour:
   m_ObjectHideFlags: 0
