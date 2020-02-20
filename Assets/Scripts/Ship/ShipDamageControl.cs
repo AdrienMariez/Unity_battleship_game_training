@@ -323,8 +323,11 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void SetShipDeath(bool deathStatus) {
         ShipDead = deathStatus;
-        if (ShipDead)
+        if (ShipDead){
             SetOpenDmgCtrl(false);
+            if (DamageControlAlertInstance)
+                Destroy (DamageControlAlertInstance);
+        }
     }
     public void SetMap(bool map) {
         MapActive = map;

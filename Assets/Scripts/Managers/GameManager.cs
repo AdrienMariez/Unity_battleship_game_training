@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour {
         ResetAllUnits ();
         DisableUnitsControl ();
 
-        // Reset the camera
+        // Reset the assets for the player
         PlayerManager.Reset();
 
         // Increment the round number and display text showing the players what round it is.

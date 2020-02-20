@@ -217,7 +217,10 @@ public class PlayerManager : MonoBehaviour
     public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) { UIManager.SetPlayerUITurretType(currentControlledTurret); }
     public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
 
-    public void Reset(){Start();}
+    public void Reset(){
+        UIManager.SetCurrentUnitDead(true);
+        Start();
+    }
     public void EndGame(){
         if (Pause){
             SetPause();

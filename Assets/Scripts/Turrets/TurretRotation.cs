@@ -64,6 +64,7 @@ public class TurretRotation : MonoBehaviour
 
     private bool AIControl = false;
     private bool ActionPaused = false;
+    private bool TurretSleep = true;
 
     private void Awake(){
         TurretFireManager = GetComponent<TurretFireManager>();
@@ -125,9 +126,6 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if (!PlayerControl && !AIControl){
-            TargetPosition = m_IdlePointer.transform.position;
-        }
 
         // if (PlayerContro && !Dead) {
         if (!Dead) {
@@ -184,6 +182,10 @@ public class TurretRotation : MonoBehaviour
         float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - m_TurretTurret.transform.position).eulerAngles.y;
 
         TargetAng = TargetAngleWorld - ParentEulerAngles.y;
+
+        if (TurretSleep) {
+            TargetAng = TurretEulerAngle;
+        }
         
         if (TargetAng<0)
             TargetAng += 360;
@@ -461,8 +463,17 @@ public class TurretRotation : MonoBehaviour
         // Update the turret angle
         m_TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
     }
-    public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
-    public void SetAIControl(bool aiControl) { AIControl = aiControl; }
+    public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; SetTurretSleep(); }
+    public void SetAIControl(bool aiControl) { AIControl = aiControl; SetTurretSleep(); }
+
+    private void SetTurretSleep(){
+        if (!PlayerControl && !AIControl){
+            TurretSleep = true;
+            // TargetPosition = m_IdlePointer.transform.position;
+        } else {
+            TurretSleep = false;
+        }
+    }
     public void SetAIGroundTargetPosition(Vector3 groundTargetPosition) {  }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
     public void SetCameraPercentage(float percentage) {

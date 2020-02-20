@@ -253,15 +253,16 @@ namespace UI {
             foreach (Transform child in DisplayTurretsStatus.transform) {
                 GameObject.Destroy(child.gameObject);
             }
+            if (ActiveTarget != null) {
+                TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
 
-            TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
-
-            // Loop for each position
-            for (int i = 0; i < TurretStatus.Count; i++) {
-                // Debug.Log ("position : "+ position);
-                GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
+                // Loop for each position
+                for (int i = 0; i < TurretStatus.Count; i++) {
+                    // Debug.Log ("position : "+ position);
+                    GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
+                }
+                StartCoroutine(PauseAction());
             }
-            StartCoroutine(PauseAction());
         }
         IEnumerator PauseAction(){
             yield return new WaitForSeconds(0.01f);
@@ -277,6 +278,9 @@ namespace UI {
             }
 
             for (int i = 0; i < TurretStatus.Count; i++) {
+                if (!DisplayTurretsStatus) {
+                    continue;
+                }
                 if (DisplayTurretsStatus.transform.GetChild(i) == null)
                     continue;
                 Vector3 positionning = DisplayTurretsStatus.transform.GetChild(i).transform.position;
