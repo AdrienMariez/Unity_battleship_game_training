@@ -8,8 +8,15 @@ public class HitboxComponent : MonoBehaviour {
     [Tooltip("Type of element")]
     public ShipController.ElementType m_ElementType = ShipController.ElementType.hull;
 
-    [Header("Debug")]
-        public bool debug = false;
+    [Header("FX")]
+    [Tooltip("When the element is destroyed, will it emit smoke ?")]
+    public bool Emitter = false;
+    [Tooltip("If the element emits smoke when damaged, select one")]
+    public GameObject m_Smoke;
+        private GameObject SmokeInstance;
+
+    // [Header("Debug")]
+    //     public bool debug = false;
     private float CurrentHealth;
     private float RepairRate;
     private float EngineRepairRate;
@@ -31,6 +38,10 @@ public class HitboxComponent : MonoBehaviour {
             ImmortalComponent = true;
         }
         CurrentHealth = m_ElementHealth;
+        if (Emitter) {
+            SmokeInstance = Instantiate(m_Smoke, this.transform);
+            SmokeInstance.GetComponent<ParticleSystem>().Stop();
+        }
     }
 
     public void InitializeModules () {
@@ -38,7 +49,6 @@ public class HitboxComponent : MonoBehaviour {
 
         // Depending of the ElementType, send it to the ShipController
         if (m_ElementType == ShipController.ElementType.engine){
-            // ShipController.SetDamageControlEngineComponent(true);
             ShipController.SetDamageControlEngineCount();
         }
     }
@@ -85,6 +95,9 @@ public class HitboxComponent : MonoBehaviour {
     private void ModuleDestroyed () {
         Dead = true;
         ShipController.ModuleDestroyed(m_ElementType);
+        if (Emitter) {
+            SmokeInstance.GetComponent<ParticleSystem>().Play();
+        }
     }
 
     private void RepairModule () {
@@ -113,6 +126,9 @@ public class HitboxComponent : MonoBehaviour {
         CurrentHealth = m_ElementHealth;
         Dead = false;
         ShipController.ModuleRepaired(m_ElementType);
+        if (Emitter) {
+            SmokeInstance.GetComponent<ParticleSystem>().Stop();
+        }
     }
 
     public void SetShipController(ShipController shipController){

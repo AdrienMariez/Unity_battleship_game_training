@@ -210,7 +210,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &993795375933283818
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +272,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 1
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &1110208832479280707
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +334,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &1724336416537029660
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +488,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 8
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &2367593099060703592
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,7 +1268,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!205 &1188420087798027921
 LODGroup:
   m_ObjectHideFlags: 0
@@ -1336,9 +1341,6 @@ LODGroup:
     - renderer: {fileID: 3626240536884309896}
     - renderer: {fileID: 3626240536884309894}
     - renderer: {fileID: 3626240536884309892}
-    - renderer: {fileID: 3626240536884309890}
-    - renderer: {fileID: 3626240536884309888}
-    - renderer: {fileID: 3626240536884309916}
     - renderer: {fileID: 3626240536884309914}
     - renderer: {fileID: 3626240536884309912}
     - renderer: {fileID: 3626240536884309910}
@@ -1443,9 +1445,9 @@ LODGroup:
     - renderer: {fileID: 3626240536884309614}
     - renderer: {fileID: 3626240536884309584}
     - renderer: {fileID: 3626240536884309586}
-    - renderer: {fileID: 3626240536884309588}
     - renderer: {fileID: 3626240536884309590}
     - renderer: {fileID: 3626240536884309592}
+    - renderer: {fileID: 3626240536884309588}
   m_Enabled: 1
 --- !u!1 &3830700799283950363
 GameObject:
@@ -1507,7 +1509,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &4107071127066504624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,7 +1642,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 100
   m_ElementType: 4
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &4565843110241730348
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,7 +1704,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &4838071862680109871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,7 +1766,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5251643191496273279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,7 +1905,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 7
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &6503183274836366152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,7 +1967,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 2
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &6708760671529737234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,7 +2029,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &6862935609276989520
 GameObject:
   m_ObjectHideFlags: 0
@@ -2082,7 +2091,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7249044125137320703
 GameObject:
   m_ObjectHideFlags: 0
@@ -2143,7 +2153,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 6
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7323605990610594148
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,7 +2329,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7630218170964043770
 GameObject:
   m_ObjectHideFlags: 0
@@ -2524,7 +2536,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 90
   m_ElementType: 3
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &8221208147222745231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2699,7 +2712,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 9
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &8774365222885733317
 GameObject:
   m_ObjectHideFlags: 0
@@ -2760,7 +2774,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &8926262378574572262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2821,7 +2836,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &9030054711542489283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,7 +2898,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &9169230625264799493
 GameObject:
   m_ObjectHideFlags: 0
@@ -2943,7 +2960,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1001 &100967811622534607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5257,7 +5275,7 @@ PrefabInstance:
     - target: {fileID: 3300186, guid: 9eafb3a9d50eace4c866823cfc2ae067, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300186, guid: 9eafb3a9d50eace4c866823cfc2ae067, type: 3}
+      objectReference: {fileID: 4300000, guid: 0106bdd7f1fd0c64fad57885fbbdf286, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9eafb3a9d50eace4c866823cfc2ae067, type: 3}
 --- !u!23 &3626240536884309976 stripped

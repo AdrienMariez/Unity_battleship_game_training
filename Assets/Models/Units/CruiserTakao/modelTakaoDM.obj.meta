@@ -1,0 +1,141 @@
+fileFormatVersion: 2
+guid: 451873cc86ba71942b1f60e91299d834
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: ammo_body_01_dm
+    100002: ammo_body_02_dm
+    100004: ammo_body_03_dm
+    100006: ammo_body_04_dm
+    100008: ammo_body_05_dm
+    100010: cls_body_01
+    100012: engine_dm
+    100014: fuel_tank_dm
+    100016: //RootNode
+    100018: transmission_dm
+    400000: ammo_body_01_dm
+    400002: ammo_body_02_dm
+    400004: ammo_body_03_dm
+    400006: ammo_body_04_dm
+    400008: ammo_body_05_dm
+    400010: cls_body_01
+    400012: engine_dm
+    400014: fuel_tank_dm
+    400016: //RootNode
+    400018: transmission_dm
+    2100000: wire_028089177
+    2100002: wire_177148027
+    2100004: wire_008008136
+    2300000: ammo_body_01_dm
+    2300002: ammo_body_02_dm
+    2300004: ammo_body_03_dm
+    2300006: ammo_body_04_dm
+    2300008: ammo_body_05_dm
+    2300010: cls_body_01
+    2300012: engine_dm
+    2300014: fuel_tank_dm
+    2300016: transmission_dm
+    3300000: ammo_body_01_dm
+    3300002: ammo_body_02_dm
+    3300004: ammo_body_03_dm
+    3300006: ammo_body_04_dm
+    3300008: ammo_body_05_dm
+    3300010: cls_body_01
+    3300012: engine_dm
+    3300014: fuel_tank_dm
+    3300016: transmission_dm
+    4300000: ammo_body_01_dm
+    4300002: ammo_body_02_dm
+    4300004: ammo_body_03_dm
+    4300006: ammo_body_04_dm
+    4300008: ammo_body_05_dm
+    4300010: cls_body_01
+    4300012: engine_dm
+    4300014: fuel_tank_dm
+    4300016: transmission_dm
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

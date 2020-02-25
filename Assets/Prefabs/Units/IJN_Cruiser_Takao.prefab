@@ -637,7 +637,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 20
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &708181593596985689
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,7 +1172,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 1
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &1345752295897625239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,54 +1410,21 @@ LODGroup:
   - screenRelativeHeight: 0.017692016
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 7594926762713888993}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 6021345146228165063}
     - renderer: {fileID: 5915287867534691025}
     - renderer: {fileID: 7256747129736890107}
     - renderer: {fileID: 1487991580765615150}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 612297205233103048}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 1225502408588075655}
     - renderer: {fileID: 5172403908349687448}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 811437102031721351}
     - renderer: {fileID: 2679929009307059266}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
-    - renderer: {fileID: 0}
     - renderer: {fileID: 6868387719283667015}
     - renderer: {fileID: 3261250314628070721}
     - renderer: {fileID: 2449768864142737402}
     - renderer: {fileID: 1346934663991899830}
     - renderer: {fileID: 2716814763222693280}
-    - renderer: {fileID: 0}
   m_Enabled: 1
 --- !u!1 &1536761890470509011
 GameObject:
@@ -2533,7 +2502,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 8
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &2278073391210031047
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,7 +4944,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 100
   m_ElementType: 4
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &4556344159914144933
 GameObject:
   m_ObjectHideFlags: 0
@@ -6616,7 +6587,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 7
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5731270404433488471
 GameObject:
   m_ObjectHideFlags: 0
@@ -7832,7 +7804,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 2
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &6734508303390207915
 GameObject:
   m_ObjectHideFlags: 0
@@ -8817,7 +8790,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 6
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7260116162445374947
 GameObject:
   m_ObjectHideFlags: 0
@@ -10184,7 +10158,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 90
   m_ElementType: 3
-  debug: 0
+  Emitter: 1
+  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
 --- !u!1 &8150118505232369304
 GameObject:
   m_ObjectHideFlags: 0
@@ -10667,7 +10642,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 9
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &8574251778134206468
 GameObject:
   m_ObjectHideFlags: 0

@@ -302,6 +302,7 @@ MonoBehaviour:
     type: 3}
   TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
+  IconsSpacing: 22
 --- !u!114 &6283074086476641185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +600,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 81671
+    m_Bits: 81669
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
