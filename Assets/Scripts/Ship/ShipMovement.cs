@@ -15,30 +15,32 @@ public class ShipMovement : MonoBehaviour
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
     public AudioClip m_EngineDriving;
-    public float m_PitchRange = 0.2f;       // The amount by which the pitch of the engine noises
+    [Tooltip("The amount by which the pitch of the engine noises")] public float m_PitchRange = 0.2f;
 
     private float TurnInputValue = 0f;    
     private float OriginalPitch;         // The pitch of the audio source at the start of the scene.
 
-    [SerializeField] [Range(-4, 4)] public int m_CurrentSpeedStep;      // this mimics an Engine Order Telegraph, possible speeds below in comments
+    [Tooltip("this mimics an Engine Order Telegraph")] [SerializeField] [Range(-4, 4)] public int m_CurrentSpeedStep;      // possible speeds below in comments
     private bool OrderSystem = true;                // This var is used to pause the system to allow the player to choose the speed order (instead of being pushed to the max values)
     /*
-        -4  Full Ahead
-        -3  Half Ahead
-        -2  Slow Ahead
-        -1  Dead Slow Ahead
-        0   Stop
-        1   Dead Slow Astern
-        2   Slow Astern
-        3   Half Astern
-        4   Full Astern
+        -4  Full Ahead 100%
+        -3  Half Ahead 50%
+        -2  Slow Ahead 30%
+        -1  Dead Slow Ahead 10%
+        0   Stop 0%
+        1   Dead Slow Astern -10%
+        2   Slow Astern -20%
+        3   Half Astern -40%
+        4   Full Astern -60%
     */
     private float LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
-    public float m_SpeedInertia = 0.3f;                        // The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.
+    [Tooltip("The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.")]public float m_SpeedInertia = 0.3f;
     private bool SpeedIncrementation = true;                  // Used to allow the m_SpeedInertia to take some time.
     private float LocalRealSpeed;            // The real final speed of the ship.
     private float LocalRealRotation;            // The real final rotation of the ship.
     private bool RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
+
+    public StackComponentSmoke[] m_StackComponents;
 
     private ShipController ShipController;
 
@@ -46,6 +48,12 @@ public class ShipMovement : MonoBehaviour
         ShipController = GetComponent<ShipController>();
         // Store the original pitch of the audio source.
         OriginalPitch = m_MovementAudio.pitch;
+
+        foreach (StackComponentSmoke component in m_StackComponents) {
+            // component.SetInstanceIdle(Instantiate(component.GetSmokePrefab(), component.GetStackPosition().position, component.GetStackPosition().rotation, this.transform) as GameObject);
+            component.SetStackInstance(Instantiate(component.GetSmokePrefab(), component.GetStackPosition().position, component.GetStackPosition().rotation, this.transform) as GameObject);
+        }
+        SetTargetSpeed();
     }
 
     private void Update() {
@@ -54,8 +62,7 @@ public class ShipMovement : MonoBehaviour
     }
 
 
-    private void EngineAudio()
-    {
+    private void EngineAudio() {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
 
         //Abs (x) means that if x=-3, Abs(x)=3
@@ -103,13 +110,10 @@ public class ShipMovement : MonoBehaviour
             } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput){
                 TurnInputValue -= 0.5f;
                 StartCoroutine(PauseTurnIncrementation());
-            }
-            Move ();
-            Turn ();
-        } else if (!Dead){
-            Move ();
-            Turn ();
+            }   
         }
+        Move ();
+        Turn ();
     }
 
     private void ChangeSpeedStep(int Step) {
@@ -137,34 +141,41 @@ public class ShipMovement : MonoBehaviour
     }
 
     private void SetTargetSpeed() {
+        float multiplier = 0.25f * m_CurrentSpeedStep;;
         if (m_CurrentSpeedStep == 4) {
-            LocalTargetSpeed = m_MaxSpeed;
+            multiplier = 1;
+        } else if(m_CurrentSpeedStep == 3) {
+            multiplier = 0.5f;
+        } else if(m_CurrentSpeedStep == 2) {
+            multiplier = 0.3f;
+        } else if(m_CurrentSpeedStep == 1) {
+            multiplier = 0.1f;
+        } else if(m_CurrentSpeedStep == 0) {
+            multiplier = 0f;
+        } else if(m_CurrentSpeedStep == -1) {
+            multiplier = -0.1f;
+        } else if(m_CurrentSpeedStep == -2) {
+            multiplier = -0.2f;
+        } else if(m_CurrentSpeedStep == -3) {
+            multiplier = -0.4f;
+        } else if(m_CurrentSpeedStep == -4) {
+            multiplier = -0.6f;
         }
-        else if(m_CurrentSpeedStep == 3) {
-            LocalTargetSpeed = m_MaxSpeed*0.6f;
-        }
-        else if(m_CurrentSpeedStep == 2) {
-            LocalTargetSpeed = m_MaxSpeed*0.3f;
-        }
-        else if(m_CurrentSpeedStep == 1) {
-            LocalTargetSpeed = m_MaxSpeed*0.1f;
-        }
-        else if(m_CurrentSpeedStep == 0) {
+        if (Dead) {
             LocalTargetSpeed = 0;
-        }
-        else if(m_CurrentSpeedStep == -1) {
-            LocalTargetSpeed = -m_MaxSpeed*0.1f;
-        }
-        else if(m_CurrentSpeedStep == -2) {
-            LocalTargetSpeed = -m_MaxSpeed*0.2f;
-        }
-        else if(m_CurrentSpeedStep == -3) {
-            LocalTargetSpeed = -m_MaxSpeed*0.4f;
-        }
-        else if(m_CurrentSpeedStep == -4) {
-            LocalTargetSpeed = -m_MaxSpeed*0.6f;
+        } else if (Damaged) {
+            LocalTargetSpeed = m_MaxSpeed * multiplier * DamagedRatio;
+        } else {
+            LocalTargetSpeed = m_MaxSpeed * multiplier;
         }
         //Debug.Log ("- m_LocalSpeed - :"+ LocalTargetSpeed);
+        if (Active) {
+            Debug.Log ("- LocalTargetSpeed - :"+ LocalTargetSpeed);
+        }
+
+        foreach (StackComponentSmoke component in m_StackComponents) {
+            component.InstantiateMoveSet(multiplier);
+        }
     }
     public void SetRealSpeed() {
         if (LocalRealSpeed < LocalTargetSpeed && SpeedIncrementation) {
@@ -204,11 +215,7 @@ public class ShipMovement : MonoBehaviour
 
     private void Move() {
         SetRealSpeed();
-        if (Damaged){
-            ShipController.SetSpeedInput(LocalRealSpeed*DamagedRatio);
-        } else {
-            ShipController.SetSpeedInput(LocalRealSpeed);
-        }
+        ShipController.SetSpeedInput(LocalRealSpeed);
     }
 
     private void Turn() {
@@ -230,9 +237,30 @@ public class ShipMovement : MonoBehaviour
             Damaged = true;
             DamagedRatio = proportion;
         }
+        SetTargetSpeed();
+        // if (Active) {
+            // Debug.Log ("- Engine Damaged - :"+ Damaged);
+        // }
     }
     public void SetActive(bool activate) { Active = activate; }
-    public void SetDead(bool death) { Dead = death; }
+    public void SetDead(bool death) {
+        Dead = death;
+        SetTargetSpeed();
+        if (Dead) {
+            foreach (StackComponentSmoke component in m_StackComponents) {
+                // component.InstantiateIdleStop();
+                component.StackInstanceStop();
+            }
+        } else {
+            foreach (StackComponentSmoke component in m_StackComponents) {
+                // component.InstantiateIdleStart();
+                component.StackInstanceStart();
+            }
+        }
+        if (Active) {
+            Debug.Log ("- Engine Dead - :"+ Dead);
+        }
+    }
     public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 
     public int GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }

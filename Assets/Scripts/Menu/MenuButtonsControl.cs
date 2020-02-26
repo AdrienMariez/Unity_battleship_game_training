@@ -9,6 +9,8 @@ public class MenuButtonsControl : MonoBehaviour {
     private GameObject MenuUIInstance;
     public GameObject m_OptionsUI;
     private GameObject OptionsUIInstance;
+    public GameObject m_CreditsUI;
+    private GameObject CreditsUIInstance;
     private bool DisplayHelpImage = false;
 
     void Start() {
@@ -36,6 +38,8 @@ public class MenuButtonsControl : MonoBehaviour {
 		buttonExit.onClick.AddListener(ButtonExitOnClick);
         Button buttonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
 		buttonOptions.onClick.AddListener(ButtonOptionsOnClick);
+        Button buttonCredits = MenuUIInstance.transform.Find("ButtonCredits").GetComponent<Button>();
+		buttonCredits.onClick.AddListener(ButtonCreditsOnClick);
     }
     protected void CloseMainMenu() {
         if (MenuUIInstance)
@@ -71,7 +75,6 @@ public class MenuButtonsControl : MonoBehaviour {
         CloseMainMenu();
         OpenOptionsMenu();
     }
-
     protected void OpenOptionsMenu() {
         OptionsUIInstance = Instantiate(m_OptionsUI);
         DisplayHelpImage = false;
@@ -81,8 +84,23 @@ public class MenuButtonsControl : MonoBehaviour {
 		ButtonMainMenu.onClick.AddListener(ButtonMainMenuOnClick);
     }
     protected void CloseOptionsMenu() {
-        if (OptionsUIInstance)
-            Destroy (OptionsUIInstance);
+        Destroy (OptionsUIInstance);
+    }
+    
+    void ButtonCreditsOnClick(){
+        // Debug.Log ("Button Credits Clicked !");
+        CloseMainMenu();
+        OpenCreditsMenu();
+
+    }
+    protected void OpenCreditsMenu() {
+        CreditsUIInstance = Instantiate(m_CreditsUI);
+        DisplayHelpImage = false;
+        Button ButtonMainMenu = CreditsUIInstance.transform.Find("ButtonMainMenu").GetComponent<Button>();
+		ButtonMainMenu.onClick.AddListener(ButtonMainMenuOnClick);
+    }
+    protected void CloseCreditsMenu() {
+        Destroy (CreditsUIInstance);
     }
     void ButtonDisplayHelpOnClick(){
         DisplayHelpImage = !DisplayHelpImage;
@@ -90,7 +108,10 @@ public class MenuButtonsControl : MonoBehaviour {
     }
     void ButtonMainMenuOnClick(){
         // Debug.Log ("Back to main menu.");
-        CloseOptionsMenu();
+        if (OptionsUIInstance)
+            CloseOptionsMenu();
+        if (CreditsUIInstance)
+            CloseCreditsMenu();
         OpenMainMenu();
     }
 }
