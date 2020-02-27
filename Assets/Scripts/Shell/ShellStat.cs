@@ -38,7 +38,6 @@ public class ShellStat : MonoBehaviour
     private bool SelfDestruct = false;
 
     private void Start () {
-        ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
         // ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
         rb = GetComponent<Rigidbody>();
         // currentAltitudeGain = rb.velocity.y;
@@ -207,6 +206,7 @@ public class ShellStat : MonoBehaviour
 
 
         }
+        ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
         ExplosionInstance.transform.parent = null;
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
         ExplosionInstance.GetComponent<AudioSource>().Play();

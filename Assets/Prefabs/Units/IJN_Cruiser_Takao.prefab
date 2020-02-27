@@ -10263,7 +10263,7 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 3
   Emitter: 1
-  m_Smoke: {fileID: 3005710952585598520, guid: e18f50867ce0c49429cd72192589da12, type: 3}
+  m_Smoke: {fileID: 195792, guid: 77b1e6fd793fe7b4f9300a7c795bf7f0, type: 3}
 --- !u!1 &8150118505232369304
 GameObject:
   m_ObjectHideFlags: 0

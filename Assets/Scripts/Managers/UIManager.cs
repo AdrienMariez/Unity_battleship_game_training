@@ -40,8 +40,8 @@ namespace UI {
         private GameObject DisplayTurretsStatus;
             private List <TurretManager.TurretStatusType> TurretStatus;
         private Text DisplayTurretsTargetRange;
-            const string TurretsTargetRangeDisplayMeter = "Targeting range : {0} m";
-            const string TurretsTargetRangeDisplayKilometer = "Targeting range : {0} km";
+            const string TurretsTargetRangeDisplayMeter = "{0} m";
+            const string TurretsTargetRangeDisplayKilometer = "{0} km";
             private float TurretTargetRange;
         private GameObject DisplayTurretsAIControl;
         private GameObject DisplayTurretsCurrentArtillery;
