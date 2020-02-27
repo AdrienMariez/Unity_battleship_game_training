@@ -169,12 +169,12 @@ public class ShipMovement : MonoBehaviour
             LocalTargetSpeed = m_MaxSpeed * multiplier;
         }
         //Debug.Log ("- m_LocalSpeed - :"+ LocalTargetSpeed);
-        if (Active) {
-            Debug.Log ("- LocalTargetSpeed - :"+ LocalTargetSpeed);
-        }
+        // if (Active) {
+        //     Debug.Log ("- LocalTargetSpeed - :"+ LocalTargetSpeed);
+        // }
 
         foreach (StackComponentSmoke component in m_StackComponents) {
-            component.InstantiateMoveSet(multiplier);
+            component.InstantiateMoveSet(Mathf.Abs(multiplier));
         }
     }
     public void SetRealSpeed() {

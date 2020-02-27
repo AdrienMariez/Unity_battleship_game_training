@@ -11,7 +11,9 @@ public class ShellStat : MonoBehaviour
     // public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
 
     public GameObject m_Explosion;
+    public GameObject m_ExplosionWater;
     private GameObject ExplosionInstance;
+    private GameObject ExplosionWaterInstance;
 
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
@@ -37,7 +39,7 @@ public class ShellStat : MonoBehaviour
 
     private void Start () {
         ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
-
+        // ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
         rb = GetComponent<Rigidbody>();
         // currentAltitudeGain = rb.velocity.y;
         StartPosition = transform.position;
@@ -79,13 +81,14 @@ public class ShellStat : MonoBehaviour
     private void FixedUpdate () {
         CalculateTrajectoryWithRange ();
         if (transform.position.y <= 0f) {
+            ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
             // Unparent the particles from the shell.
-            ExplosionInstance.transform.parent = null;
+            ExplosionWaterInstance.transform.parent = null;
             // Play the particle system.
-            ExplosionInstance.GetComponent<ParticleSystem>().Play();
+            ExplosionWaterInstance.GetComponent<ParticleSystem>().Play();
             // Play the explosion sound effect.
-            ExplosionInstance.GetComponent<AudioSource>().Play();
-            Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
+            ExplosionWaterInstance.GetComponent<AudioSource>().Play();
+            Destroy (ExplosionWaterInstance.gameObject, ExplosionWaterInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
             // Destroy the shell.
             Destroy (gameObject);
         }
@@ -204,7 +207,6 @@ public class ShellStat : MonoBehaviour
 
 
         }
-
         ExplosionInstance.transform.parent = null;
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
         ExplosionInstance.GetComponent<AudioSource>().Play();
