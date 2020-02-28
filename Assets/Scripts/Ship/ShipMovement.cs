@@ -257,9 +257,9 @@ public class ShipMovement : MonoBehaviour
                 component.StackInstanceStart();
             }
         }
-        if (Active) {
-            Debug.Log ("- Engine Dead - :"+ Dead);
-        }
+        // if (Active) {
+        //     Debug.Log ("- Engine Dead - :"+ Dead);
+        // }
     }
     public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 

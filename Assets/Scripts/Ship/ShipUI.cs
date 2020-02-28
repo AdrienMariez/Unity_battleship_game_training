@@ -72,9 +72,9 @@ public class ShipUI : MonoBehaviour {
                 }
                 // Debug.Log (Name+" - UI is in front -"+heading);
                 Vector3 screenPos = Cam.WorldToScreenPoint(transform.position);
-                Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 50f));
-                Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 30f));
-                Vector3 vectorHealth = new Vector2(screenPos.x, (screenPos.y + 10f));
+                Vector3 vectorName = new Vector2(screenPos.x, (screenPos.y + 70f));
+                Vector3 vectorDistance = new Vector2(screenPos.x, (screenPos.y + 50f));
+                Vector3 vectorHealth = new Vector2(screenPos.x, (screenPos.y + 30f));
                 UnitNameInstance.transform.position  = vectorName;
                 UnitDistanceInstance.transform.position  = vectorDistance;
                 UnitHealthInstance.transform.position  = vectorHealth;

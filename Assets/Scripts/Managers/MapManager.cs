@@ -7,12 +7,12 @@ public class MapManager : MonoBehaviour {
     private bool MapActive = false;
     private Camera MapCamera;
     private PlayerManager PlayerManager;
-    private GameObject SeaMap;
+    // private GameObject SeaMap;
     private Canvas PlayerCanvas;
     private Canvas PlayerMapCanvas;
 
     private void Start() {
-        SeaMap = GameObject.Find("MapSea");
+        // SeaMap = GameObject.Find("MapSea");
         PlayerCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
         PlayerMapCanvas = GameObject.Find("UIMapCanvas").GetComponent<Canvas>();
         PlayerMapCanvas.enabled = false;
@@ -37,8 +37,8 @@ public class MapManager : MonoBehaviour {
             }
             MapCamera.transform.position = targetPosition;
 
-            targetPosition.y = 0;
-            SeaMap.transform.position = targetPosition;
+            // targetPosition.y = 0;
+            // SeaMap.transform.position = targetPosition;
         }
     }
 

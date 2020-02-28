@@ -426,7 +426,7 @@ Transform:
   - {fileID: 1238027609}
   - {fileID: 526232514}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &412392958 stripped
 MeshRenderer:
@@ -635,7 +635,7 @@ Transform:
   - {fileID: 1091423344}
   - {fileID: 1200254122}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &797059230 stripped
 MeshRenderer:
@@ -707,7 +707,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &840182966 stripped
 MeshRenderer:
@@ -1015,6 +1015,75 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 577591144738829307}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1172715726
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -763.5203
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 72.79158
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -118.491196
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028920602516399746, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134426334291176483, guid: f3f2c41477501aa4781862b968f3c4c6,
+        type: 3}
+      propertyPath: m_Name
+      value: StackSmokeEmitterLarge
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f3f2c41477501aa4781862b968f3c4c6, type: 3}
 --- !u!4 &1173386694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4720579618361426, guid: e76f275cd3e181b42a2362a12f854d74,
@@ -1471,7 +1540,7 @@ Transform:
   - {fileID: 149622616108293905}
   - {fileID: 839106388952661363}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1630544732 stripped
 MeshRenderer:
@@ -1623,7 +1692,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1777195763 stripped
 MeshRenderer:

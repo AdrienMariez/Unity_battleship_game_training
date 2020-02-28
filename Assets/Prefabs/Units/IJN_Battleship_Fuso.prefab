@@ -273,7 +273,7 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 1
   Emitter: 1
-  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
+  m_Smoke: {fileID: 3005710952585598520, guid: 2b058232e06eb6149bc0d172f1613e3e, type: 3}
 --- !u!1 &1110208832479280707
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,8 +775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dacdccc41487b44ba906fce7aaf052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CameraDistance: 100
-  m_CameraHeight: 30
+  m_CameraDistance: 120
+  m_CameraHeight: 25
   m_CameraLateralOffset: 0
 --- !u!114 &8757330345396271474
 MonoBehaviour:
@@ -1517,7 +1517,7 @@ MonoBehaviour:
   m_ElementArmor: 90
   m_ElementType: 1
   Emitter: 1
-  m_Smoke: {fileID: 3005710952585598520, guid: 23664981da91dda41b13589645349441, type: 3}
+  m_Smoke: {fileID: 3005710952585598520, guid: 2b058232e06eb6149bc0d172f1613e3e, type: 3}
 --- !u!1 &3830700799283950363
 GameObject:
   m_ObjectHideFlags: 0

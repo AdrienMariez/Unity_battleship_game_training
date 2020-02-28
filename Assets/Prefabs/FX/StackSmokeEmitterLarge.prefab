@@ -2288,13 +2288,14 @@ ParticleSystem:
     inWorldSpace: 0
     randomizePerFrame: 0
   ExternalForcesModule:
-    enabled: 0
-    multiplier: 1
+    enabled: 1
+    multiplier: 0.39
     influenceFilter: 0
     influenceMask:
       serializedVersion: 2
-      m_Bits: 4294967295
-    influenceList: []
+      m_Bits: 1
+    influenceList:
+    - {fileID: 0}
   ClampVelocityModule:
     enabled: 0
     x:

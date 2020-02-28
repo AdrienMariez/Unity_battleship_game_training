@@ -100,7 +100,7 @@ public class ShipAI : MonoBehaviour {
         } else {
             // Debug.Log("Unit : "+ Name);
             if (TurretManager)
-                TurretManager.SetAIHasTarget(true);
+                TurretManager.SetAIHasTarget(false);
         }
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
     }

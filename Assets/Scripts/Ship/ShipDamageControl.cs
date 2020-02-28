@@ -259,7 +259,7 @@ public class ShipDamageControl : MonoBehaviour {
 
     private void SetAlertsDamageControlDisplay() {
         // Debug.Log("SetAlertsDamageControlDisplay()");
-        if (Active && EngineStatus > 0 || Active && SteeringStatus || Active && FireStatus || Active && WaterStatus || Active && DamagedTurrets > 0) {
+        if (Active && !ShipDead && EngineStatus > 0 || Active && !ShipDead && SteeringStatus || Active && !ShipDead && FireStatus || Active && !ShipDead && WaterStatus || Active && !ShipDead && DamagedTurrets > 0) {
             if (!DamageControlAlertInstance) {
                 DamageControlAlertInstance = Instantiate(m_DamageControlAlertUI);
             }
