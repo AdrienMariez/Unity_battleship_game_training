@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Weight: 120
   m_Explosion: {fileID: 195792, guid: 9ae37cd584978c74884b6f45c0a13398, type: 3}
   m_ExplosionWater: {fileID: 195792, guid: 5bb338b972b80e142be6f85286b415b8, type: 3}
+  m_DamageEffect: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
+    type: 3}
   m_MaxDamage: 100
   m_ArmorPenetration: 100
   m_MaxLifeTime: 3

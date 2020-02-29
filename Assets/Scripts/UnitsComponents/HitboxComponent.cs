@@ -92,6 +92,10 @@ public class HitboxComponent : MonoBehaviour {
         // }
     }
 
+    public void TakeDamageDecal() {
+
+    }
+
     private void ModuleDestroyed () {
         Dead = true;
         ShipController.ModuleDestroyed(m_ElementType);

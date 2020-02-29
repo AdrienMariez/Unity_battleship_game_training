@@ -516,7 +516,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 100
   m_ElementType: 4
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &395078229554482828
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +549,7 @@ Transform:
   - {fileID: 3608049833525757428}
   - {fileID: 126959255941567104}
   - {fileID: 3152117001406323412}
+  - {fileID: 2180422047779742611}
   m_Father: {fileID: 4699689828683719271}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -688,7 +690,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 8
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &1452699536699725597
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +899,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 30
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &3641422958090581612
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +961,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 30
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &4036194036648923335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,6 +1077,7 @@ MonoBehaviour:
   m_PitchRange: 0.2
   m_CurrentSpeedStep: 0
   m_SpeedInertia: 0.3
+  m_StackComponents: []
 --- !u!114 &225537522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,7 +1339,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 6
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5011886042539513617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,7 +1401,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 90
   m_ElementType: 3
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5083574653438870918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,7 +1463,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 9
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5881206417359290328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,7 +1899,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 2
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7838981073699362741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,7 +2002,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 7
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &8713397516399189494
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,7 +2094,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 30
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &9196748789309648236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,4 +2156,80 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 1
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
+--- !u!1001 &351427741573613471
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4676003223697204548}
+    m_Modifications:
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -46.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919360169161122830, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+        type: 3}
+      propertyPath: m_Name
+      value: DecalShellHoleTest
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a, type: 3}
+--- !u!4 &2180422047779742611 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
+    type: 3}
+  m_PrefabInstance: {fileID: 351427741573613471}
+  m_PrefabAsset: {fileID: 0}

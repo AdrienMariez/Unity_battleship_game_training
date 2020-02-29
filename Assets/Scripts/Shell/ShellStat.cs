@@ -11,9 +11,12 @@ public class ShellStat : MonoBehaviour
     // public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
 
     public GameObject m_Explosion;
-    public GameObject m_ExplosionWater;
     private GameObject ExplosionInstance;
+    public GameObject m_ExplosionWater;
     private GameObject ExplosionWaterInstance;
+    
+    [SerializeField] private GameObject m_DamageEffect;
+    private GameObject DamageEffectInstance;
 
     public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
@@ -180,6 +183,7 @@ public class ShellStat : MonoBehaviour
             HitboxComponent targetHitboxComponent = colliders[i].GetComponent<HitboxComponent> ();
             TurretHealth targetTurretHealth = colliders[i].GetComponent<TurretHealth> ();
             float damage;
+            bool decalApplied = false;
 
             if (targetHitboxComponent != null) {
                 if (m_ArmorPenetration < targetHitboxComponent.m_ElementArmor)
@@ -191,6 +195,13 @@ public class ShellStat : MonoBehaviour
                 // Deal this damage to the component.
                 targetHitboxComponent.TakeDamage (damage);
                 // Debug.Log("damage = "+ damage);
+
+                if (!decalApplied) {
+                    DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
+                    DamageEffectInstance.transform.parent = colliders[i].transform;
+                    decalApplied = true;
+                }
+                
             }
 
             if (targetTurretHealth != null) {
@@ -202,6 +213,9 @@ public class ShellStat : MonoBehaviour
 
                 // Deal this damage to the component.
                 targetTurretHealth.TakeDamage (damage);
+
+                // DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
+                // DamageEffectInstance.transform.parent = colliders[i].transform;
             }
 
 
@@ -212,6 +226,10 @@ public class ShellStat : MonoBehaviour
         ExplosionInstance.GetComponent<AudioSource>().Play();
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
         Destroy (gameObject);
+
+
+        // DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
+        // DamageEffectInstance.transform.parent = null;
     }
 
     private float CalculateDamage (Vector3 targetPosition) {
