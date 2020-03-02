@@ -411,5 +411,8 @@ namespace UI {
             DisplayGameUI = !isUnitDead;
             SetOpenUI();
         }
+        public void Reset() {
+            CurrentUnitDead = false;
+        }
     }
 }

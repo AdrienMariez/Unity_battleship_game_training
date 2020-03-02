@@ -42,8 +42,10 @@ public class ShipUI : MonoBehaviour {
 
     public void Init() {
         // ShipUIText.text = this.name;
-        Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
-        MapCam = GameObject.Find("MapCamera").GetComponentInChildren<Camera>();
+        if (GameObject.Find("MainCamera"))
+            Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
+        if (GameObject.Find("MapCamera"))
+            MapCam = GameObject.Find("MapCamera").GetComponentInChildren<Camera>();
     }
 
     private void FixedUpdate() {
@@ -255,5 +257,38 @@ public class ShipUI : MonoBehaviour {
         SetDisplay();
 
         // ShipUIObj.enabled = Active;
+    }
+
+
+
+
+
+
+    // private GameObject UIElement;
+    // TRANSFORM THIS INTO AN ARRAY, WE INIT ALL DATA AT ONCE AND UPDATE ALL NEEDED INFO AT ONCE TOO
+
+    public void SetUIElement(GameObject uiElement) {
+        // UIElement = uiElement;
+        uiElement.gameObject.name = Name;
+        uiElement.transform.Find("Name").GetComponent<Text>().text = Name;
+        SetColor(uiElement);
+        uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
+        uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
+    }
+    private void SetColor(GameObject uiElement) {
+        Color color;
+        if (Team == "Allies") {
+            color = new Color(0f, 0.47f, 1f, 1f);
+        } else if (Team == "AlliesAI") {
+            color = new Color(0f, 0.1f, 1f, 1f);
+        }  else if (Team == "Axis") {
+            color = new Color(1f, 0.22f, 0.29f, 1f);
+        }  else if (Team == "AxisAI") {
+            color = new Color(1f, 0.0f, 0.0f, 0.49f);
+        } else{
+            color = Color.yellow;
+        }
+        uiElement.transform.Find("Name").GetComponent<Text>().color = color;
+        uiElement.transform.Find("Distance").GetComponent<Text>().color = color;
     }
 }

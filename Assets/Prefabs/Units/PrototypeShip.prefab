@@ -175,7 +175,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 20
   m_ElementType: 0
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &993795375933283818
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +237,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 1
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &1724336416537029660
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +391,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 8
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &2367593099060703592
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +724,7 @@ MonoBehaviour:
   m_PitchRange: 0.2
   m_CurrentSpeedStep: 0
   m_SpeedInertia: 0.3
+  m_StackComponents: []
 --- !u!114 &4216330087480367784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,7 +787,7 @@ MonoBehaviour:
     type: 3}
   m_UnitDistance: {fileID: 3835573356130547971, guid: f060a9708bc3842409a6114e3be521a2,
     type: 3}
-  m_UnitHealth: {fileID: 1249305936027395649, guid: c36c139c6d6ee224da0ec469ca3b5a80,
+  m_UnitHealth: {fileID: 6431504518210083437, guid: c36c139c6d6ee224da0ec469ca3b5a80,
     type: 3}
   m_MapUnitName: {fileID: 465840837921445169, guid: 880e0b12bf2718d47a86cd2c6c99913d,
     type: 3}
@@ -1258,7 +1262,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 100
   m_ElementType: 4
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &5251643191496273279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1454,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 7
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &6503183274836366152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1516,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 120
   m_ElementType: 2
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7249044125137320703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,7 +1578,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 6
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &7323605990610594148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,7 +1868,8 @@ MonoBehaviour:
   m_ElementHealth: 100
   m_ElementArmor: 90
   m_ElementType: 3
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1 &8221208147222745231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2035,7 +2044,8 @@ MonoBehaviour:
   m_ElementHealth: 10000
   m_ElementArmor: 90
   m_ElementType: 9
-  debug: 0
+  Emitter: 0
+  m_Smoke: {fileID: 0}
 --- !u!1001 &387310411779816050
 PrefabInstance:
   m_ObjectHideFlags: 0

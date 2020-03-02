@@ -382,7 +382,11 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetDamageControlUnset(int setCrew){ Health.SetDamageControlUnset(setCrew); }
-    public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ PlayerManager.SetSingleTurretStatus(status, turretNumber); }
+    public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
+    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
+        if (PlayerManager != null)
+            PlayerManager.SetSingleTurretStatus(status, turretNumber);
+    }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){

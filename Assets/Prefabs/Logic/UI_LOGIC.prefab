@@ -899,6 +899,7 @@ GameObject:
   - component: {fileID: 6283074086476641185}
   - component: {fileID: 6283074086476641188}
   - component: {fileID: 4108665965408059122}
+  - component: {fileID: 5625231153092559834}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1114,6 +1115,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &5625231153092559834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283074086476641211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21449dc0b5ad3f94daba30ff6e5ad627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
+    type: 3}
+  m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
+    type: 3}
+  m_UnitName: {fileID: 4494080055764097807, guid: 0feffdfcb2b04ff47819ecd277edb1c2,
+    type: 3}
+  m_UnitDistance: {fileID: 3835573356130547971, guid: f060a9708bc3842409a6114e3be521a2,
+    type: 3}
+  m_UnitHealth: {fileID: 6431504518210083437, guid: c36c139c6d6ee224da0ec469ca3b5a80,
+    type: 3}
+  m_MapUnitName: {fileID: 465840837921445169, guid: 880e0b12bf2718d47a86cd2c6c99913d,
+    type: 3}
+  m_MapUnitDistance: {fileID: 7694528954705614530, guid: 1debc675aded9654aacad3456c573465,
+    type: 3}
+  m_MapUnitHealth: {fileID: 6431504518210083437, guid: 996b509c26c286a4caa3a6de10be81ff,
+    type: 3}
 --- !u!1 &6283074086803692814
 GameObject:
   m_ObjectHideFlags: 0

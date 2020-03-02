@@ -24,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     private GameManager.Teams PlayerTeam;
     private UIManager UIManager;
     private MapManager MapManager;
+    private UnitsUIManager UnitsUIManager;
 
     private void Start() {
         GameManager = GetComponent<GameManager>();
@@ -33,9 +34,12 @@ public class PlayerManager : MonoBehaviour
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
+        UnitsUIManager = GetComponent<UnitsUIManager>();
+        UnitsUIManager.SetMapCamera(m_MapCamera);
         FindAllPossibleTargets();
+        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
         SetEnabledUnit(PlayerUnits.Length);
-        UIManager.SetCurrentUnitDead(false);                // If the level has restarted, set the unit as not dead (no other check)
+        UIManager.Reset();                // If the level has restarted, set the unit as not dead (no other check)
     }
 
     protected void Update() {
@@ -119,19 +123,20 @@ public class PlayerManager : MonoBehaviour
 
     private void FindAllPossibleTargets() {
         // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
-        // PlayerUnits = GameObject.FindGameObjectsWithTag("Player");
         PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
         // Debug.Log ("Playable units : "+ PlayerUnits.Length);
     }
 
-    private void SetEnabledUnit(int PlayerUnitsLength) {
+    private void SetEnabledUnit(int playerUnitsLength) {
+        // if (playerUnitsLength == 0)
+        //     return;
         ActiveTarget = PlayerUnits[CurrentTarget];
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
         // Debug.Log ("CurrentTarget : "+ CurrentTarget);
         // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
         UIManager.SetTargetType("Unknown");
 
-        for (int i = 0; i < PlayerUnitsLength; i++){
+        for (int i = 0; i < playerUnitsLength; i++){
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
                 if (i == CurrentTarget) {
@@ -165,6 +170,7 @@ public class PlayerManager : MonoBehaviour
         }
         m_FreeLookCamera.SetActiveTarget(ActiveTarget);
         UIManager.SetActiveTarget(ActiveTarget);
+        UnitsUIManager.SetPlayedUnit(ActiveTarget);
         UIManager.SetCurrentUnitDead(false);
 
         if (ActiveTarget.GetComponent<TurretManager>()) {
@@ -184,7 +190,9 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void SetPlayer(GameManager.Teams PlayerTeam){}
-    public void SetPlayerCanvas(GameObject playerCanvas){ UIManager.SetPlayerCanvas(playerCanvas); }
+    public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
+
+    public void InitUnitsUI() { UnitsUIManager.Init(); }
     
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap() {
@@ -202,6 +210,8 @@ public class PlayerManager : MonoBehaviour
         if (ActiveTarget.GetComponent<ShipController>()) {
             ActiveTarget.GetComponent<ShipController>().SetMap(MapActive);
         }
+        UnitsUIManager.SetMap(MapActive);
+
         CheckCameraRotation();
     }
     public void SetDamageControl(bool damageControl){
