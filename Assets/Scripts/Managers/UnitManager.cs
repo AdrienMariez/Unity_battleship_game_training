@@ -88,9 +88,4 @@ public class UnitManager {
             Instance.GetComponent<ShipController>().SetName(m_UnitName);
         }
     }
-    public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas) { 
-        if (Instance.GetComponent<ShipController>()){
-            Instance.GetComponent<ShipController>().SetPlayerCanvas(playerCanvas, playerMapCanvas);
-        }
-    }
 }

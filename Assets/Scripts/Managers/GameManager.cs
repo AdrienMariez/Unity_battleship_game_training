@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour {
             // TODO if not using a spawn point...
 
             m_Units[i].SetGameManager(this);
-            m_Units[i].SetPlayerCanvas(PlayerCanvas, PlayerMapCanvas);
             m_Units[i].SetPlayerManager(PlayerManager);
             m_Units[i].Setup();
 

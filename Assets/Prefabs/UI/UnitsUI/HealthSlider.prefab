@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 2498673560158044198}
   - component: {fileID: 8034658292682430497}
   m_Layer: 13
-  m_Name: MapHealthSlider
+  m_Name: HealthSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

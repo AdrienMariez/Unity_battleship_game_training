@@ -84,18 +84,20 @@ public class UnitsUIManager : MonoBehaviour {
             }
             TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, item);
             UnitUIList.Add(TempUI);
-            //send TempUI to the unit so it can update data itself
         }
     }
     private void DestroyGameDisplay(){
 
     }
     private void CreateMapDisplay(){
-        // foreach (var item in UnitList) {
-        //     TempUI = Instantiate(m_UnitMapUI, PlayerCanvas.transform);
-        //     TempUI.gameObject.name = item.name;
-        //     UnitUIMapList.Add(TempUI);
-        // }
+        foreach (var item in UnitList) {
+            TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
+            if (item.GetComponent<ShipController>()){
+                item.GetComponent<ShipUI>().SetUIMapElement(TempUI);
+            }
+            TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, item);
+            UnitUIMapList.Add(TempUI);
+        }
     }
     private void DestroyMapDisplay(){
 

@@ -59,7 +59,6 @@ public class ShipController : MonoBehaviour {
         float HP = Health.GetStartingHealth();
 
         UI = GetComponent<ShipUI>();
-        UI.Init();
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 
@@ -310,7 +309,6 @@ public class ShipController : MonoBehaviour {
     }
 
     public void SetMap(bool map) {
-        UI.SetMapActive(map);
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
         if (GetComponent<ShipDamageControl>()) {
@@ -328,8 +326,6 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<TurretManager>())
                 Turrets.SetActive(Active);
         Movement.SetActive(Active);
-        // UI is activated if the unit is NOT active.
-        UI.SetActive(!Active);
 
         // Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
         ShipAI.SetAIActive(!Active);
@@ -352,9 +348,6 @@ public class ShipController : MonoBehaviour {
         ShipAI.SetName(name);
     }
 
-    public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){
-        UI.SetPlayerCanvas(playerCanvas, playerMapCanvas);
-    }
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){
         PlayerManager = playerManager;

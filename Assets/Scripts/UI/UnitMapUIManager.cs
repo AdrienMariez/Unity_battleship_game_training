@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class UnitUIManager : MonoBehaviour {
+public class UnitMapUIManager : MonoBehaviour {
 
-    private Camera Cam;
+    private Camera MapCam;
     private GameObject Unit;
     private GameObject ActiveUnit;
     private GameObject EnemyTargetUnit;
@@ -37,38 +37,30 @@ public class UnitUIManager : MonoBehaviour {
         ShortActionPaused = false;
     }
     public void InitializeUIModule(Camera cam, GameObject unit) {
-        Cam = cam;
+        MapCam = cam;
         Unit = unit;
         MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
         CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
     }
 
     protected void FixedUpdate() {
-        var heading = Unit.transform.position - Cam.transform.position;
-        
-        if (Vector3.Dot(Cam.transform.forward, heading) > 0 && !UnitCurrentlyPlayed) {
-            // Update position of UI if it is supposed to be visible
-            // Debug.Log (this.gameObject.name+" calculus : " + Vector3.Dot(Cam.transform.forward, heading));
-            Vector3 screenPos = Cam.WorldToScreenPoint(Unit.transform.position);
-            Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + 30f));
-            this.transform.position  = updatedPos;
+        // Debug.Log (this.gameObject.name+" calculus : " + Vector3.Dot(MapCam.transform.forward, heading));
+        Vector3 screenPos = MapCam.WorldToScreenPoint(Unit.transform.position);
+        Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + 30f));
+        this.transform.position  = updatedPos;
 
-            // Update distance text
-            if (!UnitCurrentlyPlayed) {
-                float distance = (Unit.transform.position - Cam.transform.position).magnitude;
-                if (distance > 999) {
-                    distance = (Mathf.Round(distance / 100)) / 10f;
-                    DistanceString = string.Format(RangeDisplayKilometer, distance);
-                } else {
-                    DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
-                }
-                this.transform.Find("Distance").GetComponent<Text>().text = DistanceString;
+        // Update distance text
+        if (!UnitCurrentlyPlayed) {
+            float distance = (Unit.transform.position - MapCam.transform.position).magnitude;
+            if (distance > 999) {
+                distance = (Mathf.Round(distance / 100)) / 10f;
+                DistanceString = string.Format(RangeDisplayKilometer, distance);
             } else {
-                this.transform.Find("Distance").GetComponent<Text>().text = "Played unit";
+                DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
             }
+            this.transform.Find("Distance").GetComponent<Text>().text = DistanceString;
         } else {
-            // put the UI away if it is not visible
-            this.transform.position  = new Vector2(0.0f, 3000f);
+            this.transform.Find("Distance").GetComponent<Text>().text = "Played unit";
         }
     }
 
