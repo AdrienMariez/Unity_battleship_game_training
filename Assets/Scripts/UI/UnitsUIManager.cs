@@ -14,7 +14,6 @@ public class UnitsUIManager : MonoBehaviour {
     private GameObject PlayerMapCanvas;
     private bool ActionPaused = false;
     private bool ShortActionPaused = false;
-    private bool MapActive = false;
     private List <GameObject> UnitList = new List<GameObject>();
     private List <GameObject> UnitUIList = new List<GameObject>();
     private List <GameObject> UnitUIMapList = new List<GameObject>();
@@ -58,8 +57,6 @@ public class UnitsUIManager : MonoBehaviour {
         CreateGameDisplay();
         CreateMapDisplay();
     }
-    private bool ActionPausedTest = false;
-    private bool ActionPausedTest2 = false;
     private void CreateGameDisplay(){
         // Debug.Log ("CreateGameDisplay : "+ UnitList.Count);
 
@@ -73,19 +70,7 @@ public class UnitsUIManager : MonoBehaviour {
             TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, item, this);
             UnitUIList.Add(TempUI);
         }
-
-        // if (!ActionPausedTest) {
-        //     ActionPausedTest = !ActionPausedTest;
-        //     StartCoroutine(PauseActionTest());
-        // }
     }
-    
-    // IEnumerator PauseActionTest(){
-    //     yield return new WaitForSeconds(1f);
-    //     KillAllInstances();
-    //     Init();
-    // }
-
     private void DestroyGameDisplay(){
 
     }
@@ -134,10 +119,6 @@ public class UnitsUIManager : MonoBehaviour {
         UnitUIMapList.Remove(unitGameObject);
     }
 
-    public void SetMap(bool active) {
-        MapActive = active;
-        SetDisplayStatus();
-    }
     public void KillAllInstances() {
         // Debug.Log ("KillAllInstances");
         foreach (var item in UnitList) {

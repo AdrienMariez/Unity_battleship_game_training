@@ -251,7 +251,6 @@ public class PlayerManager : MonoBehaviour
         if (ActiveTarget.GetComponent<ShipController>()) {
             ActiveTarget.GetComponent<ShipController>().SetMap(MapActive);
         }
-        UnitsUIManager.SetMap(MapActive);
 
         CheckCameraRotation();
     }
