@@ -10,10 +10,12 @@ public class PlayerManager : MonoBehaviour
 {
     //public FreeLookCam m_FreeLookCam;
 
-    private GameObject[] PlayerUnits;
+    // private GameObject[] PlayerUnits;
+    private List <GameObject> PlayerUnits = new List<GameObject>();
     private int CurrentTarget = 0;
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
+    private bool ActiveTargetSet = false;
     private bool Pause = false;
     private bool MapActive = false;
     private bool DamageControl = false;
@@ -26,7 +28,10 @@ public class PlayerManager : MonoBehaviour
     private MapManager MapManager;
     private UnitsUIManager UnitsUIManager;
 
-    private void Start() {
+    private void Init() {
+        ActiveTarget = null;
+        ActiveTargetSet = false;
+        CurrentTarget = 0;
         GameManager = GetComponent<GameManager>();
         PlayerTeam = GameManager.GetPlayer();
         MapManager = GetComponent<MapManager>();
@@ -37,13 +42,15 @@ public class PlayerManager : MonoBehaviour
         UnitsUIManager = GetComponent<UnitsUIManager>();
         UnitsUIManager.SetMapCamera(m_MapCamera);
         FindAllPossibleTargets();
-        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
-        SetEnabledUnit(PlayerUnits.Length);
-        UIManager.Reset();                // If the level has restarted, set the unit as not dead (no other check)
+        // UnitsUIManager.KillAllInstances();
+        // UnitsUIManager.Init();
+        // Debug.Log ("PlayerUnits.Count : "+ PlayerUnits.Count);
+        SetEnabledUnit();
+        // UIManager.Reset();                // If the level has restarted, set the unit as not dead (no other check)
     }
 
     protected void Update() {
-        if (ActiveTarget == null)
+        if (ActiveTarget == null && !ActiveTargetSet)
             SetNextTarget();
         if (!Pause) {     
             if (Input.GetButtonDown ("HideUI"))
@@ -101,42 +108,58 @@ public class PlayerManager : MonoBehaviour
         FindAllPossibleTargets();
 
         //If we overflow, get back to the beginning
-        if (CurrentTarget >= (PlayerUnits.Length-1)) {
+        if (CurrentTarget >= (PlayerUnits.Count-1)) {
             CurrentTarget = 0;
         } else {
             CurrentTarget += 1;
         }
         
         //enable or disable user inputs for units disabled.
-        SetEnabledUnit(PlayerUnits.Length);
+        if (PlayerUnits.Count > 1 ||  !ActiveTargetSet)
+            SetEnabledUnit();
     }
     private void SetPreviousTarget() {
         FindAllPossibleTargets();
 
         if (CurrentTarget <= 0) {
-            CurrentTarget = PlayerUnits.Length-1;
+            CurrentTarget = PlayerUnits.Count-1;
         } else {
             CurrentTarget -= 1;
         }
-        SetEnabledUnit(PlayerUnits.Length);
+        if (PlayerUnits.Count > 1 ||  !ActiveTargetSet)
+            SetEnabledUnit();
     }
 
     private void FindAllPossibleTargets() {
         // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
-        PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
-        // Debug.Log ("Playable units : "+ PlayerUnits.Length);
+        // PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
+        PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
+        Debug.Log ("Playable units : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
+
     }
 
-    private void SetEnabledUnit(int playerUnitsLength) {
-        // if (playerUnitsLength == 0)
-        //     return;
+    private void SetEnabledUnit() {
+        if (PlayerUnits.Count == 0){
+            Debug.Log ("Case 1");
+            ActiveTargetSet = false;
+            return;
+        } else if (PlayerUnits.Count == 1) {
+            Debug.Log ("Case 2");
+            ActiveTargetSet = true;
+        } else if (PlayerUnits[CurrentTarget] == null) {
+            Debug.Log ("Case 3");
+            ActiveTargetSet = false;
+        } else {
+            Debug.Log ("Case 4");
+            ActiveTargetSet = true;
+        }
         ActiveTarget = PlayerUnits[CurrentTarget];
-        // Debug.Log ("ActiveTarget : "+ ActiveTarget);
+        Debug.Log ("ActiveTarget : "+ ActiveTarget);
         // Debug.Log ("CurrentTarget : "+ CurrentTarget);
         // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
         UIManager.SetTargetType("Unknown");
 
-        for (int i = 0; i < playerUnitsLength; i++){
+        for (int i = 0; i < PlayerUnits.Count; i++){
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
                 if (i == CurrentTarget) {
@@ -176,7 +199,7 @@ public class PlayerManager : MonoBehaviour
         if (ActiveTarget.GetComponent<TurretManager>()) {
             ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
         }
-        //Debug.Log ("Current target for player manager : "+ PlayerUnits[CurrentTarget]);
+        // Debug.Log ("Current target for player manager : "+ ActiveTarget);
     }
 
     private void CheckCameraRotation(){
@@ -189,7 +212,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void SetPlayer(GameManager.Teams PlayerTeam){}
+    // public void SetPlayer(GameManager.Teams PlayerTeam){}
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
 
     public void InitUnitsUI() { UnitsUIManager.Init(); }
@@ -198,7 +221,7 @@ public class PlayerManager : MonoBehaviour
     public void SetMap() {
         MapActive = !MapActive;
         if (MapActive)
-            SetEnabledUnit(PlayerUnits.Length);
+            SetEnabledUnit();
 
         UIManager.SetMap(MapActive);
 
@@ -228,8 +251,13 @@ public class PlayerManager : MonoBehaviour
     public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
 
     public void Reset(){
+        // PlayerUnits.Clear();
+        PlayerUnits = new List<GameObject>();
+        Init();
         UIManager.SetCurrentUnitDead(true);
-        Start();
+    }
+    public void UnitsUIManagerKillAllInstances(){
+        UnitsUIManager.KillAllInstances();
     }
     public void EndGame(){
         if (Pause){

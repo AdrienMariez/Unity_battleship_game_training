@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
         PlayerManager = GetComponent<PlayerManager>();
+        PlayerManager.Reset();
         PlayerCanvas = GameObject.Find("UICanvas");
         PlayerMapCanvas = GameObject.Find("UIMapCanvas");
 
@@ -75,6 +76,15 @@ public class GameManager : MonoBehaviour {
             EndGame();
         } else {
             // If there isn't a winner yet, restart this coroutine so the loop continues.
+
+            foreach (UnitManager unit in m_Units) {
+                unit.Destroy();
+            }
+            // PlayerManager.UnitsUIManagerKillAllInstances();
+            
+            // Reset the assets for the player
+            PlayerManager.Reset();
+            
             // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
             StartCoroutine (GameLoop ());
         }
@@ -87,8 +97,6 @@ public class GameManager : MonoBehaviour {
 
         // Setup each unit
         for (int i = 0; i < m_Units.Length; i++) {
-            m_Units[i].Destroy();
-
             if (m_Units[i].m_UseSpawnpoint) {
                 m_Units[i].SetInstance(Instantiate(m_Units[i].m_UnitPrefab, m_Units[i].m_SpawnPoint.position, m_Units[i].m_SpawnPoint.rotation) as GameObject);
             }
@@ -132,7 +140,7 @@ public class GameManager : MonoBehaviour {
         DisableUnitsControl ();
 
         // Reset the assets for the player
-        PlayerManager.Reset();
+        // PlayerManager.Reset();
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;

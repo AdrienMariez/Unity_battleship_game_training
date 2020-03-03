@@ -83,8 +83,20 @@ public class ShipUI : MonoBehaviour {
         foreach (var element in UIElement) {
             element.GetComponent<UnitUIManager>().SetDead();
         }
+        UIElement.Clear();
         foreach (var element in UIMapElement) {
             element.GetComponent<UnitMapUIManager>().SetDead();
         }
+        UIMapElement.Clear();
+    }
+    public void KillAllUIInstances() {
+        foreach (var element in UIElement) {
+            element.GetComponent<UnitUIManager>().Destroy();
+        }
+        foreach (var element in UIMapElement) {
+            element.GetComponent<UnitMapUIManager>().Destroy();
+        }
+        UIElement.Clear();
+        UIMapElement.Clear();
     }
 }

@@ -427,4 +427,10 @@ public class ShipDamageControl : MonoBehaviour {
     }
 
     public float GetRepairRate() { return RepairRate; }
+
+    public void Destroy() {
+        if (DamageControlAlertInstance)
+                Destroy (DamageControlAlertInstance);
+        SetOpenDmgCtrl(false);
+    }
 }

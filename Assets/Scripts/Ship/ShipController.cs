@@ -1,5 +1,6 @@
 using UnityEngine;
 using Crest;
+using System.Collections;
 using System.Collections.Generic;
 
 public class ShipController : MonoBehaviour {
@@ -83,6 +84,8 @@ public class ShipController : MonoBehaviour {
         }
     }
 
+    private bool ActionPaused = false;
+    private bool ActionPaused2 = false;
     private void FixedUpdate() {
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
@@ -94,6 +97,19 @@ public class ShipController : MonoBehaviour {
         //         CallDeath();
         //     }
         // }
+        // kills all inactive ships for debug purposes
+        if (!Active && !ActionPaused) {
+            ActionPaused = !ActionPaused;
+            StartCoroutine(PauseAction());
+        }
+        if (!Active && ActionPaused2) {
+            CallDeath();
+        }
+    }
+    
+    IEnumerator PauseAction(){
+        yield return new WaitForSeconds(3f);
+        ActionPaused2= true;
     }
 
     public void ApplyDamage(float damage) {
@@ -318,16 +334,16 @@ public class ShipController : MonoBehaviour {
     public void SetDamageControl(bool damageControl) {
         if (GetComponent<TurretManager>())
             Turrets.SetDamageControl(damageControl);
-        
-        PlayerManager.SetDamageControl(damageControl);
+        if (PlayerManager != null)
+            PlayerManager.SetDamageControl(damageControl);
     }
     public void SetActive(bool activate) {
         Active = activate;
         if (GetComponent<TurretManager>())
                 Turrets.SetActive(Active);
         Movement.SetActive(Active);
-
-        // Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
+        // if (Active)
+        //     Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
         ShipAI.SetAIActive(!Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
@@ -370,15 +386,14 @@ public class ShipController : MonoBehaviour {
     public void SetDamageControlWater(int setCrew){ WaterRepairCrew = setCrew; }
     public void SetDamageControlTurrets(int setCrew){
         TurretsRepairCrew = setCrew;
-        if (GetComponent<TurretManager>()) {
+        if (GetComponent<TurretManager>() && Turrets != null) {
             Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
     }
-    public void SetDamageControlUnset(int setCrew){ Health.SetDamageControlUnset(setCrew); }
+    public void SetDamageControlUnset(int setCrew){ if (Health != null) { Health.SetDamageControlUnset(setCrew); } }
     public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
-        if (PlayerManager != null)
-            PlayerManager.SetSingleTurretStatus(status, turretNumber);
+        if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
@@ -403,9 +418,12 @@ public class ShipController : MonoBehaviour {
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
     public void DestroyUnit(){
-        UI.SetDead();
+        // Debug.Log ("Destroy unit : "+gameObject.name);
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.Destroy();
+        UI.KillAllUIInstances();
         Destroy (gameObject);
     }
 }
