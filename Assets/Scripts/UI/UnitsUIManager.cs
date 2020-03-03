@@ -12,7 +12,6 @@ public class UnitsUIManager : MonoBehaviour {
     private Camera MapCam;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
-    private GameManager GameManager;
     private bool ActionPaused = false;
     private bool ShortActionPaused = false;
     private bool MapActive = false;
@@ -28,7 +27,7 @@ public class UnitsUIManager : MonoBehaviour {
     IEnumerator PauseAction(){
         // Coroutine created to prevent too much calculus for ship behaviour
         ActionPaused = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(4f);
         ActionPaused = false;
     }
     IEnumerator PauseActionShort(){
@@ -39,63 +38,65 @@ public class UnitsUIManager : MonoBehaviour {
     }
     public void Init() {
         // ShipUIText.text = this.name;
+        // Debug.Log ("Init : UnitsUIManager");
         if (GameObject.Find("MainCamera"))
             Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
-
-        GameManager = GetComponent<GameManager>();
 
         GetUnits();
         SetDisplayStatus();
     }
 
     private void GetUnits() {
-        GameObject[] units;
-
-        units = GameObject.FindGameObjectsWithTag("Allies");
-        UnitList.AddRange(units);
-        units = GameObject.FindGameObjectsWithTag("AlliesAI");
-        UnitList.AddRange(units);
-        units = GameObject.FindGameObjectsWithTag("Axis");
-        UnitList.AddRange(units);
-        units = GameObject.FindGameObjectsWithTag("AxisAI");
-        UnitList.AddRange(units);
-        units = GameObject.FindGameObjectsWithTag("NeutralAI");
-        UnitList.AddRange(units);
+        UnitList.AddRange(GameObject.FindGameObjectsWithTag("Allies"));
+        UnitList.AddRange(GameObject.FindGameObjectsWithTag("AlliesAI"));
+        UnitList.AddRange(GameObject.FindGameObjectsWithTag("Axis"));
+        UnitList.AddRange(GameObject.FindGameObjectsWithTag("AxisAI"));
+        UnitList.AddRange(GameObject.FindGameObjectsWithTag("NeutralAI"));
         // Debug.Log ("Units : "+ UnitList.Count);
     }
     private void SetDisplayStatus(){
         CreateGameDisplay();
         CreateMapDisplay();
-        // if (!MapActive) {
-        //     CreateGameDisplay();
-        //     DestroyMapDisplay();
-        // } else if (MapActive) {
-        //     DestroyGameDisplay();
-        //     CreateMapDisplay();
-        // }
     }
-
+    private bool ActionPausedTest = false;
+    private bool ActionPausedTest2 = false;
     private void CreateGameDisplay(){
-        // Debug.Log ("CreateGameDisplay : "+ m_UnitUI);
+        // Debug.Log ("CreateGameDisplay : "+ UnitList.Count);
+
         foreach (var item in UnitList) {
+            if (item == null) {continue;}
+            // Debug.Log ("name : "+ item.name);
             TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
             if (item.GetComponent<ShipController>()){
                 item.GetComponent<ShipUI>().SetUIElement(TempUI);
             }
-            TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, item);
+            TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, item, this);
             UnitUIList.Add(TempUI);
         }
+
+        // if (!ActionPausedTest) {
+        //     ActionPausedTest = !ActionPausedTest;
+        //     StartCoroutine(PauseActionTest());
+        // }
     }
+    
+    // IEnumerator PauseActionTest(){
+    //     yield return new WaitForSeconds(1f);
+    //     KillAllInstances();
+    //     Init();
+    // }
+
     private void DestroyGameDisplay(){
 
     }
     private void CreateMapDisplay(){
         foreach (var item in UnitList) {
+            if (item == null) {continue;}
             TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
             if (item.GetComponent<ShipController>()){
                 item.GetComponent<ShipUI>().SetUIMapElement(TempUI);
             }
-            TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, item);
+            TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, item, this);
             UnitUIMapList.Add(TempUI);
         }
     }
@@ -104,11 +105,9 @@ public class UnitsUIManager : MonoBehaviour {
     }
 
     protected void FixedUpdate() {
-        // foreach (var item in UnitUIList) {
-            
-        // }
-        // foreach (var item in UnitUIMapList) {
-            
+        // if (!ActionPaused) {
+        //     Debug.Log ("units listed : "+ UnitUIList.Count);
+        //     StartCoroutine(PauseAction());
         // }
     }
 
@@ -119,12 +118,47 @@ public class UnitsUIManager : MonoBehaviour {
         // Debug.Log ("SetPlayedUnit : "+ activeUnit);
         ActiveUnit = activeUnit;
         foreach (var item in UnitUIList) {
-            item.GetComponent<UnitUIManager>().SetPlayerUnit(ActiveUnit);
+            if (item == null) { continue; }
+            else { item.GetComponent<UnitUIManager>().SetPlayerUnit(ActiveUnit); }
         }
+        foreach (var item in UnitUIMapList) {
+            if (item == null) { continue; }
+            else { item.GetComponent<UnitMapUIManager>().SetPlayerUnit(ActiveUnit); }
+        }
+    }
+
+    public void RemoveUIElement(GameObject unitGameObject){
+        UnitUIList.Remove(unitGameObject);
+    }
+    public void RemoveMapUIElement(GameObject unitGameObject){
+        UnitUIMapList.Remove(unitGameObject);
     }
 
     public void SetMap(bool active) {
         MapActive = active;
         SetDisplayStatus();
+    }
+    public void KillAllInstances() {
+        // Debug.Log ("KillAllInstances");
+        foreach (var item in UnitList) {
+            if (item == null) { continue; }
+            if (item.GetComponent<ShipController>()){
+                item.GetComponent<ShipUI>().KillAllUIInstances();
+            }
+        }
+        foreach (var item in UnitUIList) {
+            if (item == null) { continue; }
+            item.GetComponent<UnitUIManager>().Destroy();
+        }
+        foreach (var item in UnitUIMapList) {
+            if (item == null) { continue; }
+            item.GetComponent<UnitMapUIManager>().Destroy();
+        }
+        UnitList.Clear();
+        UnitUIList.Clear();
+        UnitUIMapList.Clear();
+        UnitList = new List<GameObject>();
+        UnitUIList = new List<GameObject>();
+        UnitUIMapList = new List<GameObject>();
     }
 }

@@ -27,6 +27,7 @@ namespace UI {
             private string CurrentScore;
         private Text UnitName;
         private Slider UnitHP;
+        private Image UnitHPColor;
             private float StartingHP;
             private float CurrentHP;
         private Slider ShipSpeedStep;
@@ -116,6 +117,7 @@ namespace UI {
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
             UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
+            UnitHPColor = PlayerUIInstance.transform.Find("UnitHealthSlider").Find("Fill Area").Find("Fill").GetComponent<Image>();
             ShipSpeedStep = PlayerUIInstance.transform.Find("ShipSpeedStep").GetComponent<Slider>();
             ShipCurrentSpeed = PlayerUIInstance.transform.Find("ShipCurrentSpeed").GetComponent<Text>();
             ShipTurningSpeed = PlayerUIInstance.transform.Find("ShipTurningSpeed").GetComponent<Slider>();
@@ -123,6 +125,7 @@ namespace UI {
             UnitName.text = ActiveTarget.name;
             UnitHP.maxValue = StartingHP;
             UnitHP.value = CurrentHP;
+            CheckHealthColor();
             ShipSpeedStep.value = SpeedStep;
             Score.text = CurrentScore;
         }
@@ -132,6 +135,7 @@ namespace UI {
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
             UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
+            UnitHPColor = PlayerUIInstance.transform.Find("UnitHealthSlider").Find("Fill Area").Find("Fill").GetComponent<Image>();
             ShipSpeedStep = PlayerUIInstance.transform.Find("ShipSpeedStep").GetComponent<Slider>();
             ShipCurrentSpeed = PlayerUIInstance.transform.Find("ShipCurrentSpeed").GetComponent<Text>();
             ShipTurningSpeed = PlayerUIInstance.transform.Find("ShipTurningSpeed").GetComponent<Slider>();
@@ -139,6 +143,7 @@ namespace UI {
             UnitName.text = ActiveTarget.name;
             UnitHP.maxValue = StartingHP;
             UnitHP.value = CurrentHP;
+            CheckHealthColor();
             ShipSpeedStep.value = SpeedStep;
             Score.text = CurrentScore;
         }
@@ -148,6 +153,7 @@ namespace UI {
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
             UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
+            UnitHPColor = PlayerUIInstance.transform.Find("UnitHealthSlider").Find("Fill Area").Find("Fill").GetComponent<Image>();
             ShipSpeedStep = PlayerUIInstance.transform.Find("ShipSpeedStep").GetComponent<Slider>();
             ShipCurrentSpeed = PlayerUIInstance.transform.Find("ShipCurrentSpeed").GetComponent<Text>();
             ShipTurningSpeed = PlayerUIInstance.transform.Find("ShipTurningSpeed").GetComponent<Slider>();
@@ -155,6 +161,7 @@ namespace UI {
             UnitName.text = ActiveTarget.name;
             UnitHP.maxValue = StartingHP;
             UnitHP.value = CurrentHP;
+            CheckHealthColor();
             ShipSpeedStep.value = SpeedStep;
             Score.text = CurrentScore;
         }
@@ -345,6 +352,20 @@ namespace UI {
                 }
             }
         }
+
+        private void CheckHealthColor() {
+        // updates health bar color depending on the health of the current unit
+        Color color;
+        if (CurrentHP <= (0.2f * StartingHP)) {
+            color = Color.red;
+        } else if (CurrentHP <= (0.6f * StartingHP)) {
+            color = Color.yellow;
+        } else {
+            color = new Color(0.0f, 0.75f, 0.14f);
+        }
+        if (PlayerUIInstance)
+            UnitHPColor.color = color;
+    }
 
         protected void OpenPauseUI(){
             PauseUIInstance = Instantiate(m_PauseUI, PlayerUI.transform);

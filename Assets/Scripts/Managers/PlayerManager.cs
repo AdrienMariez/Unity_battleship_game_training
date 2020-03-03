@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         UnitsUIManager = GetComponent<UnitsUIManager>();
         UnitsUIManager.SetMapCamera(m_MapCamera);
-        FindAllPossibleTargets();
+        // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
         // UnitsUIManager.Init();
         // Debug.Log ("PlayerUnits.Count : "+ PlayerUnits.Count);
@@ -50,8 +50,10 @@ public class PlayerManager : MonoBehaviour
     }
 
     protected void Update() {
-        if (ActiveTarget == null && !ActiveTargetSet)
-            SetNextTarget();
+        if (ActiveTarget == null && !ActiveTargetSet) {
+            // SetNextTarget();
+            SetEnabledUnit();
+        }
         if (!Pause) {     
             if (Input.GetButtonDown ("HideUI"))
                 SetHideUI();
@@ -105,7 +107,7 @@ public class PlayerManager : MonoBehaviour
 
     private void SetNextTarget() {
         //check all playable units
-        FindAllPossibleTargets();
+        // FindAllPossibleTargets();
 
         //If we overflow, get back to the beginning
         if (CurrentTarget >= (PlayerUnits.Count-1)) {
@@ -119,7 +121,7 @@ public class PlayerManager : MonoBehaviour
             SetEnabledUnit();
     }
     private void SetPreviousTarget() {
-        FindAllPossibleTargets();
+        // FindAllPossibleTargets();
 
         if (CurrentTarget <= 0) {
             CurrentTarget = PlayerUnits.Count-1;
@@ -133,33 +135,49 @@ public class PlayerManager : MonoBehaviour
     private void FindAllPossibleTargets() {
         // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
         // PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
+        PlayerUnits = new List<GameObject>();
         PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
-        Debug.Log ("Playable units : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
-
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
+    }
+    public void UnitSpawned(GameObject unitGameObject) {
+        // Debug.Log ("UnitDead : "+ unitGameObject.name);
+        if (unitGameObject.tag == PlayerTeam.ToString("g")) {
+            PlayerUnits.Add(unitGameObject);
+        }
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
+    }
+    public void UnitDead(GameObject unitGameObject) {
+        // Debug.Log ("UnitDead : "+ unitGameObject.name);
+        PlayerUnits.Remove(unitGameObject);
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
     }
 
     private void SetEnabledUnit() {
         if (PlayerUnits.Count == 0){
-            Debug.Log ("Case 1");
+            // Debug.Log ("Case 1");
+            FindAllPossibleTargets();
             ActiveTargetSet = false;
             return;
         } else if (PlayerUnits.Count == 1) {
-            Debug.Log ("Case 2");
+            // Debug.Log ("Case 2");
             ActiveTargetSet = true;
         } else if (PlayerUnits[CurrentTarget] == null) {
-            Debug.Log ("Case 3");
+            // Debug.Log ("Case 3");
             ActiveTargetSet = false;
+            SetNextTarget();
+            return;
         } else {
-            Debug.Log ("Case 4");
+            // Debug.Log ("Case 4");
             ActiveTargetSet = true;
         }
         ActiveTarget = PlayerUnits[CurrentTarget];
-        Debug.Log ("ActiveTarget : "+ ActiveTarget);
+        // Debug.Log ("ActiveTarget : "+ ActiveTarget);
         // Debug.Log ("CurrentTarget : "+ CurrentTarget);
         // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
         UIManager.SetTargetType("Unknown");
 
         for (int i = 0; i < PlayerUnits.Count; i++){
+            if (PlayerUnits[i] == null){ continue; }
             // If it's a tank :
             if (PlayerUnits[i].GetComponent<TankMovement>()) {
                 if (i == CurrentTarget) {
@@ -253,6 +271,7 @@ public class PlayerManager : MonoBehaviour
     public void Reset(){
         // PlayerUnits.Clear();
         PlayerUnits = new List<GameObject>();
+        ActiveTarget = null;
         Init();
         UIManager.SetCurrentUnitDead(true);
     }

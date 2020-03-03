@@ -189,15 +189,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TurretType: 0
-  m_Shell: {fileID: 1340822690796195968, guid: b0b4806c257f89d4a9e828e778bfd547, type: 3}
+  m_Shell: {fileID: 1340822690796195968, guid: e78fe77463bffa149ae44f75a5c1e220, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_MaxRange: 29000
-  m_MinRange: 500
-  m_MuzzleVelocity: 835
-  m_ReloadTime: 10
+  m_MaxRange: 1800
+  m_MinRange: 300
+  m_MuzzleVelocity: 850
+  m_ReloadTime: 5
   m_Precision: 1.547
   debug: 0
 --- !u!114 &536144026725449547

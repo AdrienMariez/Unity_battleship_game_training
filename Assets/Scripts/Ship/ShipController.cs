@@ -98,19 +98,19 @@ public class ShipController : MonoBehaviour {
         //     }
         // }
         // kills all inactive ships for debug purposes
-        if (!Active && !ActionPaused) {
-            ActionPaused = !ActionPaused;
-            StartCoroutine(PauseAction());
-        }
-        if (!Active && ActionPaused2) {
-            CallDeath();
-        }
+        // if (!Active && !ActionPaused) {
+        //     ActionPaused = !ActionPaused;
+        //     StartCoroutine(PauseAction());
+        // }
+        // if (!Active && ActionPaused2 && !Dead) {
+        //     CallDeath();
+        // }
     }
     
-    IEnumerator PauseAction(){
-        yield return new WaitForSeconds(3f);
-        ActionPaused2= true;
-    }
+    // IEnumerator PauseAction(){
+    //     yield return new WaitForSeconds(3f);
+    //     ActionPaused2= true;
+    // }
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
@@ -320,8 +320,11 @@ public class ShipController : MonoBehaviour {
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
         UI.SetDead();
-        if (Active)
-            PlayerManager.SetCurrentUnitDead(true);
+        if (PlayerManager) {
+            if (Active)
+                PlayerManager.SetCurrentUnitDead(true);
+            PlayerManager.UnitDead(this.gameObject);
+        }
     }
 
     public void SetMap(bool map) {
@@ -367,6 +370,7 @@ public class ShipController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){
         PlayerManager = playerManager;
+        PlayerManager.UnitSpawned(this.gameObject);
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
     }

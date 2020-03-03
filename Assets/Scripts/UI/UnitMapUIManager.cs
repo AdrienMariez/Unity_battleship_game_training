@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class UnitMapUIManager : MonoBehaviour {
 
     private Camera MapCam;
+    private UnitsUIManager UnitsUIManager;
     private GameObject Unit;
     private GameObject ActiveUnit;
     private GameObject EnemyTargetUnit;
@@ -36,14 +37,19 @@ public class UnitMapUIManager : MonoBehaviour {
         yield return new WaitForSeconds(0.1f);
         ShortActionPaused = false;
     }
-    public void InitializeUIModule(Camera cam, GameObject unit) {
+    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
         MapCam = cam;
         Unit = unit;
         MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
         CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
+        UnitsUIManager = unitsUIManager;
     }
 
     protected void FixedUpdate() {
+        if (Unit == null) {
+            Destroy();
+            return;
+        }
         // Debug.Log (this.gameObject.name+" calculus : " + Vector3.Dot(MapCam.transform.forward, heading));
         Vector3 screenPos = MapCam.WorldToScreenPoint(Unit.transform.position);
         Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + 30f));
@@ -81,11 +87,13 @@ public class UnitMapUIManager : MonoBehaviour {
     public void SetDead() {
         this.transform.Find("Name").GetComponent<Text>().color = Color.grey;
         this.transform.Find("Distance").GetComponent<Text>().color = Color.grey;
+        UnitsUIManager.RemoveMapUIElement(this.gameObject);
         StartCoroutine(WaitForDestroy());
         // Destroy (this.gameObject);
     }
     IEnumerator WaitForDestroy(){
         yield return new WaitForSeconds(5f);
-        Destroy (this.gameObject);
+        Destroy();
     }
+    public void Destroy() { Destroy (this.gameObject); }
 }

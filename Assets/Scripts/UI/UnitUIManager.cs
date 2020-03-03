@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class UnitUIManager : MonoBehaviour {
 
     private Camera Cam;
+    private UnitsUIManager UnitsUIManager;
     private GameObject Unit;
     private GameObject ActiveUnit;
     private GameObject EnemyTargetUnit;
@@ -36,16 +37,23 @@ public class UnitUIManager : MonoBehaviour {
         yield return new WaitForSeconds(0.1f);
         ShortActionPaused = false;
     }
-    public void InitializeUIModule(Camera cam, GameObject unit) {
+    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
+        // Debug.Log ("InitializeUIModule");
         Cam = cam;
         Unit = unit;
         MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
         CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
+        UnitsUIManager = unitsUIManager;
     }
 
     protected void FixedUpdate() {
+        // Debug.Log ("Unit : "+ Unit+"Cam : "+ Cam);
+        if (Unit == null) {
+            Destroy();
+            return;
+        }
         var heading = Unit.transform.position - Cam.transform.position;
-        
+
         if (Vector3.Dot(Cam.transform.forward, heading) > 0 && !UnitCurrentlyPlayed) {
             // Update position of UI if it is supposed to be visible
             // Debug.Log (this.gameObject.name+" calculus : " + Vector3.Dot(Cam.transform.forward, heading));
@@ -79,6 +87,7 @@ public class UnitUIManager : MonoBehaviour {
         } else {
             UnitCurrentlyPlayed = false;
         }
+        // Debug.Log (" UnitCurrentlyPlayed : " + UnitCurrentlyPlayed);
     }
 
     public void SetCurrentHealth(float HP, Color barColor) {
@@ -89,11 +98,14 @@ public class UnitUIManager : MonoBehaviour {
     public void SetDead() {
         this.transform.Find("Name").GetComponent<Text>().color = Color.grey;
         this.transform.Find("Distance").GetComponent<Text>().color = Color.grey;
+        UnitsUIManager.RemoveUIElement(this.gameObject);
         StartCoroutine(WaitForDestroy());
-        // Destroy (this.gameObject);
     }
     IEnumerator WaitForDestroy(){
         yield return new WaitForSeconds(5f);
+        // Destroy();
         Destroy (this.gameObject);
     }
+    public void Destroy() { //Debug.Log ("Destroy");
+    Destroy (this.gameObject); }
 }
