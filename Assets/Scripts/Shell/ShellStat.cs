@@ -22,7 +22,7 @@ public class ShellStat : MonoBehaviour
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
     public float m_ArmorPenetration = 100f;
     public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
-    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
+    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion models can be and are still affected.
 
     private Rigidbody rb;
     private float MuzzleVelocity;
@@ -82,7 +82,12 @@ public class ShellStat : MonoBehaviour
 
     private void FixedUpdate () {
         CalculateTrajectoryWithRange ();
-        if (transform.position.y <= 0f) {
+        if (ArmorPenetrated) {
+            CheckForExplosion();
+        }
+        if (transform.position.y <= 0f && !ArmorPenetrated) {
+            //If there wasn't any penetration before, destroy the shell with a nice splash effect when the water is hit
+            // Only if there was no penetration before or else there could be splashes inside ships and it would be silly
             ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
             // Unparent the particles from the shell.
             ExplosionWaterInstance.transform.parent = null;
@@ -171,51 +176,84 @@ public class ShellStat : MonoBehaviour
         transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
     }
 
-    private void OnTriggerEnter (Collider other) {
+    private bool ArmorPenetrated = false;
+    private float CollisionArmor;
+    private float PenetrationRatio;
+    private void OnTriggerEnter (Collider colliderHit) {
+        HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
+        TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
+        float armor;
+        bool suitableTarget = false;
+        if (targetHitboxComponent != null) {
+            CollisionArmor = targetHitboxComponent.GetElementArmor();
+            suitableTarget = true;
+        } else if (targetTurretHealth != null) {
+            CollisionArmor = targetTurretHealth.GetElementArmor();
+            suitableTarget = true;
+        }
+        if (suitableTarget) {
+            if (m_ArmorPenetration < CollisionArmor) {
+                return;
+            } else {
+                // Calculate the ratio of penetration for use in CheckForExplosion
+                PenetrationRatio = 100 - ( (CollisionArmor * 100) / m_ArmorPenetration);
+                // Minimum penetration ration if 20 %
+                PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
+                ApplyDecal(colliderHit);
+                if (!ArmorPenetrated) {   
+                CheckForExplosion();
+                ArmorPenetrated = true;
+                }
+            }
+        }
+    }
+    private bool DecalApplied = false;
+    private void ApplyDecal(Collider colliderHit) {
+        if (!DecalApplied) {
+            DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
+            DamageEffectInstance.transform.parent = colliderHit.transform;
+            DecalApplied = true;
+        }
+    }
+    private void CheckForExplosion() {
+        /*
+            Each frame after penetration of an armor, we make a random check with the basis of the penetration proportion.
+            If a shell penetration is only 20% over the armor, it has 80% chance to explode at each frame.
+            But if a shell overpenetrates an armor, it will have a lot of chance to overpenetrate
+        */
+        float ChanceToExplodeAfterPenetration = Random.Range(0, 100);
+        if (ChanceToExplodeAfterPenetration < PenetrationRatio) {
+            ShellExplosion();
+        } else {
+            //reduce shell speed when it has entered a body
+                SetMuzzleVelocity(0.5f*MuzzleVelocity);
+        }
+    }
+    private void ShellExplosion() {
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
         Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_HitMask);
 
-        // Debug.Log( "collide (name) : " + collide.collider.gameObject.name );
-        // Debug.Log("Collider = "+ other);
-
         // Go through all the colliders...
-        for (int i = 0; i < colliders.Length; i++) {
-            HitboxComponent targetHitboxComponent = colliders[i].GetComponent<HitboxComponent> ();
-            TurretHealth targetTurretHealth = colliders[i].GetComponent<TurretHealth> ();
+        foreach (var collider in colliders) {
+            HitboxComponent targetHitboxComponent = collider.GetComponent<HitboxComponent> ();
+            TurretHealth targetTurretHealth = collider.GetComponent<TurretHealth> ();
             float damage;
-            bool decalApplied = false;
 
             if (targetHitboxComponent != null) {
-                if (m_ArmorPenetration < targetHitboxComponent.m_ElementArmor)
-                    continue;
-
-                // Calculate the amount of damage the target should take based on it's distance from the shell.
-                damage = CalculateDamage (colliders[i].transform.position);
-
+                // Calculate the amount of damage the target should take based on its distance from the shell.
+                damage = CalculateDamage (collider);
+                // damage = CalculateDamage (collider.transform.position);
                 // Deal this damage to the component.
                 targetHitboxComponent.TakeDamage (damage);
                 // Debug.Log("damage = "+ damage);
-
-                if (!decalApplied) {
-                    DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
-                    DamageEffectInstance.transform.parent = colliders[i].transform;
-                    decalApplied = true;
-                }
-                
             }
 
             if (targetTurretHealth != null) {
-                if (m_ArmorPenetration < targetTurretHealth.m_ElementArmor)
-                    continue;
-
                 // Calculate the amount of damage the target should take based on it's distance from the shell.
-                damage = CalculateDamage (colliders[i].transform.position);
+                damage = CalculateDamage (collider);
 
                 // Deal this damage to the component.
                 targetTurretHealth.TakeDamage (damage);
-
-                // DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
-                // DamageEffectInstance.transform.parent = colliders[i].transform;
             }
 
 
@@ -226,31 +264,19 @@ public class ShellStat : MonoBehaviour
         ExplosionInstance.GetComponent<AudioSource>().Play();
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
         Destroy (gameObject);
-
-
-        // DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
-        // DamageEffectInstance.transform.parent = null;
     }
+    private float CalculateDamage (Collider colliderDamaged) {
+        // Calculate the distance from the shell to the target collider bounds.
+        Vector3 closestPoint = colliderDamaged.ClosestPointOnBounds(transform.position);
+        float distance = Vector3.Distance(closestPoint, transform.position);
+        // Debug.Log("distance = "+ distance);
 
-    private float CalculateDamage (Vector3 targetPosition) {
-        // Create a vector from the shell to the target.
-        Vector3 explosionToTarget = targetPosition - transform.position;
-
-        // Calculate the distance from the shell to the target.
-        float explosionDistance = explosionToTarget.magnitude;
-
-        // Calculate the proportion of the maximum distance (the explosionRadius) the target is away.
-        float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
-
-        // Debug.Log("m_ExplosionRadius = "+ m_ExplosionRadius + " - explosionDistance = "+ explosionDistance);
-        // Debug.Log("explosionDistance = "+ explosionDistance);
-
-        // Calculate damage as this proportion of the maximum possible damage.
+        // Calculate the proportion of the maximum distance (m_ExplosionRadius) the target is away and calc damages.
+        float relativeDistance = (m_ExplosionRadius - distance) / m_ExplosionRadius;
         float damage = relativeDistance * m_MaxDamage;
 
         // Make sure that the minimum damage is always 0. (prevent negative)
         damage = Mathf.Max (0f, damage);
-
         return damage;
     }
 

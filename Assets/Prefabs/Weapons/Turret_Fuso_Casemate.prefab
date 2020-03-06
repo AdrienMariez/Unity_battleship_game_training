@@ -194,7 +194,7 @@ MonoBehaviour:
   - {fileID: 6972174185670022508}
   m_ShootingAudio: {fileID: 6521737640121520423}
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
-  m_MaxRange: 1800
+  m_MaxRange: 18000
   m_MinRange: 300
   m_MuzzleVelocity: 850
   m_ReloadTime: 5

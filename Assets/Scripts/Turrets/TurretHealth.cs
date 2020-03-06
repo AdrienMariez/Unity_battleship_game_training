@@ -93,4 +93,5 @@ public class TurretHealth : MonoBehaviour {
         }
     }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
+    public float GetElementArmor(){ return m_ElementArmor; }
 }

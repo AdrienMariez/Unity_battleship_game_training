@@ -49,7 +49,8 @@ public class ShipController : MonoBehaviour {
         underwaterFrontLeft,
         underwaterFrontRight,
         underwaterBackLeft,
-        underwaterBackRight
+        underwaterBackRight,
+        armorPlate
     }
 
     private void Awake() {

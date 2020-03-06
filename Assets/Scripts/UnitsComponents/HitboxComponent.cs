@@ -22,6 +22,7 @@ public class HitboxComponent : MonoBehaviour {
     private float EngineRepairRate;
     private float FireRepairRate;
     private bool ImmortalComponent = false;
+    private bool ArmorComponent = false;
     private bool BuoyancyComponent = false;
     private bool Dead = false;
 
@@ -36,6 +37,9 @@ public class HitboxComponent : MonoBehaviour {
         if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
             BuoyancyComponent = true;
             ImmortalComponent = true;
+        }
+        if (m_ElementType == ShipController.ElementType.armorPlate) {
+            ArmorComponent = true;
         }
         CurrentHealth = m_ElementHealth;
         if (Emitter) {
@@ -61,10 +65,10 @@ public class HitboxComponent : MonoBehaviour {
 
     public void TakeDamage (float amount) {
         // If a underwater armor is damaged, apply water damage
-        if (ImmortalComponent) {
+        if (BuoyancyComponent) {
             ShipController.ApplyDamage(amount);
             ShipController.BuoyancyCompromised(m_ElementType, amount);
-        } else {
+        } else if (!ArmorComponent) {
             // Debug.Log("amount = "+ amount);
             // Reduce current health by the amount of damage done.
             if (!ImmortalComponent)
@@ -142,4 +146,5 @@ public class HitboxComponent : MonoBehaviour {
     public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }
     public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
     public ShipController.ElementType GetElementType(){ return m_ElementType; }
+    public float GetElementArmor(){ return m_ElementArmor; }
 }
