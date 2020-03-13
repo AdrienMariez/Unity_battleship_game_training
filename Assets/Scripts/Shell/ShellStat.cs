@@ -18,7 +18,9 @@ public class ShellStat : MonoBehaviour
     [SerializeField] private GameObject m_DamageEffect;
     private GameObject DamageEffectInstance;
 
-    public float m_MaxDamage = 100f;                    // The amount of damage done if the explosion is centred on a tank.
+    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction od th maximum damage dealt.")]
+    public float m_MaxDamage = 100f;                    // The maximum amount of damage done if the explosion is centred on a damage model.
+    public float m_MinDamage = 10f;                    // The minimum amount of damage done if the explosion is centred on a damage model.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
     public float m_ArmorPenetration = 100f;
     public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
@@ -185,19 +187,21 @@ public class ShellStat : MonoBehaviour
         float armor;
         bool suitableTarget = false;
         if (targetHitboxComponent != null) {
-            CollisionArmor = targetHitboxComponent.GetElementArmor();
-            suitableTarget = true;
+            if (!targetHitboxComponent.GetBuoyancyComponent())
+                CollisionArmor = targetHitboxComponent.GetElementArmor();
+                suitableTarget = true;
         } else if (targetTurretHealth != null) {
             CollisionArmor = targetTurretHealth.GetElementArmor();
             suitableTarget = true;
         }
         if (suitableTarget) {
-            if (m_ArmorPenetration < CollisionArmor) {
+            if (m_ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
+                ShellExplosionFX();
                 return;
             } else {
                 // Calculate the ratio of penetration for use in CheckForExplosion
                 PenetrationRatio = 100 - ( (CollisionArmor * 100) / m_ArmorPenetration);
-                // Minimum penetration ration if 20 %
+                // Minimum penetration ratio is 20 %
                 PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
                 ApplyDecal(colliderHit);
                 if (!ArmorPenetrated) {   
@@ -233,6 +237,8 @@ public class ShellStat : MonoBehaviour
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
         Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_HitMask);
 
+        bool hullDamaged = false;
+
         // Go through all the colliders...
         foreach (var collider in colliders) {
             HitboxComponent targetHitboxComponent = collider.GetComponent<HitboxComponent> ();
@@ -240,6 +246,14 @@ public class ShellStat : MonoBehaviour
             float damage;
 
             if (targetHitboxComponent != null) {
+                // This small check prevents any multiple damages on hull damage models with one shell
+                if (targetHitboxComponent.GetElementType() == ShipController.ElementType.hull) {
+                    if (hullDamaged) {
+                        continue;
+                    } else {
+                       hullDamaged = true; 
+                    }
+                }
                 // Calculate the amount of damage the target should take based on its distance from the shell.
                 damage = CalculateDamage (collider);
                 // damage = CalculateDamage (collider.transform.position);
@@ -258,6 +272,9 @@ public class ShellStat : MonoBehaviour
 
 
         }
+        ShellExplosionFX();
+    }
+    private void ShellExplosionFX(){
         ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
         ExplosionInstance.transform.parent = null;
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
@@ -273,7 +290,9 @@ public class ShellStat : MonoBehaviour
 
         // Calculate the proportion of the maximum distance (m_ExplosionRadius) the target is away and calc damages.
         float relativeDistance = (m_ExplosionRadius - distance) / m_ExplosionRadius;
-        float damage = relativeDistance * m_MaxDamage;
+        
+        float damage = Random.Range(m_MinDamage, m_MaxDamage);
+        damage = relativeDistance * damage;
 
         // Make sure that the minimum damage is always 0. (prevent negative)
         damage = Mathf.Max (0f, damage);

@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ElementHealth: 200
-  m_ElementArmor: 80
+  m_ElementArmor: 279
   debug: 0
 --- !u!114 &1653871051627078444
 MonoBehaviour:

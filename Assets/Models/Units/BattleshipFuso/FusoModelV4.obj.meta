@@ -1,0 +1,167 @@
+fileFormatVersion: 2
+guid: 160c749e201e86d40a52f8c2b6bb9b9e
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: lod0_2_3_fuso
+    100004: lod0_2_3_fuso2
+    100006: lod0_2_3_fuso3
+    100008: lod1_2_3_fuso
+    100010: lod1_2_3_fuso2
+    100012: lod1_2_3_fuso3
+    100014: lod2_3_fuso
+    100016: lod2only_fuso
+    100018: lod2only_fuso2
+    100020: lod3_fuso
+    100022: lod3_fuso2
+    100024: lod4_fuso
+    400000: //RootNode
+    400002: lod0_2_3_fuso
+    400004: lod0_2_3_fuso2
+    400006: lod0_2_3_fuso3
+    400008: lod1_2_3_fuso
+    400010: lod1_2_3_fuso2
+    400012: lod1_2_3_fuso3
+    400014: lod2_3_fuso
+    400016: lod2only_fuso
+    400018: lod2only_fuso2
+    400020: lod3_fuso
+    400022: lod3_fuso2
+    400024: lod4_fuso
+    2100000: basic_metal_rusted
+    2100002: metal_deck
+    2100004: metal_plate_rusted
+    2100006: metal_rusted_black
+    2100008: metal_plate_rusted_light
+    2100010: wire_057008136
+    2100012: IJNElements
+    2100014: wooden_deck
+    2100016: gold
+    2100018: ijn_side
+    2100020: wire_153228153
+    2100022: Linoeum
+    2100024: wire_086086086
+    2300000: lod0_2_3_fuso
+    2300002: lod0_2_3_fuso2
+    2300004: lod0_2_3_fuso3
+    2300006: lod1_2_3_fuso
+    2300008: lod1_2_3_fuso2
+    2300010: lod1_2_3_fuso3
+    2300012: lod2_3_fuso
+    2300014: lod2only_fuso
+    2300016: lod2only_fuso2
+    2300018: lod3_fuso
+    2300020: lod3_fuso2
+    2300022: lod4_fuso
+    3300000: lod0_2_3_fuso
+    3300002: lod0_2_3_fuso2
+    3300004: lod0_2_3_fuso3
+    3300006: lod1_2_3_fuso
+    3300008: lod1_2_3_fuso2
+    3300010: lod1_2_3_fuso3
+    3300012: lod2_3_fuso
+    3300014: lod2only_fuso
+    3300016: lod2only_fuso2
+    3300018: lod3_fuso
+    3300020: lod3_fuso2
+    3300022: lod4_fuso
+    4300000: lod0_2_3_fuso
+    4300002: lod0_2_3_fuso2
+    4300004: lod0_2_3_fuso3
+    4300006: lod1_2_3_fuso
+    4300008: lod1_2_3_fuso2
+    4300010: lod1_2_3_fuso3
+    4300012: lod2_3_fuso
+    4300014: lod2only_fuso
+    4300016: lod2only_fuso2
+    4300018: lod3_fuso
+    4300020: lod3_fuso2
+    4300022: lod4_fuso
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

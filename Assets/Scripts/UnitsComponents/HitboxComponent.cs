@@ -3,7 +3,7 @@ public class HitboxComponent : MonoBehaviour {
 
     [Tooltip("Initial HP of the element")]
     public float m_ElementHealth = 100.0f;
-    [Tooltip("Armor of the element (equivalent in rolled steel mm)")]
+    [Tooltip("Armor of the element (equivalent in rolled steel mm) Buoyancy elements do not use this (use conventionnal armors or hull parts to make belt armors)")]
     public float m_ElementArmor = 100.0f;
     [Tooltip("Type of element")]
     public ShipController.ElementType m_ElementType = ShipController.ElementType.hull;
@@ -147,4 +147,5 @@ public class HitboxComponent : MonoBehaviour {
     public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
     public ShipController.ElementType GetElementType(){ return m_ElementType; }
     public float GetElementArmor(){ return m_ElementArmor; }
+    public bool GetBuoyancyComponent(){ return BuoyancyComponent; }
 }
