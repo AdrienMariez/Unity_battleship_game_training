@@ -23,7 +23,10 @@ public class ShipUI : MonoBehaviour {
         // UIElement = uiElement;
         uiElement.gameObject.name = Name;
         uiElement.transform.Find("Name").GetComponent<Text>().text = Name;
-        SetTextColor(uiElement);
+        // SetTextColor(uiElement);
+        uiElement.transform.Find("Name").GetComponent<Text>().color = SetTextColor();
+        uiElement.transform.Find("Distance").GetComponent<Text>().color = SetTextColor();
+        uiElement.transform.Find("Pointer").GetComponent<Image>().color = SetTextColor();
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
         UIElement.Add(uiElement);
@@ -32,13 +35,15 @@ public class ShipUI : MonoBehaviour {
         // UIElement = uiElement;
         uiElement.gameObject.name = Name;
         uiElement.transform.Find("Name").GetComponent<Text>().text = Name;
-        SetTextColor(uiElement);
+        // SetTextColor(uiElement);
+        uiElement.transform.Find("Name").GetComponent<Text>().color = SetTextColor();
+        uiElement.transform.Find("Distance").GetComponent<Text>().color = SetTextColor();
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
         UIMapElement.Add(uiElement);
     }
     
-    private void SetTextColor(GameObject uiElement) {
+    private Color SetTextColor() {
         Color color;
         if (Team == "Allies") {
             color = new Color(0f, 0.47f, 1f, 1f);
@@ -51,8 +56,9 @@ public class ShipUI : MonoBehaviour {
         } else{
             color = Color.yellow;
         }
-        uiElement.transform.Find("Name").GetComponent<Text>().color = color;
-        uiElement.transform.Find("Distance").GetComponent<Text>().color = color;
+        return color;
+        // uiElement.transform.Find("Name").GetComponent<Text>().color = color;
+        // uiElement.transform.Find("Distance").GetComponent<Text>().color = color;
     }
 
     public void SetCurrentHealth(float HP) {

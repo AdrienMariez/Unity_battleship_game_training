@@ -19,6 +19,11 @@ public class UnitUIManager : MonoBehaviour {
     private bool BehindCamera = false;  // This will maybe have to go
     private string DistanceString;
 
+    private GameObject UIName;
+    private GameObject UIDistance;
+    private GameObject UIHealth;
+    private GameObject UIPointer;
+
     private float MaximumHealth;
     private float CurrentHealth;
     const string RangeDisplayMeter = "{0} m";
@@ -41,6 +46,10 @@ public class UnitUIManager : MonoBehaviour {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
         Unit = unit;
+        UIName = this.transform.Find("Name").gameObject;
+        UIDistance = this.transform.Find("Distance").gameObject;
+        UIHealth = this.transform.Find("Health").gameObject;
+        UIPointer = this.transform.Find("Pointer").gameObject;
         MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
         CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
         UnitsUIManager = unitsUIManager;
@@ -60,19 +69,32 @@ public class UnitUIManager : MonoBehaviour {
             Vector3 screenPos = Cam.WorldToScreenPoint(Unit.transform.position);
             Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + 30f));
             this.transform.position  = updatedPos;
+            // Debug.Log (this.gameObject.name+"  - screenPos : " + screenPos);
 
-            // Update distance text
-            if (!UnitCurrentlyPlayed) {
-                float distance = (Unit.transform.position - Cam.transform.position).magnitude;
-                if (distance > 999) {
-                    distance = (Mathf.Round(distance / 100)) / 10f;
-                    DistanceString = string.Format(RangeDisplayKilometer, distance);
+            if (screenPos.x >= 400 && screenPos.x <= 600 && screenPos.y >= 450 && screenPos.y <= 550){
+                UIName.SetActive(true);
+                UIDistance.SetActive(true);
+                UIHealth.SetActive(true);
+                UIPointer.SetActive(false);
+
+                // Update distance text
+                if (!UnitCurrentlyPlayed) {
+                    float distance = (Unit.transform.position - Cam.transform.position).magnitude;
+                    if (distance > 999) {
+                        distance = (Mathf.Round(distance / 100)) / 10f;
+                        DistanceString = string.Format(RangeDisplayKilometer, distance);
+                    } else {
+                        DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
+                    }
+                    UIDistance.GetComponent<Text>().text = DistanceString;
                 } else {
-                    DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
+                    UIDistance.GetComponent<Text>().text = "Played unit";
                 }
-                this.transform.Find("Distance").GetComponent<Text>().text = DistanceString;
             } else {
-                this.transform.Find("Distance").GetComponent<Text>().text = "Played unit";
+                UIName.SetActive(false);
+                UIDistance.SetActive(false);
+                UIHealth.SetActive(false);
+                UIPointer.SetActive(true);
             }
         } else {
             // put the UI away if it is not visible
@@ -91,13 +113,14 @@ public class UnitUIManager : MonoBehaviour {
     }
 
     public void SetCurrentHealth(float HP, Color barColor) {
-        this.transform.Find("Health").GetComponent<Slider>().value = HP;
-        this.transform.Find("Health").Find("FillArea").Find("Fill").GetComponent<Image>().color = barColor;
+        UIHealth.transform.GetComponent<Slider>().value = HP;
+        UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = barColor;
     }
 
     public void SetDead() {
-        this.transform.Find("Name").GetComponent<Text>().color = Color.grey;
-        this.transform.Find("Distance").GetComponent<Text>().color = Color.grey;
+        UIName.GetComponent<Text>().color = Color.grey;
+        UIDistance.GetComponent<Text>().color = Color.grey;
+        UIPointer.GetComponent<Image>().color = Color.grey;
         UnitsUIManager.RemoveUIElement(this.gameObject);
         StartCoroutine(WaitForDestroy());
     }

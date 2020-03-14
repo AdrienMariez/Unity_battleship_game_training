@@ -23,6 +23,10 @@ TextureImporter:
     21300036: UIVisorAA
     21300038: UIVisorArtillery
     21300040: uiTurretsAuto
+    21300042: UIOrderTelegraphBG
+    21300044: UIOrderTelegraphHandle
+    21300046: UITurnTelegraphBG
+    21300048: UITurnTelegraphHandle
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -520,6 +524,86 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e38484bf86b72154fba129ee1f4eb69e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIOrderTelegraphBG
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 0
+        width: 67
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b722fc0658b78fe47bab7470ccf5d532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIOrderTelegraphHandle
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 1
+        width: 23
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f67d6a434f2dde241b30a3f3c4fa8d02
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UITurnTelegraphBG
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 55
+        width: 24
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0374e12f0c341f84dad8a3392851bdff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UITurnTelegraphHandle
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 1
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e0e452afa6f1124995028dbef889f31
       vertices: []
       indices: 
       edges: []

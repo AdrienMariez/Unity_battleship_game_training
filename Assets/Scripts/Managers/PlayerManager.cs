@@ -115,9 +115,11 @@ public class PlayerManager : MonoBehaviour
         } else {
             CurrentTarget += 1;
         }
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
+        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
         
         //enable or disable user inputs for units disabled.
-        if (PlayerUnits.Count > 1 ||  !ActiveTargetSet)
+        if (PlayerUnits.Count > 1 || !ActiveTargetSet)
             SetEnabledUnit();
     }
     private void SetPreviousTarget() {
@@ -128,7 +130,10 @@ public class PlayerManager : MonoBehaviour
         } else {
             CurrentTarget -= 1;
         }
-        if (PlayerUnits.Count > 1 ||  !ActiveTargetSet)
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
+        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
+
+        if (PlayerUnits.Count > 1 || !ActiveTargetSet)
             SetEnabledUnit();
     }
 
