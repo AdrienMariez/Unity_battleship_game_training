@@ -56,7 +56,7 @@ public class UnitUIManager : MonoBehaviour {
     }
 
     protected void FixedUpdate() {
-        // Debug.Log ("Unit : "+ Unit+"Cam : "+ Cam);
+        // Debug.Log ("Unit : "+ Unit+" - Cam : "+ Cam);
         if (Unit == null) {
             Destroy();
             return;

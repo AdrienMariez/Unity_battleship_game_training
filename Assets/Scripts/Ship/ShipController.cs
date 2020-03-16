@@ -8,6 +8,7 @@ public class ShipController : MonoBehaviour {
     public GameObject[] m_ShipComponents;
     private bool Active = false;
     private bool Dead = false;
+    private GameManager.Teams Team;
 
     private GameManager GameManager;
     private PlayerManager PlayerManager;
@@ -302,7 +303,6 @@ public class ShipController : MonoBehaviour {
 
         // Debug.Log("DEATH"+Dead);
         Dead = true;
-        tag = "Untagged";
 
         // Sink the ship
         if (TargetRotationX > 1 && TargetRotationZ > 5 || TargetRotationX < -1 && TargetRotationZ < -5) {
@@ -324,8 +324,10 @@ public class ShipController : MonoBehaviour {
         if (PlayerManager) {
             if (Active)
                 PlayerManager.SetCurrentUnitDead(true);
-            PlayerManager.UnitDead(this.gameObject);
+            PlayerManager.UnitDead(this.gameObject, Team);
         }
+
+        tag = "Untagged";
     }
 
     public void SetMap(bool map) {
@@ -354,10 +356,11 @@ public class ShipController : MonoBehaviour {
             DamageControl.SetActive(Active);
     }
     
-    public void SetTag(string team){
-        gameObject.tag = team;
-        UI.SetUnitTeam(team);
-        ShipAI.SetUnitTeam(team);
+    public void SetTag(GameManager.Teams team){
+        Team = team;
+        gameObject.tag = team.ToString("g");
+        UI.SetUnitTeam(team.ToString("g"));
+        ShipAI.SetUnitTeam(team.ToString("g"));
     }
     public void SetName(string name){
         gameObject.name = name;
@@ -371,7 +374,7 @@ public class ShipController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){
         PlayerManager = playerManager;
-        PlayerManager.UnitSpawned(this.gameObject);
+        PlayerManager.UnitSpawned(this.gameObject, Team);
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
     }

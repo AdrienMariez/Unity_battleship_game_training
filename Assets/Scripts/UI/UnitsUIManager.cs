@@ -12,11 +12,13 @@ public class UnitsUIManager : MonoBehaviour {
     private Camera MapCam;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
+    private GameManager.Teams PlayerTeam;
     private bool ActionPaused = false;
     private bool ShortActionPaused = false;
     private List <GameObject> UnitList = new List<GameObject>();
     private List <GameObject> UnitUIList = new List<GameObject>();
     private List <GameObject> UnitUIMapList = new List<GameObject>();
+    private List <GameObject> EnemyUnitList = new List<GameObject>();
     private GameObject TempUI;
     private GameObject ActiveUnit;
 
@@ -38,14 +40,21 @@ public class UnitsUIManager : MonoBehaviour {
     public void Init() {
         // ShipUIText.text = this.name;
         // Debug.Log ("Init : UnitsUIManager");
-        if (GameObject.Find("MainCamera"))
-            Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
+        // if (GameObject.Find("MainCamera"))
+        //     Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
 
-        GetUnits();
-        SetDisplayStatus();
+        // GetUnits();
+        // SetDisplayStatus();
     }
 
     private void GetUnits() {
+        if (PlayerTeam == GameManager.Teams.Allies) {
+            EnemyUnitList.AddRange(GameObject.FindGameObjectsWithTag("Axis"));
+            EnemyUnitList.AddRange(GameObject.FindGameObjectsWithTag("AxisAI"));
+        } else if (PlayerTeam == GameManager.Teams.Axis) {
+            EnemyUnitList.AddRange(GameObject.FindGameObjectsWithTag("Allies"));
+            EnemyUnitList.AddRange(GameObject.FindGameObjectsWithTag("AlliesAI"));
+        }
         UnitList.AddRange(GameObject.FindGameObjectsWithTag("Allies"));
         UnitList.AddRange(GameObject.FindGameObjectsWithTag("AlliesAI"));
         UnitList.AddRange(GameObject.FindGameObjectsWithTag("Axis"));
@@ -65,6 +74,7 @@ public class UnitsUIManager : MonoBehaviour {
             // Debug.Log ("name : "+ item.name);
             TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
             if (item.GetComponent<ShipController>()){
+                // SEND DATA FOR AI/PLAYER TARGET HERE
                 item.GetComponent<ShipUI>().SetUIElement(TempUI);
             }
             TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, item, this);
@@ -95,9 +105,10 @@ public class UnitsUIManager : MonoBehaviour {
         //     StartCoroutine(PauseAction());
         // }
     }
-
-    public void SetMapCamera(Camera camera){ MapCam = camera; }
+    public void SetCameras(Camera camera){ MapCam = camera; Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>(); }
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ PlayerCanvas = playerCanvas; PlayerMapCanvas  = playerMapCanvas;}
+
+    public void SetPlayerTag(GameManager.Teams playerTeam) { PlayerTeam = playerTeam; }
 
     public void SetPlayedUnit(GameObject activeUnit){
         // Debug.Log ("SetPlayedUnit : "+ activeUnit);
@@ -112,6 +123,53 @@ public class UnitsUIManager : MonoBehaviour {
         }
     }
 
+    public void SpawnUnit(GameObject unitGameObject, GameManager.Teams team){
+        if (PlayerTeam == GameManager.Teams.Allies) {
+            if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
+                EnemyUnitList.Add(unitGameObject);
+            }
+        } else if (PlayerTeam == GameManager.Teams.Axis) {
+            if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
+                EnemyUnitList.Add(unitGameObject);
+            }
+        }
+        UnitList.Add(unitGameObject);
+        CreateUnitDisplay(unitGameObject);
+        CreateUnitMapDisplay(unitGameObject);
+    }
+    private void CreateUnitDisplay(GameObject unitGameObject){
+        // Debug.Log ("CreateGameDisplay : "+ UnitList.Count);
+        if (unitGameObject == null) {return;}
+        // Debug.Log ("name : "+ item.name);
+        TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
+        if (unitGameObject.GetComponent<ShipController>()){
+            // SEND DATA FOR AI/PLAYER TARGET HERE
+            unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
+        }
+        TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
+        UnitUIList.Add(TempUI);
+    }
+    private void CreateUnitMapDisplay(GameObject unitGameObject){
+        if (unitGameObject == null) {return;}
+        TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
+        if (unitGameObject.GetComponent<ShipController>()){
+            unitGameObject.GetComponent<ShipUI>().SetUIMapElement(TempUI);
+        }
+        TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, unitGameObject, this);
+        UnitUIMapList.Add(TempUI);
+    }
+    public void RemoveUnit(GameObject unitGameObject, GameManager.Teams team){
+        if (PlayerTeam == GameManager.Teams.Allies) {
+            if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
+                EnemyUnitList.Remove(unitGameObject);
+            }
+        } else if (PlayerTeam == GameManager.Teams.Axis) {
+            if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
+                EnemyUnitList.Remove(unitGameObject);
+            }
+        }
+        UnitList.Remove(unitGameObject);
+    }
     public void RemoveUIElement(GameObject unitGameObject){
         UnitUIList.Remove(unitGameObject);
     }

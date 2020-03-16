@@ -40,7 +40,8 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         UnitsUIManager = GetComponent<UnitsUIManager>();
-        UnitsUIManager.SetMapCamera(m_MapCamera);
+        UnitsUIManager.SetCameras(m_MapCamera);
+        UnitsUIManager.SetPlayerTag(PlayerTeam);
         // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
         // UnitsUIManager.Init();
@@ -144,16 +145,18 @@ public class PlayerManager : MonoBehaviour
         PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
         // Debug.Log ("Playable units : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
-    public void UnitSpawned(GameObject unitGameObject) {
+    public void UnitSpawned(GameObject unitGameObject, GameManager.Teams team) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
-        if (unitGameObject.tag == PlayerTeam.ToString("g")) {
+        UnitsUIManager.SpawnUnit(unitGameObject, team);
+        if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
         }
         // Debug.Log ("Playable units : "+ PlayerUnits.Count);
     }
-    public void UnitDead(GameObject unitGameObject) {
+    public void UnitDead(GameObject unitGameObject, GameManager.Teams team) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         PlayerUnits.Remove(unitGameObject);
+        UnitsUIManager.RemoveUnit(unitGameObject, team);
         // Debug.Log ("Playable units : "+ PlayerUnits.Count);
     }
 
