@@ -13,7 +13,6 @@ public class TurretManager : MonoBehaviour
     private bool DamageControl = false;
     private bool FreeCamera = false;
     private bool PlayerControl = false;
-    private bool ActionPaused = false;
     private PlayerManager PlayerManager;
     private FreeLookCam FreeLookCam;
     private ShipController ShipController;
@@ -119,11 +118,6 @@ public class TurretManager : MonoBehaviour
         // Debug.Log("TargetRange = "+ TargetRange);
     }
 
-    // IEnumerator PauseAction(){
-    //     ActionPaused = true;
-    //     yield return new WaitForSeconds(0.01f);
-    //     ActionPaused = false;
-    // }
     private void CheckForTurretSwitch() {
         if (Input.GetButtonDown ("SetWeaponArtillery") && CurrentControlledTurretType != TurretFireManager.TurretType.Artillery && ArtilleryTurrets.Count > 0){
             CurrentControlledTurretType = TurretFireManager.TurretType.Artillery;

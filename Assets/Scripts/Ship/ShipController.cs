@@ -86,8 +86,8 @@ public class ShipController : MonoBehaviour {
         }
     }
 
-    private bool ActionPaused = false;
-    private bool ActionPaused2 = false;
+    // private bool ActionPaused = false;
+    // private bool ActionPaused2 = false;
     private void FixedUpdate() {
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);

@@ -11,7 +11,7 @@ public class ShipAI : MonoBehaviour {
     private GameObject TargetUnit;
     private ShipController ShipController;
     private TurretManager TurretManager;
-    private bool TurretManagerPresent = false;
+    // private bool TurretManagerPresent = false;
     public enum ShipMoveStates {
         Patrol,
         Circle,
@@ -141,5 +141,8 @@ public class ShipAI : MonoBehaviour {
         //     GetTargets();
     }
     public void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
-    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; TurretManagerPresent = true; }
+    public void SetTurretManager(TurretManager turretManager){
+        TurretManager = turretManager;
+        // TurretManagerPresent = true;
+    }
 }

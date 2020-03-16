@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < m_Units.Length; i++) {
             m_Units[i].SetUnitName();
         }
-        PlayerManager.InitUnitsUI();
+        // PlayerManager.InitUnitsUI();
 
         // As soon as the round starts reset the units and make sure they can't move.
         ResetAllUnits ();
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour {
         string message = "DRAW!";
 
         // If there is a round winner...
-        if (RoundWinner != null) {
+        if (RoundWinner != Teams.NeutralAI) {
             if (RoundWinner == Teams.Allies) {
                 message = "Allies won the round.";
             } else {

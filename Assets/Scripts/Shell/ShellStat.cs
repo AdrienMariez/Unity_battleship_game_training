@@ -15,7 +15,8 @@ public class ShellStat : MonoBehaviour
     public GameObject m_ExplosionWater;
     private GameObject ExplosionWaterInstance;
     
-    [SerializeField] private GameObject m_DamageEffect;
+    public GameObject m_DamageEffect;
+    // [SerializeField] private GameObject m_DamageEffect;
     private GameObject DamageEffectInstance;
 
     [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction od th maximum damage dealt.")]
@@ -184,7 +185,6 @@ public class ShellStat : MonoBehaviour
     private void OnTriggerEnter (Collider colliderHit) {
         HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
         TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
-        float armor;
         bool suitableTarget = false;
         if (targetHitboxComponent != null) {
             if (!targetHitboxComponent.GetBuoyancyComponent())

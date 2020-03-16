@@ -14,9 +14,8 @@ public class UnitUIManager : MonoBehaviour {
     private GameObject ActiveUnit;
     private GameObject EnemyTargetUnit;
     private bool UnitCurrentlyPlayed = false;
-    private bool ActionPaused = false;
-    private bool ShortActionPaused = false;
-    private bool BehindCamera = false;  // This will maybe have to go
+    // private bool ActionPaused = false;
+    // private bool ShortActionPaused = false;
     private string DistanceString;
 
     private GameObject UIName;
@@ -30,18 +29,18 @@ public class UnitUIManager : MonoBehaviour {
     const string RangeDisplayKilometer = "{0} km";
 
 
-    IEnumerator PauseAction(){
-        // Coroutine created to prevent too much calculus for ship behaviour
-        ActionPaused = true;
-        yield return new WaitForSeconds(0.5f);
-        ActionPaused = false;
-    }
-    IEnumerator PauseActionShort(){
-        // Coroutine created to prevent too much calculus for ship behaviour
-        ShortActionPaused = true;
-        yield return new WaitForSeconds(0.1f);
-        ShortActionPaused = false;
-    }
+    // IEnumerator PauseAction(){
+    //     // Coroutine created to prevent too much calculus for ship behaviour
+    //     ActionPaused = true;
+    //     yield return new WaitForSeconds(0.5f);
+    //     ActionPaused = false;
+    // }
+    // IEnumerator PauseActionShort(){
+    //     // Coroutine created to prevent too much calculus for ship behaviour
+    //     ShortActionPaused = true;
+    //     yield return new WaitForSeconds(0.1f);
+    //     ShortActionPaused = false;
+    // }
     public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
