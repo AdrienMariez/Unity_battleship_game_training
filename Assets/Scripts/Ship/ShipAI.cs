@@ -31,53 +31,33 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        // If AI is fighting but its target is dead, find another one immediately
-        if (Stressed && TargetUnit == null) {
-            GetTargets();
-        }
-        // If AI is fighting, do business with the opposing ship 
-        // Todo : add a check for if a target is found but out of range
         if (Stressed && TargetUnit) {
             SetAITargetRange();
             TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-            if (!PauseOrder) {
-                if (AIActive) {
-                    RotateTargetAndFire();
-                }
-                // GetTargets();
-                StartCoroutine(PauseOrders());
-            }
-        }
-        // If AI doesn't find any opponent, change stance
-        else if (AIActive) {
-            if (!PauseOrder && AIActive) 
-            IdleGoForward();
-            StartCoroutine(PauseOrders());
+            // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState);
         }
 
-        // if (AIActive && !PauseOrder) {
-        //     Debug.Log("AIState : "+ AIState);
-        //     SetAITargetRange();
-        //     TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-        //     if (AIState == ShipMoveStates.NoAI || AIState == ShipMoveStates.Idle) { AIState = AIState; }
-        //     else if (AIState == ShipMoveStates.ApproachTarget) {
-        //         if ((gameObject.transform.position - TargetUnit.transform.position).magnitude > MaxTurretsRange) {
-        //             AIState = ShipMoveStates.CircleTarget;
-        //             SetAITargetRange();
-        //             TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-        //             RotateTargetAndFire();
-        //         } else {
-        //             ApproachTarget();
-        //         }
-        //     } else if (AIState == ShipMoveStates.CircleTarget){
-        //         SetAITargetRange();
-        //         TurretManager.SetAITargetToFireOn(TargetUnit.transform.position);
-        //         RotateTargetAndFire();
-        //     } else if (AIState == ShipMoveStates.Patrol){
-        //         IdleGoForward();
-        //     }
-        //     StartCoroutine(PauseOrders());
-        // }
+        if (AIActive && !PauseOrder) {
+            // Debug.Log("AIState : "+ AIState);
+            if (AIState == ShipMoveStates.ApproachTarget && TargetUnit == null || AIState == ShipMoveStates.CircleTarget && TargetUnit == null) {
+                SetNewTarget();
+                return;
+            }
+            if (AIState == ShipMoveStates.NoAI || AIState == ShipMoveStates.Idle) { AIState = AIState; }
+            else if (AIState == ShipMoveStates.ApproachTarget) {
+                if ((gameObject.transform.position - TargetUnit.transform.position).magnitude > MaxTurretsRange) {
+                    AIState = ShipMoveStates.CircleTarget;
+                    RotateTargetAndFire();
+                } else {
+                    ApproachTarget();
+                }
+            } else if (AIState == ShipMoveStates.CircleTarget){
+                RotateTargetAndFire();
+            } else if (AIState == ShipMoveStates.Patrol){
+                IdleGoForward();
+            }
+            StartCoroutine(PauseOrders());
+        }
     }
     IEnumerator PauseOrders(){
         // Coroutine created to prevent too much calculus for ship behaviour
@@ -224,7 +204,7 @@ public class ShipAI : MonoBehaviour {
             else { AIState = ShipMoveStates.Patrol; }
             if (TurretManager) {TurretManager.SetAIHasTarget(false);}
         }
-        Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState);
+        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState);
     }
 
     public void SetUnitTeam(string team){ Team = team; }
