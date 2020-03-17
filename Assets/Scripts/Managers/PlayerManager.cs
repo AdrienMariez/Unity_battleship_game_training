@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         UnitsUIManager = GetComponent<UnitsUIManager>();
-        UnitsUIManager.SetCameras(m_MapCamera);
+        UnitsUIManager.Init(this, m_MapCamera);
         UnitsUIManager.SetPlayerTag(PlayerTeam);
         // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
@@ -157,6 +157,23 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         PlayerUnits.Remove(unitGameObject);
         UnitsUIManager.RemoveUnit(unitGameObject, team);
+        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
+    }
+
+    public void SendEnemiesToPlayerUnits(List <GameObject> enemiesUnitsObjectList) {
+        // Debug.Log ("enemiesUnitsObjectList : "+ enemiesUnitsObjectList.Count);
+        foreach (var unit in PlayerUnits) {
+            // Debug.Log ("Playable units : "+ unit);
+            if (unit.GetComponent<ShipController>()) {
+                unit.GetComponent<ShipAI>().SetNewEnemyList(enemiesUnitsObjectList);
+            }
+        }
+        foreach (var unit in enemiesUnitsObjectList) {
+            // Debug.Log ("Enemy units : "+ unit);
+            if (unit.GetComponent<ShipController>()) {
+                unit.GetComponent<ShipAI>().SetNewEnemyList(PlayerUnits);
+            }
+        }
         // Debug.Log ("Playable units : "+ PlayerUnits.Count);
     }
 

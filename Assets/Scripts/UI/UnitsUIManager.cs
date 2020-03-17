@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 
 public class UnitsUIManager : MonoBehaviour {
-
+    private PlayerManager PlayerManager;
     private Camera Cam;
     private Camera MapCam;
     private GameObject PlayerCanvas;
@@ -22,7 +22,11 @@ public class UnitsUIManager : MonoBehaviour {
 
     public GameObject m_UnitUI;
     public GameObject m_UnitMapUI;
-    public void SetCameras(Camera camera){ MapCam = camera; Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>(); }
+    public void Init(PlayerManager playerManager, Camera camera){
+        PlayerManager = playerManager;
+        MapCam = camera;
+        Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
+    }
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ PlayerCanvas = playerCanvas; PlayerMapCanvas  = playerMapCanvas;}
 
     public void SetPlayerTag(GameManager.Teams playerTeam) { PlayerTeam = playerTeam; }
@@ -44,10 +48,12 @@ public class UnitsUIManager : MonoBehaviour {
         if (PlayerTeam == GameManager.Teams.Allies) {
             if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
                 EnemyUnitList.Add(unitGameObject);
+                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         } else if (PlayerTeam == GameManager.Teams.Axis) {
             if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
                 EnemyUnitList.Add(unitGameObject);
+                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         }
         UnitList.Add(unitGameObject);
@@ -60,7 +66,6 @@ public class UnitsUIManager : MonoBehaviour {
         // Debug.Log ("name : "+ item.name);
         TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
         if (unitGameObject.GetComponent<ShipController>()){
-            // SEND DATA FOR AI/PLAYER TARGET HERE
             unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
         }
         TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
@@ -79,10 +84,12 @@ public class UnitsUIManager : MonoBehaviour {
         if (PlayerTeam == GameManager.Teams.Allies) {
             if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
                 EnemyUnitList.Remove(unitGameObject);
+                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         } else if (PlayerTeam == GameManager.Teams.Axis) {
             if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
                 EnemyUnitList.Remove(unitGameObject);
+                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         }
         UnitList.Remove(unitGameObject);

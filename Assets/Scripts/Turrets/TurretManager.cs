@@ -79,8 +79,10 @@ public class TurretManager : MonoBehaviour
         // ReinitializeCurrentWeaponSelected();
         // Debug.Log(ArtilleryTurrets.Count + " : ArtilleryTurrets");
         WorkingTurrets = TotalTurrets;
-        if (GetComponent<ShipController>())
+        if (GetComponent<ShipController>()) {
             ShipController.SetTotalTurrets(TotalTurrets);
+            GetComponent<ShipAI>().SetMaxTurretRange(MaxRange);
+        }
         SetPlayerControl();
     }
 
@@ -285,7 +287,12 @@ public class TurretManager : MonoBehaviour
         // A bit of cheating here, before a correct fake camera angle can be implemented
         targetPosition.y += 500;
         AITargetPosition = targetPosition;
+        // Debug.Log ("AITargetPosition : "+ AITargetPosition);
     }
-    public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; TargetRange = targetRange;}
+    public void SetAITargetRange(float targetRange) {
+        AITargetRange = targetRange;
+        TargetRange = targetRange;
+        // Debug.Log ("AITargetRange : "+ AITargetRange);
+    }
     public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
 }
