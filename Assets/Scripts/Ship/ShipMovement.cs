@@ -21,7 +21,6 @@ public class ShipMovement : MonoBehaviour
     private float OriginalPitch;         // The pitch of the audio source at the start of the scene.
 
     [Tooltip("this mimics an Engine Order Telegraph")] [SerializeField] [Range(-4, 4)] public int m_CurrentSpeedStep;      // possible speeds below in comments
-    private bool OrderSystem = true;                // This var is used to pause the system to allow the player to choose the speed order (instead of being pushed to the max values)
     /*
         -4  Full Ahead 100%
         -3  Half Ahead 50%
@@ -35,10 +34,9 @@ public class ShipMovement : MonoBehaviour
     */
     private float LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
     [Tooltip("The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.")]public float m_SpeedInertia = 0.3f;
-    private bool SpeedIncrementation = true;                  // Used to allow the m_SpeedInertia to take some time.
     private float LocalRealSpeed;            // The real final speed of the ship.
     private float LocalRealRotation;            // The real final rotation of the ship.
-    private bool RotationIncrementation = true;// Used to allow the m_SpeedInertia to take some time.
+    
 
     public StackComponentSmoke[] m_StackComponents;
 
@@ -95,19 +93,21 @@ public class ShipMovement : MonoBehaviour
 
 
     private void FixedUpdate() {
-        // This is run every physics step instead of every frame
-        // Move and turn the tank.
         if (Active && !Dead) {
+            // Debug.Log("Active");
             if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
             } else if(Input.GetAxis ("VerticalShip") == -1){
                 ChangeSpeedStep(-1);
             }
+            // Debug.Log("TurnInputValue : "+ TurnInputValue +" - RotationIncrementation = "+ RotationIncrementation +" - AllowTurnInput = "+ AllowTurnInput);
             // Determine the number of degrees to be turned based on the input, speed and time between frames.
             if (Input.GetAxis ("HorizontalShip") == 1 && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput){
+                // Debug.Log("HorizontalShip+");
                 TurnInputValue += 0.5f;
                 StartCoroutine(PauseTurnIncrementation());
             } else if(Input.GetAxis ("HorizontalShip") == -1 && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput){
+                // Debug.Log("HorizontalShip-");
                 TurnInputValue -= 0.5f;
                 StartCoroutine(PauseTurnIncrementation());
             }   
@@ -133,11 +133,24 @@ public class ShipMovement : MonoBehaviour
             ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
         }
     }
-
+    
+    private bool OrderSystem = true;
     IEnumerator PauseOrderSystem(){
         OrderSystem = false;
         yield return new WaitForSeconds(1f);
         OrderSystem = true;
+    }
+    private bool RotationIncrementation = true;
+    IEnumerator PauseTurnIncrementation(){
+        RotationIncrementation = false;
+        yield return new WaitForSeconds(0.5f);
+        RotationIncrementation = true;
+    }
+    private bool RotationIncrementationAI = true;
+    IEnumerator PauseAITurnIncrementation(){
+        RotationIncrementationAI = false;
+        yield return new WaitForSeconds(0.5f);
+        RotationIncrementationAI = true;
     }
 
     private void SetTargetSpeed() {
@@ -207,6 +220,7 @@ public class ShipMovement : MonoBehaviour
             // Debug.Log ("- BACK - :"+ LocalRealSpeed);
         }
     }
+    private bool SpeedIncrementation = true;
     IEnumerator PauseSpeedIncrementation(){
         SpeedIncrementation = false;
         yield return new WaitForSeconds(0.5f);
@@ -225,11 +239,6 @@ public class ShipMovement : MonoBehaviour
         ShipController.SetRotationInput(LocalRealRotation);
     }
 
-    IEnumerator PauseTurnIncrementation(){
-        RotationIncrementation = false;
-        yield return new WaitForSeconds(0.5f);
-        RotationIncrementation = true;
-    }
     public void SetDamaged(float proportion){
         if (proportion == 1){
             Damaged = false;
@@ -273,15 +282,15 @@ public class ShipMovement : MonoBehaviour
         ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
     }
     public void SetAIturn(float turn) {
-        if (turn == 0.5f && TurnInputValue < 1 && RotationIncrementation && AllowTurnInput && !Dead){
+        if (turn == 0.5f && TurnInputValue < 1 && RotationIncrementationAI && AllowTurnInput && !Dead){
             TurnInputValue += 0.5f;
-            StartCoroutine(PauseTurnIncrementation());
-        } else if(turn  == -0.5f && TurnInputValue > -1 && RotationIncrementation && AllowTurnInput && !Dead){
+            StartCoroutine(PauseAITurnIncrementation());
+        } else if(turn  == -0.5f && TurnInputValue > -1 && RotationIncrementationAI && AllowTurnInput && !Dead){
             TurnInputValue -= 0.5f;
-            StartCoroutine(PauseTurnIncrementation());
-        } else if (turn == 0 && RotationIncrementation && AllowTurnInput && !Dead){
+            StartCoroutine(PauseAITurnIncrementation());
+        } else if (turn == 0 && RotationIncrementationAI && AllowTurnInput && !Dead){
             TurnInputValue = 0;
-            StartCoroutine(PauseTurnIncrementation());
+            StartCoroutine(PauseAITurnIncrementation());
         }
         ShipController.SetAITurnInputValue(TurnInputValue);
     }

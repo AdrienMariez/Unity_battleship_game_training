@@ -117,6 +117,7 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void RotateTargetAndFire(){
+        // Debug.Log("RotateTargetAndFire");
         // For the moment, just circle the Target at full speed
         ShipController.SetAISpeed(4);
 
@@ -136,6 +137,7 @@ public class ShipAI : MonoBehaviour {
         // Debug.Log("angle : "+ angle);
     }
     private void ApproachTarget(){
+        // Debug.Log("ApproachTarget");
         ShipController.SetAISpeed(4);
 
         Vector3 targetDir = gameObject.transform.position - TargetUnit.transform.position;
