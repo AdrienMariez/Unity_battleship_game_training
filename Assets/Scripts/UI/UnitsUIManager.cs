@@ -101,6 +101,17 @@ public class UnitsUIManager : MonoBehaviour {
         UnitUIMapList.Remove(unitGameObject);
     }
 
+    public void SetCurrentEnemyTarget(GameObject targetUnit) {
+        foreach (var item in UnitUIList) {
+            if (item == null) { continue; }
+            else { item.GetComponent<UnitUIManager>().SetEnemyTargetUnit(targetUnit); }
+        }
+        foreach (var item in UnitUIMapList) {
+            if (item == null) { continue; }
+            else { item.GetComponent<UnitMapUIManager>().SetEnemyTargetUnit(targetUnit); }
+        }
+    }
+
     public void KillAllInstances() {
         // Debug.Log ("KillAllInstances");
         foreach (var item in UnitList) {

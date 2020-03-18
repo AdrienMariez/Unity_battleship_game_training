@@ -177,6 +177,10 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Playable units : "+ PlayerUnits.Count);
     }
 
+    public void SendCurrentEnenmyTarget(GameObject targetUnit) {
+        UnitsUIManager.SetCurrentEnemyTarget(targetUnit);
+    }
+
     private void SetEnabledUnit() {
         if (PlayerUnits.Count == 0){
             // Debug.Log ("Case 1");

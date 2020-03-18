@@ -54,6 +54,8 @@ public class ShipController : MonoBehaviour {
         armorPlate
     }
 
+    private GameObject EnemyTargetUnit;
+
     private void Awake() {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
@@ -423,6 +425,12 @@ public class ShipController : MonoBehaviour {
     public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
     public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
     public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
+    public void SetCurrentTarget(GameObject targetUnit) {
+        EnemyTargetUnit = targetUnit;
+        if (Active) {
+            PlayerManager.SendCurrentEnenmyTarget(targetUnit);
+        }
+    }
     public bool GetDeath(){ return Dead; }
     public float GetRepairRate(){ return RepairRate; }
     public void DestroyUnit(){

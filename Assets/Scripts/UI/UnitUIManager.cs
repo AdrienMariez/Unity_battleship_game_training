@@ -12,10 +12,11 @@ public class UnitUIManager : MonoBehaviour {
     private UnitsUIManager UnitsUIManager;
     private GameObject Unit;
     private GameObject ActiveUnit;
-    private GameObject EnemyTargetUnit;
     private bool UnitCurrentlyPlayed = false;
+    private GameObject EnemyTargetUnit;
+    private bool UnitCurrentlyTargeted = false;
     // private bool ActionPaused = false;
-    // private bool ShortActionPaused = false;
+    
     private string DistanceString;
 
     private GameObject UIName;
@@ -35,12 +36,6 @@ public class UnitUIManager : MonoBehaviour {
     //     yield return new WaitForSeconds(0.5f);
     //     ActionPaused = false;
     // }
-    // IEnumerator PauseActionShort(){
-    //     // Coroutine created to prevent too much calculus for ship behaviour
-    //     ShortActionPaused = true;
-    //     yield return new WaitForSeconds(0.1f);
-    //     ShortActionPaused = false;
-    // }
     public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
@@ -52,6 +47,15 @@ public class UnitUIManager : MonoBehaviour {
         MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
         CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
         UnitsUIManager = unitsUIManager;
+        StartCoroutine(PauseActionName());
+    }
+    private bool NameActionPaused = false;
+    IEnumerator PauseActionName(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        NameActionPaused = true;
+        yield return new WaitForSeconds(0.1f);
+        UIName.GetComponent<Text>().text = Unit.name;
+        NameActionPaused = false;
     }
 
     protected void FixedUpdate() {
@@ -69,23 +73,22 @@ public class UnitUIManager : MonoBehaviour {
             Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + 30f));
             this.transform.position  = updatedPos;
             // Debug.Log (this.gameObject.name+"  - screenPos : " + screenPos);
-
-            if (screenPos.x >= 400 && screenPos.x <= 600 && screenPos.y >= 450 && screenPos.y <= 550){
+            if (UnitCurrentlyTargeted) {
                 UIName.SetActive(true);
+                UIDistance.SetActive(true);
+                UIHealth.SetActive(true);
+                UIPointer.SetActive(false);
+                UpdateDistanceText();
+            } else if (screenPos.x >= (0.45f*Screen.width) && screenPos.x <= (0.55f*Screen.width) && screenPos.y >= (0.35f*Screen.height) && screenPos.y <= (0.75f*Screen.height)){
+                // Debug.Log (this.gameObject.name+"  - screenPos x : " + screenPos.x+"  - screenPos  y: " + screenPos.y);
+                UIName.SetActive(false);
                 UIDistance.SetActive(true);
                 UIHealth.SetActive(true);
                 UIPointer.SetActive(false);
 
                 // Update distance text
                 if (!UnitCurrentlyPlayed) {
-                    float distance = (Unit.transform.position - Cam.transform.position).magnitude;
-                    if (distance > 999) {
-                        distance = (Mathf.Round(distance / 100)) / 10f;
-                        DistanceString = string.Format(RangeDisplayKilometer, distance);
-                    } else {
-                        DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
-                    }
-                    UIDistance.GetComponent<Text>().text = DistanceString;
+                    UpdateDistanceText();
                 } else {
                     UIDistance.GetComponent<Text>().text = "Played unit";
                 }
@@ -101,12 +104,45 @@ public class UnitUIManager : MonoBehaviour {
         }
     }
 
+    private void UpdateDistanceText(){
+        if (!DistanceActionPaused) {
+            float distance = (Unit.transform.position - Cam.transform.position).magnitude;
+            if (distance > 999) {
+                distance = (Mathf.Round(distance / 100)) / 10f;
+                DistanceString = string.Format(RangeDisplayKilometer, distance);
+            } else {
+                DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
+            }
+            UIDistance.GetComponent<Text>().text = DistanceString;
+            StartCoroutine(PauseActionDistance());
+        }
+    }
+    private bool DistanceActionPaused = false;
+    IEnumerator PauseActionDistance(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        DistanceActionPaused = true;
+        yield return new WaitForSeconds(0.1f);
+        UIName.GetComponent<Text>().text = Unit.name;
+        DistanceActionPaused = false;
+    }
+
     public void SetPlayerUnit(GameObject activeUnit){
         ActiveUnit = activeUnit;
         if (ActiveUnit == Unit) {
             UnitCurrentlyPlayed = true;
         } else {
             UnitCurrentlyPlayed = false;
+        }
+        // Debug.Log (" UnitCurrentlyPlayed : " + UnitCurrentlyPlayed);
+    }
+
+    public void SetEnemyTargetUnit(GameObject targetUnit){
+        EnemyTargetUnit = targetUnit;
+        if (EnemyTargetUnit == Unit) {
+            UnitCurrentlyTargeted = true;
+            // UIName.GetComponent<Text>().text = Unit.name;
+        } else {
+            UnitCurrentlyTargeted = false;
         }
         // Debug.Log (" UnitCurrentlyPlayed : " + UnitCurrentlyPlayed);
     }

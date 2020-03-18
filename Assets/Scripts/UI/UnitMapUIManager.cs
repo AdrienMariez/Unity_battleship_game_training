@@ -12,8 +12,9 @@ public class UnitMapUIManager : MonoBehaviour {
     private UnitsUIManager UnitsUIManager;
     private GameObject Unit;
     private GameObject ActiveUnit;
-    private GameObject EnemyTargetUnit;
     private bool UnitCurrentlyPlayed = false;
+    private GameObject EnemyTargetUnit;
+    private bool UnitCurrentlyTargeted = false;
     // private bool ActionPaused = false;
     // private bool ShortActionPaused = false;
     private string DistanceString;
@@ -76,6 +77,16 @@ public class UnitMapUIManager : MonoBehaviour {
         } else {
             UnitCurrentlyPlayed = false;
         }
+    }
+
+    public void SetEnemyTargetUnit(GameObject targetUnit){
+        EnemyTargetUnit = targetUnit;
+        if (EnemyTargetUnit == Unit) {
+            UnitCurrentlyTargeted = true;
+        } else {
+            UnitCurrentlyTargeted = false;
+        }
+        // Debug.Log (" UnitCurrentlyPlayed : " + UnitCurrentlyPlayed);
     }
 
     public void SetCurrentHealth(float HP, Color barColor) {
