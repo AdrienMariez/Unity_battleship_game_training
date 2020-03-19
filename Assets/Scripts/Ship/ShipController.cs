@@ -96,11 +96,11 @@ public class ShipController : MonoBehaviour {
         BuoyancyLoop();
 
         // The following is used to kill an active ship for debug purposes
-        if (Active && !Dead) {
-            if (Input.GetAxis ("VerticalShip") == 1){
-                CallDeath();
-            }
-        }
+        // if (Active && !Dead) {
+        //     if (Input.GetAxis ("VerticalShip") == 1){
+        //         CallDeath();
+        //     }
+        // }
         // kills all inactive ships for debug purposes
         // if (!Active && !ActionPaused) {
         //     ActionPaused = !ActionPaused;

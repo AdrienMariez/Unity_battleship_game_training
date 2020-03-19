@@ -111,32 +111,27 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void SetNextTarget() {
-        //check all playable units
-        // FindAllPossibleTargets();
-
         //If we overflow, get back to the beginning
         if (CurrentTarget >= (PlayerUnits.Count-1)) {
             CurrentTarget = 0;
         } else {
             CurrentTarget += 1;
         }
-        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
-        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
+        // Debug.Log ("Playable units - SetNextTarget : "+ PlayerUnits.Count);
+        // Debug.Log ("CurrentTarget - SetNextTarget : "+ CurrentTarget);
         
         //enable or disable user inputs for units disabled.
         if (PlayerUnits.Count > 1 || !ActiveTargetSet)
             SetEnabledUnit();
     }
     private void SetPreviousTarget() {
-        // FindAllPossibleTargets();
-
         if (CurrentTarget <= 0) {
             CurrentTarget = PlayerUnits.Count-1;
         } else {
             CurrentTarget -= 1;
         }
-        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
-        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
+        // Debug.Log ("Playable units - SetPreviousTarget : "+ PlayerUnits.Count);
+        // Debug.Log ("CurrentTarget - SetPreviousTarget : "+ CurrentTarget);
 
         if (PlayerUnits.Count > 1 || !ActiveTargetSet)
             SetEnabledUnit();

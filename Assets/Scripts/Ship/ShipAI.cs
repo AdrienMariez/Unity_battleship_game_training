@@ -10,6 +10,8 @@ public class ShipAI : MonoBehaviour {
     private float TurnInputLimit = 0;
     private float MaxTurretsRange;
     private GameObject TargetUnit;
+    private int PlayerTargetUnitIndex = 0;
+    private GameObject PlayerSetTargetUnit;
     private ShipController ShipController;
     private TurretManager TurretManager;
     // private bool TurretManagerPresent = false;
@@ -37,6 +39,7 @@ public class ShipAI : MonoBehaviour {
         // Debug.Log("Stressed : "+ Stressed +" - TargetUnit = "+ TargetUnit);
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState +" - AIActive = "+ AIActive);
         if (AIActive && !OrdersPaused) {
+            // If AI controlled
             // Debug.Log("AIState : "+ AIState);
             if (AIState == ShipMoveStates.ApproachTarget && TargetUnit == null || AIState == ShipMoveStates.CircleTarget && TargetUnit == null) {
                 SetNewTarget();
@@ -45,6 +48,14 @@ public class ShipAI : MonoBehaviour {
             CheckState();
             StartCoroutine(PauseOrders());
             
+        } else if (!AIActive && !PlayerOrdersPaused) {
+            // If player controlled
+            if (Input.GetButtonDown ("SetNewTarget")) {
+                // Debug.Log("SetNewTarget");
+                ChangePlayerTargetIndex();
+                SetPlayerSetTarget();
+                StartCoroutine(PausePlayerOrders());
+            }
         }
     }
     private bool OrdersPaused = false;
@@ -53,6 +64,13 @@ public class ShipAI : MonoBehaviour {
         OrdersPaused = true;
         yield return new WaitForSeconds(0.3f);
         OrdersPaused = false;
+    }
+        private bool PlayerOrdersPaused = false;
+    IEnumerator PausePlayerOrders(){
+        // Coroutine created to prevent too much calculus for ship behaviour
+        PlayerOrdersPaused = true;
+        yield return new WaitForSeconds(0.3f);
+        PlayerOrdersPaused = false;
     }
 
     private void GetTargets(){
@@ -171,9 +189,11 @@ public class ShipAI : MonoBehaviour {
         if (EnemyUnitsList.Contains(TargetUnit)) {
             // Debug.Log("Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
             return;
-        } else if(AIActive) {
-            // Debug.Log("Unit : "+ Name +" - Target Does not exist ! = "+ TargetUnit);
+        } else {
             // If unit is played or not supposed to be targeting, change behaviour here
+            PlayerSetTargetUnit = null;
+            TargetUnit = PlayerSetTargetUnit;
+            ShipController.SetCurrentTarget(TargetUnit);
             SetNewTarget();
         }
     }
@@ -198,6 +218,32 @@ public class ShipAI : MonoBehaviour {
         // Debug.Log("TargetUnit : "+ TargetUnit);
         
 
+        CheckState();
+    }
+    private void ChangePlayerTargetIndex() {
+        if (PlayerTargetUnitIndex >= (EnemyUnitsList.Count-1)) {
+            PlayerTargetUnitIndex = 0;
+        } else {
+            PlayerTargetUnitIndex += 1;
+        }
+        // Debug.Log ("Targetable units : "+ EnemyUnitsList.Count);
+        // Debug.Log ("PlayerTargetUnitIndex : "+ PlayerTargetUnitIndex);
+    }
+    private void SetPlayerSetTarget() {
+        // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
+        // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
+        // if (EnemyUnitsList[PlayerTargetUnitIndex] == PlayerSetTargetUnit) {
+        //     ChangePlayerTargetIndex();
+        // }
+        if (PlayerSetTargetUnit == null) {
+            PlayerSetTargetUnit = null;
+        }
+        if (PlayerTargetUnitIndex >= (EnemyUnitsList.Count-1)) {
+            ChangePlayerTargetIndex();
+        }
+        PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
+        TargetUnit = PlayerSetTargetUnit;
+        ShipController.SetCurrentTarget(TargetUnit);
         CheckState();
     }
 
@@ -243,6 +289,9 @@ public class ShipAI : MonoBehaviour {
         // If player control, AI inactive
         AIActive = activate;
         ShipController.SetCurrentTarget(TargetUnit);
+        // If player takes control, Player target becomes AI target ?
+        // if (!AIActive)
+        //     PlayerSetTargetUnit = TargetUnit;
         // if (AIActive)
         //     GetTargets();
     }
