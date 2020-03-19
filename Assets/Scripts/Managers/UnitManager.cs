@@ -51,8 +51,8 @@ public class UnitManager {
         //send tag to ships
         if (Instance.GetComponent<ShipController>()) {
             Instance.GetComponent<ShipController>().SetTag(m_Team);
-            // m_Instance.GetComponent<ShipController>().SetName(m_UnitName);
-            // Debug.Log("m_Instance :"+ m_Instance);
+            Instance.GetComponent<ShipController>().SetName(m_UnitName);
+            // Debug.Log("Instance :"+ Instance);
         } else {
             // Todo : change this for different unit types
             Instance.gameObject.tag = m_Team.ToString("g");

@@ -130,9 +130,9 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        for (int i = 0; i < m_Units.Length; i++) {
-            m_Units[i].SetUnitName();
-        }
+        // for (int i = 0; i < m_Units.Length; i++) {
+        //     m_Units[i].SetUnitName();
+        // }
         // PlayerManager.InitUnitsUI();
 
         // As soon as the round starts reset the units and make sure they can't move.

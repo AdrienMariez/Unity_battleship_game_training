@@ -88,19 +88,19 @@ public class ShipController : MonoBehaviour {
         }
     }
 
-    // private bool ActionPaused = false;
-    // private bool ActionPaused2 = false;
+    private bool ActionPaused = false;
+    private bool ActionPaused2 = false;
     private void FixedUpdate() {
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
         BuoyancyLoop();
 
         // The following is used to kill an active ship for debug purposes
-        // if (Active && !Dead) {
-        //     if (Input.GetAxis ("VerticalShip") == 1){
-        //         CallDeath();
-        //     }
-        // }
+        if (Active && !Dead) {
+            if (Input.GetAxis ("VerticalShip") == 1){
+                CallDeath();
+            }
+        }
         // kills all inactive ships for debug purposes
         // if (!Active && !ActionPaused) {
         //     ActionPaused = !ActionPaused;
@@ -111,10 +111,10 @@ public class ShipController : MonoBehaviour {
         // }
     }
     
-    // IEnumerator PauseAction(){
-    //     yield return new WaitForSeconds(3f);
-    //     ActionPaused2= true;
-    // }
+    IEnumerator PauseAction(){
+        yield return new WaitForSeconds(3f);
+        ActionPaused2= true;
+    }
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
@@ -363,6 +363,7 @@ public class ShipController : MonoBehaviour {
         gameObject.tag = team.ToString("g");
         UI.SetUnitTeam(team.ToString("g"));
         ShipAI.SetUnitTeam(team.ToString("g"));
+
     }
     public void SetName(string name){
         gameObject.name = name;
@@ -428,7 +429,7 @@ public class ShipController : MonoBehaviour {
     public void SetCurrentTarget(GameObject targetUnit) {
         EnemyTargetUnit = targetUnit;
         if (Active) {
-            PlayerManager.SendCurrentEnenmyTarget(targetUnit);
+            PlayerManager.SendCurrentEnemyTarget(targetUnit);
         }
     }
     public bool GetDeath(){ return Dead; }
@@ -440,6 +441,11 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<ShipDamageControl>())
             DamageControl.Destroy();
         UI.KillAllUIInstances();
+        if (PlayerManager) {
+            if (Active)
+                PlayerManager.SetCurrentUnitDead(true);
+            PlayerManager.UnitDead(this.gameObject, Team);
+        }
         Destroy (gameObject);
     }
 }

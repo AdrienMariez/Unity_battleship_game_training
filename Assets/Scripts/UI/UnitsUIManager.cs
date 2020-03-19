@@ -48,14 +48,15 @@ public class UnitsUIManager : MonoBehaviour {
         if (PlayerTeam == GameManager.Teams.Allies) {
             if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
                 EnemyUnitList.Add(unitGameObject);
-                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
+                // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         } else if (PlayerTeam == GameManager.Teams.Axis) {
             if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
                 EnemyUnitList.Add(unitGameObject);
-                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
+                // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         }
+        PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
         UnitList.Add(unitGameObject);
         CreateUnitDisplay(unitGameObject);
         CreateUnitMapDisplay(unitGameObject);
@@ -84,14 +85,15 @@ public class UnitsUIManager : MonoBehaviour {
         if (PlayerTeam == GameManager.Teams.Allies) {
             if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
                 EnemyUnitList.Remove(unitGameObject);
-                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
+                // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         } else if (PlayerTeam == GameManager.Teams.Axis) {
             if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
                 EnemyUnitList.Remove(unitGameObject);
-                PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
+                // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
         }
+        PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
         UnitList.Remove(unitGameObject);
     }
     public void RemoveUIElement(GameObject unitGameObject){
@@ -131,8 +133,11 @@ public class UnitsUIManager : MonoBehaviour {
         UnitList.Clear();
         UnitUIList.Clear();
         UnitUIMapList.Clear();
+        EnemyUnitList.Clear();
         UnitList = new List<GameObject>();
         UnitUIList = new List<GameObject>();
         UnitUIMapList = new List<GameObject>();
+        EnemyUnitList = new List<GameObject>();
+        PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
     }
 }

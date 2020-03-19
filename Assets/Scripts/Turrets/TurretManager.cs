@@ -173,6 +173,7 @@ public class TurretManager : MonoBehaviour
                 AIControl = false;
             }
         }
+        // Debug.Log("AIControl : "+ AIControl);
         int number = 0;
         for (int i = 0; i < m_Turrets.Length; i++) {
             if ((CurrentControlledTurretType == TurretFireManager.TurretType.Artillery || CurrentControlledTurretType == TurretFireManager.TurretType.AA) && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
@@ -287,7 +288,9 @@ public class TurretManager : MonoBehaviour
         // A bit of cheating here, before a correct fake camera angle can be implemented
         targetPosition.y += 500;
         AITargetPosition = targetPosition;
-        // Debug.Log ("AITargetPosition : "+ AITargetPosition);
+        // if (!Active) {
+        //     Debug.Log ("AITargetPosition : "+ AITargetPosition);
+        // }
     }
     public void SetAITargetRange(float targetRange) {
         AITargetRange = targetRange;

@@ -56,6 +56,7 @@ public class ShipAI : MonoBehaviour {
     }
 
     private void GetTargets(){
+        Debug.Log ("GetTargets called in ShipAI - WARNING ! This should be used with precaution !");
         // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
         Stressed = false;
         TargetUnit = null;
@@ -162,13 +163,16 @@ public class ShipAI : MonoBehaviour {
 
     public void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList){
         EnemyUnitsList = enemiesUnitsObjectList;
+        // Debug.Log("Unit : "+ Name +" - EnemyUnitsList = "+ EnemyUnitsList.Count);
         StartCoroutine(PauseOrders());
         CheckIfTargetExists();
     }
     private void CheckIfTargetExists() {
         if (EnemyUnitsList.Contains(TargetUnit)) {
+            // Debug.Log("Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
             return;
         } else if(AIActive) {
+            // Debug.Log("Unit : "+ Name +" - Target Does not exist ! = "+ TargetUnit);
             // If unit is played or not supposed to be targeting, change behaviour here
             SetNewTarget();
         }
@@ -177,14 +181,16 @@ public class ShipAI : MonoBehaviour {
         // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
         TargetUnit = null;
         float range = 0f;
-        foreach (var enemyUnit in EnemyUnitsList) {
-            // Debug.Log("enemyUnit : "+ enemyUnit);
-            float distance = (gameObject.transform.position - enemyUnit.transform.position).magnitude;
-            if (range == 0) {
-                range = distance;
-                TargetUnit = enemyUnit;
-            } else if (distance < range) {
-                TargetUnit = enemyUnit;
+        if (EnemyUnitsList.Count > 0) {
+            foreach (var enemyUnit in EnemyUnitsList) {
+                // Debug.Log("enemyUnit : "+ enemyUnit);
+                float distance = (gameObject.transform.position - enemyUnit.transform.position).magnitude;
+                if (range == 0) {
+                    range = distance;
+                    TargetUnit = enemyUnit;
+                } else if (distance < range) {
+                    TargetUnit = enemyUnit;
+                }
             }
         }
         ShipController.SetCurrentTarget(TargetUnit);
