@@ -22,6 +22,8 @@ public class UnitsUIManager : MonoBehaviour {
 
     public GameObject m_UnitUI;
     public GameObject m_UnitMapUI;
+    public Texture BoundingBoxTexture;
+
     public void Init(PlayerManager playerManager, Camera camera){
         PlayerManager = playerManager;
         MapCam = camera;
@@ -69,7 +71,7 @@ public class UnitsUIManager : MonoBehaviour {
         if (unitGameObject.GetComponent<ShipController>()){
             unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
         }
-        TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
+        TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this, BoundingBoxTexture);
         UnitUIList.Add(TempUI);
     }
     private void CreateUnitMapDisplay(GameObject unitGameObject){

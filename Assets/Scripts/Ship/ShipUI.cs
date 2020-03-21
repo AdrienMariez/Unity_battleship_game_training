@@ -27,6 +27,10 @@ public class ShipUI : MonoBehaviour {
         uiElement.transform.Find("Name").GetComponent<Text>().color = SetTextColor();
         uiElement.transform.Find("Distance").GetComponent<Text>().color = SetTextColor();
         uiElement.transform.Find("Pointer").GetComponent<Image>().color = SetTextColor();
+        uiElement.transform.Find("BoundingBox").transform.Find("BoundingBoxTopLeft").GetComponent<Image>().color = SetTextColor();
+        uiElement.transform.Find("BoundingBox").transform.Find("BoundingBoxTopRight").GetComponent<Image>().color = SetTextColor();
+        uiElement.transform.Find("BoundingBox").transform.Find("BoundingBoxBottomLeft").GetComponent<Image>().color = SetTextColor();
+        uiElement.transform.Find("BoundingBox").transform.Find("BoundingBoxBottomRight").GetComponent<Image>().color = SetTextColor();
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
         UIElement.Add(uiElement);

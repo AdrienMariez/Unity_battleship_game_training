@@ -65,7 +65,7 @@ public class ShipAI : MonoBehaviour {
         yield return new WaitForSeconds(0.3f);
         OrdersPaused = false;
     }
-        private bool PlayerOrdersPaused = false;
+    private bool PlayerOrdersPaused = false;
     IEnumerator PausePlayerOrders(){
         // Coroutine created to prevent too much calculus for ship behaviour
         PlayerOrdersPaused = true;
@@ -121,7 +121,7 @@ public class ShipAI : MonoBehaviour {
             if (TurretManager)
                 TurretManager.SetAIHasTarget(false);
         }
-        Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
+        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
     }
 
     private void SetAITargetRange(){
@@ -238,7 +238,7 @@ public class ShipAI : MonoBehaviour {
         if (PlayerSetTargetUnit == null) {
             PlayerSetTargetUnit = null;
         }
-        if (PlayerTargetUnitIndex >= (EnemyUnitsList.Count-1)) {
+        if (PlayerTargetUnitIndex > (EnemyUnitsList.Count-1)) {
             ChangePlayerTargetIndex();
         }
         PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
