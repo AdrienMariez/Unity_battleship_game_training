@@ -387,6 +387,7 @@ MonoBehaviour:
   m_MuzzleVelocity: 825
   m_ReloadTime: 2
   m_Precision: 1.37
+  m_FireFx: {fileID: 195792, guid: 62bbcfc1ef1b8fe46af1fdafbae06cf0, type: 3}
   debug: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:

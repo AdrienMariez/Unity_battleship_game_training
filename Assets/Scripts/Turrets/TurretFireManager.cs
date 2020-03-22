@@ -27,7 +27,10 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] [Range(0.01f, 2f)]
     public float m_Precision = 0.1f; 
     [Tooltip("Check this if the turret is a main turret (rangefinding is done with main turrets). You need to check only one turret par unit, but you can chack as many as you need as long as all Director turrets are of the same type.")]
-
+    
+    [Header("FX")]
+    public GameObject m_FireFx;
+    // private GameObject FireFxInstance;
     [Header("Debug")]
         public bool debug = false;
         
@@ -56,7 +59,6 @@ public class TurretFireManager : MonoBehaviour
         TurretRotation = GetComponent<TurretRotation>();
         // FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
     }
-
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
@@ -143,10 +145,28 @@ public class TurretFireManager : MonoBehaviour
             shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
             shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
 
+            FireFX(m_FireMuzzles[i]);
+
+            // AUDIO FX
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;
-            m_ShootingAudio.Play ();      
+            m_ShootingAudio.Play ();  
         }
+    }
+
+    private void FireFX(Transform fireMuzzle) {
+        // VISUAL FX
+        if (m_FireFx == null) { return; }
+
+        GameObject fireFxInstance = Instantiate(m_FireFx, fireMuzzle);
+
+        if (fireFxInstance == null) { return; }
+        // Play the particle system.
+        fireFxInstance.GetComponent<ParticleSystem>().Play();
+        // Play the explosion sound effect.
+        // fireFxInstance.GetComponent<AudioSource>().Play();
+
+        Destroy (fireFxInstance.gameObject, fireFxInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
     }
 
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
