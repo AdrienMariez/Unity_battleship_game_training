@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 19807510}
   - component: {fileID: 19960184}
   - component: {fileID: 82120141312391850}
-  m_Layer: 2
+  m_Layer: 1
   m_Name: DamageExplosionLargePlaceholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

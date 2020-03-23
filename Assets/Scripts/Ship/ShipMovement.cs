@@ -8,6 +8,7 @@ public class ShipMovement : MonoBehaviour
     private bool Active = false; 
     private bool Dead = false; 
     private bool Damaged = false;
+    private bool MapActive = false;
     private float DamagedRatio;
     private bool AllowTurnInput = true;
     [HideInInspector] public float m_MaxSpeed = 1f;
@@ -58,12 +59,6 @@ public class ShipMovement : MonoBehaviour
         m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
     }
 
-    // private void Update() {
-    //     // Store the player's input and make sure the audio for the engine is playing.
-    //     EngineAudio ();
-    // }
-
-
     private void EngineAudio() {
         // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
 
@@ -109,9 +104,8 @@ public class ShipMovement : MonoBehaviour
         }
     }
 
-
     private void FixedUpdate() {
-        if (Active && !Dead) {
+        if (Active && MapActive && !Dead) {
             // Debug.Log("Active");
             if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
@@ -292,6 +286,9 @@ public class ShipMovement : MonoBehaviour
     }
     public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 
+    public void SetMap(bool map) {
+        MapActive = map;
+    }
     public int GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
     public float GetLocalRealSpeed(){ return LocalRealSpeed; }
     public void SetAISpeed(int speedStep) {

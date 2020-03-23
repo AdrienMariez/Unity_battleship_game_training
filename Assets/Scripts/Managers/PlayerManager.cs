@@ -251,6 +251,7 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetActiveTarget(ActiveTarget);
         UnitsUIManager.SetPlayedUnit(ActiveTarget);
         UIManager.SetCurrentUnitDead(false);
+        MapManager.SetPlayedUnit(ActiveTarget);
 
         if (ActiveTarget.GetComponent<TurretManager>()) {
             ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);

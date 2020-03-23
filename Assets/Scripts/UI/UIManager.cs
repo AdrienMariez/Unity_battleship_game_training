@@ -68,7 +68,8 @@ namespace UI {
         private void Update() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
-                ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
+                if (ShipCurrentSpeed != null)
+                    ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
                 if (TargetType == "Tank") {
                     CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());

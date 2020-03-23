@@ -338,6 +338,7 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<ShipDamageControl>()) {
             DamageControl.SetMap(map);
         }
+        Movement.SetMap(map);
     }
     public void SetDamageControl(bool damageControl) {
         if (GetComponent<TurretManager>())

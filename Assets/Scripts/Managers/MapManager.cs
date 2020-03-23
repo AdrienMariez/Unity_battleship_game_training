@@ -11,6 +11,10 @@ public class MapManager : MonoBehaviour {
     private Canvas PlayerCanvas;
     private Canvas PlayerMapCanvas;
 
+    private int InitialSize = 2000;
+    private int MaxSize = 3000;
+    private int MinSize = 300;
+
     private void Start() {
         // SeaMap = GameObject.Find("MapSea");
         PlayerCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
@@ -19,7 +23,6 @@ public class MapManager : MonoBehaviour {
     }
 
     private void InitMap() {
-
     }
 
     protected void Update() {
@@ -36,15 +39,25 @@ public class MapManager : MonoBehaviour {
                 targetPosition.z += -20;
             }
             MapCamera.transform.position = targetPosition;
+            if (Input.GetAxis("Mouse ScrollWheel") != 0f ) {
+                MapCamera.orthographicSize = Mathf.Clamp(MapCamera.orthographicSize - Input.GetAxis("Mouse ScrollWheel"), MinSize, MaxSize);
+            }
 
             // targetPosition.y = 0;
             // SeaMap.transform.position = targetPosition;
         }
     }
 
+    public void SetPlayedUnit(GameObject ActiveTarget){
+        Vector3 targetPosition = MapCamera.transform.position;
+        targetPosition.x = ActiveTarget.transform.position.x;
+        targetPosition.z = ActiveTarget.transform.position.z;
+        MapCamera.transform.position = targetPosition;
+    }
     public void SetMapCamera(Camera camera){ MapCamera = camera; }
     public void SetInitialPosition(GameObject target) {
         Vector3 targetPosition = target.transform.position;
+        MapCamera.orthographicSize = InitialSize;
         targetPosition.y = 2000;
         MapCamera.transform.position = targetPosition;
     }
