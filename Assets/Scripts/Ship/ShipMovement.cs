@@ -32,6 +32,7 @@ public class ShipMovement : MonoBehaviour
         3   Half Astern -40%
         4   Full Astern -60%
     */
+    private int PreviousSpeedStep;
     private float LocalTargetSpeed = 0f;     //  The speed calculated by the Engine Order Telegraph. This is not the real speed but what the ship will try to set.
     [Tooltip("The rate at which the ship will gain or lose speed. 0.3f = good inertia. 1f = almost instant speed correction.")]public float m_SpeedInertia = 0.3f;
     private float LocalRealSpeed;            // The real final speed of the ship.
@@ -52,12 +53,15 @@ public class ShipMovement : MonoBehaviour
             component.SetStackInstance(Instantiate(component.GetSmokePrefab(), component.GetStackPosition().position, component.GetStackPosition().rotation, this.transform) as GameObject);
         }
         SetTargetSpeed();
+        PreviousSpeedStep = m_CurrentSpeedStep;
+        EngineAudio();
+        m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
     }
 
-    private void Update() {
-        // Store the player's input and make sure the audio for the engine is playing.
-        EngineAudio ();
-    }
+    // private void Update() {
+    //     // Store the player's input and make sure the audio for the engine is playing.
+    //     EngineAudio ();
+    // }
 
 
     private void EngineAudio() {
@@ -66,28 +70,42 @@ public class ShipMovement : MonoBehaviour
         //Abs (x) means that if x=-3, Abs(x)=3
         //0.1f means 0.1 as a FLOAT value
         //if not moving or rotating
-        if (m_CurrentSpeedStep != 0) {
-            //if moving audio currently playing
-             if (m_MovementAudio.clip == m_EngineDriving)
-             {
-                //switch playing clip
-                m_MovementAudio.clip = m_EngineIdling;
+        if (PreviousSpeedStep != m_CurrentSpeedStep) {
+            if (m_CurrentSpeedStep != 0) {
+                //if moving audio currently playing
+                if (m_MovementAudio.clip == m_EngineDriving) {
+                    //switch playing clip
+                    m_MovementAudio.clip = m_EngineIdling;
+                    //play the new audio
+                    m_MovementAudio.Play ();
+                }
                 //randomize pitch
-                m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
-                //play the new audio
-                m_MovementAudio.Play ();
-             }
-        } else {
-            //if idling audio currently playing
-             if (m_MovementAudio.clip == m_EngineIdling)
-             {
-                //switch playing clip
-                m_MovementAudio.clip = m_EngineDriving;
-                //randomize pitch
-                m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
-                //play the new audio
-                m_MovementAudio.Play ();
-             }
+                // m_MovementAudio.pitch = Random.Range ((OriginalPitch - m_PitchRange)*Mathf.Abs(m_CurrentSpeedStep), (OriginalPitch + m_PitchRange)*Mathf.Abs(m_CurrentSpeedStep));
+                // m_MovementAudio.volume = Random.Range ((OriginalPitch - m_PitchRange)*Mathf.Abs(m_CurrentSpeedStep), (OriginalPitch + m_PitchRange)*Mathf.Abs(m_CurrentSpeedStep));
+                // m_MovementAudio.volume = Mathf.Abs(m_CurrentSpeedStep) / 4;
+                if (Mathf.Abs(m_CurrentSpeedStep) == 4) {
+                    m_MovementAudio.volume = 1;
+                } else if(Mathf.Abs(m_CurrentSpeedStep) == 3) {
+                    m_MovementAudio.volume = 0.6f;
+                } else if(Mathf.Abs(m_CurrentSpeedStep) == 2) {
+                    m_MovementAudio.volume = 0.4f;
+                } else if(Mathf.Abs(m_CurrentSpeedStep) == 1) {
+                    m_MovementAudio.volume = 0.3f;
+                }
+            } else {
+                //if idling audio currently playing
+                if (m_MovementAudio.clip == m_EngineIdling) {
+                    //switch playing clip
+                    m_MovementAudio.clip = m_EngineDriving;
+                    //randomize pitch
+                    // m_MovementAudio.pitch = Random.Range (OriginalPitch - m_PitchRange, OriginalPitch + m_PitchRange);
+                    m_MovementAudio.volume = 0.25f;
+                    //play the new audio
+                    m_MovementAudio.Play ();
+                }
+            }
+            PreviousSpeedStep = m_CurrentSpeedStep;
+            // Debug.Log("m_CurrentSpeedStep : " + Mathf.Abs(m_CurrentSpeedStep) + " - m_MovementAudio.volume : " + m_MovementAudio.volume);
         }
     }
 
@@ -124,6 +142,7 @@ public class ShipMovement : MonoBehaviour
             SetTargetSpeed();
             StartCoroutine(PauseOrderSystem());
             ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
+            EngineAudio();
         }
         else if (Step < 0 && m_CurrentSpeedStep > -4 && OrderSystem) {
             m_CurrentSpeedStep = m_CurrentSpeedStep -1;
@@ -131,6 +150,7 @@ public class ShipMovement : MonoBehaviour
             SetTargetSpeed();
             StartCoroutine(PauseOrderSystem());
             ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
+            EngineAudio();
         }
     }
     
@@ -280,6 +300,7 @@ public class ShipMovement : MonoBehaviour
         SetTargetSpeed();
         StartCoroutine(PauseOrderSystem());
         ShipController.ChangeSpeedStep(m_CurrentSpeedStep);
+        EngineAudio();
     }
     public void SetAIturn(float turn) {
         if (turn == 0.5f && TurnInputValue < 1 && RotationIncrementationAI && AllowTurnInput && !Dead){

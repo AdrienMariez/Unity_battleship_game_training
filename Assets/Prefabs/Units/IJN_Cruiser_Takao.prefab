@@ -1828,7 +1828,7 @@ MonoBehaviour:
   m_MovementAudio: {fileID: 6341268151872624709}
   m_EngineIdling: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
   m_EngineDriving: {fileID: 8300000, guid: d7ca9fb5aa30155449192b23d7fb3336, type: 3}
-  m_PitchRange: 0.2
+  m_PitchRange: 0.07
   m_CurrentSpeedStep: 0
   m_SpeedInertia: 0.3
   m_StackComponents:
@@ -1984,7 +1984,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 4932ab25b84dd7649b80af68a9660ddc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
-  m_Pitch: 0.39
+  m_Pitch: 0.3
   Loop: 1
   Mute: 0
   Spatialize: 0

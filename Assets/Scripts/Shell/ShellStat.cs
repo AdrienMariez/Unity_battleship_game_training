@@ -5,11 +5,17 @@ public class ShellStat : MonoBehaviour
     [Tooltip("What the shell can hit")]
     public LayerMask m_HitMask;                        // Used to filter what the explosion affects, this should be set to "Players".
 
+    [Header("Shells Stats")]
     [Tooltip("Weight of the shell (kg)")]
     public float m_Weight = 100f;
-    // public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
-    // public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
-
+    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction od th maximum damage dealt.")]
+    public float m_MaxDamage = 100f;                    // The maximum amount of damage done if the explosion is centred on a damage model.
+    public float m_MinDamage = 10f;                    // The minimum amount of damage done if the explosion is centred on a damage model.
+    [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
+    public float m_ArmorPenetration = 100f;
+    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion models can be and are still affected.
+    public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
+    [Header("FX")]
     public GameObject m_Explosion;
     private GameObject ExplosionInstance;
     public GameObject m_ExplosionWater;
@@ -19,13 +25,6 @@ public class ShellStat : MonoBehaviour
     // [SerializeField] private GameObject m_DamageEffect;
     private GameObject DamageEffectInstance;
 
-    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction od th maximum damage dealt.")]
-    public float m_MaxDamage = 100f;                    // The maximum amount of damage done if the explosion is centred on a damage model.
-    public float m_MinDamage = 10f;                    // The minimum amount of damage done if the explosion is centred on a damage model.
-    [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
-    public float m_ArmorPenetration = 100f;
-    public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
-    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion models can be and are still affected.
 
     private Rigidbody rb;
     private float MuzzleVelocity;
