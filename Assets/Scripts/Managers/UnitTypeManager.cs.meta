@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 6218332f4fbc61945b7b2c0dad6e5028
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_MapBattleship: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+      type: 3}
+  - m_MapCruiser: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+      type: 3}
+  - m_MapDestroyer: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
+      type: 3}
+  - m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

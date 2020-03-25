@@ -2,12 +2,14 @@ using UnityEngine;
 using Crest;
 using System.Collections;
 using System.Collections.Generic;
+using static UnitTypeManager;
 
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
     private bool Active = false;
     private bool Dead = false;
+    public UnitTypeManager.UnitType m_UnitType;
     private GameManager.Teams Team;
 
     private GameManager GameManager;
@@ -86,6 +88,14 @@ public class ShipController : MonoBehaviour {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
+
+
+
+
+        // UnitTypeManager u = new UnitTypeManager();
+        // u.CreateElement(m_UnitType, this.gameObject);
+
+        // UnitTypeManager.CreateElement(m_UnitType, this.gameObject);
     }
 
     private bool ActionPaused = false;
@@ -362,7 +372,7 @@ public class ShipController : MonoBehaviour {
     public void SetTag(GameManager.Teams team){
         Team = team;
         gameObject.tag = team.ToString("g");
-        UI.SetUnitTeam(team.ToString("g"));
+        UI.SetUnitTeam(team);
         ShipAI.SetUnitTeam(team.ToString("g"));
 
     }
@@ -378,7 +388,7 @@ public class ShipController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){
         PlayerManager = playerManager;
-        PlayerManager.UnitSpawned(this.gameObject, Team);
+        PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
     }

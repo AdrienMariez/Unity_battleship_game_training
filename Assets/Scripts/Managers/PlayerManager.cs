@@ -145,9 +145,10 @@ public class PlayerManager : MonoBehaviour
         PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
         // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
-    public void UnitSpawned(GameObject unitGameObject, GameManager.Teams team) {
+    public void UnitSpawned(GameObject unitGameObject, GameManager.Teams team, UnitTypeManager.UnitType unitType) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         UnitsUIManager.SpawnUnit(unitGameObject, team);
+        GameManager.SpawnUnit(unitGameObject, team, unitType);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
         }

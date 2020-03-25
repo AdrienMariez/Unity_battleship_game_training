@@ -900,6 +900,7 @@ GameObject:
   - component: {fileID: 6283074086476641188}
   - component: {fileID: 4108665965408059122}
   - component: {fileID: 5625231153092559834}
+  - component: {fileID: 2435269581605581671}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1132,6 +1133,26 @@ MonoBehaviour:
   m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
     type: 3}
   BoundingBoxTexture: {fileID: 2800000, guid: 865afa32653b33549883708da06a9544, type: 3}
+--- !u!114 &2435269581605581671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283074086476641211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6218332f4fbc61945b7b2c0dad6e5028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MapBattleship: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+    type: 3}
+  m_MapCruiser: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapDestroyer: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
+    type: 3}
+  m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
 --- !u!1 &6283074086803692814
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,7 +1343,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 81669
+    m_Bits: 81668
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

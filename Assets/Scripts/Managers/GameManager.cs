@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
     private Teams RoundWinner;                  // Who won this particular round ?
     private Teams GameWinner;                   // Who won the whole game ?
 
+    private UnitTypeManager UnitTypeManager;
     private PlayerManager PlayerManager;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
+        UnitTypeManager = GetComponent<UnitTypeManager>();
         PlayerManager = GetComponent<PlayerManager>();
         PlayerManager.Reset();
         PlayerCanvas = GameObject.Find("UICanvas");
@@ -324,6 +326,10 @@ public class GameManager : MonoBehaviour {
 
     public Teams GetPlayer(){
         return m_PlayerTeam;
+    }
+
+    public void SpawnUnit(GameObject unitGameObject, Teams team, UnitTypeManager.UnitType unitType){
+        UnitTypeManager.CreateElement(unitGameObject, unitType, team);
     }
 
     public void SetUnitDeath(int Unit, string Tag) {
