@@ -166,14 +166,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 40448
   m_Weight: 673.5
+  m_MaxDamage: 150
+  m_MinDamage: 10
+  m_ArmorPenetration: 100
+  m_ExplosionRadius: 30
+  m_MaxLifeTime: 3
   m_Explosion: {fileID: 195792, guid: 9ae37cd584978c74884b6f45c0a13398, type: 3}
   m_ExplosionWater: {fileID: 195792, guid: 5bb338b972b80e142be6f85286b415b8, type: 3}
   m_DamageEffect: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
     type: 3}
-  m_MaxDamage: 150
-  m_ArmorPenetration: 100
-  m_MaxLifeTime: 3
-  m_ExplosionRadius: 30
 --- !u!96 &96295774961087898
 TrailRenderer:
   serializedVersion: 2

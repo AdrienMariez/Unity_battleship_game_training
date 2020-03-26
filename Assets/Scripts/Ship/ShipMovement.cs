@@ -105,7 +105,7 @@ public class ShipMovement : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (Active && MapActive && !Dead) {
+        if (Active && !MapActive && !Dead) {
             // Debug.Log("Active");
             if (Input.GetAxis ("VerticalShip") == 1){
                 ChangeSpeedStep(1);
