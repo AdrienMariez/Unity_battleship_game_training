@@ -196,6 +196,10 @@ public class ShellStat : MonoBehaviour
         if (suitableTarget) {
             if (m_ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
                 ShellExplosionFX();
+                if (targetHitboxComponent != null) {
+                    targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
+                }
+                TurretManager.FeedbackShellHit(ArmorPenetrated);
                 return;
             } else {
                 // Calculate the ratio of penetration for use in CheckForExplosion
@@ -204,8 +208,12 @@ public class ShellStat : MonoBehaviour
                 PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
                 ApplyDecal(colliderHit);
                 if (!ArmorPenetrated) {   
-                CheckForExplosion();
-                ArmorPenetrated = true;
+                    CheckForExplosion();
+                    ArmorPenetrated = true;
+                    if (targetHitboxComponent != null) {
+                        targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
+                    }
+                    TurretManager.FeedbackShellHit(ArmorPenetrated);
                 }
             }
         }
@@ -301,11 +309,14 @@ public class ShellStat : MonoBehaviour
     public void SetTargetRange(float range) {
         targetRange = range;
     }
-
     public void SetMuzzleVelocity(float velocity) {
         MuzzleVelocity = velocity;
     }
     public void SetPrecision(float precision) {
         ShellPrecision = precision;
+    }
+    private TurretManager TurretManager;
+    public void SetParentTurretManager(TurretManager turretManager) {
+        TurretManager = turretManager;
     }
 }

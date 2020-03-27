@@ -144,6 +144,7 @@ public class TurretFireManager : MonoBehaviour
             shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
             shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
             shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
+            shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
 
             FireFX(m_FireMuzzles[i]);
 

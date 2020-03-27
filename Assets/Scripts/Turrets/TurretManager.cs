@@ -263,8 +263,11 @@ public class TurretManager : MonoBehaviour
     public GameObject[] GetTurrets() {
         return m_Turrets;
     }
-    public TurretFireManager.TurretType GetCurrentTurretType() {
-        return CurrentControlledTurretType;
+    public TurretFireManager.TurretType GetCurrentTurretType() { return CurrentControlledTurretType; }
+    public void FeedbackShellHit(bool armorPenetrated) {
+        if (GetComponent<ShipController>()) {
+            ShipController.FeedbackShellHit(armorPenetrated);
+        }
     }
     
     public List <TurretStatusType> GetTurretsStatus() {

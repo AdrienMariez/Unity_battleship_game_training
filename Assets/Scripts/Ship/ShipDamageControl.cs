@@ -28,6 +28,15 @@ public class ShipDamageControl : MonoBehaviour {
     private Text UnsetCrewText;
     private string UnitName;
 
+    private Text DamagingHitTaken;
+    private int DamagingHitTakenCount = 0;
+    private Text BouncedHitTaken;
+    private int BouncedHitTakenCount = 0;
+    private Text DamagingHitSent;
+    private int DamagingHitSentCount = 0;
+    private Text BouncedHitSent;
+    private int BouncedHitSentCount = 0;
+
     private int EngineStatus = 0;
     private bool SteeringStatus = false;
     private bool FireStatus = false;
@@ -90,6 +99,9 @@ public class ShipDamageControl : MonoBehaviour {
         Button buttonTurretsNeg = DamageControlInstance.transform.Find("buttonTurretsNeg").GetComponent<Button>();
 		buttonTurretsNeg.onClick.AddListener(ButtonTurretsNegOnClick);
 
+        DamagingHitTaken = DamageControlInstance.transform.Find("TotalShellsPenetrated").GetComponent<Text>();
+        BouncedHitTaken = DamageControlInstance.transform.Find("TotalShellsBounced").GetComponent<Text>();
+
         SetCrewDisplay();
         DisplayDamagedEngine();
         DisplayDamagedSteering();
@@ -98,6 +110,8 @@ public class ShipDamageControl : MonoBehaviour {
         DisplayDamagedTurrets();
 
         CheckActiveButtons();
+
+        SetShellDisplay();
     }
 
     protected void CloseDmgCtrl() {
@@ -315,6 +329,16 @@ public class ShipDamageControl : MonoBehaviour {
         TurretsCrewText.text = TurretsRepairCrew.ToString("g");
         UnsetCrewText.text = UnsetCrew.ToString("g");
     }
+    protected void SetShellDisplay() {
+        // string a = "Damaging hits taken : ";
+        // a += DamagingHitTakenCount.ToString("g");
+        // DamagingHitTaken.text = a;
+        DamagingHitTaken.text = DamagingHitTakenCount.ToString("g");
+        // string b = "Shell bounced : ";
+        // b += BouncedHitTakenCount.ToString("g");
+        // BouncedHitTaken.text = b;
+        BouncedHitTaken.text = BouncedHitTakenCount.ToString("g");
+    }
     public void SetActive(bool activate) {
         Active = activate;
         SetAlertsDamageControlDisplay();
@@ -424,6 +448,24 @@ public class ShipDamageControl : MonoBehaviour {
             DamageControlInstance.transform.Find("TurretsDamaged").gameObject.SetActive(false);
             DamageControlInstance.transform.Find("TurretsOk").gameObject.SetActive(true);
         }
+    }
+    public void UpdateShellsReceivedCounter (bool armorPenetrated) {
+        if (armorPenetrated) {
+            DamagingHitTakenCount++;
+        } else {
+            BouncedHitTakenCount++;
+        }
+        if (DmgCtrlOpen)
+            SetShellDisplay();
+    }
+    public void UpdateShellsSentCounter (bool armorPenetrated) {
+        if (armorPenetrated) {
+            DamagingHitSentCount++;
+        } else {
+            BouncedHitSentCount++;
+        }
+        if (DmgCtrlOpen)
+            SetShellDisplay();
     }
 
     public float GetRepairRate() { return RepairRate; }

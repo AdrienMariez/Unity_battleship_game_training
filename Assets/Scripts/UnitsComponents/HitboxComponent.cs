@@ -96,6 +96,8 @@ public class HitboxComponent : MonoBehaviour {
         // }
     }
 
+    public void SendHitInfoToDamageControl (bool armorPenetrated) { ShipController.SendHitInfoToDamageControl(armorPenetrated); }
+
     public void TakeDamageDecal() {
 
     }

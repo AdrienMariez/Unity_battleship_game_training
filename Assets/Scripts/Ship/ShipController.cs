@@ -200,7 +200,6 @@ public class ShipController : MonoBehaviour {
                 BuoyancyRepair();
         }
     }
-
     private void BuoyancyRepair() {
         if (CurrentpositionY < 0) {
             TargetpositionY += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
@@ -221,7 +220,6 @@ public class ShipController : MonoBehaviour {
             BuoyancyCorrectXZ((WaterRepairCrew + 1));
         }
     }
-
     private void BuoyancyCorrectY(float ratio) {
         // Debug.Log("CurrentpositionY :"+ CurrentpositionY);
         // Debug.Log("TargetpositionY :"+ TargetpositionY);
@@ -260,6 +258,14 @@ public class ShipController : MonoBehaviour {
         // Check death by taking in too much water
         if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead)
             CallDeath();
+    }
+    public void SendHitInfoToDamageControl (bool armorPenetrated) {
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
+    }
+    public void FeedbackShellHit (bool armorPenetrated) {
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.UpdateShellsSentCounter(armorPenetrated);
     }
 
     public void ModuleDestroyed(ElementType elementType) {
