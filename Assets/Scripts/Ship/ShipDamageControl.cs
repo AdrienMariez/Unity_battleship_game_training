@@ -32,10 +32,10 @@ public class ShipDamageControl : MonoBehaviour {
     private int DamagingHitTakenCount = 0;
     private Text BouncedHitTaken;
     private int BouncedHitTakenCount = 0;
-    private Text DamagingHitSent;
-    private int DamagingHitSentCount = 0;
-    private Text BouncedHitSent;
-    private int BouncedHitSentCount = 0;
+    private Text DamagingHitDealt;
+    private int DamagingHitDealtCount = 0;
+    private Text BouncedHitDealt;
+    private int BouncedHitDealtCount = 0;
 
     private int EngineStatus = 0;
     private bool SteeringStatus = false;
@@ -99,8 +99,10 @@ public class ShipDamageControl : MonoBehaviour {
         Button buttonTurretsNeg = DamageControlInstance.transform.Find("buttonTurretsNeg").GetComponent<Button>();
 		buttonTurretsNeg.onClick.AddListener(ButtonTurretsNegOnClick);
 
-        DamagingHitTaken = DamageControlInstance.transform.Find("TotalShellsPenetrated").GetComponent<Text>();
-        BouncedHitTaken = DamageControlInstance.transform.Find("TotalShellsBounced").GetComponent<Text>();
+        DamagingHitTaken = DamageControlInstance.transform.Find("ShellsPenetratedTaken").GetComponent<Text>();
+        BouncedHitTaken = DamageControlInstance.transform.Find("ShellsBouncedTaken").GetComponent<Text>();
+        DamagingHitDealt = DamageControlInstance.transform.Find("ShellsPenetratedDealt").GetComponent<Text>();
+        BouncedHitDealt = DamageControlInstance.transform.Find("ShellsBouncedDealt").GetComponent<Text>();
 
         SetCrewDisplay();
         DisplayDamagedEngine();
@@ -333,11 +335,13 @@ public class ShipDamageControl : MonoBehaviour {
         // string a = "Damaging hits taken : ";
         // a += DamagingHitTakenCount.ToString("g");
         // DamagingHitTaken.text = a;
-        DamagingHitTaken.text = DamagingHitTakenCount.ToString("g");
         // string b = "Shell bounced : ";
         // b += BouncedHitTakenCount.ToString("g");
         // BouncedHitTaken.text = b;
+        DamagingHitTaken.text = DamagingHitTakenCount.ToString("g");
         BouncedHitTaken.text = BouncedHitTakenCount.ToString("g");
+        DamagingHitDealt.text = DamagingHitDealtCount.ToString("g");
+        BouncedHitDealt.text = BouncedHitDealtCount.ToString("g");
     }
     public void SetActive(bool activate) {
         Active = activate;
@@ -460,9 +464,9 @@ public class ShipDamageControl : MonoBehaviour {
     }
     public void UpdateShellsSentCounter (bool armorPenetrated) {
         if (armorPenetrated) {
-            DamagingHitSentCount++;
+            DamagingHitDealtCount++;
         } else {
-            BouncedHitSentCount++;
+            BouncedHitDealtCount++;
         }
         if (DmgCtrlOpen)
             SetShellDisplay();
