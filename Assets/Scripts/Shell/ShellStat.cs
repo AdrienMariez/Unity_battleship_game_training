@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ShellStat : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class ShellStat : MonoBehaviour
     [Header("Shells Stats")]
     [Tooltip("Weight of the shell (kg)")]
     public float m_Weight = 100f;
-    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction od th maximum damage dealt.")]
+    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction of the maximum damage dealt.")]
     public float m_MaxDamage = 100f;                    // The maximum amount of damage done if the explosion is centred on a damage model.
     public float m_MinDamage = 10f;                    // The minimum amount of damage done if the explosion is centred on a damage model.
     [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
@@ -31,7 +33,7 @@ public class ShellStat : MonoBehaviour
     private Vector3 StartPosition;
 
     private float currentRange;                     // Distance between the shell and the starting point
-    private float targetRange;                      // Distance between the target point and the starting point. The target point is always at the same
+    private float TargetRange;                      // Distance between the target point and the starting point. The target point is always at the same
     private float currentAltitudeGain;
     private float xBasis;
     private float x;
@@ -43,67 +45,68 @@ public class ShellStat : MonoBehaviour
     private bool SelfDestruct = false;
 
     private void Start () {
-        // ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
-        rb = GetComponent<Rigidbody>();
-        // currentAltitudeGain = rb.velocity.y;
-        StartPosition = transform.position;
+        if (ShellType == TurretFireManager.TurretType.Artillery) {
+            // ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
+            rb = GetComponent<Rigidbody>();
+            // currentAltitudeGain = rb.velocity.y;
+            StartPosition = transform.position;
 
-        // Calculate target range by getting the percentage of vertical fire rotation of the turret
-        // targetRange = ((MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
+            // Calculate target range by getting the percentage of vertical fire rotation of the turret
+            // TargetRange = ((MaxRange - m_MinRange) / 100 * AngleLaunchPercentage) + m_MinRange;
 
-        xBasis = transform.eulerAngles.x;
-        if (xBasis > 180)
-            xBasis -= 360;
-        xBasis += 180;
-        xBasis = 360 - xBasis;
-        xBasis -= 90;
+            xBasis = transform.eulerAngles.x;
+            if (xBasis > 180)
+                xBasis -= 360;
+            xBasis += 180;
+            xBasis = 360 - xBasis;
+            xBasis -= 90;
 
-        // Make a vector in the direction of the facing of the shell, flattened on the Y axis, if V.y was switched to 0.1f, it will target a high place target, so it could be used to fire on hih-placed land targets with some tweaks
-        V = transform.TransformDirection(Vector3.forward);
-        V.y = 0;
-        V.Normalize();
-        //Then create a point that is the target point of the cannon.
-        TargetPosition = transform.position + V * targetRange;
+            // Make a vector in the direction of the facing of the shell, flattened on the Y axis, if V.y was switched to 0.1f, it will target a high place target, so it could be used to fire on hih-placed land targets with some tweaks
+            V = transform.TransformDirection(Vector3.forward);
+            V.y = 0;
+            V.Normalize();
+            //Then create a point that is the target point of the cannon.
+            TargetPosition = transform.position + V * TargetRange;
 
-        // get initial parameters of the shell, as using Vector3.SignedAngle is better than an Angle but can produce negative values. So we check first if the SignedAngle is + or -.
+            // get initial parameters of the shell, as using Vector3.SignedAngle is better than an Angle but can produce negative values. So we check first if the SignedAngle is + or -.
 
-        // Create a vector between the current position and the target
-        Vector3 targetDir = TargetPosition - transform.position;
-        // Get the angle between the facing of the current position and the new vector
-        float signedAngle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.forward);
+            // Create a vector between the current position and the target
+            Vector3 targetDir = TargetPosition - transform.position;
+            // Get the angle between the facing of the current position and the new vector
+            float signedAngle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.forward);
 
-        if (signedAngle < 0)
-            SignedAnglePositive = false;
+            if (signedAngle < 0)
+                SignedAnglePositive = false;
 
-        // Debug.Log("targetRange = "+ targetRange);
-        // Debug.Log("TargetPosition = "+ TargetPosition);
+            // Debug.Log("TargetRange = "+ TargetRange);
+            // Debug.Log("TargetPosition = "+ TargetPosition);
 
-        //Prebuild shell dispersion here
-        ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
+            //Prebuild shell dispersion here
+            ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
+
+        } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
+            // Torpedoes auto die after their lifetime is expended
+            Destroy (gameObject, m_MaxLifeTime);
+            // Prevent torpedoes from exploding in their tubes at creation
+            StartCoroutine(PreventPrematureExplosion());
+        }
+    }
+    private bool PreventExplosion = true;
+    IEnumerator PreventPrematureExplosion(){
+        yield return new WaitForSeconds(2);
+        PreventExplosion = false;
     }
 
     private void FixedUpdate () {
-        CalculateTrajectoryWithRange ();
-        if (ArmorPenetrated) {
-            CheckForExplosion();
-        }
-        if (transform.position.y <= 0f && !ArmorPenetrated) {
-            //If there wasn't any penetration before, destroy the shell with a nice splash effect when the water is hit
-            // Only if there was no penetration before or else there could be splashes inside ships and it would be silly
-            ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
-            // Unparent the particles from the shell.
-            ExplosionWaterInstance.transform.parent = null;
-            // Play the particle system.
-            ExplosionWaterInstance.GetComponent<ParticleSystem>().Play();
-            // Play the explosion sound effect.
-            ExplosionWaterInstance.GetComponent<AudioSource>().Play();
-            Destroy (ExplosionWaterInstance.gameObject, ExplosionWaterInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
-            // Destroy the shell.
-            Destroy (gameObject);
+        if (ShellType == TurretFireManager.TurretType.Artillery) {
+            CalculateTrajectoryArtillery ();
+            CheckIfShellNeedsToDieArtillery();
+        } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
+            CalculateTrajectoryTorpedo ();
         }
     }
 
-    private void CalculateTrajectoryWithRange () {
+    private void CalculateTrajectoryArtillery () {
         // Create a vector between the current position and the target
         Vector3 targetDir = TargetPosition - transform.position;
 
@@ -115,15 +118,15 @@ public class ShellStat : MonoBehaviour
             //Blue : from firing spawn to target position
             Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
             // Red : facing of shell
-            Debug.DrawRay(transform.position, transform.forward * targetRange, Color.red);
+            Debug.DrawRay(transform.position, transform.forward * TargetRange, Color.red);
             // Green : The vector between the shell and the target
-            // Debug.DrawRay(transform.position, targetDir * targetRange , Color.green);
+            // Debug.DrawRay(transform.position, targetDir * TargetRange , Color.green);
 
 
         currentRange = Vector3.Distance(StartPosition, transform.position);
 
-        float distanceToTarget = targetRange - currentRange;
-        float distanceToTargetRatio = (distanceToTarget * 100) / targetRange;
+        float distanceToTarget = TargetRange - currentRange;
+        float distanceToTargetRatio = (distanceToTarget * 100) / TargetRange;
 
         // Debug.Log("distanceToTarget = "+ distanceToTarget);
         // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
@@ -177,11 +180,78 @@ public class ShellStat : MonoBehaviour
         transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));
         transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
     }
+    private void CheckIfShellNeedsToDieArtillery() {
+        if (ArmorPenetrated) {
+            CheckForExplosion();
+        }
+        if (transform.position.y <= 0f && !ArmorPenetrated) {
+            //If there wasn't any penetration before, destroy the shell with a nice splash effect when the water is hit
+            // Only if there was no penetration before or else there could be splashes inside ships and it would be silly
+            ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
+            // Unparent the particles from the shell.
+            ExplosionWaterInstance.transform.parent = null;
+            // Play the particle system.
+            ExplosionWaterInstance.GetComponent<ParticleSystem>().Play();
+            // Play the explosion sound effect.
+            ExplosionWaterInstance.GetComponent<AudioSource>().Play();
+            Destroy (ExplosionWaterInstance.gameObject, ExplosionWaterInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
+            // Destroy the shell.
+            Destroy (gameObject);
+        }
+    }
+
+    private void CalculateTrajectoryTorpedo () {
+        transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
+    }
 
     private bool ArmorPenetrated = false;
     private float CollisionArmor;
     private float PenetrationRatio;
     private void OnTriggerEnter (Collider colliderHit) {
+        if (ShellType == TurretFireManager.TurretType.Artillery) {
+            OnTriggerEnterArtillery(colliderHit);
+        } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
+            OnTriggerEnterTorpedo(colliderHit);
+        }
+    }
+    private void OnTriggerEnterArtillery(Collider colliderHit) {
+        HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
+        TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
+        bool suitableTarget = false;
+        if (targetHitboxComponent != null) {
+            if (!targetHitboxComponent.GetBuoyancyComponent())
+                CollisionArmor = targetHitboxComponent.GetElementArmor();
+                suitableTarget = true;
+        } else if (targetTurretHealth != null) {
+            CollisionArmor = targetTurretHealth.GetElementArmor();
+            suitableTarget = true;
+        }
+        if (suitableTarget) {
+            if (m_ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
+                ShellExplosionFX();
+                if (targetHitboxComponent != null) {
+                    targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
+                }
+                TurretManager.FeedbackShellHit(ArmorPenetrated);
+                return;
+            } else {
+                // Calculate the ratio of penetration for use in CheckForExplosion
+                PenetrationRatio = 100 - ( (CollisionArmor * 100) / m_ArmorPenetration);
+                // Minimum penetration ratio is 20 %
+                PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
+                ApplyDecal(colliderHit);
+                if (!ArmorPenetrated) {   
+                    CheckForExplosion();
+                    ArmorPenetrated = true;
+                    if (targetHitboxComponent != null) {
+                        targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
+                    }
+                    TurretManager.FeedbackShellHit(ArmorPenetrated);
+                }
+            }
+        }
+    }
+    private void OnTriggerEnterTorpedo(Collider colliderHit) {
         HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
         TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
         bool suitableTarget = false;
@@ -306,15 +376,11 @@ public class ShellStat : MonoBehaviour
         return damage;
     }
 
-    public void SetTargetRange(float range) {
-        targetRange = range;
-    }
-    public void SetMuzzleVelocity(float velocity) {
-        MuzzleVelocity = velocity;
-    }
-    public void SetPrecision(float precision) {
-        ShellPrecision = precision;
-    }
+    public void SetTargetRange(float range) { TargetRange = range; }
+    public void SetMuzzleVelocity(float velocity) { MuzzleVelocity = velocity; }
+    public void SetPrecision(float precision) { ShellPrecision = precision; }
+    private TurretFireManager.TurretType ShellType;
+    public void SetFiringMode(TurretFireManager.TurretType shellType) { ShellType = shellType; }
     private TurretManager TurretManager;
     public void SetParentTurretManager(TurretManager turretManager) {
         TurretManager = turretManager;

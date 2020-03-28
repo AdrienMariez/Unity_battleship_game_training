@@ -135,16 +135,12 @@ public class TurretFireManager : MonoBehaviour
             GameObject shellInstance =
                 Instantiate (m_Shell, m_FireMuzzles[i].position, firingDirection);
 
-            Rigidbody rigid = shellInstance.GetComponent<Rigidbody> ();
+            // Rigidbody rigid = shellInstance.GetComponent<Rigidbody> ();
             // Add velocity in the forward direction
             // DISABLED - shell ballistics moved in the ShellStat class.
             // rigid.velocity = m_MuzzleVelocity * m_FireMuzzles[i].forward;
 
-
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
-            shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
-            shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
-            shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
+            SendNeededInfoToShell(shellInstance);
 
             FireFX(m_FireMuzzles[i]);
 
@@ -153,6 +149,19 @@ public class TurretFireManager : MonoBehaviour
             m_ShootingAudio.clip = m_FireClip;
             m_ShootingAudio.Play ();  
         }
+    }
+    private void SendNeededInfoToShell(GameObject shellInstance) {
+        if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery) {
+            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.Artillery);
+        } else if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.AA) {
+            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.AA);
+        } else {
+            shellInstance.GetComponent<ShellStat>().SetFiringMode(m_TurretType);
+        }
+        shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
+        shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
+        shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
+        shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
     }
 
     private void FireFX(Transform fireMuzzle) {
@@ -233,5 +242,7 @@ public class TurretFireManager : MonoBehaviour
     public void ReturnActiveTurretsStatus() { TurretManager.SetSingleTurretStatus(TurretStatus, TurretNumber); }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
     public void SetTurretUIActive(bool uiActive){ UIActive = uiActive; }
+    private TurretType CurrentControlledTurretType;
+    public void SetCurrentControlledTurretType(TurretType currentControlledTurretType) { CurrentControlledTurretType = currentControlledTurretType; }
     public TurretType GetTurretType() { return m_TurretType; }
 }

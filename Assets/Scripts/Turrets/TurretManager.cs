@@ -176,11 +176,19 @@ public class TurretManager : MonoBehaviour
         // Debug.Log("AIControl : "+ AIControl);
         int number = 0;
         for (int i = 0; i < m_Turrets.Length; i++) {
-            if ((CurrentControlledTurretType == TurretFireManager.TurretType.Artillery || CurrentControlledTurretType == TurretFireManager.TurretType.AA) && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
+            if (CurrentControlledTurretType == TurretFireManager.TurretType.Artillery && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
                 m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretUIActive(true);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(number);
+                m_Turrets[i].GetComponent<TurretFireManager>().SetCurrentControlledTurretType(CurrentControlledTurretType);
+                number++;
+            } else if (CurrentControlledTurretType == TurretFireManager.TurretType.AA && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
+                m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
+                m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
+                m_Turrets[i].GetComponent<TurretFireManager>().SetTurretUIActive(true);
+                m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(number);
+                m_Turrets[i].GetComponent<TurretFireManager>().SetCurrentControlledTurretType(CurrentControlledTurretType);
                 number++;
             } else if (m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == CurrentControlledTurretType) {
                 m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);

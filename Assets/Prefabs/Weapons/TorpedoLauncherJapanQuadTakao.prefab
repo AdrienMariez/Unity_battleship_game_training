@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TurretType: 3
-  m_Shell: {fileID: 1340822690796195968, guid: 71cd6b29525c57e4ab99ba54ab339b5f, type: 3}
+  m_Shell: {fileID: 1340822690796195968, guid: 57771caebe4d4634195e2e6f00f5c9e4, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}
   - {fileID: 2978235652411409986}
@@ -190,9 +190,10 @@ MonoBehaviour:
   m_FireClip: {fileID: 8300000, guid: 672a9941361ad494a99fba36759eca80, type: 3}
   m_MaxRange: 16000
   m_MinRange: 500
-  m_MuzzleVelocity: 825
-  m_ReloadTime: 2
+  m_MuzzleVelocity: 17
+  m_ReloadTime: 15
   m_Precision: 1.37
+  m_FireFx: {fileID: 0}
   debug: 0
 --- !u!114 &536144026725449547
 MonoBehaviour:
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_TurretTurret: {fileID: 3541568489413974844}
   m_TurretCannon: {fileID: 5086371173920104713}
   m_Parent: {fileID: 0}
-  m_RotationSpeed: 15
+  m_RotationSpeed: 35
   m_LimitTraverse: 1
   m_LeftTraverse: 60
   m_RightTraverse: 60

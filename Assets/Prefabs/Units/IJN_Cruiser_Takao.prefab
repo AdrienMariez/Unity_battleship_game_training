@@ -4675,6 +4675,31 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 512295342537579509, guid: 3419364c1eee67c42b3194a5aa7788e7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512295342537579509, guid: 3419364c1eee67c42b3194a5aa7788e7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512295342537579509, guid: 3419364c1eee67c42b3194a5aa7788e7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 512295342537579509, guid: 3419364c1eee67c42b3194a5aa7788e7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 512295342537579509, guid: 3419364c1eee67c42b3194a5aa7788e7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 536144026725449547, guid: 3419364c1eee67c42b3194a5aa7788e7,
         type: 3}
       propertyPath: m_NoFireZones.Array.size

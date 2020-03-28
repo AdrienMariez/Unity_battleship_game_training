@@ -270,11 +270,13 @@ public class ShipMovement : MonoBehaviour
         Dead = death;
         SetTargetSpeed();
         if (Dead) {
+            m_MovementAudio.Stop ();
             foreach (StackComponentSmoke component in m_StackComponents) {
                 // component.InstantiateIdleStop();
                 component.StackInstanceStop();
             }
         } else {
+            m_MovementAudio.Play ();
             foreach (StackComponentSmoke component in m_StackComponents) {
                 // component.InstantiateIdleStart();
                 component.StackInstanceStart();
