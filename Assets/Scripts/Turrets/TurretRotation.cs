@@ -129,15 +129,16 @@ public class TurretRotation : MonoBehaviour
 
     private void FixedUpdate(){
 
-        // if (PlayerContro && !Dead) {
         if (!Dead) {
             TurretRotate();
-            CannonElevation();
-        }
-        // else if (!Dead && ActionPaused) {
-        //     CannonElevation();
-        // }
-        else {
+            if (CurrentControlledTurretType == TurretFireManager.TurretType.Artillery) {   
+                CannonElevationArtillery();
+            } else if (CurrentControlledTurretType == TurretFireManager.TurretType.AA) {
+                CannonElevationAA();
+            } else {
+                
+            }
+        } else {
             TurretStatic();
         }
 
@@ -146,13 +147,18 @@ public class TurretRotation : MonoBehaviour
             TurretFireManager.SetPreventFire(true);
         } else{
             TurretFireManager.SetPreventFire(false);
+        }
+        // TurretFireManager.SetPreventFire(false);
 
+        // if (debug) {
+        //     Debug.Log("PreventFireHoriz: " + PreventFireHoriz+"PreventFireVert: " + PreventFireVert);
+        // }
             // if (debug) {
                 // Debug.Log("current: " + currentAngElev);
                 // Debug.Log("total: " + TotalAngleElevRatio);
                 // Debug.Log("percent sent: " + CurrentAngleElevRatio);
+            //     Debug.Log("PreventFireHoriz: " + PreventFireHoriz+"PreventFireVert: " + PreventFireVert);
             // }
-        }
         
         // Reassign the new parent angle for future TurretRotate()
         ParentEulerAngles = m_Parent.transform.rotation.eulerAngles;
@@ -233,7 +239,7 @@ public class TurretRotation : MonoBehaviour
         // Update the turret angle
         m_TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
 
-        Debug.DrawLine(m_TurretTurret.transform.position, TargetPosition, Color.green);
+        // Debug.DrawLine(m_TurretTurret.transform.position, TargetPosition, Color.green);
     }
 
     private float BuildRotation(float currentAngle, float targetAngle){
@@ -321,7 +327,7 @@ public class TurretRotation : MonoBehaviour
         return PreventFire;
     }
 
-    private void CannonElevation() {
+    private void CannonElevationArtillery() {
         // Get parent current rotation rate
         float parentRotationAng = m_Parent.transform.rotation.eulerAngles.x - ParentEulerAngles.x;
 
@@ -367,7 +373,7 @@ public class TurretRotation : MonoBehaviour
             CurrentAngElev = TargetAngElev;
         }
 
-        PreventFireVert = CheckNoFireVertical(CurrentAngElev,TargetAngElev);
+        PreventFireVert = CheckNoFireVerticalArtillery(CurrentAngElev,TargetAngElev);
         
         // Transform back the elevation variable into the same axis than the limitations
         CurrentAngElev += 90;
@@ -394,9 +400,93 @@ public class TurretRotation : MonoBehaviour
         m_TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentAngElev, 0.0f, 0.0f));
 
         // Debug.DrawRay(m_TurretCannon.transform.position, m_TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
-        
     }
+    private void CannonElevationAA() {
+        // Get parent current rotation rate
+        float parentRotationAng = m_Parent.transform.rotation.eulerAngles.x - ParentEulerAngles.x;
+        if (parentRotationAng<-360)
+            parentRotationAng += 360;
+        else if (parentRotationAng>360)
+            parentRotationAng -= 360;
+        
+        float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - m_TurretCannon.transform.position).eulerAngles.x;
 
+        CurrentAngElev = m_TurretCannon.transform.localRotation.eulerAngles.x;
+
+        TargetAngElev = TargetAngleWorld - ParentEulerAngles.x;
+
+        if (TurretSleep) {
+            TargetAngElev = TurretEulerElevAngle;
+        }
+
+        // Transform the elevation variable into the same axis than the limitations
+        if (CurrentAngElev > 180)
+            CurrentAngElev -= 360;
+        CurrentAngElev += 180;
+        CurrentAngElev = 360 - CurrentAngElev;
+        CurrentAngElev -= 90;
+
+        if (TargetAngElev > 180)
+            TargetAngElev -= 360;
+        TargetAngElev += 180;
+        TargetAngElev = 360 - TargetAngElev;
+        TargetAngElev -= 90;
+        if (TargetAngElev > 360)
+            TargetAngElev -= 360;
+
+        // If the angles are very close, prevent turning
+        // if (TargetAngElev >= CurrentAngElev && TargetAngElev <= (CurrentAngElev+0.5) || TargetAngElev <= CurrentAngElev && TargetAngElev >= (CurrentAngElev-0.5)) {
+        //     return;
+        // }
+
+        // if (debug) { Debug.Log("targetAngElev --- = "+ targetAngElev); }
+        // if (debug) { Debug.Log("currentAngElev = "+ currentAngElev); }
+
+        float speed = m_ElevationSpeed * Time.fixedDeltaTime;
+        if (CurrentAngElev < TargetAngElev && CurrentAngElev + speed < TargetAngElev) {
+            CurrentAngElev += speed;
+        } else if (CurrentAngElev > TargetAngElev && CurrentAngElev - speed > TargetAngElev) {
+            CurrentAngElev -= speed;
+        } else {
+            CurrentAngElev = TargetAngElev;
+        }
+
+        // PreventFireVert = CheckNoFireVerticalAA(CurrentAngElev,TargetAngElev);
+        
+        // if (debug) {
+        //     Debug.Log("TargetAngElev = "+TargetAngElev+" - CurrentAngElev = "+CurrentAngElev);
+        // }
+
+        // Transform back the elevation variable into the same axis than the limitations
+        CurrentAngElev += 90;
+        CurrentAngElev = 360 - CurrentAngElev;
+        CurrentAngElev -= 180;
+        if (CurrentAngElev < 0)
+            CurrentAngElev += 360;
+        
+        TargetAngElev += 90;
+        TargetAngElev = 360 - TargetAngElev;
+        TargetAngElev -= 180;
+        if (TargetAngElev < 0)
+            TargetAngElev += 360;
+
+        CurrentAngElev = CheckLimitElevation(CurrentAngElev);
+
+        CurrentAngElev += parentRotationAng;
+
+
+        if (CurrentAngElev < 0)
+            CurrentAngElev += 360;
+        if (CurrentAngElev > 360)
+            CurrentAngElev -= 360;
+
+
+        // Set correct current angle to the cannons axis
+        // m_TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentAngElev, 0.0f, 0.0f));
+        m_TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentAngElev, 0.0f, 0.0f));
+
+        Debug.DrawLine(m_TurretTurret.transform.position, TargetPosition, Color.green);
+    }
     private float CheckLimitElevation(float currentElevation){
         float localUpTraverse = m_UpTraverse;
         float localDownTraverse = m_DownTraverse;
@@ -456,7 +546,7 @@ public class TurretRotation : MonoBehaviour
         return currentElevation;
     }
 
-    private bool CheckNoFireVertical(float currentAngElev, float targetAngElev){
+    private bool CheckNoFireVerticalArtillery(float currentAngElev, float targetAngElev){
         // This fuction disables the firing capacity of the turrets on certain conditions.
         bool PreventFire = false;
 
@@ -474,12 +564,29 @@ public class TurretRotation : MonoBehaviour
             PreventFire = true;
         }
         // if (debug && PreventFire) {
-        //     Debug.Log("currentAngElev = "+ currentAngElev);
-        //     Debug.Log("targetAngElev = "+ targetAngElev);
+        //     Debug.Log("currentAngElev = "+ currentAngElev+"- targetAngElev = "+ targetAngElev);
         // }
 
         return PreventFire;
     }
+    private bool CheckNoFireVerticalAA(float currentAngElev, float targetAngElev){
+        // This fuction disables the firing capacity of the turrets on certain conditions.
+        bool PreventFire = false;
+
+        float targetAngleMax = targetAngElev + 4;
+        float targetAngleMin = targetAngElev - 4;
+
+        // Check if the turret is close to the firing targeting point
+        if (currentAngElev > targetAngleMax || currentAngElev < targetAngleMin){
+            PreventFire = true;
+        }
+        // if (debug) {
+        //     Debug.Log("currentAngElev = "+ currentAngElev+"- targetAngElev = "+ targetAngElev);
+        // }
+
+        return PreventFire;
+    }
+
 
     private void TurretStatic() {
         // Update the turret angle
@@ -504,4 +611,7 @@ public class TurretRotation : MonoBehaviour
             CameraPercentage = percentage;
     }
     public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
+
+    private TurretFireManager.TurretType CurrentControlledTurretType;
+    public void SetCurrentControlledTurretType(TurretFireManager.TurretType currentControlledTurretType) { CurrentControlledTurretType = currentControlledTurretType; }
 }

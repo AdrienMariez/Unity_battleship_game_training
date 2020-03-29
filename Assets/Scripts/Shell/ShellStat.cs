@@ -84,7 +84,19 @@ public class ShellStat : MonoBehaviour
             //Prebuild shell dispersion here
             ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
 
-        } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
+        }
+        else if (ShellType == TurretFireManager.TurretType.AA) {
+            // Make a vector in the direction of the facing of the shell
+            V = transform.TransformDirection(Vector3.forward);
+            V.Normalize();
+            // Then create a point that is the target point of the cannon.
+            // TargetRange for AA is ALWAYS the max range
+            TargetPosition = transform.position + V * TargetRange;
+
+            //Prebuild shell dispersion here
+            ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
+        }
+        else if (ShellType == TurretFireManager.TurretType.Torpedo) {
             // Torpedoes auto die after their lifetime is expended
             Destroy (gameObject, m_MaxLifeTime);
             // Prevent torpedoes from exploding in their tubes at creation
@@ -101,6 +113,8 @@ public class ShellStat : MonoBehaviour
         if (ShellType == TurretFireManager.TurretType.Artillery) {
             CalculateTrajectoryArtillery ();
             CheckIfShellNeedsToDieArtillery();
+        } else if (ShellType == TurretFireManager.TurretType.AA) {
+            CalculateTrajectoryAA ();
         } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
             CalculateTrajectoryTorpedo ();
         }
@@ -120,7 +134,7 @@ public class ShellStat : MonoBehaviour
             // Red : facing of shell
             Debug.DrawRay(transform.position, transform.forward * TargetRange, Color.red);
             // Green : The vector between the shell and the target
-            // Debug.DrawRay(transform.position, targetDir * TargetRange , Color.green);
+            Debug.DrawRay(transform.position, targetDir * TargetRange , Color.green);
 
 
         currentRange = Vector3.Distance(StartPosition, transform.position);
@@ -200,6 +214,27 @@ public class ShellStat : MonoBehaviour
         }
     }
 
+    private void CalculateTrajectoryAA () {
+        //Blue : from firing spawn to target position
+        // Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
+        // Red : facing of shell
+        // Debug.DrawRay(transform.position, transform.forward * TargetRange, Color.red);
+
+        transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
+
+        currentRange = Vector3.Distance(StartPosition, transform.position);
+        float distanceToTarget = TargetRange - currentRange;
+        float distanceToTargetRatio = (distanceToTarget * 100) / TargetRange;
+
+        if (distanceToTargetRatio < 0 && !SelfDestruct) {
+            // Engage auto destruct if the range is passed
+            // Debug.Log("engage self destruct !");
+            // Destroy (gameObject, m_MaxLifeTime);
+            ShellExplosion();
+            SelfDestruct = true;
+        }
+    }
+
     private void CalculateTrajectoryTorpedo () {
         transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
     }
@@ -210,48 +245,13 @@ public class ShellStat : MonoBehaviour
     private void OnTriggerEnter (Collider colliderHit) {
         if (ShellType == TurretFireManager.TurretType.Artillery) {
             OnTriggerEnterArtillery(colliderHit);
+        } else if (ShellType == TurretFireManager.TurretType.AA) {
+            OnTriggerEnterArtillery(colliderHit);
         } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
-            OnTriggerEnterTorpedo(colliderHit);
+            OnTriggerEnterArtillery(colliderHit);
         }
     }
     private void OnTriggerEnterArtillery(Collider colliderHit) {
-        HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
-        TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
-        bool suitableTarget = false;
-        if (targetHitboxComponent != null) {
-            if (!targetHitboxComponent.GetBuoyancyComponent())
-                CollisionArmor = targetHitboxComponent.GetElementArmor();
-                suitableTarget = true;
-        } else if (targetTurretHealth != null) {
-            CollisionArmor = targetTurretHealth.GetElementArmor();
-            suitableTarget = true;
-        }
-        if (suitableTarget) {
-            if (m_ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
-                ShellExplosionFX();
-                if (targetHitboxComponent != null) {
-                    targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
-                }
-                TurretManager.FeedbackShellHit(ArmorPenetrated);
-                return;
-            } else {
-                // Calculate the ratio of penetration for use in CheckForExplosion
-                PenetrationRatio = 100 - ( (CollisionArmor * 100) / m_ArmorPenetration);
-                // Minimum penetration ratio is 20 %
-                PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
-                ApplyDecal(colliderHit);
-                if (!ArmorPenetrated) {   
-                    CheckForExplosion();
-                    ArmorPenetrated = true;
-                    if (targetHitboxComponent != null) {
-                        targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
-                    }
-                    TurretManager.FeedbackShellHit(ArmorPenetrated);
-                }
-            }
-        }
-    }
-    private void OnTriggerEnterTorpedo(Collider colliderHit) {
         HitboxComponent targetHitboxComponent = colliderHit.GetComponent<HitboxComponent> ();
         TurretHealth targetTurretHealth = colliderHit.GetComponent<TurretHealth> ();
         bool suitableTarget = false;
@@ -354,11 +354,21 @@ public class ShellStat : MonoBehaviour
     private void ShellExplosionFX(){
         if (ShellType == TurretFireManager.TurretType.Artillery) {
             ShellExplosionFXArtillery();
+        }if (ShellType == TurretFireManager.TurretType.AA) {
+            ShellExplosionFXAA();
         } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
             ShellExplosionFXTorpedo();
         }
     }
     private void ShellExplosionFXArtillery(){
+        ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
+        ExplosionInstance.transform.parent = null;
+        ExplosionInstance.GetComponent<ParticleSystem>().Play();
+        ExplosionInstance.GetComponent<AudioSource>().Play();
+        Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
+        Destroy (gameObject);
+    }
+    private void ShellExplosionFXAA(){
         ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
         ExplosionInstance.transform.parent = null;
         ExplosionInstance.GetComponent<ParticleSystem>().Play();

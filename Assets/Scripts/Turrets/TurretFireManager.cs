@@ -62,11 +62,12 @@ public class TurretFireManager : MonoBehaviour
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
-        if (TargetRange > m_MaxRange) {
+        if (TargetRange > m_MaxRange && m_TurretType == TurretType.Artillery || TargetRange > m_MaxRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery) {
             OutOfRange = true;
             CheckTurretStatus();
         }else{
             OutOfRange = false;
+            CheckTurretStatus();
         }
         if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
             CheckTurretStatus();
@@ -151,14 +152,16 @@ public class TurretFireManager : MonoBehaviour
         }
     }
     private void SendNeededInfoToShell(GameObject shellInstance) {
-        if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery) {
+        if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || m_TurretType == TurretType.Artillery) {
             shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.Artillery);
-        } else if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.AA) {
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
+        } else if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.AA || m_TurretType == TurretType.AA) {
             shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.AA);
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);
         } else {
             shellInstance.GetComponent<ShellStat>().SetFiringMode(m_TurretType);
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);
         }
-        shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
         shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
         shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
         shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
@@ -203,13 +206,16 @@ public class TurretFireManager : MonoBehaviour
         if (UIActive) {
             if (Dead){
                 statusType = TurretManager.TurretStatusType.Dead;
-            }else if (Reloading){
+            } else if (Reloading){
                 statusType = TurretManager.TurretStatusType.Reloading;
-            }else if  (PreventFire || OutOfRange){
+            } else if (PreventFire){
                 statusType = TurretManager.TurretStatusType.PreventFire;
-            }else{
+            } else if (OutOfRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || OutOfRange && m_TurretType == TurretType.Artillery){
+                statusType = TurretManager.TurretStatusType.PreventFire;
+            } else {
                 statusType = TurretManager.TurretStatusType.Ready;
             }
+
             if (statusType != TurretStatus) {
                 // Debug.Log ("TurretNumber : "+ TurretNumber);
                 TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
@@ -221,11 +227,13 @@ public class TurretFireManager : MonoBehaviour
         TurretManager.TurretStatusType status;
         if (Dead){
             status = TurretManager.TurretStatusType.Dead;
-        }else if  (PreventFire || OutOfRange){
+        } else if  (PreventFire){
             status = TurretManager.TurretStatusType.PreventFire;
-        }else if (Reloading){
+        } else if  (OutOfRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || OutOfRange && m_TurretType == TurretType.Artillery){
+            status = TurretManager.TurretStatusType.PreventFire;
+        } else if (Reloading){
             status = TurretManager.TurretStatusType.Reloading;
-        }else{
+        } else {
             status = TurretManager.TurretStatusType.Ready;
         }
         return status;

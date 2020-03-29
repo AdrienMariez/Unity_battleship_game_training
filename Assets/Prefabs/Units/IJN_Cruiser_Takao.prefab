@@ -4855,10 +4855,20 @@ PrefabInstance:
       propertyPath: m_Parent
       value: 
       objectReference: {fileID: 8237782044557327271}
+    - target: {fileID: 536144026725449547, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 840146293658127578, guid: f04d3da2ab0be5d4c908eab54dcd6901,
         type: 3}
       propertyPath: m_Name
       value: TurretJapan120mmL1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653871051627078444, guid: f04d3da2ab0be5d4c908eab54dcd6901,
+        type: 3}
+      propertyPath: debug
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8933853122373449585, guid: f04d3da2ab0be5d4c908eab54dcd6901,
         type: 3}

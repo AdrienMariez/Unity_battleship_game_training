@@ -178,6 +178,7 @@ public class TurretManager : MonoBehaviour
         for (int i = 0; i < m_Turrets.Length; i++) {
             if (CurrentControlledTurretType == TurretFireManager.TurretType.Artillery && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
                 m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
+                m_Turrets[i].GetComponent<TurretRotation>().SetCurrentControlledTurretType(CurrentControlledTurretType);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretUIActive(true);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(number);
@@ -185,6 +186,7 @@ public class TurretManager : MonoBehaviour
                 number++;
             } else if (CurrentControlledTurretType == TurretFireManager.TurretType.AA && m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.ArtilleryAA) {
                 m_Turrets[i].GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
+                m_Turrets[i].GetComponent<TurretRotation>().SetCurrentControlledTurretType(CurrentControlledTurretType);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretUIActive(true);
                 m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(number);
