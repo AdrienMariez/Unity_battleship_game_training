@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 3578046669053830735}
   - component: {fileID: 434423811925571078}
   - component: {fileID: 3481515219793481918}
-  m_Layer: 2
+  m_Layer: 13
   m_Name: TorpedoCheckerToRemove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3578046669053830735
 Transform:
   m_ObjectHideFlags: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112495049668653328}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.494, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.178}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 1340822690796620960}
   m_RootOrder: 1
@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6221f2fbc7212d94cb9c069ee262d824, type: 2}
+  - {fileID: 2100000, guid: db9ceca9e86a2724aaa5c3df2991dba7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ Transform:
   m_GameObject: {fileID: 1340822690796195968}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 20}
+  m_LocalScale: {x: 3, y: 3, z: 15}
   m_Children:
   - {fileID: 139394164262486325}
   - {fileID: 3578046669053830735}
@@ -212,8 +212,8 @@ MonoBehaviour:
   m_ArmorPenetration: 200
   m_ExplosionRadius: 40
   m_MaxLifeTime: 300
-  m_Explosion: {fileID: 195792, guid: 5bb338b972b80e142be6f85286b415b8, type: 3}
-  m_ExplosionWater: {fileID: 195792, guid: 5bb338b972b80e142be6f85286b415b8, type: 3}
+  m_Explosion: {fileID: 195792, guid: 2ccc8bd3bcf011841a7f1b7f6c57eb34, type: 3}
+  m_ExplosionWater: {fileID: 195792, guid: 2ccc8bd3bcf011841a7f1b7f6c57eb34, type: 3}
   m_DamageEffect: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
     type: 3}
 --- !u!96 &96295774961087898

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 19960184}
   - component: {fileID: 82120141312391850}
   m_Layer: 1
-  m_Name: ShellWaterHitLargePlaceholder
+  m_Name: ShellWaterHitTorpedoPlaceholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 195792}
   serializedVersion: 6
-  lengthInSec: 3
+  lengthInSec: 7
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 20
+      scalar: 30
       minScalar: 5
       maxCurve:
         serializedVersion: 2

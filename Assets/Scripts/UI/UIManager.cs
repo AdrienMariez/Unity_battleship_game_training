@@ -248,6 +248,7 @@ namespace UI {
                     DisplayTurretsCurrentAA.SetActive(true);
                 }
                 if (currentControlledTurret == TurretFireManager.TurretType.Torpedo) {
+                    DisplayTurretsArtilleryAimer.SetActive(true);
                     DisplayTurretsCurrentTorpedoes.SetActive(true);
                 }
                 if (currentControlledTurret == TurretFireManager.TurretType.DepthCharge) {

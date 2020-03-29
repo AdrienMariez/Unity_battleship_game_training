@@ -352,6 +352,13 @@ public class ShellStat : MonoBehaviour
         ShellExplosionFX();
     }
     private void ShellExplosionFX(){
+        if (ShellType == TurretFireManager.TurretType.Artillery) {
+            ShellExplosionFXArtillery();
+        } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
+            ShellExplosionFXTorpedo();
+        }
+    }
+    private void ShellExplosionFXArtillery(){
         ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
         ExplosionInstance.transform.parent = null;
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
@@ -359,6 +366,20 @@ public class ShellStat : MonoBehaviour
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
         Destroy (gameObject);
     }
+    private void ShellExplosionFXTorpedo(){
+        Vector3 position = this.gameObject.transform.position;
+        Quaternion rotation = this.gameObject.transform.rotation;
+        Quaternion updatedRotation = new Quaternion(90,-90,0,1);
+
+
+        ExplosionInstance = Instantiate(m_Explosion, position, updatedRotation);
+        // ExplosionInstance.transform.parent = null;
+        ExplosionInstance.GetComponent<ParticleSystem>().Play();
+        ExplosionInstance.GetComponent<AudioSource>().Play();
+        Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
+        Destroy (gameObject);
+    }
+    
     private float CalculateDamage (Collider colliderDamaged) {
         // Calculate the distance from the shell to the target collider bounds.
         Vector3 closestPoint = colliderDamaged.ClosestPointOnBounds(transform.position);
