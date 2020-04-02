@@ -901,6 +901,7 @@ GameObject:
   - component: {fileID: 4108665965408059122}
   - component: {fileID: 5625231153092559834}
   - component: {fileID: 2435269581605581671}
+  - component: {fileID: 5347908121411531393}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -994,6 +995,8 @@ MonoBehaviour:
   TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
   IconsSpacing: 22
+  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
+    type: 3}
 --- !u!114 &6283074086476641185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1152,6 +1155,20 @@ MonoBehaviour:
   m_MapDestroyer: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
     type: 3}
   m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+--- !u!114 &5347908121411531393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283074086476641211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e63787c9a117504398e655e3dacfaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
 --- !u!1 &6283074086803692814
 GameObject:

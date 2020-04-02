@@ -423,6 +423,9 @@ public class ShipController : MonoBehaviour {
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
         if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     }
+    public void SendPlayerShellToUI(GameObject shellInstance){
+        if (PlayerManager != null) { PlayerManager.SendPlayerShellToUI(shellInstance); }
+    }
     public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){

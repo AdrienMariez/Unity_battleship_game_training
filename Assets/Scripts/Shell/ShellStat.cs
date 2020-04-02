@@ -83,7 +83,6 @@ public class ShellStat : MonoBehaviour
 
             //Prebuild shell dispersion here
             ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
-
         }
         else if (ShellType == TurretFireManager.TurretType.AA) {
             // Make a vector in the direction of the facing of the shell
@@ -187,8 +186,8 @@ public class ShellStat : MonoBehaviour
         if (distanceToTargetRatio < 0 && !SelfDestruct) {
             // Engage auto destruct if the range is passed
             // Debug.Log("engage self destruct !");
-            Destroy (gameObject, m_MaxLifeTime);
             SelfDestruct = true;
+            DestroyShell(m_MaxLifeTime);
         }
 
         transform.localRotation = Quaternion.Euler (new Vector3 (x, transform.eulerAngles.y, transform.eulerAngles.z));
@@ -210,7 +209,7 @@ public class ShellStat : MonoBehaviour
             ExplosionWaterInstance.GetComponent<AudioSource>().Play();
             Destroy (ExplosionWaterInstance.gameObject, ExplosionWaterInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
             // Destroy the shell.
-            Destroy (gameObject);
+            DestroyShell(0);
         }
     }
 
@@ -366,7 +365,7 @@ public class ShellStat : MonoBehaviour
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
         ExplosionInstance.GetComponent<AudioSource>().Play();
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
-        Destroy (gameObject);
+        DestroyShell(0);
     }
     private void ShellExplosionFXAA(){
         ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
@@ -374,7 +373,7 @@ public class ShellStat : MonoBehaviour
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
         ExplosionInstance.GetComponent<AudioSource>().Play();
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
-        Destroy (gameObject);
+        DestroyShell(0);
     }
     private void ShellExplosionFXTorpedo(){
         Vector3 position = this.gameObject.transform.position;
@@ -387,7 +386,7 @@ public class ShellStat : MonoBehaviour
         ExplosionInstance.GetComponent<ParticleSystem>().Play();
         ExplosionInstance.GetComponent<AudioSource>().Play();
         Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
-        Destroy (gameObject);
+        DestroyShell(0);
     }
     
     private float CalculateDamage (Collider colliderDamaged) {
@@ -407,13 +406,31 @@ public class ShellStat : MonoBehaviour
         return damage;
     }
 
+    private void DestroyShell(float time) {
+        if (FollowedByCamera && PlayerManager != null && ShellCamera != null) {
+            PlayerManager.ShellFollowedByCameraDestroyed();
+            ShellCamera.transform.parent = null;
+            Destroy (ShellCamera, DestroyTimer);
+        }
+        Destroy (gameObject, time);
+    }
+
     public void SetTargetRange(float range) { TargetRange = range; }
     public void SetMuzzleVelocity(float velocity) { MuzzleVelocity = velocity; }
     public void SetPrecision(float precision) { ShellPrecision = precision; }
     private TurretFireManager.TurretType ShellType;
     public void SetFiringMode(TurretFireManager.TurretType shellType) { ShellType = shellType; }
     private TurretManager TurretManager;
-    public void SetParentTurretManager(TurretManager turretManager) {
-        TurretManager = turretManager;
+    public void SetParentTurretManager(TurretManager turretManager) { TurretManager = turretManager; }
+    private bool FollowedByCamera = false;
+    private PlayerManager PlayerManager;
+    private GameObject ShellCamera;
+    private float DestroyTimer;
+    public void SetIsFollowedByCamera(PlayerManager playerManager, GameObject shellCamera, float destroyTimer) {
+        FollowedByCamera = true;
+        PlayerManager = playerManager;
+        ShellCamera = shellCamera;
+        DestroyTimer = destroyTimer;
     }
+
 }

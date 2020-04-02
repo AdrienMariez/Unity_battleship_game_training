@@ -23,6 +23,9 @@ namespace UI {
         [Header("Turrets status icons")]
             public GameObject TurretStatusSprites;
             public float IconsSpacing = 22;
+        [Header("Shell Camera")]
+            public GameObject m_ShellCamera;
+            public float m_TimeToDestroyCamera = 3;
         private Text Score;
             private string CurrentScore;
         private Text UnitName;
@@ -58,9 +61,8 @@ namespace UI {
         private bool DisplayMapUI = false;
         private bool DisplayUI = true;
         private GameObject PlayerCanvas;
-        PlayerManager PlayerManager;
+        private PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
-
 
         private void Start() {
             PlayerUI = GameObject.Find("UI");
@@ -393,8 +395,20 @@ namespace UI {
                 Destroy (PauseUIInstance);
         }
 
-
         public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; }
+
+        private bool ShellCameraUsed = false;
+        public void SendPlayerShellToUI(GameObject shellInstance){ if (!ShellCameraUsed) { CreatePlayerShellUI(shellInstance); } }
+        private void CreatePlayerShellUI(GameObject shellInstance) {
+            ShellCameraUsed = true;
+            GameObject shellCamera = Instantiate (m_ShellCamera, shellInstance.transform);
+            shellInstance.GetComponent<ShellStat>().SetIsFollowedByCamera(PlayerManager, shellCamera, m_TimeToDestroyCamera);
+        }
+        public void ShellFollowedByCameraDestroyed() { StartCoroutine(WaitForDestroy()); }
+        IEnumerator WaitForDestroy(){
+            yield return new WaitForSeconds(m_TimeToDestroyCamera);
+            ShellCameraUsed = false;
+        }
         public void SetPlayerCanvas(GameObject playerCanvas) { PlayerCanvas = playerCanvas; }
         public void SetFreeLookCamera(FreeLookCam freeLookCam){ FreeLookCam = freeLookCam; }
         public void SetMap(bool map) {

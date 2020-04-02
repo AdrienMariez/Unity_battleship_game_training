@@ -267,7 +267,11 @@ public class TurretManager : MonoBehaviour
 
     public void SetSingleTurretStatus(TurretStatusType status, int turretNumber){
         if (Active && GetComponent<ShipController>())
-                ShipController.SetSingleTurretStatus(status, turretNumber);
+            ShipController.SetSingleTurretStatus(status, turretNumber);
+    }
+    public void SendPlayerShellToUI(GameObject shellInstance){
+        if (Active && GetComponent<ShipController>())
+            ShipController.SendPlayerShellToUI(shellInstance);
     }
 
     public GameObject[] GetTurrets() {

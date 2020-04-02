@@ -143,6 +143,8 @@ public class TurretFireManager : MonoBehaviour
 
             SendNeededInfoToShell(shellInstance);
 
+            TurretManager.SendPlayerShellToUI(shellInstance);
+
             FireFX(m_FireMuzzles[i]);
 
             // AUDIO FX
