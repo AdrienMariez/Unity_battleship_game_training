@@ -14,7 +14,10 @@ public class UnitTypeManager : MonoBehaviour {
         battleship,
         cruiser,
         destroyer,
-        carrier
+        carrier,
+        fighter,
+        lightBomber,
+        Bomber
     }
     public void CreateElement(GameObject unitGameObject, UnitType unitType, GameManager.Teams team) {
         if (unitType == UnitType.battleship) {

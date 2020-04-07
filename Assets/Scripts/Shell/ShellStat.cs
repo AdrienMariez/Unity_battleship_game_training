@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ShellStat : MonoBehaviour
 {
     [Tooltip("What the shell can hit")]
-    public LayerMask m_HitMask;                        // Used to filter what the explosion affects, this should be set to "Players".
+    public LayerMask m_HitMask;                        // Used to filter what the explosion affects.
 
     [Header("Shells Stats")]
     [Tooltip("Weight of the shell (kg)")]

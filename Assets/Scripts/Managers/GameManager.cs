@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public Teams m_PlayerTeam;
-    public UnitManager[] m_Units; 
+    public UnitManager[] m_Units;
 
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.

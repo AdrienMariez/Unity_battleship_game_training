@@ -902,6 +902,7 @@ GameObject:
   - component: {fileID: 5625231153092559834}
   - component: {fileID: 2435269581605581671}
   - component: {fileID: 5347908121411531393}
+  - component: {fileID: 786188453127439666}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -997,6 +998,7 @@ MonoBehaviour:
   IconsSpacing: 22
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
+  m_TimeToDestroyCamera: 3
 --- !u!114 &6283074086476641185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,6 +1172,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
+--- !u!114 &786188453127439666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283074086476641211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UnitsCategories:
+  - m_UnitCategoryName: Battleships
+    m_UnitCategory: 0
+    m_CategoryMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+      type: 3}
+    m_Units:
+    - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
+        type: 3}
+  - m_UnitCategoryName: Cruisers
+    m_UnitCategory: 0
+    m_CategoryMapModel: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
+      type: 3}
+    m_Units:
+    - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+        type: 3}
+  - m_UnitCategoryName: Aircraft Carriers
+    m_UnitCategory: 0
+    m_CategoryMapModel: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+      type: 3}
+    m_Units:
+    - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+        type: 3}
+  - m_UnitCategoryName: fighter-bombers
+    m_UnitCategory: 2
+    m_CategoryMapModel: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
+      type: 3}
+    m_Units:
+    - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+        type: 3}
 --- !u!1 &6283074086803692814
 GameObject:
   m_ObjectHideFlags: 0

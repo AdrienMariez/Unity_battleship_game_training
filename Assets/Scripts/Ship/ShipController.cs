@@ -88,14 +88,6 @@ public class ShipController : MonoBehaviour {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
-
-
-
-
-        // UnitTypeManager u = new UnitTypeManager();
-        // u.CreateElement(m_UnitType, this.gameObject);
-
-        // UnitTypeManager.CreateElement(m_UnitType, this.gameObject);
     }
 
     private bool ActionPaused = false;
