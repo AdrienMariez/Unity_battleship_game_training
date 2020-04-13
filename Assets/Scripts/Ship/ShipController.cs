@@ -2,7 +2,7 @@ using UnityEngine;
 using Crest;
 using System.Collections;
 using System.Collections.Generic;
-using static UnitTypeManager;
+// using static UnitTypeManager;
 
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
@@ -10,6 +10,7 @@ public class ShipController : MonoBehaviour {
     private bool Active = false;
     private bool Dead = false;
     public UnitTypeManager.UnitType m_UnitType;
+    public WorldUnitsManager.ShipSubCategories m_UnitCategory;
     private GameManager.Teams Team;
 
     private GameManager GameManager;

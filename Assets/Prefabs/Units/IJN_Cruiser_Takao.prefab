@@ -1798,6 +1798,7 @@ MonoBehaviour:
   - {fileID: 3147915150935776012}
   - {fileID: 7986316009790141948}
   m_UnitType: 1
+  m_UnitCategory: 2
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0

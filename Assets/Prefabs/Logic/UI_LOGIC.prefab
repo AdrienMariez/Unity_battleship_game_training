@@ -901,8 +901,6 @@ GameObject:
   - component: {fileID: 4108665965408059122}
   - component: {fileID: 5625231153092559834}
   - component: {fileID: 2435269581605581671}
-  - component: {fileID: 5347908121411531393}
-  - component: {fileID: 786188453127439666}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1115,7 +1113,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6283074086476641211}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7e8ff3a2351d1c46bc6312a716a03ff, type: 3}
   m_Name: 
@@ -1158,61 +1156,6 @@ MonoBehaviour:
     type: 3}
   m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
     type: 3}
---- !u!114 &5347908121411531393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6283074086476641211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e63787c9a117504398e655e3dacfaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
-    type: 3}
---- !u!114 &786188453127439666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6283074086476641211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UnitsCategories:
-  - m_UnitCategoryName: Battleships
-    m_UnitCategory: 0
-    m_CategoryMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
-      type: 3}
-    m_Units:
-    - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
-        type: 3}
-  - m_UnitCategoryName: Cruisers
-    m_UnitCategory: 0
-    m_CategoryMapModel: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
-      type: 3}
-    m_Units:
-    - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-        type: 3}
-  - m_UnitCategoryName: Aircraft Carriers
-    m_UnitCategory: 0
-    m_CategoryMapModel: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-      type: 3}
-    m_Units:
-    - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
-        type: 3}
-  - m_UnitCategoryName: fighter-bombers
-    m_UnitCategory: 2
-    m_CategoryMapModel: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
-      type: 3}
-    m_Units:
-    - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-        type: 3}
 --- !u!1 &6283074086803692814
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1190,7 @@ Transform:
   - {fileID: 6283074086434329465}
   - {fileID: 2750149263618360984}
   - {fileID: 3957427512800558379}
+  - {fileID: 3857801870254737274}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1454,6 +1398,101 @@ Transform:
   m_Father: {fileID: 6283074086803692809}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6700597626982579358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3857801870254737274}
+  - component: {fileID: 7970945475683750390}
+  - component: {fileID: 7532607968724971415}
+  - component: {fileID: 1041131435650158770}
+  m_Layer: 0
+  m_Name: GlobalSharedVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3857801870254737274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700597626982579358}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6283074086803692809}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7970945475683750390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700597626982579358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WorldShipsUnits:
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
+      type: 3}
+    m_UnitCategory: 0
+    m_UnitCost: 0
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+      type: 3}
+    m_UnitCategory: 2
+    m_UnitCost: 0
+  - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      type: 3}
+    m_UnitCategory: 1
+    m_UnitCost: 0
+  m_WorldSubmarinesUnits: []
+  m_WorldPlanesUnits: []
+  m_WorldGroundUnits:
+  - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+      type: 3}
+    m_UnitCategory: 2
+    m_UnitCost: 0
+--- !u!114 &7532607968724971415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700597626982579358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21449dc0b5ad3f94daba30ff6e5ad627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
+    type: 3}
+  m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
+    type: 3}
+  BoundingBoxTexture: {fileID: 2800000, guid: 865afa32653b33549883708da06a9544, type: 3}
+--- !u!114 &1041131435650158770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700597626982579358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e8ff3a2351d1c46bc6312a716a03ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &7623701621374107935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,6 +1778,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f1bb91a68dfac4f88dffc33fcd578b, type: 3}
+--- !u!4 &6283074086434329465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6793310901297230226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6793310901664237954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1994422288, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
@@ -1751,9 +1796,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735bab2d2f4646445a813c830c7555ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6283074086434329465 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
-    type: 3}
-  m_PrefabInstance: {fileID: 6793310901297230226}
-  m_PrefabAsset: {fileID: 0}

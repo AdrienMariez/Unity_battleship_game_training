@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
     private Teams GameWinner;                   // Who won the whole game ?
 
     private UnitTypeManager UnitTypeManager;
+    private WorldUnitsManager WorldUnitsManager;
     private PlayerManager PlayerManager;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour {
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
         UnitTypeManager = GetComponent<UnitTypeManager>();
+        WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
         PlayerManager = GetComponent<PlayerManager>();
         PlayerManager.Reset();
         PlayerCanvas = GameObject.Find("UICanvas");
