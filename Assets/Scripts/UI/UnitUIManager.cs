@@ -13,7 +13,6 @@ public class UnitUIManager : MonoBehaviour {
     private GameObject Unit;
     private Renderer BoundsRenderer;
     private bool BoundsFound = false;
-    private Texture BoundingBoxTexture;
     private GameObject ActiveUnit;
     private bool UnitCurrentlyPlayed = false;
     private GameObject EnemyTargetUnit;
@@ -37,7 +36,7 @@ public class UnitUIManager : MonoBehaviour {
     const string RangeDisplayMeter = "{0} m";
     const string RangeDisplayKilometer = "{0} km";
 
-    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager, Texture boundingBoxTexture) {
+    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
         Unit = unit;
@@ -45,7 +44,6 @@ public class UnitUIManager : MonoBehaviour {
             BoundsRenderer = Unit.transform.Find("Bounding").GetComponent<Renderer>();
             BoundsFound = true;
         }
-        BoundingBoxTexture = boundingBoxTexture;
 
         UIName = this.transform.Find("Name").gameObject;
         UIDistance = this.transform.Find("Distance").gameObject;

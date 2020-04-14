@@ -8,24 +8,24 @@ using Crest;
 namespace UI {
     public class UIManager : MonoBehaviour {
         [Header("Units UI")]
-            public GameObject m_TankUI;
-            public GameObject m_PlaneUI;
-            public GameObject m_ShipUI;
+            private GameObject m_TankUI;
+            private GameObject m_PlaneUI;
+            private GameObject m_ShipUI;
             private GameObject PlayerUIInstance;
-            public GameObject m_PlayerMapUI;
-            public GameObject m_TurretUI;
+            private GameObject m_PlayerMapUI;
+            private GameObject m_TurretUI;
             private GameObject TurretUIInstance;
             private GameObject PlayerUI;
-            public GameObject m_PauseUI;
+            private GameObject m_PauseUI;
             private GameObject PauseUIInstance;
             // private GameObject PlayerCanvas;
             // private GameObject PlayerMapCanvas;
         [Header("Turrets status icons")]
-            public GameObject TurretStatusSprites;
-            public float IconsSpacing = 22;
+            private GameObject TurretStatusSprites;
+            private float IconsSpacing = 22;
         [Header("Shell Camera")]
-            public GameObject m_ShellCamera;
-            public float m_TimeToDestroyCamera = 3;
+            private GameObject m_ShellCamera;
+            private float m_TimeToDestroyCamera = 3;
         private Text Score;
             private string CurrentScore;
         private Text UnitName;
@@ -63,9 +63,20 @@ namespace UI {
         private GameObject PlayerCanvas;
         private PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
+        private WorldUIVariables WorldUIVariables;
 
         private void Start() {
             PlayerUI = GameObject.Find("UI");
+            WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
+            m_TankUI = worldUIVariables.m_TankUI;
+            m_ShipUI = worldUIVariables.m_ShipUI;
+            m_PlayerMapUI = worldUIVariables.m_PlayerMapUI;
+            m_TurretUI = worldUIVariables.m_TurretUI;
+            m_PauseUI = worldUIVariables.m_PauseMenu;
+            TurretStatusSprites = worldUIVariables.TurretStatusSprites;
+            IconsSpacing = worldUIVariables.IconsSpacing;
+            m_ShellCamera = worldUIVariables.m_ShellCamera;
+            m_TimeToDestroyCamera = worldUIVariables.m_TimeToDestroyCamera;
         }
         private void Update() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
