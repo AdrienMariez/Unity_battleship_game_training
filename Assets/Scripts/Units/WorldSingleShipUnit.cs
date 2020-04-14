@@ -8,5 +8,7 @@ using UnityEngine;
 public class WorldSingleShipUnit {
     public GameObject m_UnitPrefab;
     public WorldUnitsManager.ShipSubCategories m_UnitCategory;
+    public WorldUnitsManager.SimpleTeams m_Team;
+    public GameManager.Nations m_Nation;
     public int m_UnitCost;
 }

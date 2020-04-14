@@ -1447,14 +1447,20 @@ MonoBehaviour:
   - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
       type: 3}
     m_UnitCategory: 0
+    m_Team: 1
+    m_Nation: 1
     m_UnitCost: 0
   - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
       type: 3}
     m_UnitCategory: 2
+    m_Team: 1
+    m_Nation: 1
     m_UnitCost: 0
   - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
       type: 3}
     m_UnitCategory: 1
+    m_Team: 1
+    m_Nation: 1
     m_UnitCost: 0
   m_WorldSubmarinesUnits: []
   m_WorldPlanesUnits: []
@@ -1462,7 +1468,13 @@ MonoBehaviour:
   - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
     m_UnitCategory: 2
+    m_Team: 0
+    m_Nation: 0
     m_UnitCost: 0
+  m_MapBattleship: {fileID: 0}
+  m_MapCruiser: {fileID: 0}
+  m_MapDestroyer: {fileID: 0}
+  m_MapCarrier: {fileID: 0}
 --- !u!114 &7532607968724971415
 MonoBehaviour:
   m_ObjectHideFlags: 0

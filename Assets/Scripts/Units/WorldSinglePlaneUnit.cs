@@ -8,5 +8,7 @@ using UnityEngine;
 public class WorldSinglePlaneUnit {
     public GameObject m_UnitPrefab;
     public WorldUnitsManager.PlaneSubCategories m_UnitCategory;
+    public WorldUnitsManager.SimpleTeams m_Team;
+    public GameManager.Nations m_Nation;
     public int m_UnitCost;
 }

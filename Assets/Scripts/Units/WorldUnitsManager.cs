@@ -15,6 +15,28 @@ public class WorldUnitsManager : MonoBehaviour {
     public GameObject m_MapDestroyer;
     public GameObject m_MapCarrier;
 
+    public enum SimpleTeams {
+        Allies,
+        Axis,
+        NeutralAI
+    }
+    public enum Teams {
+        Allies,
+        AlliesAI,
+        Axis,
+        AxisAI,
+        NeutralAI
+    }
+    public enum Nations {
+        US,
+        Japan,
+        GB,
+        Germany,
+        USSR,
+        China,
+        France
+    }
+
     public enum UnitCategories {
         ship,
         submarine,
