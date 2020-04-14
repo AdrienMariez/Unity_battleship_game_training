@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5865306459900658953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4040051506252021485}
+  - component: {fileID: 7135658397945489505}
+  - component: {fileID: 282135415314082085}
+  - component: {fileID: 8091174073427879976}
+  m_Layer: 0
+  m_Name: GlobalSharedVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4040051506252021485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7135658397945489505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WorldShipsUnits:
+  - m_UnitName: 
+    m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
+      type: 3}
+    m_UnitCategory: 0
+    m_Team: 1
+    m_Nation: 1
+    m_UnitCost: 0
+  - m_UnitName: 
+    m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+      type: 3}
+    m_UnitCategory: 2
+    m_Team: 1
+    m_Nation: 1
+    m_UnitCost: 0
+  - m_UnitName: 
+    m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      type: 3}
+    m_UnitCategory: 1
+    m_Team: 1
+    m_Nation: 1
+    m_UnitCost: 0
+  m_WorldSubmarinesUnits: []
+  m_WorldPlanesUnits: []
+  m_WorldGroundUnits:
+  - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+      type: 3}
+    m_UnitCategory: 2
+    m_Team: 0
+    m_Nation: 0
+    m_UnitCost: 0
+  m_MapBattleship: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+    type: 3}
+  m_MapCruiser: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
+    type: 3}
+  m_MapDestroyer: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
+    type: 3}
+  m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapSubmarine: {fileID: 0}
+  m_MapFighter: {fileID: 0}
+  m_MapLightBomber: {fileID: 0}
+  m_MapBomber: {fileID: 0}
+  m_MapLandBase: {fileID: 0}
+  m_MapShipyard: {fileID: 0}
+  m_MapTank: {fileID: 0}
+--- !u!114 &282135415314082085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e8ff3a2351d1c46bc6312a716a03ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &8091174073427879976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0392c69231170244fab097b32a0df1bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TankUI: {fileID: 3767798349071585903, guid: d6e3488007fb27342aa3dbd9b4b6c943,
+    type: 3}
+  m_PlaneUI: {fileID: 3767798349071585903, guid: 0f03957ced6e3b944aa3afe5809805fb,
+    type: 3}
+  m_ShipUI: {fileID: 3767798349071585903, guid: 01508d3f85183714dba31f34f90a8fdf,
+    type: 3}
+  m_PlayerMapUI: {fileID: 3767798349071585903, guid: d831b0162ed93fb4cbcf8ca4781196e9,
+    type: 3}
+  m_TurretUI: {fileID: 3767798349071585903, guid: 86f6f6dfebfbb3549a7d6a3a9707a4d5,
+    type: 3}
+  m_PauseMenu: {fileID: 2857608438053203770, guid: c6848c63a56ee124b943be9809d20048,
+    type: 3}
+  TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
+    type: 3}
+  IconsSpacing: 22
+  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
+    type: 3}
+  m_TimeToDestroyCamera: 3
+  m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
+    type: 3}
+  m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
+    type: 3}

@@ -10,11 +10,6 @@ public class WorldUnitsManager : MonoBehaviour {
     public WorldSinglePlaneUnit[] m_WorldPlanesUnits;
     public WorldSingleGroundUnit[] m_WorldGroundUnits;
 
-    public GameObject m_MapBattleship;
-    public GameObject m_MapCruiser;
-    public GameObject m_MapDestroyer;
-    public GameObject m_MapCarrier;
-
     public enum SimpleTeams {
         Allies,
         Axis,
@@ -50,19 +45,34 @@ public class WorldUnitsManager : MonoBehaviour {
         cruiser,
         destroyer
     }
+    [Header("Ships map models")]
+        public GameObject m_MapBattleship;
+        public GameObject m_MapCruiser;
+        public GameObject m_MapDestroyer;
+        public GameObject m_MapCarrier;
     public enum SubmarineSubCategories {
         submarine
     }
+    [Header("Submarines map models")]
+        public GameObject m_MapSubmarine;
     public enum PlaneSubCategories {
         fighter,
         lightBomber,
         Bomber
     }
+    [Header("Planes map models")]
+        public GameObject m_MapFighter;
+        public GameObject m_MapLightBomber;
+        public GameObject m_MapBomber;
     public enum GroundSubCategories {
         landBase,
         shipyard,
         tank
     }
+    [Header("Ground map models")]
+        public GameObject m_MapLandBase;
+        public GameObject m_MapShipyard;
+        public GameObject m_MapTank;
 
     private GameObject TempModel;
 
@@ -71,7 +81,7 @@ public class WorldUnitsManager : MonoBehaviour {
     protected void Update() { }
 
     /*
-    public void CreateElement(GameObject unitGameObject, UnitType unitType, GameManager.Teams team) {
+    public void CreateElement(GameObject unitGameObject, UnitType unitType, WorldUnitsManager.Teams team) {
         if (unitType == UnitType.battleship) {
             TempModel = Instantiate(m_MapBattleship, unitGameObject.transform);
         } else if (unitType == UnitType.cruiser) {
@@ -87,17 +97,34 @@ public class WorldUnitsManager : MonoBehaviour {
         Renderer.material.SetColor("_Color", SetColor(team));
     }
     */
-    public static Color SetColor(GameManager.Teams team) {
+    public void CreateShipElement(GameObject unitGameObject, Teams team, ShipSubCategories unitType) {
+        // Debug.Log("unitType :"+ unitType);
+        if (unitType == ShipSubCategories.battleship) {
+            TempModel = Instantiate(m_MapBattleship, unitGameObject.transform);
+        } else if (unitType == ShipSubCategories.cruiser) {
+            TempModel = Instantiate(m_MapCruiser, unitGameObject.transform);
+        } else if (unitType == ShipSubCategories.destroyer) {
+            TempModel = Instantiate(m_MapDestroyer, unitGameObject.transform);
+        } else if (unitType == ShipSubCategories.carrier) {
+            TempModel = Instantiate(m_MapCarrier, unitGameObject.transform);
+        }
+
+        var Renderer = TempModel.GetComponent<Renderer>();
+
+        Renderer.material.SetColor("_Color", SetColor(team));
+    }
+
+    public static Color SetColor(WorldUnitsManager.Teams team) {
         Color color = Color.yellow;;
-        if (team == GameManager.Teams.Allies) {
+        if (team == WorldUnitsManager.Teams.Allies) {
             color = new Color(0f, 0.47f, 1f, 1f);
-        } else if (team == GameManager.Teams.AlliesAI) {
+        } else if (team == WorldUnitsManager.Teams.AlliesAI) {
             color = new Color(0f, 0.1f, 1f, 1f);
-        } else if (team == GameManager.Teams.Axis) {
+        } else if (team == WorldUnitsManager.Teams.Axis) {
             color = new Color(1f, 0.22f, 0.29f, 1f);
-        } else if (team == GameManager.Teams.AxisAI) {
+        } else if (team == WorldUnitsManager.Teams.AxisAI) {
             color = new Color(1f, 0.0f, 0.0f, 0.49f);
-        } else if (team == GameManager.Teams.NeutralAI) {
+        } else if (team == WorldUnitsManager.Teams.NeutralAI) {
             color = Color.yellow;
         }
         return color;

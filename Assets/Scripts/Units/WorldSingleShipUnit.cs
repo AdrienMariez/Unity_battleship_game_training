@@ -6,9 +6,10 @@ using UnityEngine;
 // Serializable : makes new classes appear in the inspector
 [Serializable]
 public class WorldSingleShipUnit {
+    public string m_UnitName;
     public GameObject m_UnitPrefab;
     public WorldUnitsManager.ShipSubCategories m_UnitCategory;
     public WorldUnitsManager.SimpleTeams m_Team;
-    public GameManager.Nations m_Nation;
+    public WorldUnitsManager.Nations m_Nation;
     public int m_UnitCost;
 }

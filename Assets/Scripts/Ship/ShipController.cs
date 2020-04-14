@@ -2,16 +2,14 @@ using UnityEngine;
 using Crest;
 using System.Collections;
 using System.Collections.Generic;
-// using static UnitTypeManager;
 
 public class ShipController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
     private bool Active = false;
     private bool Dead = false;
-    public UnitTypeManager.UnitType m_UnitType;
-    public WorldUnitsManager.ShipSubCategories m_UnitCategory;
-    private GameManager.Teams Team;
+    public WorldUnitsManager.ShipSubCategories m_ShipCategory;
+    private WorldUnitsManager.Teams Team;
 
     private GameManager GameManager;
     private PlayerManager PlayerManager;
@@ -90,9 +88,24 @@ public class ShipController : MonoBehaviour {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
     }
+    private void Start() {
+        StartCoroutine(SpawnPauseLogic());
+    }
+    IEnumerator SpawnPauseLogic(){
+        yield return new WaitForSeconds(0.3f);
+        ResumeStart();
+    }
+    private void ResumeStart() {
+        if (GameManager != null) {
+            GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
+        } else if (GameObject.Find("GameManager") != null) {
+            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
+        }
+    }
 
-    private bool ActionPaused = false;
-    private bool ActionPaused2 = false;
+    // private bool ActionPaused = false;
+    // private bool ActionPaused2 = false;
     private void FixedUpdate() {
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
@@ -114,10 +127,10 @@ public class ShipController : MonoBehaviour {
         // }
     }
     
-    IEnumerator PauseAction(){
-        yield return new WaitForSeconds(3f);
-        ActionPaused2= true;
-    }
+    // IEnumerator PauseAction(){
+    //     yield return new WaitForSeconds(3f);
+    //     ActionPaused2= true;
+    // }
 
     public void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
@@ -309,9 +322,6 @@ public class ShipController : MonoBehaviour {
     }
 
     public void CallDeath() {
-        if (GameManager)
-            GameManager.SetUnitDeath(-1, gameObject.tag);
-
         // Debug.Log("DEATH"+Dead);
         Dead = true;
 
@@ -332,11 +342,13 @@ public class ShipController : MonoBehaviour {
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
         UI.SetDead();
-        if (PlayerManager) {
-            if (Active)
-                PlayerManager.SetCurrentUnitDead(true);
-            PlayerManager.UnitDead(this.gameObject, Team);
-        }
+        if (GameManager)
+            GameManager.UnitDead(this.gameObject, Team, Active);
+        // if (PlayerManager) {
+        //     if (Active)
+        //         PlayerManager.SetCurrentUnitDead(true);
+            // PlayerManager.UnitDead(this.gameObject, Team);
+        // }
 
         tag = "Untagged";
     }
@@ -368,7 +380,7 @@ public class ShipController : MonoBehaviour {
             DamageControl.SetActive(Active);
     }
     
-    public void SetTag(GameManager.Teams team){
+    public void SetTag(WorldUnitsManager.Teams team){
         Team = team;
         gameObject.tag = team.ToString("g");
         UI.SetUnitTeam(team);
@@ -387,7 +399,7 @@ public class ShipController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
     public void SetPlayerManager(PlayerManager playerManager){
         PlayerManager = playerManager;
-        PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
+        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
     }
@@ -454,10 +466,11 @@ public class ShipController : MonoBehaviour {
         if (GetComponent<ShipDamageControl>())
             DamageControl.Destroy();
         UI.KillAllUIInstances();
-        if (PlayerManager) {
-            if (Active)
-                PlayerManager.SetCurrentUnitDead(true);
-            PlayerManager.UnitDead(this.gameObject, Team);
+        if (GameManager) {
+            // if (Active)
+            //     PlayerManager.SetCurrentUnitDead(true);
+            // PlayerManager.UnitDead(this.gameObject, Team, Active);
+            GameManager.UnitDead(this.gameObject, Team, Active);
         }
         Destroy (gameObject);
     }

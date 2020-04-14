@@ -12,7 +12,7 @@ public class UnitsUIManager : MonoBehaviour {
     private Camera MapCam;
     private GameObject PlayerCanvas;
     private GameObject PlayerMapCanvas;
-    private GameManager.Teams PlayerTeam;
+    private WorldUnitsManager.Teams PlayerTeam;
     private List <GameObject> UnitList = new List<GameObject>();
     private List <GameObject> UnitUIList = new List<GameObject>();
     private List <GameObject> UnitUIMapList = new List<GameObject>();
@@ -20,9 +20,14 @@ public class UnitsUIManager : MonoBehaviour {
     private GameObject TempUI;
     private GameObject ActiveUnit;
 
-    public GameObject m_UnitUI;
-    public GameObject m_UnitMapUI;
-    public Texture BoundingBoxTexture;
+    private GameObject m_UnitUI;
+    private GameObject m_UnitMapUI;
+
+    private void Start() {
+        WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
+        m_UnitUI = worldUIVariables.m_UnitUI;
+        m_UnitMapUI = worldUIVariables.m_UnitMapUI;
+    }
 
     public void Init(PlayerManager playerManager, Camera camera){
         PlayerManager = playerManager;
@@ -31,7 +36,7 @@ public class UnitsUIManager : MonoBehaviour {
     }
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ PlayerCanvas = playerCanvas; PlayerMapCanvas  = playerMapCanvas;}
 
-    public void SetPlayerTag(GameManager.Teams playerTeam) { PlayerTeam = playerTeam; }
+    public void SetPlayerTag(WorldUnitsManager.Teams playerTeam) { PlayerTeam = playerTeam; }
 
     public void SetPlayedUnit(GameObject activeUnit){
         // Debug.Log ("SetPlayedUnit : "+ activeUnit);
@@ -46,14 +51,14 @@ public class UnitsUIManager : MonoBehaviour {
         }
     }
 
-    public void SpawnUnit(GameObject unitGameObject, GameManager.Teams team){
-        if (PlayerTeam == GameManager.Teams.Allies) {
-            if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
+    public void SpawnUnit(GameObject unitGameObject, WorldUnitsManager.Teams team){
+        if (PlayerTeam == WorldUnitsManager.Teams.Allies) {
+            if (team == WorldUnitsManager.Teams.Axis || team == WorldUnitsManager.Teams.AxisAI) {
                 EnemyUnitList.Add(unitGameObject);
                 // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
-        } else if (PlayerTeam == GameManager.Teams.Axis) {
-            if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
+        } else if (PlayerTeam == WorldUnitsManager.Teams.Axis) {
+            if (team == WorldUnitsManager.Teams.Allies || team == WorldUnitsManager.Teams.AlliesAI) {
                 EnemyUnitList.Add(unitGameObject);
                 // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
@@ -71,7 +76,7 @@ public class UnitsUIManager : MonoBehaviour {
         if (unitGameObject.GetComponent<ShipController>()){
             unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
         }
-        TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this, BoundingBoxTexture);
+        TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
         UnitUIList.Add(TempUI);
     }
     private void CreateUnitMapDisplay(GameObject unitGameObject){
@@ -83,14 +88,14 @@ public class UnitsUIManager : MonoBehaviour {
         TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, unitGameObject, this);
         UnitUIMapList.Add(TempUI);
     }
-    public void RemoveUnit(GameObject unitGameObject, GameManager.Teams team){
-        if (PlayerTeam == GameManager.Teams.Allies) {
-            if (team == GameManager.Teams.Axis || team == GameManager.Teams.AxisAI) {
+    public void RemoveUnit(GameObject unitGameObject, WorldUnitsManager.Teams team){
+        if (PlayerTeam == WorldUnitsManager.Teams.Allies) {
+            if (team == WorldUnitsManager.Teams.Axis || team == WorldUnitsManager.Teams.AxisAI) {
                 EnemyUnitList.Remove(unitGameObject);
                 // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }
-        } else if (PlayerTeam == GameManager.Teams.Axis) {
-            if (team == GameManager.Teams.Allies || team == GameManager.Teams.AlliesAI) {
+        } else if (PlayerTeam == WorldUnitsManager.Teams.Axis) {
+            if (team == WorldUnitsManager.Teams.Allies || team == WorldUnitsManager.Teams.AlliesAI) {
                 EnemyUnitList.Remove(unitGameObject);
                 // PlayerManager.SendEnemiesToPlayerUnits(EnemyUnitList);
             }

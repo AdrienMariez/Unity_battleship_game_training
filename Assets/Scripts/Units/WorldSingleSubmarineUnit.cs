@@ -9,6 +9,6 @@ public class WorldSingleSubmarineUnit {
     public GameObject m_UnitPrefab;
     public WorldUnitsManager.SubmarineSubCategories m_UnitSubcategory;
     public WorldUnitsManager.SimpleTeams m_Team;
-    public GameManager.Nations m_Nation;
+    public WorldUnitsManager.Nations m_Nation;
     public int m_UnitCost;
 }

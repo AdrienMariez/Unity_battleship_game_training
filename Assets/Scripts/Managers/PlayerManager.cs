@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     public FreeLookCam m_FreeLookCamera;
     public Camera m_MapCamera;
     private GameManager GameManager;
-    private GameManager.Teams PlayerTeam;
+    private WorldUnitsManager.Teams PlayerTeam;
     private UIManager UIManager;
     private MapManager MapManager;
     private UnitsUIManager UnitsUIManager;
@@ -35,8 +35,6 @@ public class PlayerManager : MonoBehaviour
         ActiveTarget = null;
         ActiveTargetSet = false;
         CurrentTarget = 0;
-        GameManager = GetComponent<GameManager>();
-        PlayerTeam = GameManager.GetPlayer();
         MapManager = GetComponent<MapManager>();
         MapManager.SetMapCamera(m_MapCamera);
         UIManager = GetComponent<UIManager>();
@@ -145,10 +143,9 @@ public class PlayerManager : MonoBehaviour
         PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
         // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
-    public void UnitSpawned(GameObject unitGameObject, GameManager.Teams team, UnitTypeManager.UnitType unitType) {
+    public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams team) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         UnitsUIManager.SpawnUnit(unitGameObject, team);
-        GameManager.SpawnUnit(unitGameObject, team, unitType);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
         }
@@ -157,10 +154,13 @@ public class PlayerManager : MonoBehaviour
         //     Debug.Log ("Playable units : "+ unit);
         // }
     }
-    public void UnitDead(GameObject unitGameObject, GameManager.Teams team) {
+    public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         PlayerUnits.Remove(unitGameObject);
-        UnitsUIManager.RemoveUnit(unitGameObject, team);
+        UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
+        if (unitTeam == PlayerTeam && unitActive) {
+            SetCurrentUnitDead(true);
+        }
         // Debug.Log ("Playable units - UnitDead : "+ PlayerUnits.Count);
     }
 
@@ -270,7 +270,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // public void SetPlayer(GameManager.Teams PlayerTeam){}
+    // public void SetPlayer(WorldUnitsManager.Teams PlayerTeam){}
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
 
     // public void InitUnitsUI() { UnitsUIManager.Init(); }
@@ -293,6 +293,10 @@ public class PlayerManager : MonoBehaviour
         }
 
         CheckCameraRotation();
+    }
+    public void SetGameManager(GameManager gameManager) {
+        GameManager = gameManager;
+        PlayerTeam = GameManager.GetPlayer();
     }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;

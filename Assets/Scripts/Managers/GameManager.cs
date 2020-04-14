@@ -5,25 +5,10 @@ using UnityEngine.SceneManagement;
 
 // Monobehaviour marks that this script extends an existing class
 public class GameManager : MonoBehaviour {
-    public enum Teams {
-        Allies,
-        AlliesAI,
-        Axis,
-        AxisAI,
-        NeutralAI
-    }
-    public enum Nations {
-        US,
-        Japan,
-        GB,
-        Germany,
-        USSR,
-        China,
-        France
-    }
-
-    public Teams m_PlayerTeam;
+    public WorldUnitsManager.Teams m_PlayerTeam;
+    public GameObject m_Player;
     public UnitManager[] m_Units;
+
 
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
@@ -36,10 +21,9 @@ public class GameManager : MonoBehaviour {
     private int EnemiesUnits;
     private int WinsAllies;                     // How many Allies round victories this far ?
     private int WinsAxis;                       // How many Axis round victories this far ?
-    private Teams RoundWinner;                  // Who won this particular round ?
-    private Teams GameWinner;                   // Who won the whole game ?
+    private WorldUnitsManager.Teams RoundWinner;                  // Who won this particular round ?
+    private WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
 
-    private UnitTypeManager UnitTypeManager;
     private WorldUnitsManager WorldUnitsManager;
     private PlayerManager PlayerManager;
     private GameObject PlayerCanvas;
@@ -49,9 +33,9 @@ public class GameManager : MonoBehaviour {
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
-        UnitTypeManager = GetComponent<UnitTypeManager>();
         WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
-        PlayerManager = GetComponent<PlayerManager>();
+        PlayerManager = m_Player.GetComponent<PlayerManager>();
+        PlayerManager.SetGameManager(this);
         PlayerManager.Reset();
         PlayerCanvas = GameObject.Find("UICanvas");
         PlayerMapCanvas = GameObject.Find("UIMapCanvas");
@@ -74,7 +58,7 @@ public class GameManager : MonoBehaviour {
         yield return StartCoroutine (RoundEnding());
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (GameWinner != Teams.NeutralAI) {
+        if (GameWinner != WorldUnitsManager.Teams.NeutralAI) {
             // If there is a game winner, restart the level.
             // SceneManager.LoadScene (0);
             EndGame();
@@ -111,25 +95,25 @@ public class GameManager : MonoBehaviour {
             m_Units[i].Setup();
 
             // Set the needed units to attain win conditions
-            if (m_PlayerTeam == Teams.Allies) {
-                if (m_Units[i].m_Team == Teams.Axis || m_Units[i].m_Team == Teams.AxisAI) {
+            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis || m_Units[i].m_Team == WorldUnitsManager.Teams.AxisAI) {
                     EnemiesUnits ++;
                     m_Units[i].SetUnactive();
                 }
             } else {
-                if (m_Units[i].m_Team == Teams.Allies || m_Units[i].m_Team == Teams.AlliesAI) {
+                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies || m_Units[i].m_Team == WorldUnitsManager.Teams.AlliesAI) {
                     EnemiesUnits ++;
                     m_Units[i].SetUnactive();
                 }
             }
 
             // Set the playable units the player must keep to attain win conditions
-            if (m_PlayerTeam == Teams.Allies) {
-                if (m_Units[i].m_Team == Teams.Allies) {
+            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies) {
                     PlayableUnits ++;
                 }
             } else {
-                if (m_Units[i].m_Team == Teams.Axis) {
+                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis) {
                     PlayableUnits ++;
                 }
             }
@@ -175,17 +159,17 @@ public class GameManager : MonoBehaviour {
         DisableUnitsControl ();
 
         // Clear the winner from the previous round.
-        RoundWinner = Teams.NeutralAI;
+        RoundWinner = WorldUnitsManager.Teams.NeutralAI;
 
         // See if there is a winner now the round is over.
         RoundWinner = GetRoundWinner ();
 
         // If there is a winner, increment their score.
-        if (RoundWinner != Teams.NeutralAI){
-            if (RoundWinner == Teams.Allies) {
+        if (RoundWinner != WorldUnitsManager.Teams.NeutralAI){
+            if (RoundWinner == WorldUnitsManager.Teams.Allies) {
                 WinsAllies++;
             }
-            if (RoundWinner == Teams.Axis) {
+            if (RoundWinner == WorldUnitsManager.Teams.Axis) {
                 WinsAxis++;
             }
         }
@@ -209,37 +193,37 @@ public class GameManager : MonoBehaviour {
         return sideExterminated;
     }
 
-    private Teams GetRoundWinner() {
+    private WorldUnitsManager.Teams GetRoundWinner() {
         // If the playable units are depleted, it is a player defeat
         if (PlayableUnits == 0 && EnemiesUnits > 0) {
-            if (m_PlayerTeam == Teams.Allies) {
-                return Teams.Axis;
+            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                return WorldUnitsManager.Teams.Axis;
             } else {
-                return Teams.Allies;
+                return WorldUnitsManager.Teams.Allies;
             }
         }
         // If the enemy units are depleted, it is a player victory
         if (PlayableUnits > 0 && EnemiesUnits == 0) {
-            if (m_PlayerTeam == Teams.Allies) {
-                return Teams.Allies;
+            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                return WorldUnitsManager.Teams.Allies;
             } else {
-                return Teams.Axis;
+                return WorldUnitsManager.Teams.Axis;
             }
         }
         // If both player units and enemy units are depleted, it is a draw
-        return Teams.NeutralAI;
+        return WorldUnitsManager.Teams.NeutralAI;
     }
 
-    private Teams GetGameWinner() {
+    private WorldUnitsManager.Teams GetGameWinner() {
         if (WinsAllies == m_NumRoundsToWin) {
-            return Teams.Allies;
+            return WorldUnitsManager.Teams.Allies;
         }
         if (WinsAxis == m_NumRoundsToWin) {
-            return Teams.Axis;
+            return WorldUnitsManager.Teams.Axis;
         }
 
         // If no tanks have enough rounds to win, return null.
-        return Teams.NeutralAI;
+        return WorldUnitsManager.Teams.NeutralAI;
     }
 
 
@@ -249,16 +233,16 @@ public class GameManager : MonoBehaviour {
         string message = "DRAW!";
 
         // If there is a round winner...
-        if (RoundWinner != Teams.NeutralAI) {
-            if (RoundWinner == Teams.Allies) {
+        if (RoundWinner != WorldUnitsManager.Teams.NeutralAI) {
+            if (RoundWinner == WorldUnitsManager.Teams.Allies) {
                 message = "Allies won the round.";
             } else {
                 message = "Axis won the round.";
             }
         }
         // If there is a game winner...
-        if (GameWinner != Teams.NeutralAI) {
-            if (GameWinner == Teams.Allies) {
+        if (GameWinner != WorldUnitsManager.Teams.NeutralAI) {
+            if (GameWinner == WorldUnitsManager.Teams.Allies) {
                 message = "Allies won the game !";
             } else {
                 message = "Axis won the game !";
@@ -268,7 +252,7 @@ public class GameManager : MonoBehaviour {
         // Add some line breaks after the initial message.
         message += "\n\n\n\n";
 
-        // Display Teams scores :
+        // Display WorldUnitsManager.Teams scores :
         // Does not display correct score for unsolved reasons (TODO)
         // message += "Allies victories : " + WinsAllies + " victories.\n";
         // message += "Axis victories : " + WinsAllies + " victories.\n";
@@ -286,7 +270,7 @@ public class GameManager : MonoBehaviour {
             message = "Player unit : " + PlayableUnits +"\n";
         }
 
-        if (m_PlayerTeam == Teams.Allies) {
+        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
             message += "Wins : "+ WinsAllies +"/"+ m_NumRoundsToWin +"\n";
         } else {
             message += "Wins : "+ WinsAxis +"/"+ m_NumRoundsToWin +"\n";
@@ -298,7 +282,7 @@ public class GameManager : MonoBehaviour {
             message += "Enemy unit : " + EnemiesUnits +"\n";
         }
 
-        if (m_PlayerTeam == Teams.Allies) {
+        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
             message += "Wins : "+ WinsAxis +"/"+ m_NumRoundsToWin +"\n";
         } else {
             message += "Wins : "+ WinsAllies +"/"+ m_NumRoundsToWin +"\n";
@@ -326,37 +310,35 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public Teams GetPlayer(){
+    public WorldUnitsManager.Teams GetPlayer(){
         return m_PlayerTeam;
     }
 
-    public void SpawnUnit(GameObject unitGameObject, Teams team, UnitTypeManager.UnitType unitType){
-        UnitTypeManager.CreateElement(unitGameObject, unitType, team);
+    public void ShipSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.ShipSubCategories unitType) {
+        WorldUnitsManager.CreateShipElement(unitGameObject, unitTeam, unitType);
+        PlayerManager.UnitSpawned(unitGameObject, unitTeam);
     }
-
-    public void SetUnitDeath(int Unit, string Tag) {
-        // Set the needed units to attain win conditions
-        // Debug.Log("number :"+ Unit);
-        // Debug.Log("Tag :"+ Tag);
-
-        if (m_PlayerTeam == Teams.Allies) {
-            if (Tag == Teams.Allies.ToString("g")) {
-                PlayableUnits += Unit;
-            } else if (Tag == Teams.Axis.ToString("g")) {
-                EnemiesUnits += Unit;
-            } else if (Tag == Teams.AxisAI.ToString("g")) {
-                EnemiesUnits += Unit;
+    public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
+        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+            if (unitTeam == WorldUnitsManager.Teams.Allies) {
+                PlayableUnits -= 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.Axis) {
+                EnemiesUnits -= 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.AxisAI) {
+                EnemiesUnits -= 1;
             }
-        } else if (m_PlayerTeam == Teams.Axis) {
-            if (Tag == Teams.Axis.ToString("g")) {
-                PlayableUnits += Unit;
-            } else if (Tag == Teams.Allies.ToString("g")) {
-                EnemiesUnits += Unit;
-            } else if (Tag == Teams.AlliesAI.ToString("g")) {
-                EnemiesUnits += Unit;
+        } else if (m_PlayerTeam == WorldUnitsManager.Teams.Axis) {
+            if (unitTeam == WorldUnitsManager.Teams.Axis) {
+                PlayableUnits -= 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.Allies) {
+                EnemiesUnits -= 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+                EnemiesUnits -= 1;
             }
         }
+        PlayerManager.UnitDead(unitGameObject, unitTeam, unitActive);
         PlayerManager.SetScoreMessage(GameMessage());
+
     }
 
     public void EndGame() {
