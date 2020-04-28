@@ -53,6 +53,10 @@ public class UnitManager {
             Instance.GetComponent<ShipController>().SetTag(m_Team);
             Instance.GetComponent<ShipController>().SetName(m_UnitName);
             // Debug.Log("Instance :"+ Instance);
+        } else if (Instance.GetComponent<BuildingController>()) {
+            Instance.GetComponent<BuildingController>().SetTag(m_Team);
+            Instance.GetComponent<BuildingController>().SetName(m_UnitName);
+            // Debug.Log("Instance :"+ Instance);
         } else {
             // Todo : change this for different unit types
             Instance.gameObject.tag = m_Team.ToString("g");
@@ -62,6 +66,8 @@ public class UnitManager {
         if (Instance) {
             if (Instance.GetComponent<ShipController>()) {
                 Instance.GetComponent<ShipController>().DestroyUnit();
+            } else if (Instance.GetComponent<BuildingController>()) {
+                Instance.GetComponent<BuildingController>().DestroyUnit();
             }
         }
     }
@@ -69,23 +75,31 @@ public class UnitManager {
     public void SetUnactive() {
         if (Instance.GetComponent<ShipController>()){
             Instance.GetComponent<ShipController>().SetActive(false);
+        } else if (Instance.GetComponent<BuildingController>()){
+            Instance.GetComponent<BuildingController>().SetActive(false);
         }
     }
 
     public void SetGameManager(GameManager gameManager) { 
         if (Instance.GetComponent<ShipController>()){
             Instance.GetComponent<ShipController>().SetGameManager(gameManager);
+        } else if (Instance.GetComponent<BuildingController>()){
+            Instance.GetComponent<BuildingController>().SetGameManager(gameManager);
         }
     }
     public void SetPlayerManager(PlayerManager playerManager) {
         if (Instance.GetComponent<ShipController>()){
             Instance.GetComponent<ShipController>().SetPlayerManager(playerManager);
+        } else if (Instance.GetComponent<BuildingController>()){
+            Instance.GetComponent<BuildingController>().SetPlayerManager(playerManager);
         }
     }
 
     public void SetUnitName() { 
         if (Instance.GetComponent<ShipController>()){
             Instance.GetComponent<ShipController>().SetName(m_UnitName);
+        } else if (Instance.GetComponent<BuildingController>()){
+            Instance.GetComponent<BuildingController>().SetName(m_UnitName);
         }
     }
 }

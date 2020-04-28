@@ -318,6 +318,10 @@ public class GameManager : MonoBehaviour {
         WorldUnitsManager.CreateShipElement(unitGameObject, unitTeam, unitType);
         PlayerManager.UnitSpawned(unitGameObject, unitTeam);
     }
+    public void BuildingSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.BuildingSubCategories unitType) {
+        WorldUnitsManager.CreateBuildingElement(unitGameObject, unitTeam, unitType);
+        PlayerManager.UnitSpawned(unitGameObject, unitTeam);
+    }
     public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
         if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
             if (unitTeam == WorldUnitsManager.Teams.Allies) {

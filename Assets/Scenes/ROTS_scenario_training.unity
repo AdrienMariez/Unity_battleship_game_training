@@ -1048,7 +1048,7 @@ PrefabInstance:
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[4].m_Team
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
@@ -1059,12 +1059,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Units.Array.data[4].m_UnitPrefab
       value: 
-      objectReference: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      objectReference: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
         type: 3}
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[4].m_UnitName
-      value: Training target 4
+      value: Shipyard target 4
       objectReference: {fileID: 0}
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}

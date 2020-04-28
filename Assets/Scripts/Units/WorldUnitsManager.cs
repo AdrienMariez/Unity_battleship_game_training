@@ -36,7 +36,8 @@ public class WorldUnitsManager : MonoBehaviour {
         ship,
         submarine,
         plane,
-        ground
+        ground,
+        building
     }
 
     public enum ShipSubCategories {
@@ -65,15 +66,19 @@ public class WorldUnitsManager : MonoBehaviour {
         public GameObject m_MapLightBomber;
         public GameObject m_MapBomber;
     public enum GroundSubCategories {
-        landBase,
-        shipyard,
         tank
     }
     [Header("Ground map models")]
+        public GameObject m_MapTank;
+    public enum BuildingSubCategories {
+        landBase,
+        shipyard,
+        airfield
+    }
+    [Header("Buildings map models")]
         public GameObject m_MapLandBase;
         public GameObject m_MapShipyard;
-        public GameObject m_MapTank;
-
+        public GameObject m_MapAirfield;
     private GameObject TempModel;
 
     void Start() { }
@@ -107,6 +112,21 @@ public class WorldUnitsManager : MonoBehaviour {
             TempModel = Instantiate(m_MapDestroyer, unitGameObject.transform);
         } else if (unitType == ShipSubCategories.carrier) {
             TempModel = Instantiate(m_MapCarrier, unitGameObject.transform);
+        }
+
+        var Renderer = TempModel.GetComponent<Renderer>();
+
+        Renderer.material.SetColor("_Color", SetColor(team));
+    }
+
+    public void CreateBuildingElement(GameObject unitGameObject, Teams team, BuildingSubCategories unitType) {
+        // Debug.Log("unitType :"+ unitType);
+        if (unitType == BuildingSubCategories.landBase) {
+            TempModel = Instantiate(m_MapLandBase, unitGameObject.transform);
+        } else if (unitType == BuildingSubCategories.shipyard) {
+            TempModel = Instantiate(m_MapShipyard, unitGameObject.transform);
+        } else if (unitType == BuildingSubCategories.airfield) {
+            TempModel = Instantiate(m_MapAirfield, unitGameObject.transform);
         }
 
         var Renderer = TempModel.GetComponent<Renderer>();

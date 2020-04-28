@@ -46,21 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_WorldShipsUnits:
-  - m_UnitName: 
+  - m_UnitName: Fuso class battleship
     m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
       type: 3}
     m_UnitCategory: 0
     m_Team: 1
     m_Nation: 1
     m_UnitCost: 0
-  - m_UnitName: 
+  - m_UnitName: Takao class cruiser
     m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
       type: 3}
     m_UnitCategory: 2
     m_Team: 1
     m_Nation: 1
     m_UnitCost: 0
-  - m_UnitName: 
+  - m_UnitName: Test class carrier
     m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
       type: 3}
     m_UnitCategory: 1
@@ -84,13 +84,20 @@ MonoBehaviour:
     type: 3}
   m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
     type: 3}
-  m_MapSubmarine: {fileID: 0}
-  m_MapFighter: {fileID: 0}
-  m_MapLightBomber: {fileID: 0}
-  m_MapBomber: {fileID: 0}
-  m_MapLandBase: {fileID: 0}
-  m_MapShipyard: {fileID: 0}
-  m_MapTank: {fileID: 0}
+  m_MapSubmarine: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapFighter: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapLightBomber: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapBomber: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapTank: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapLandBase: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
+  m_MapShipyard: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+    type: 3}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0
