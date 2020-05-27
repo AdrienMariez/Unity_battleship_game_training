@@ -113,7 +113,9 @@ namespace UI {
             if (DisplayGameUI && !DisplayMapUI && DisplayUI) {
                 if (TargetType == "Tank") {
                     OpenTankUI();
-                } else if (TargetType == "Aircraft") {
+                } else if (TargetType == "Building") {
+                    OpenBuildingUI();
+                }else if (TargetType == "Aircraft") {
                     OpenPlaneUI();
                 } else if (TargetType == "Ship") {
                     OpenShipUI();
@@ -126,6 +128,24 @@ namespace UI {
             }
         }
         private void OpenTankUI() {
+            PlayerUIInstance = Instantiate(m_TankUI, PlayerUI.transform);
+
+            Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
+            UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
+            UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
+            UnitHPColor = PlayerUIInstance.transform.Find("UnitHealthSlider").Find("Fill Area").Find("Fill").GetComponent<Image>();
+            ShipSpeedStep = PlayerUIInstance.transform.Find("ShipSpeedStep").GetComponent<Slider>();
+            ShipCurrentSpeed = PlayerUIInstance.transform.Find("ShipCurrentSpeed").GetComponent<Text>();
+            ShipTurningSpeed = PlayerUIInstance.transform.Find("ShipTurningSpeed").GetComponent<Slider>();
+
+            UnitName.text = ActiveTarget.name;
+            UnitHP.maxValue = StartingHP;
+            UnitHP.value = CurrentHP;
+            CheckHealthColor();
+            ShipSpeedStep.value = SpeedStep;
+            Score.text = CurrentScore;
+        }
+        private void OpenBuildingUI() {
             PlayerUIInstance = Instantiate(m_TankUI, PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
@@ -230,6 +250,9 @@ namespace UI {
             if (TargetType == "Tank") {
                 if (ActiveTarget.GetComponent<TankHealth>())
                     StartingHP = ActiveTarget.GetComponent<TankHealth>().GetStartingHealth();
+            } else if (TargetType == "Building") {
+                if (ActiveTarget.GetComponent<BuildingHealth>())
+                    StartingHP = ActiveTarget.GetComponent<BuildingHealth>().GetStartingHealth();
             } else if (TargetType == "Aircraft") {
                 if (ActiveTarget.GetComponent<AircraftHealth>())
                     StartingHP = ActiveTarget.GetComponent<AircraftHealth>().GetStartingHealth();

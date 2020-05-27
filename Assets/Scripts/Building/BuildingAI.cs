@@ -183,16 +183,18 @@ public class BuildingAI : MonoBehaviour {
         // if (EnemyUnitsList[PlayerTargetUnitIndex] == PlayerSetTargetUnit) {
         //     ChangePlayerTargetIndex();
         // }
-        if (PlayerSetTargetUnit == null) {
-            PlayerSetTargetUnit = null;
+        if (PlayerTargetUnitIndex > 0) {
+            if (PlayerSetTargetUnit == null) {
+                PlayerSetTargetUnit = null;
+            }
+            if (PlayerTargetUnitIndex > (EnemyUnitsList.Count-1)) {
+                ChangePlayerTargetIndex();
+            }
+            PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
+            TargetUnit = PlayerSetTargetUnit;
+            BuildingController.SetCurrentTarget(TargetUnit);
+            CheckState();
         }
-        if (PlayerTargetUnitIndex > (EnemyUnitsList.Count-1)) {
-            ChangePlayerTargetIndex();
-        }
-        PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
-        TargetUnit = PlayerSetTargetUnit;
-        BuildingController.SetCurrentTarget(TargetUnit);
-        CheckState();
     }
 
     private void CheckState() {

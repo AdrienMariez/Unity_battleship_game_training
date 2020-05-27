@@ -144,7 +144,7 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
     public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams team) {
-        // Debug.Log ("UnitDead : "+ unitGameObject.name);
+        // Debug.Log ("UnitSpawned : "+ unitGameObject.name);
         UnitsUIManager.SpawnUnit(unitGameObject, team);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
@@ -245,6 +245,15 @@ public class PlayerManager : MonoBehaviour
                     UIManager.SetTargetType("Ship");
                 } else {
                     PlayerUnits[i].GetComponent<ShipController>().SetActive(false);
+                } 
+            }
+            else if (PlayerUnits[i].GetComponent<BuildingController>()) {
+                if (i == CurrentTarget) {
+                    PlayerUnits[i].GetComponent<BuildingController>().SetActive(true);
+                    PlayerUnits[i].GetComponent<BuildingController>().SetMap(MapActive);
+                    UIManager.SetTargetType("Building");
+                } else {
+                    PlayerUnits[i].GetComponent<BuildingController>().SetActive(false);
                 } 
             }
         }

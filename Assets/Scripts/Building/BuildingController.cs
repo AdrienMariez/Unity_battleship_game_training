@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class BuildingController : MonoBehaviour {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
+    public GameObject[] m_BuildingComponents;
     private bool Active = false;
     private bool Dead = false;
     public WorldUnitsManager.BuildingSubCategories m_BuildingCategory;
@@ -17,7 +18,7 @@ public class BuildingController : MonoBehaviour {
     private BuildingUI UI;
     private TurretManager Turrets;
 
-    private float RepairRate;
+    private float RepairRate = 1;
 
     private GameObject EnemyTargetUnit;
 
@@ -37,6 +38,9 @@ public class BuildingController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);
 
+        for (int i = 0; i < m_BuildingComponents.Length; i++) {
+            m_BuildingComponents[i].GetComponent<HitboxComponent>().SetBuildingController(this);
+        }
     }
     private void Start() {
         StartCoroutine(SpawnPauseLogic());
@@ -84,6 +88,22 @@ public class BuildingController : MonoBehaviour {
         Health.ApplyDamage(damage);
         float currentHealth = Health.GetCurrentHealth();
         UI.SetCurrentHealth(currentHealth);
+    }
+
+    public void ModuleDestroyed(ShipController.ElementType elementType) {
+        // Debug.Log("ElementType :"+ ElementType);
+        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
+        if (elementType == ShipController.ElementType.ammo) {
+            Health.AmmoExplosion();
+        } else if (elementType == ShipController.ElementType.fuel) {
+            Health.StartFire();
+        }
+    }
+
+    public void ModuleRepaired(ShipController.ElementType elementType) {
+        if (elementType == ShipController.ElementType.fuel) {
+            Health.EndFire();
+        }
     }
 
     public void CallDeath() {
