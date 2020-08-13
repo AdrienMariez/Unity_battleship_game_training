@@ -145,10 +145,15 @@ public class PlayerManager : MonoBehaviour
     }
     public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams team) {
         // Debug.Log ("UnitSpawned : "+ unitGameObject.name);
-        UnitsUIManager.SpawnUnit(unitGameObject, team);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
+            if (unitGameObject.GetComponent<ShipController>()) { // Gives link to ShipController for units spawned after game start
+                unitGameObject.GetComponent<ShipController>().SetPlayerManager(this);
+            } else if (unitGameObject.GetComponent<BuildingController>()) {
+                unitGameObject.GetComponent<BuildingController>().SetPlayerManager(this);
+            }
         }
+        UnitsUIManager.SpawnUnit(unitGameObject, team);
         // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnits.Count);
         // foreach (var unit in PlayerUnits) {
         //     Debug.Log ("Playable units : "+ unit);

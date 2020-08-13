@@ -7,7 +7,7 @@ public class BuildingAI : MonoBehaviour {
     private string Team;
     private string Name;                // For debug purposes
     private bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
-    private float TurnInputLimit = 0;
+    // private float TurnInputLimit = 0;
     private float MaxTurretsRange;
     private GameObject TargetUnit;
     private int PlayerTargetUnitIndex = 0;

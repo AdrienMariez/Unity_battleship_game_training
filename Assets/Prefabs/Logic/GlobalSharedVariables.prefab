@@ -94,11 +94,12 @@ MonoBehaviour:
     type: 3}
   m_MapTank: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
     type: 3}
-  m_MapLandBase: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+  m_MapLandBase: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
     type: 3}
-  m_MapShipyard: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+  m_MapShipyard: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
     type: 3}
-  m_MapAirfield: {fileID: 0}
+  m_MapAirfield: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
+    type: 3}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

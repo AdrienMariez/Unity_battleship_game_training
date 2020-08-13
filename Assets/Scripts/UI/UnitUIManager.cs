@@ -61,13 +61,13 @@ public class UnitUIManager : MonoBehaviour {
         UnitsUIManager = unitsUIManager;
         StartCoroutine(PauseActionName());
     }
-    private bool NameActionPaused = false;
+    // private bool NameActionPaused = false;
     IEnumerator PauseActionName(){
         // Coroutine created to prevent too much calculus for ship behaviour
-        NameActionPaused = true;
+        // NameActionPaused = true;
         yield return new WaitForSeconds(0.1f);
         UIName.GetComponent<Text>().text = Unit.name;
-        NameActionPaused = false;
+        // NameActionPaused = false;
     }
 
     protected void FixedUpdate() {

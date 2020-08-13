@@ -267,7 +267,6 @@ public class ShipAI : MonoBehaviour {
             }
         } else {
             if (AIState == ShipMoveStates.NoAI || AIState == ShipMoveStates.Idle) {
-                AIState = AIState;
                 NoMove();
             } else {
                 AIState = ShipMoveStates.Patrol;

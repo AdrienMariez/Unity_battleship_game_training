@@ -23,17 +23,19 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     private bool Dead;
 
     private WorldUIVariables WorldUIVariables;
+    private WorldUnitsManager WorldUnitsManager;
     private GameObject SpawnerUI;
 
     void Start() {
         WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
         SpawnerUI = worldUIVariables.m_SpawnerUI;
+        WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
     }
 
     protected void Update() {
-        if (Input.GetButtonDown ("Submit") && Active && !Dead) {
+        if (Input.GetButtonDown ("SpawnMenu") && Active && !Dead) {
             SpawnUnit();
-            Debug.Log("submit pushed, show spawn list !");
+            // Debug.Log("SpawnMenu pushed, show spawn list !");
         }
     }
 
@@ -43,6 +45,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // }
     }
     protected void SpawnUnit () {
+        GameObject spawnedUnitInstance =
+                Instantiate (WorldUnitsManager.m_WorldShipsUnits[0].m_UnitPrefab, m_ShipSpawnPosition.position, m_ShipSpawnPosition.rotation);
+        // WorldUnitsManager.m_WorldShipsUnits
         // foreach (var category in m_ShipsCategories) {
             
         // }

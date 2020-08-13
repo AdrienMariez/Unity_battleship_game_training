@@ -26,7 +26,7 @@ namespace Crest
         protected abstract string QueryKernelName { get; }
 
         const int s_maxRequests = 4;
-        const int s_maxGuids = 64;
+        const int s_maxGuids = 512; //64
 
         protected virtual ComputeShader ShaderProcessQueries => _shaderProcessQueries;
         ComputeShader _shaderProcessQueries;

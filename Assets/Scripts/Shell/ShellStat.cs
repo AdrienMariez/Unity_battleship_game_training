@@ -268,13 +268,14 @@ public class ShellStat : MonoBehaviour
                 if (targetHitboxComponent != null) {
                     targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
                 }
-                TurretManager.FeedbackShellHit(ArmorPenetrated);
+                if (TurretManager) // Prevents exception if the ship is removed from game before all shells hit
+                    TurretManager.FeedbackShellHit(ArmorPenetrated);
                 return;
             } else {
                 // Calculate the ratio of penetration for use in CheckForExplosion
-                PenetrationRatio = 100 - ( (CollisionArmor * 100) / m_ArmorPenetration);
                 // Minimum penetration ratio is 20 %
-                PenetrationRatio = Mathf.Max(20f, PenetrationRatio);
+                PenetrationRatio = Mathf.Max( 20f, (100 - ( (CollisionArmor * 100) / m_ArmorPenetration)) );
+                
                 ApplyDecal(colliderHit);
                 if (!ArmorPenetrated) {   
                     CheckForExplosion();
@@ -282,7 +283,8 @@ public class ShellStat : MonoBehaviour
                     if (targetHitboxComponent != null) {
                         targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
                     }
-                    TurretManager.FeedbackShellHit(ArmorPenetrated);
+                    if (TurretManager)
+                        TurretManager.FeedbackShellHit(ArmorPenetrated);
                 }
             }
         }
