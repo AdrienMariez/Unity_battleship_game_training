@@ -12,6 +12,8 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Turrets status icons")]
         public GameObject TurretStatusSprites;
         public float IconsSpacing = 22;
+    [Header("Spawner UI")]
+        public GameObject m_SpawnerUI;
     [Header("Shell Camera")]
         public GameObject m_ShellCamera;
         public float m_TimeToDestroyCamera = 3;

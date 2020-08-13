@@ -98,6 +98,7 @@ MonoBehaviour:
     type: 3}
   m_MapShipyard: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
     type: 3}
+  m_MapAirfield: {fileID: 0}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +139,8 @@ MonoBehaviour:
   TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
   IconsSpacing: 22
+  m_SpawnerUI: {fileID: 6431504518210083437, guid: 98540111e42054e4a90966d5757c4900,
+    type: 3}
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
   m_TimeToDestroyCamera: 3

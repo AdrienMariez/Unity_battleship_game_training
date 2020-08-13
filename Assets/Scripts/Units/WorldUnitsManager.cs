@@ -79,6 +79,7 @@ public class WorldUnitsManager : MonoBehaviour {
         public GameObject m_MapLandBase;
         public GameObject m_MapShipyard;
         public GameObject m_MapAirfield;
+        
     private GameObject TempModel;
 
     void Start() { }

@@ -344,11 +344,9 @@ public class ShipController : MonoBehaviour {
         UI.SetDead();
         if (GameManager)
             GameManager.UnitDead(this.gameObject, Team, Active);
-        // if (PlayerManager) {
-        //     if (Active)
-        //         PlayerManager.SetCurrentUnitDead(true);
-            // PlayerManager.UnitDead(this.gameObject, Team);
-        // }
+        
+        if (GetComponent<SpawnerScriptToAttach>())
+            GetComponent<SpawnerScriptToAttach>().SetDeath(true);
 
         tag = "Untagged";
     }
@@ -378,6 +376,8 @@ public class ShipController : MonoBehaviour {
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
+        if (GetComponent<SpawnerScriptToAttach>())
+            GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
     
     public void SetTag(WorldUnitsManager.Teams team){

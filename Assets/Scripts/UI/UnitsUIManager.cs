@@ -71,10 +71,12 @@ public class UnitsUIManager : MonoBehaviour {
     private void CreateUnitDisplay(GameObject unitGameObject){
         // Debug.Log ("CreateGameDisplay : "+ UnitList.Count);
         if (unitGameObject == null) {return;}
-        // Debug.Log ("name : "+ item.name);
+        // Debug.Log ("name : "+ unitGameObject.name);
         TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
         if (unitGameObject.GetComponent<ShipController>()){
             unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
+        } else if (unitGameObject.GetComponent<BuildingController>()) {
+            unitGameObject.GetComponent<BuildingUI>().SetUIElement(TempUI);
         }
         TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
         UnitUIList.Add(TempUI);
@@ -84,6 +86,8 @@ public class UnitsUIManager : MonoBehaviour {
         TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
         if (unitGameObject.GetComponent<ShipController>()){
             unitGameObject.GetComponent<ShipUI>().SetUIMapElement(TempUI);
+        } else if (unitGameObject.GetComponent<BuildingController>()) {
+            unitGameObject.GetComponent<BuildingUI>().SetUIMapElement(TempUI);
         }
         TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, unitGameObject, this);
         UnitUIMapList.Add(TempUI);

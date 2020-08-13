@@ -421,6 +421,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4683842931939909943}
+  - {fileID: 6119007043914030161}
   m_Father: {fileID: 2486853652969784457}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -440,6 +441,7 @@ GameObject:
   - component: {fileID: 8944562449185586522}
   - component: {fileID: 5513275371970116649}
   - component: {fileID: 6951975475739686028}
+  - component: {fileID: 6883374081042125866}
   m_Layer: 0
   m_Name: Shipyard
   m_TagString: Player
@@ -650,6 +652,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AIState: 0
+--- !u!114 &6883374081042125866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661556145241615456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103de11dfc181374ea32d17ece056ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShipsCategories:
+  - m_ShipCategory: 0
+  m_ShipSpawnPosition: {fileID: 6119007043914030161}
+  m_SubmarinesCategories: []
+  m_SubmarineSpawnPosition: {fileID: 0}
+  m_PlanesCategories: []
+  m_PlanesSpawnPosition: {fileID: 0}
+  m_GroundCategories: []
+  m_GroundSpawnPosition: {fileID: 0}
 --- !u!1 &2999055004668866483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,6 +1132,36 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &8353005130598009440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6119007043914030161}
+  m_Layer: 0
+  m_Name: ShipyardSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6119007043914030161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353005130598009440}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2661556144751186937}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8659602765511096167
 GameObject:
   m_ObjectHideFlags: 0
