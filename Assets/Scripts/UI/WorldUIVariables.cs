@@ -6,6 +6,7 @@ public class WorldUIVariables : MonoBehaviour {
         public GameObject m_TankUI;
         public GameObject m_PlaneUI;
         public GameObject m_ShipUI;
+        public GameObject m_BuildingUI;
         public GameObject m_PlayerMapUI;
         public GameObject m_TurretUI;
         public GameObject m_PauseMenu;

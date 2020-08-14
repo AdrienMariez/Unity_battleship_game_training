@@ -93,30 +93,33 @@ public class GameManager : MonoBehaviour {
             m_Units[i].SetGameManager(this);
             m_Units[i].SetPlayerManager(PlayerManager);
             m_Units[i].Setup();
+            m_Units[i].SetUnactive();
 
-            // Set the needed units to attain win conditions
-            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
-                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis || m_Units[i].m_Team == WorldUnitsManager.Teams.AxisAI) {
-                    EnemiesUnits ++;
-                    m_Units[i].SetUnactive();
+            /*
+                // Set the needed units to attain win conditions
+                if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                    if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis || m_Units[i].m_Team == WorldUnitsManager.Teams.AxisAI) {
+                        EnemiesUnits ++;
+                        m_Units[i].SetUnactive();
+                    }
+                } else {
+                    if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies || m_Units[i].m_Team == WorldUnitsManager.Teams.AlliesAI) {
+                        EnemiesUnits ++;
+                        m_Units[i].SetUnactive();
+                    }
                 }
-            } else {
-                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies || m_Units[i].m_Team == WorldUnitsManager.Teams.AlliesAI) {
-                    EnemiesUnits ++;
-                    m_Units[i].SetUnactive();
-                }
-            }
 
-            // Set the playable units the player must keep to attain win conditions
-            if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
-                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies) {
-                    PlayableUnits ++;
+                // Set the playable units the player must keep to attain win conditions
+                if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+                    if (m_Units[i].m_Team == WorldUnitsManager.Teams.Allies) {
+                        PlayableUnits ++;
+                    }
+                } else {
+                    if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis) {
+                        PlayableUnits ++;
+                    }
                 }
-            } else {
-                if (m_Units[i].m_Team == WorldUnitsManager.Teams.Axis) {
-                    PlayableUnits ++;
-                }
-            }
+            */
         }
         // for (int i = 0; i < m_Units.Length; i++) {
         //     m_Units[i].SetUnitName();
@@ -147,8 +150,7 @@ public class GameManager : MonoBehaviour {
         PlayerManager.SetScoreMessage(GameMessage());
 
         // While there is not one side reduced to 0...
-        while (!NoUnitLeftOnOneSide())
-        {
+        while (!NoUnitLeftOnOneSide()) {
             // ... return on the next frame.
             yield return null;
         }
@@ -316,33 +318,45 @@ public class GameManager : MonoBehaviour {
 
     public void ShipSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.ShipSubCategories unitType) {
         WorldUnitsManager.CreateShipElement(unitGameObject, unitTeam, unitType);
-        PlayerManager.UnitSpawned(unitGameObject, unitTeam);
+        UnitSpawned(unitGameObject, unitTeam);
     }
     public void BuildingSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.BuildingSubCategories unitType) {
         WorldUnitsManager.CreateBuildingElement(unitGameObject, unitTeam, unitType);
+        UnitSpawned(unitGameObject, unitTeam);
+    }
+    private void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam) {
+        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
+            if (unitTeam == WorldUnitsManager.Teams.Allies) {
+                PlayableUnits += 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
+                EnemiesUnits += 1;
+            }
+        } else if (m_PlayerTeam == WorldUnitsManager.Teams.Axis) {
+            if (unitTeam == WorldUnitsManager.Teams.Axis) {
+                PlayableUnits += 1;
+            } else if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+                EnemiesUnits += 1;
+            }
+        }
         PlayerManager.UnitSpawned(unitGameObject, unitTeam);
+        PlayerManager.SetScoreMessage(GameMessage());
     }
     public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
         if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
             if (unitTeam == WorldUnitsManager.Teams.Allies) {
                 PlayableUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Axis) {
-                EnemiesUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.AxisAI) {
+            } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
                 EnemiesUnits -= 1;
             }
         } else if (m_PlayerTeam == WorldUnitsManager.Teams.Axis) {
             if (unitTeam == WorldUnitsManager.Teams.Axis) {
                 PlayableUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Allies) {
-                EnemiesUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+            } else if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
                 EnemiesUnits -= 1;
             }
         }
         PlayerManager.UnitDead(unitGameObject, unitTeam, unitActive);
         PlayerManager.SetScoreMessage(GameMessage());
-
     }
 
     public void EndGame() {

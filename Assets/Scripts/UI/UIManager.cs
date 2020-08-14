@@ -11,6 +11,7 @@ namespace UI {
             private GameObject m_TankUI;
             private GameObject m_PlaneUI;
             private GameObject m_ShipUI;
+            private GameObject m_BuildingUI;
             private GameObject PlayerUIInstance;
             private GameObject m_PlayerMapUI;
             private GameObject m_TurretUI;
@@ -69,7 +70,9 @@ namespace UI {
             PlayerUI = GameObject.Find("UI");
             WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
             m_TankUI = worldUIVariables.m_TankUI;
+            m_PlaneUI = worldUIVariables.m_PlaneUI;
             m_ShipUI = worldUIVariables.m_ShipUI;
+            m_BuildingUI = worldUIVariables.m_BuildingUI;
             m_PlayerMapUI = worldUIVariables.m_PlayerMapUI;
             m_TurretUI = worldUIVariables.m_TurretUI;
             m_PauseUI = worldUIVariables.m_PauseMenu;
@@ -146,21 +149,17 @@ namespace UI {
             Score.text = CurrentScore;
         }
         private void OpenBuildingUI() {
-            PlayerUIInstance = Instantiate(m_TankUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(m_BuildingUI, PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
             UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
             UnitHPColor = PlayerUIInstance.transform.Find("UnitHealthSlider").Find("Fill Area").Find("Fill").GetComponent<Image>();
-            ShipSpeedStep = PlayerUIInstance.transform.Find("ShipSpeedStep").GetComponent<Slider>();
-            ShipCurrentSpeed = PlayerUIInstance.transform.Find("ShipCurrentSpeed").GetComponent<Text>();
-            ShipTurningSpeed = PlayerUIInstance.transform.Find("ShipTurningSpeed").GetComponent<Slider>();
 
             UnitName.text = ActiveTarget.name;
             UnitHP.maxValue = StartingHP;
             UnitHP.value = CurrentHP;
             CheckHealthColor();
-            ShipSpeedStep.value = SpeedStep;
             Score.text = CurrentScore;
         }
         private void OpenPlaneUI() {

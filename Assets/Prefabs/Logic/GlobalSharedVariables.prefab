@@ -131,6 +131,8 @@ MonoBehaviour:
     type: 3}
   m_ShipUI: {fileID: 3767798349071585903, guid: 01508d3f85183714dba31f34f90a8fdf,
     type: 3}
+  m_BuildingUI: {fileID: 3767798349071585903, guid: 9cd88652289e6ca40bff2e44d24c371b,
+    type: 3}
   m_PlayerMapUI: {fileID: 3767798349071585903, guid: d831b0162ed93fb4cbcf8ca4781196e9,
     type: 3}
   m_TurretUI: {fileID: 3767798349071585903, guid: 86f6f6dfebfbb3549a7d6a3a9707a4d5,
