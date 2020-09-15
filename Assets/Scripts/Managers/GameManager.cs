@@ -1,33 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Monobehaviour marks that this script extends an existing class
+// Game Manager deals with major game workings, like checking any unit spawn, current game mode...
 public class GameManager : MonoBehaviour {
 
     public enum GameModes {
         Duel,
-        Points
+        Points,
+        Training
     }
-    [Header("Player UI")]
-    private GameModeDuel GameModeDuel;
-    private GameModePoints GameModePoints;
-
     public GameModes m_GameMode;
+    private GameModesManager CurrentGameMode;
 
     public GameObject m_Player;
     [Header("For single Player : ")]
-    public WorldUnitsManager.Teams m_PlayerTeam;
+    [Tooltip("Check this box if it is a single player game mode.")]
+    public bool m_SinglePlayerMode;
+    public WorldUnitsManager.Teams m_SinglePlayerTeam;
 
     [Header("Gameplay options")]
 
-    private int PlayableUnits;
-    private int EnemiesUnits;
-    private int WinsAllies;                     // How many Allies round victories this far ?
-    private int WinsAxis;                       // How many Axis round victories this far ?
-    private WorldUnitsManager.Teams RoundWinner;                  // Who won this particular round ?
-    private WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
+    private int TeamAlliesUnits;
+    private int TeamOppositionUnits;  // The use of Opposition instead of Axis is to prevent confusion between TeamAlliesUnits and TeamAxisUnits
 
     private WorldUnitsManager WorldUnitsManager;
     private PlayerManager PlayerManager;
@@ -35,12 +32,6 @@ public class GameManager : MonoBehaviour {
     private GameObject PlayerMapCanvas;
 
     private void Start() {
-        //Find game modes
-        GameModeDuel = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
-        GameModePoints = GameObject.Find("GameModes").GetComponent<GameModePoints>();
-
-        GameModeDuel.SetGameManager(this);
-
         WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
         PlayerManager = m_Player.GetComponent<PlayerManager>();
         PlayerManager.SetGameManager(this);
@@ -51,16 +42,15 @@ public class GameManager : MonoBehaviour {
         PlayerManager.SetPlayerCanvas(PlayerCanvas, PlayerMapCanvas);
 
         // Everything is set, now use only the GameMode selected
+
+
         if (m_GameMode == GameModes.Duel) {
-            GameModeDuel.BeginDuel();
+            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
         } else if (m_GameMode == GameModes.Points) {
-
+            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModePoints>();
         }
-    }
-
-
-    public WorldUnitsManager.Teams GetPlayer(){
-        return m_PlayerTeam;
+        CurrentGameMode.SetGameManager(this);
+        CurrentGameMode.Begin();
     }
 
     public void ShipSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.ShipSubCategories unitType) {
@@ -72,36 +62,37 @@ public class GameManager : MonoBehaviour {
         UnitSpawned(unitGameObject, unitTeam);
     }
     private void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam) {
-        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
-            if (unitTeam == WorldUnitsManager.Teams.Allies) {
-                PlayableUnits += 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
-                EnemiesUnits += 1;
+        /*
+            if (m_SinglePlayerTeam == WorldUnitsManager.Teams.Allies) {
+                if (unitTeam == WorldUnitsManager.Teams.Allies) {
+                    TeamAlliesUnits += 1;
+                } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
+                    TeamOppositionUnits += 1;
+                }
+            } else if (m_SinglePlayerTeam == WorldUnitsManager.Teams.Axis) {
+                if (unitTeam == WorldUnitsManager.Teams.Axis) {
+                    TeamAlliesUnits += 1;
+                } else if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+                    TeamOppositionUnits += 1;
+                }
             }
-        } else if (m_PlayerTeam == WorldUnitsManager.Teams.Axis) {
-            if (unitTeam == WorldUnitsManager.Teams.Axis) {
-                PlayableUnits += 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
-                EnemiesUnits += 1;
-            }
+        Replaced by following code : there is no reason the AI units shouldn't be counted in unit count.*/
+        if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+            TeamAlliesUnits += 1;
+        } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
+            TeamOppositionUnits += 1;
         }
+
+
         PlayerManager.UnitSpawned(unitGameObject, unitTeam);
         UpdateGameModeMessage();
         UpdateGameModeGameplay();
     }
     public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
-        if (m_PlayerTeam == WorldUnitsManager.Teams.Allies) {
-            if (unitTeam == WorldUnitsManager.Teams.Allies) {
-                PlayableUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
-                EnemiesUnits -= 1;
-            }
-        } else if (m_PlayerTeam == WorldUnitsManager.Teams.Axis) {
-            if (unitTeam == WorldUnitsManager.Teams.Axis) {
-                PlayableUnits -= 1;
-            } else if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
-                EnemiesUnits -= 1;
-            }
+        if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+            TeamAlliesUnits -= 1;
+        } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
+            TeamOppositionUnits -= 1;
         }
         PlayerManager.UnitDead(unitGameObject, unitTeam, unitActive);
         UpdateGameModeMessage();
@@ -113,26 +104,23 @@ public class GameManager : MonoBehaviour {
         PlayerManager.SetScoreMessage(message);
     }
     private void UpdateGameModeMessage() {
-        if (m_GameMode == GameModes.Duel) {
-            GameModeDuel.UpdateMessage();
-        } else if (m_GameMode == GameModes.Points) {
-
-        }
+        CurrentGameMode.UpdateMessage();
     }
 
     private void UpdateGameModeGameplay() {
-        if (m_GameMode == GameModes.Duel) {
-            GameModeDuel.UpdateGameplay();
-        } else if (m_GameMode == GameModes.Points) {
-
-        }
+        CurrentGameMode.UpdateGameplay();
     }
 
-    public void SetPlayableUnits(int x) { PlayableUnits = x; }
-    public int GetPlayableUnits() { return PlayableUnits; }
-    public void SetEnemiesUnits(int x) { EnemiesUnits = x; }
-    public int GetEnemiesUnits() { return EnemiesUnits; }
-    public WorldUnitsManager.Teams GetSoloPlayerTeam() { return m_PlayerTeam; }
+    public void SetTeamAlliesUnits(int x) { TeamAlliesUnits = x; }
+    public int GetTeamAlliesUnits() { return TeamAlliesUnits; }
+    public void SetTeamOppositionUnits(int x) { TeamOppositionUnits = x; }
+    public int GetTeamOppositionUnits() { return TeamOppositionUnits; }
+
+
+    public WorldUnitsManager.Teams GetSoloPlayerTeam() { return m_SinglePlayerTeam; }
+    public WorldUnitsManager.Teams GetPlayer(){ return m_SinglePlayerTeam; }
+
+
     public PlayerManager GetPlayerManager() { return PlayerManager; }
     public void ResetPlayerManager() { PlayerManager.Reset(); }
     public void EndGame() {

@@ -1213,6 +1213,21 @@ PrefabInstance:
       propertyPath: m_Units.Array.data[7].m_Nation
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_SinglePlayerTeam
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_GameMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_SinglePlayerMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086803692809, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1288,6 +1303,63 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[0].m_UnitPrefab
+      value: 
+      objectReference: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
+        type: 3}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[0].m_UnitName
+      value: YYYYY
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[0].m_SpawnPoint
+      value: 
+      objectReference: {fileID: 619213909}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_SpawnPoint
+      value: 
+      objectReference: {fileID: 1841410181}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_UnitPrefab
+      value: 
+      objectReference: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+        type: 3}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_UnitName
+      value: QQQQQQ
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_UseSpawnpoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[0].m_UseSpawnpoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_Team
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_Nation
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.size
@@ -1296,13 +1368,13 @@ PrefabInstance:
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[2].m_UnitName
-      value: Training target 2
+      value: Shipyard
       objectReference: {fileID: 0}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[2].m_UnitPrefab
       value: 
-      objectReference: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      objectReference: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
         type: 3}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
@@ -1489,6 +1561,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Units.Array.data[7].m_UnitName
       value: Training ship 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_Team
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_Nation
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}

@@ -1,18 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-// Monobehaviour marks that this script extends an existing class
-public class GameModeDuel : MonoBehaviour {
+public class GameModeDuel : GameModesManager {
     private GameManager GameManager;
+    private WorldUnitsManager WorldUnitsManager;
+
     public UnitManager[] m_Units;
-
-    [Header("For single Player : ")]
-    [Tooltip("Check this box if it is a single player game mode.")]
-    public bool m_SinglePlayerMode;
-    public WorldUnitsManager.Teams m_SinglePlayerTeam;
-
     /*TODO here :
         Send all singleplayer data from GameManager here, change GameManager so that teams are Team1, Team2...
     */
@@ -31,9 +24,9 @@ public class GameModeDuel : MonoBehaviour {
     private WorldUnitsManager.Teams RoundWinner;                  // Who won this particular round ?
     private WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
 
-    private WorldUnitsManager WorldUnitsManager;
-
-    public void BeginDuel() {
+    public override void Begin() {
+        // base.Begin();
+        
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds (m_StartDelay);
         m_EndWait = new WaitForSeconds (m_EndDelay);
@@ -44,7 +37,7 @@ public class GameModeDuel : MonoBehaviour {
         StartCoroutine (GameLoop ());
     }
 
-    public void SetGameManager(GameManager gameManager) {
+    public override void SetGameManager(GameManager gameManager) {
         GameManager = gameManager;
     }
 
@@ -82,8 +75,8 @@ public class GameModeDuel : MonoBehaviour {
 
     private IEnumerator RoundStarting () {
         // Reset counters
-        GameManager.SetPlayableUnits(0);
-        GameManager.SetEnemiesUnits(0);
+        GameManager.SetTeamAlliesUnits(0);
+        GameManager.SetTeamOppositionUnits(0);
 
         // Setup each unit
         for (int i = 0; i < m_Units.Length; i++) {
@@ -159,7 +152,7 @@ public class GameModeDuel : MonoBehaviour {
     private bool NoUnitLeftOnOneSide() {
         // If there are still playable units or enemy units...
         bool sideExterminated = false;
-        if (GameManager.GetPlayableUnits() == 0 || GameManager.GetEnemiesUnits() == 0) {
+        if (GameManager.GetTeamAlliesUnits() == 0 || GameManager.GetTeamOppositionUnits() == 0) {
             sideExterminated = true;
         }
         return sideExterminated;
@@ -167,7 +160,7 @@ public class GameModeDuel : MonoBehaviour {
 
     private WorldUnitsManager.Teams GetRoundWinner() {
         // If the playable units are depleted, it is a player defeat
-        if (GameManager.GetPlayableUnits() == 0 && GameManager.GetEnemiesUnits() > 0) {
+        if (GameManager.GetTeamAlliesUnits() == 0 && GameManager.GetTeamOppositionUnits() > 0) {
             if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
                 return WorldUnitsManager.Teams.Axis;
             } else {
@@ -175,7 +168,7 @@ public class GameModeDuel : MonoBehaviour {
             }
         }
         // If the enemy units are depleted, it is a player victory
-        if (GameManager.GetPlayableUnits() > 0 && GameManager.GetEnemiesUnits() == 0) {
+        if (GameManager.GetTeamAlliesUnits() > 0 && GameManager.GetTeamOppositionUnits() == 0) {
             if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
                 return WorldUnitsManager.Teams.Allies;
             } else {
@@ -236,10 +229,10 @@ public class GameModeDuel : MonoBehaviour {
     private string GameMessage() {
         string message;
 
-        if (GameManager.GetPlayableUnits() >  1) {
-            message = "Player units : " + GameManager.GetPlayableUnits() +"\n";
+        if (GameManager.GetTeamAlliesUnits() >  1) {
+            message = "Player units : " + GameManager.GetTeamAlliesUnits() +"\n";
         } else {
-            message = "Player unit : " + GameManager.GetPlayableUnits() +"\n";
+            message = "Player unit : " + GameManager.GetTeamAlliesUnits() +"\n";
         }
 
         if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
@@ -248,10 +241,10 @@ public class GameModeDuel : MonoBehaviour {
             message += "Wins : "+ WinsAxis +"/"+ m_NumRoundsToWin +"\n";
         }
 
-        if (GameManager.GetPlayableUnits() >  1) {
-            message += "Enemy units : " + GameManager.GetEnemiesUnits() +"\n";
+        if (GameManager.GetTeamAlliesUnits() >  1) {
+            message += "Enemy units : " + GameManager.GetTeamOppositionUnits() +"\n";
         } else {
-            message += "Enemy unit : " + GameManager.GetEnemiesUnits() +"\n";
+            message += "Enemy unit : " + GameManager.GetTeamOppositionUnits() +"\n";
         }
 
         if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
@@ -263,16 +256,13 @@ public class GameModeDuel : MonoBehaviour {
         return message;
     }
 
-    public void UpdateMessage() { 
+    public override void UpdateMessage() { 
         //Hi I am needed by GameManager, please do not mess with me.
         GameManager.SetScoreMessage(GameMessage());
     }
 
-    public WorldUnitsManager.Teams GetPlayer(){
-        return GameManager.GetSoloPlayerTeam();
-    }
-
-    public void UpdateGameplay() {
+    public override void UpdateGameplay() {
+        //Hi I am needed by GameManager, please do not mess with me.
         //Add specifics for gameplay when a unit dies/spawns here
     }
 
@@ -294,5 +284,4 @@ public class GameModeDuel : MonoBehaviour {
             m_Units[i].DisableControl();
         }
     }
-
 }

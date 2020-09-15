@@ -813,6 +813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2703731806918365590}
+  - component: {fileID: 5519007140959177228}
   - component: {fileID: 8322520787321326853}
   - component: {fileID: 7765476883459488792}
   m_Layer: 0
@@ -836,6 +837,18 @@ Transform:
   m_Father: {fileID: 6283074086803692809}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5519007140959177228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288381753715508376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7536b5de82b8d9842b9adb65c024c36e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8322520787321326853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,6 +898,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a2abeb77d5626408c5d6520ed71334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Units: []
+  m_NumRoundsToWin: 5
+  m_StartDelay: 3
+  m_EndDelay: 3
 --- !u!1 &3008125112453024953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,23 +1126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GameMode: 0
-  m_PlayerTeam: 0
   m_Player: {fileID: 3008125112453024953}
-  m_Units:
-  - m_Team: 0
-    m_Nation: 0
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
-      type: 3}
-    m_UnitName: South Dakota
-    m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 0}
-  - m_Team: 2
-    m_Nation: 1
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: bbac4ebb287bca44fa8b36fe1f451c2f,
-      type: 3}
-    m_UnitName: Fuso
-    m_UseSpawnpoint: 1
-    m_SpawnPoint: {fileID: 0}
+  m_SinglePlayerMode: 0
+  m_SinglePlayerTeam: 0
 --- !u!82 &6283074086476641188
 AudioSource:
   m_ObjectHideFlags: 0
