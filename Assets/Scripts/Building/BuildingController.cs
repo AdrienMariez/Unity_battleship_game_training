@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BuildingController : MonoBehaviour {
+public class BuildingController : UnitMasterController {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_BuildingComponents;
     private bool Active = false;
@@ -39,7 +39,7 @@ public class BuildingController : MonoBehaviour {
             Turrets.SetRepairRate(RepairRate);
 
         for (int i = 0; i < m_BuildingComponents.Length; i++) {
-            m_BuildingComponents[i].GetComponent<HitboxComponent>().SetBuildingController(this);
+            m_BuildingComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
         }
     }
     private void Start() {
@@ -84,28 +84,6 @@ public class BuildingController : MonoBehaviour {
     //     ActionPaused2= true;
     // }
 
-    public void ApplyDamage(float damage) {
-        Health.ApplyDamage(damage);
-        float currentHealth = Health.GetCurrentHealth();
-        UI.SetCurrentHealth(currentHealth);
-    }
-
-    public void ModuleDestroyed(ShipController.ElementType elementType) {
-        // Debug.Log("ElementType :"+ ElementType);
-        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
-        if (elementType == ShipController.ElementType.ammo) {
-            Health.AmmoExplosion();
-        } else if (elementType == ShipController.ElementType.fuel) {
-            Health.StartFire();
-        }
-    }
-
-    public void ModuleRepaired(ShipController.ElementType elementType) {
-        if (elementType == ShipController.ElementType.fuel) {
-            Health.EndFire();
-        }
-    }
-
     public void CallDeath() {
         // Debug.Log("DEATH"+Dead);
         Dead = true;
@@ -123,11 +101,17 @@ public class BuildingController : MonoBehaviour {
         tag = "Untagged";
     }
 
-    public void SetMap(bool map) {
-        if (GetComponent<TurretManager>())
-            Turrets.SetMap(map);
+    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
+    
+    public void SetCurrentTarget(GameObject targetUnit) {
+        EnemyTargetUnit = targetUnit;
+        if (Active) {
+            PlayerManager.SendCurrentEnemyTarget(targetUnit);
+        }
     }
-    public void SetActive(bool activate) {
+
+    // ALL OVERRIDES METHODS
+    public override void SetActive(bool activate) {
         Active = activate;
         if (GetComponent<TurretManager>())
                 Turrets.SetActive(Active);
@@ -137,58 +121,81 @@ public class BuildingController : MonoBehaviour {
         if (GetComponent<SpawnerScriptToAttach>())
             GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
-    
-    public void SetTag(WorldUnitsManager.Teams team){
+    public override void SetMap(bool map) {
+        if (GetComponent<TurretManager>())
+            Turrets.SetMap(map);
+    }
+    public override void SetPause(bool pause){
+        if (GetComponent<TurretManager>())
+            Turrets.SetPause();
+    }
+    public override void SetTag(WorldUnitsManager.Teams team){
         Team = team;
         gameObject.tag = team.ToString("g");
         UI.SetUnitTeam(team);
         BuildingAI.SetUnitTeam(team.ToString("g"));
 
     }
-    public void SetName(string name){
+    public override void SetName(string name){
         gameObject.name = name;
         UI.SetName(name);
         BuildingAI.SetName(name);
     }
+    public override float GetRepairRate(){ return RepairRate; }
 
-    public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
-    public void SetPlayerManager(PlayerManager playerManager){
-        PlayerManager = playerManager;
-        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
-        if (GetComponent<TurretManager>())
-            Turrets.SetPlayerManager(PlayerManager);
-    }
-    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
+    // Turrets
+    public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
         if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     }
-    public void SendPlayerShellToUI(GameObject shellInstance){
+    public override void SendPlayerShellToUI(GameObject shellInstance){
         if (PlayerManager != null) { PlayerManager.SendPlayerShellToUI(shellInstance); }
     }
 
-    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
-    public void SetPause(bool pause){
-        if (GetComponent<TurretManager>())
-            Turrets.SetPause();
+    // UI
+    public override void SetUIElement(GameObject uiElement) { UI.SetUIElement(uiElement); }
+    public override void SetUIMapElement(GameObject uiElement) { UI.SetUIMapElement(uiElement); }
+    public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
+    public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
+    public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
+    public override bool GetDeath(){ return Dead; }
+
+    // Damage control
+    public override void ApplyDamage(float damage) {
+        Health.ApplyDamage(damage);
+        float currentHealth = Health.GetCurrentHealth();
+        UI.SetCurrentHealth(currentHealth);
     }
-    public void SetCurrentTarget(GameObject targetUnit) {
-        EnemyTargetUnit = targetUnit;
-        if (Active) {
-            PlayerManager.SendCurrentEnemyTarget(targetUnit);
+    public override void ModuleDestroyed(ShipController.ElementType elementType) {
+        // Debug.Log("ElementType :"+ ElementType);
+        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
+        if (elementType == ShipController.ElementType.ammo) {
+            Health.AmmoExplosion();
+        } else if (elementType == ShipController.ElementType.fuel) {
+            Health.StartFire();
         }
     }
-    public bool GetDeath(){ return Dead; }
-    public float GetRepairRate(){ return RepairRate; }
-    public void DestroyUnit(){
+
+    public override void ModuleRepaired(ShipController.ElementType elementType) {
+        if (elementType == ShipController.ElementType.fuel) {
+            Health.EndFire();
+        }
+    }
+    public override void DestroyUnit(){
         // Debug.Log ("Destroy unit : "+gameObject.name);
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
         UI.KillAllUIInstances();
         if (GameManager) {
-            // if (Active)
-            //     PlayerManager.SetCurrentUnitDead(true);
-            // PlayerManager.UnitDead(this.gameObject, Team, Active);
             GameManager.UnitDead(this.gameObject, Team, Active);
         }
-        Destroy (gameObject);
+        base.DestroyUnit();
     }
+
+    public override void SetPlayerManager(PlayerManager playerManager){
+        PlayerManager = playerManager;
+        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
+        if (GetComponent<TurretManager>())
+            Turrets.SetPlayerManager(PlayerManager);
+    }
+    public override void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
 }

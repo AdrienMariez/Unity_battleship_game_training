@@ -27,10 +27,7 @@ public class HitboxComponent : MonoBehaviour {
     private bool Dead = false;
 
 
-    private ShipController ShipController;
-    private bool ShipC = false;
-    private BuildingController BuildingController;
-    private bool BuildingC = false;
+    private UnitMasterController UnitMasterController;
 
     private void Start () {
         if (m_ElementType == ShipController.ElementType.hull) {
@@ -51,19 +48,19 @@ public class HitboxComponent : MonoBehaviour {
     }
 
     public void InitializeModules () {
-        if (ShipC) {
-            RepairRate = ShipController.GetRepairRate();
-        } else if (BuildingC) {
-            RepairRate = BuildingController.GetRepairRate();
-        }
+        RepairRate = UnitMasterController.GetRepairRate();
 
-        // Depending of the ElementType, send it to the ShipController
+        // Depending of the ElementType, send it to the UnitController
         if (m_ElementType == ShipController.ElementType.engine){
-            if (ShipC) {
-                ShipController.SetDamageControlEngineCount();
-            } else if (BuildingC) {
-                BuildingController.ModuleDestroyed(m_ElementType);
-            }
+            // Will be used only for mobile units...
+            UnitMasterController.SetDamageControlEngineCount();
+
+            // What was the point of this ? Why destroy the module if it's a building ?
+            // if (ShipC) {
+            //     ShipController.SetDamageControlEngineCount();
+            // } else if (BuildingC) {
+            //     BuildingController.ModuleDestroyed(m_ElementType);
+            // }
         }
     }
 
@@ -76,12 +73,8 @@ public class HitboxComponent : MonoBehaviour {
     public void TakeDamage (float amount) {
         // If a underwater armor is damaged, apply water damage
         if (BuoyancyComponent) {
-            if (ShipC) {
-                ShipController.ApplyDamage(amount);
-                ShipController.BuoyancyCompromised(m_ElementType, amount);
-            } else if (BuildingC) {
-                BuildingController.ApplyDamage(amount);
-            }
+            UnitMasterController.ApplyDamage(amount);
+            UnitMasterController.BuoyancyCompromised(m_ElementType, amount);
         } else if (!ArmorComponent) {
             // Debug.Log("amount = "+ amount);
             // Reduce current health by the amount of damage done.
@@ -96,11 +89,7 @@ public class HitboxComponent : MonoBehaviour {
             }
             // This directly transfers damage to modules to the unit itself
             else if (CurrentHealth > 0 && !Dead) {
-                if (ShipC) {
-                    ShipController.ApplyDamage(amount);
-                } else if (BuildingC) {
-                    BuildingController.ApplyDamage(amount);
-                }
+                UnitMasterController.ApplyDamage(amount);
             }
             else if (Dead) {
                 RepairModule();
@@ -115,9 +104,7 @@ public class HitboxComponent : MonoBehaviour {
     }
 
     public void SendHitInfoToDamageControl (bool armorPenetrated) {
-        if (ShipC) {
-            ShipController.SendHitInfoToDamageControl(armorPenetrated);
-        }
+        UnitMasterController.SendHitInfoToDamageControl(armorPenetrated);
     }
 
     public void TakeDamageDecal() {
@@ -126,11 +113,7 @@ public class HitboxComponent : MonoBehaviour {
 
     private void ModuleDestroyed () {
         Dead = true;
-        if (ShipC) {
-            ShipController.ModuleDestroyed(m_ElementType); 
-        } else if (BuildingC) {
-            BuildingController.ModuleDestroyed(m_ElementType);
-        }
+        UnitMasterController.ModuleDestroyed(m_ElementType); 
         
         if (Emitter) {
             SmokeInstance.GetComponent<ParticleSystem>().Play();
@@ -162,24 +145,14 @@ public class HitboxComponent : MonoBehaviour {
     private void ModuleRepaired () {
         CurrentHealth = m_ElementHealth;
         Dead = false;
-        if (ShipC) {
-            ShipController.ModuleRepaired(m_ElementType);  
-        } else if (BuildingC) {
-            BuildingController.ModuleRepaired(m_ElementType);
-        }
+        UnitMasterController.ModuleRepaired(m_ElementType); 
         if (Emitter) {
             SmokeInstance.GetComponent<ParticleSystem>().Stop();
         }
     }
 
-    public void SetShipController(ShipController shipController){
-        ShipController = shipController;
-        ShipC = true;
-        InitializeModules();
-    }
-    public void SetBuildingController(BuildingController buildingController){
-        BuildingController = buildingController;
-        BuildingC = true;
+    public void SetUnitController(UnitMasterController unitMasterComponent){
+        UnitMasterController = unitMasterComponent;
         InitializeModules();
     }
     public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }

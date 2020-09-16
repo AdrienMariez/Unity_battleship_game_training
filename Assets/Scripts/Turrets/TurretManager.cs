@@ -15,7 +15,7 @@ public class TurretManager : MonoBehaviour
     private bool PlayerControl = false;
     private PlayerManager PlayerManager;
     private FreeLookCam FreeLookCam;
-    private ShipController ShipController;
+    private UnitMasterController UnitMasterController;
     private TurretFireManager.TurretType CurrentControlledTurretType;
     [Header("Artillery")]
         // private List <GameObject> ArtilleryTurrets;
@@ -48,8 +48,7 @@ public class TurretManager : MonoBehaviour
     private float AITargetRange;
 
     private void Start() {
-        if (GetComponent<ShipController>())
-            ShipController = GetComponent<ShipController>();
+        UnitMasterController = GetComponent<UnitMasterController>();
         float MaxR;
         float MinR;
         for (int i = 0; i < m_Turrets.Length; i++){
@@ -79,10 +78,10 @@ public class TurretManager : MonoBehaviour
         // ReinitializeCurrentWeaponSelected();
         // Debug.Log(ArtilleryTurrets.Count + " : ArtilleryTurrets");
         WorkingTurrets = TotalTurrets;
-        if (GetComponent<ShipController>()) {
-            ShipController.SetTotalTurrets(TotalTurrets);
-            GetComponent<ShipAI>().SetMaxTurretRange(MaxRange);
-        }
+
+        UnitMasterController.SetTotalTurrets(TotalTurrets);
+        UnitMasterController.SetMaxTurretRange(MaxRange);
+
         SetPlayerControl();
     }
 
@@ -253,8 +252,7 @@ public class TurretManager : MonoBehaviour
         } else{
             WorkingTurrets++;
         }
-        if (GetComponent<ShipController>())
-            ShipController.SetDamagedTurrets(TotalTurrets - WorkingTurrets);
+        UnitMasterController.SetDamagedTurrets(TotalTurrets - WorkingTurrets);
     }
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
@@ -266,12 +264,12 @@ public class TurretManager : MonoBehaviour
     }
 
     public void SetSingleTurretStatus(TurretStatusType status, int turretNumber){
-        if (Active && GetComponent<ShipController>())
-            ShipController.SetSingleTurretStatus(status, turretNumber);
+        if (Active)
+            UnitMasterController.SetSingleTurretStatus(status, turretNumber);
     }
     public void SendPlayerShellToUI(GameObject shellInstance){
-        if (Active && GetComponent<ShipController>())
-            ShipController.SendPlayerShellToUI(shellInstance);
+        if (Active)
+            UnitMasterController.SendPlayerShellToUI(shellInstance);
     }
 
     public GameObject[] GetTurrets() {
@@ -279,9 +277,7 @@ public class TurretManager : MonoBehaviour
     }
     public TurretFireManager.TurretType GetCurrentTurretType() { return CurrentControlledTurretType; }
     public void FeedbackShellHit(bool armorPenetrated) {
-        if (GetComponent<ShipController>()) {
-            ShipController.FeedbackShellHit(armorPenetrated);
-        }
+        UnitMasterController.FeedbackShellHit(armorPenetrated);
     }
     
     public List <TurretStatusType> GetTurretsStatus() {

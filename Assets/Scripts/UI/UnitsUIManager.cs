@@ -73,22 +73,14 @@ public class UnitsUIManager : MonoBehaviour {
         if (unitGameObject == null) {return;}
         // Debug.Log ("name : "+ unitGameObject.name);
         TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
-        if (unitGameObject.GetComponent<ShipController>()){
-            unitGameObject.GetComponent<ShipUI>().SetUIElement(TempUI);
-        } else if (unitGameObject.GetComponent<BuildingController>()) {
-            unitGameObject.GetComponent<BuildingUI>().SetUIElement(TempUI);
-        }
+        unitGameObject.GetComponent<UnitMasterController>().SetUIElement(TempUI);
         TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
         UnitUIList.Add(TempUI);
     }
     private void CreateUnitMapDisplay(GameObject unitGameObject){
         if (unitGameObject == null) {return;}
         TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
-        if (unitGameObject.GetComponent<ShipController>()){
-            unitGameObject.GetComponent<ShipUI>().SetUIMapElement(TempUI);
-        } else if (unitGameObject.GetComponent<BuildingController>()) {
-            unitGameObject.GetComponent<BuildingUI>().SetUIMapElement(TempUI);
-        }
+        unitGameObject.GetComponent<UnitMasterController>().SetUIMapElement(TempUI);
         TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, unitGameObject, this);
         UnitUIMapList.Add(TempUI);
     }
@@ -129,9 +121,7 @@ public class UnitsUIManager : MonoBehaviour {
         // Debug.Log ("KillAllInstances");
         foreach (var item in UnitList) {
             if (item == null) { continue; }
-            if (item.GetComponent<ShipController>()){
-                item.GetComponent<ShipUI>().KillAllUIInstances();
-            }
+            item.GetComponent<UnitMasterController>().KillAllUIInstances();
         }
         foreach (var item in UnitUIList) {
             if (item == null) { continue; }

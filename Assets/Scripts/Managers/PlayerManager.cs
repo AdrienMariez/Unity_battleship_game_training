@@ -102,9 +102,7 @@ public class PlayerManager : MonoBehaviour
         } else {
             Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f;
         }
-        if (ActiveTarget.GetComponent<ShipController>()) {
-            ActiveTarget.GetComponent<ShipController>().SetPause(Pause);
-        }
+        ActiveTarget.GetComponent<UnitMasterController>().SetPause(Pause);
         CheckCameraRotation();
     }
 
@@ -147,11 +145,7 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("UnitSpawned : "+ unitGameObject.name);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
-            if (unitGameObject.GetComponent<ShipController>()) { // Gives link to ShipController for units spawned after game start
-                unitGameObject.GetComponent<ShipController>().SetPlayerManager(this);
-            } else if (unitGameObject.GetComponent<BuildingController>()) {
-                unitGameObject.GetComponent<BuildingController>().SetPlayerManager(this);
-            }
+            unitGameObject.GetComponent<UnitMasterController>().SetPlayerManager(this);
         }
         UnitsUIManager.SpawnUnit(unitGameObject, team);
         // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnits.Count);
@@ -174,9 +168,7 @@ public class PlayerManager : MonoBehaviour
         // if (PlayerUnits.Count > 0) {
             foreach (var unit in PlayerUnits) {
                 // Debug.Log ("Playable units : "+ unit);
-                if (unit.GetComponent<ShipController>()) {
-                    unit.GetComponent<ShipAI>().SetNewEnemyList(enemiesUnitsObjectList);
-                }
+                unit.GetComponent<UnitMasterController>().SetNewEnemyList(enemiesUnitsObjectList);
             }
         // }
         
@@ -184,9 +176,7 @@ public class PlayerManager : MonoBehaviour
         // if (PlayerUnits.Count > 0) {
             foreach (var unit in enemiesUnitsObjectList) {
                 // Debug.Log ("Enemy units : "+ unit);
-                if (unit.GetComponent<ShipController>()) {
-                    unit.GetComponent<ShipAI>().SetNewEnemyList(PlayerUnits);
-                }
+                unit.GetComponent<UnitMasterController>().SetNewEnemyList(PlayerUnits);
             }
         // }
         
@@ -302,9 +292,7 @@ public class PlayerManager : MonoBehaviour
 
         m_MapCamera.enabled = MapActive;
 
-        if (ActiveTarget.GetComponent<ShipController>()) {
-            ActiveTarget.GetComponent<ShipController>().SetMap(MapActive);
-        }
+        ActiveTarget.GetComponent<UnitMasterController>().SetMap(MapActive);
 
         CheckCameraRotation();
     }

@@ -3,7 +3,7 @@ using Crest;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShipController : MonoBehaviour {
+public class ShipController : UnitMasterController {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
     private bool Active = false;
@@ -21,6 +21,20 @@ public class ShipController : MonoBehaviour {
     private ShipAI ShipAI;
     private ShipUI UI;
     private Transform ShipModel;
+
+    public enum ElementType {
+        hull,
+        engine,
+        steering,
+        ammo,
+        fuel,
+        turret,
+        underwaterFrontLeft,
+        underwaterFrontRight,
+        underwaterBackLeft,
+        underwaterBackRight,
+        armorPlate
+    }
 
     
     private float CurrentRotationX  = 0.0f;
@@ -40,20 +54,6 @@ public class ShipController : MonoBehaviour {
     private float FireRepairCrew;
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
-
-    public enum ElementType {
-        hull,
-        engine,
-        steering,
-        ammo,
-        fuel,
-        turret,
-        underwaterFrontLeft,
-        underwaterFrontRight,
-        underwaterBackLeft,
-        underwaterBackRight,
-        armorPlate
-    }
 
     private GameObject EnemyTargetUnit;
 
@@ -83,7 +83,7 @@ public class ShipController : MonoBehaviour {
         ShipModel = this.gameObject.transform.GetChild(0);
 
         for (int i = 0; i < m_ShipComponents.Length; i++) {
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetShipController(this);
+            m_ShipComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
@@ -131,46 +131,6 @@ public class ShipController : MonoBehaviour {
     //     yield return new WaitForSeconds(3f);
     //     ActionPaused2= true;
     // }
-
-    public void ApplyDamage(float damage) {
-        Health.ApplyDamage(damage);
-        float currentHealth = Health.GetCurrentHealth();
-        UI.SetCurrentHealth(currentHealth);
-    }
-
-    public void BuoyancyCompromised(ElementType ElementType, float damage) {
-        //If a water tight compartment is hit, apply effects here
-        // Debug.Log("ElementType :"+ ElementType);
-        // Debug.Log("damage :"+ damage);
-        TargetpositionY -= damage * 0.001f;
-        if (ElementType == ElementType.underwaterFrontLeft) {
-            TargetRotationX += damage * 0.01f;
-            TargetRotationZ += damage * 0.1f;
-        } else if (ElementType == ElementType.underwaterFrontRight) {
-            TargetRotationX += damage * 0.01f;
-            TargetRotationZ += damage * -0.1f;
-        } else if (ElementType == ElementType.underwaterBackLeft) {
-            TargetRotationX += damage * -0.01f;
-            TargetRotationZ += damage * 0.1f;
-        } else if (ElementType == ElementType.underwaterBackRight) {
-            TargetRotationX += damage * -0.01f;
-            TargetRotationZ += damage * -0.1f;
-        }
-
-        LeakRatio += damage * 0.003f;
-        TakingWater = true;
-
-        ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
-
-        ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
-
-        if (DamageControl)
-            DamageControl.SetBuoyancyCompromised(TakingWater);
-
-        // Debug.Log("ShipModel :"+ ShipModel);
-        // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
-        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);  
-    }
 
     private void BuoyancyLoop() {
         if (LeakRatio > 0) {
@@ -265,61 +225,6 @@ public class ShipController : MonoBehaviour {
         if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead)
             CallDeath();
     }
-    public void SendHitInfoToDamageControl (bool armorPenetrated) {
-        if (GetComponent<ShipDamageControl>())
-            DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
-    }
-    public void FeedbackShellHit (bool armorPenetrated) {
-        if (GetComponent<ShipDamageControl>())
-            DamageControl.UpdateShellsSentCounter(armorPenetrated);
-    }
-
-    public void ModuleDestroyed(ElementType elementType) {
-        // Debug.Log("ElementType :"+ ElementType);
-        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
-        if (elementType == ElementType.engine) {
-            EngineCount--;
-            if (EngineCount == 0){
-                Movement.SetDead(true);
-                if (GetComponent<ShipDamageControl>())
-                    DamageControl.SetDamagedEngine(2);
-            } else {
-                Movement.SetDamaged(EngineCount/EngineCountTotal);
-                if (GetComponent<ShipDamageControl>())
-                    DamageControl.SetDamagedEngine(1);
-            }
-        } else if (elementType == ElementType.steering) {
-            Movement.SetAllowTurnInputChange(false);
-            if (GetComponent<ShipDamageControl>())
-                DamageControl.SetDamagedSteering(true);
-        } else if (elementType == ElementType.ammo) {
-            Health.AmmoExplosion();
-        } else if (elementType == ElementType.fuel) {
-            Health.StartFire();
-            if (GetComponent<ShipDamageControl>())
-                DamageControl.SetFireBurning(true);
-        }
-    }
-    public void ModuleRepaired(ElementType elementType) {
-        if (elementType == ElementType.engine) {
-            EngineCount++;
-            if (EngineCount > 0)
-                Movement.SetDead(false);
-                if (GetComponent<ShipDamageControl>() && EngineCount < EngineCountTotal)
-                    DamageControl.SetDamagedEngine(1);
-                else
-                    DamageControl.SetDamagedEngine(0);
-            Movement.SetDamaged(EngineCount/EngineCountTotal);
-        } else if (elementType == ElementType.steering) {
-            Movement.SetAllowTurnInputChange(true);
-            if (GetComponent<ShipDamageControl>())
-                DamageControl.SetDamagedSteering(false);
-        } else if (elementType == ElementType.fuel) {
-            Health.EndFire();
-            if (GetComponent<ShipDamageControl>())
-                DamageControl.SetFireBurning(false);
-        }
-    }
 
     public void CallDeath() {
         // Debug.Log("DEATH"+Dead);
@@ -351,59 +256,13 @@ public class ShipController : MonoBehaviour {
         tag = "Untagged";
     }
 
-    public void SetMap(bool map) {
-        if (GetComponent<TurretManager>())
-            Turrets.SetMap(map);
-        if (GetComponent<ShipDamageControl>()) {
-            DamageControl.SetMap(map);
-        }
-        Movement.SetMap(map);
-    }
     public void SetDamageControl(bool damageControl) {
         if (GetComponent<TurretManager>())
             Turrets.SetDamageControl(damageControl);
         if (PlayerManager != null)
             PlayerManager.SetDamageControl(damageControl);
     }
-    public void SetActive(bool activate) {
-        Active = activate;
-        if (GetComponent<TurretManager>())
-                Turrets.SetActive(Active);
-        Movement.SetActive(Active);
-        // if (Active)
-        //     Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
-        ShipAI.SetAIActive(!Active);
-        // Damage Control can be shown if active
-        if (GetComponent<ShipDamageControl>())
-            DamageControl.SetActive(Active);
-        if (GetComponent<SpawnerScriptToAttach>())
-            GetComponent<SpawnerScriptToAttach>().SetActive(Active);
-    }
-    
-    public void SetTag(WorldUnitsManager.Teams team){
-        Team = team;
-        gameObject.tag = team.ToString("g");
-        UI.SetUnitTeam(team);
-        ShipAI.SetUnitTeam(team.ToString("g"));
 
-    }
-    public void SetName(string name){
-        gameObject.name = name;
-        UI.SetName(name);
-        if (GetComponent<ShipDamageControl>()) {
-            DamageControl.SetName(name);
-        }
-        ShipAI.SetName(name);
-    }
-
-    public void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
-    public void SetPlayerManager(PlayerManager playerManager){
-        PlayerManager = playerManager;
-        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
-        if (GetComponent<TurretManager>())
-            Turrets.SetPlayerManager(PlayerManager);
-    }
-    public void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
     public void SetDamageControlEngine(int setCrew){
         EngineRepairCrew = setCrew;
         for (int i = 0; i < m_ShipComponents.Length; i++) {
@@ -424,14 +283,6 @@ public class ShipController : MonoBehaviour {
         }
     }
     public void SetDamageControlUnset(int setCrew){ if (Health != null) { Health.SetDamageControlUnset(setCrew); } }
-    public void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
-    public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
-        if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
-    }
-    public void SendPlayerShellToUI(GameObject shellInstance){
-        if (PlayerManager != null) { PlayerManager.SendPlayerShellToUI(shellInstance); }
-    }
-    public void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){
         Buoyancy.SetRotationInput(rotation);
@@ -443,11 +294,6 @@ public class ShipController : MonoBehaviour {
             PlayerManager.ChangeSpeedStep(currentSpeedStep);
     }
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
-    public void SetPause(bool pause){
-        DamageControl.SetPause();
-        if (GetComponent<TurretManager>())
-            Turrets.SetPause();
-    }
     public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
     public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
     public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
@@ -457,9 +303,172 @@ public class ShipController : MonoBehaviour {
             PlayerManager.SendCurrentEnemyTarget(targetUnit);
         }
     }
-    public bool GetDeath(){ return Dead; }
-    public float GetRepairRate(){ return RepairRate; }
-    public void DestroyUnit(){
+
+
+    // ALL OVERRIDES METHODS
+    public override void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList) {
+        ShipAI.SetNewEnemyList(enemiesUnitsObjectList);
+    }
+    public override void SetActive(bool activate) {
+        Active = activate;
+        if (GetComponent<TurretManager>())
+                Turrets.SetActive(Active);
+        Movement.SetActive(Active);
+        // if (Active)
+        //     Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
+        ShipAI.SetAIActive(!Active);
+        // Damage Control can be shown if active
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.SetActive(Active);
+        if (GetComponent<SpawnerScriptToAttach>())
+            GetComponent<SpawnerScriptToAttach>().SetActive(Active);
+    }
+    public override void SetMap(bool map) {
+        if (GetComponent<TurretManager>())
+            Turrets.SetMap(map);
+        if (GetComponent<ShipDamageControl>()) {
+            DamageControl.SetMap(map);
+        }
+        Movement.SetMap(map);
+    }
+    public override void SetPause(bool pause){
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.SetPause();
+        if (GetComponent<TurretManager>())
+            Turrets.SetPause();
+    }
+    public override void SetTag(WorldUnitsManager.Teams team){
+        Team = team;
+        gameObject.tag = team.ToString("g");
+        UI.SetUnitTeam(team);
+        ShipAI.SetUnitTeam(team.ToString("g"));
+
+    }
+    public override void SetName(string name){
+        gameObject.name = name;
+        UI.SetName(name);
+        if (GetComponent<ShipDamageControl>()) {
+            DamageControl.SetName(name);
+        }
+        ShipAI.SetName(name);
+    }
+    public override float GetRepairRate(){ return RepairRate; }
+
+    // Turrets
+    public override void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
+    public override void SetMaxTurretRange(float maxRange){ ShipAI.SetMaxTurretRange(maxRange); }
+    public override void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
+    public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
+        if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
+    }
+    public override void SendPlayerShellToUI(GameObject shellInstance){
+        if (PlayerManager != null) { PlayerManager.SendPlayerShellToUI(shellInstance); }
+    }
+    public override void FeedbackShellHit (bool armorPenetrated) {
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.UpdateShellsSentCounter(armorPenetrated);
+    }
+
+    // UI
+    public override void SetUIElement(GameObject uiElement) { UI.SetUIElement(uiElement); }
+    public override void SetUIMapElement(GameObject uiElement) { UI.SetUIMapElement(uiElement); }
+    public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
+    public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
+    public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
+    public override bool GetDeath(){ return Dead; }
+    public override int GetCurrentSpeedStep() { return(Movement.GetCurrentSpeedStep()); }
+
+    // Damage control
+    public override void ApplyDamage(float damage) {
+        Health.ApplyDamage(damage);
+        float currentHealth = Health.GetCurrentHealth();
+        UI.SetCurrentHealth(currentHealth);
+    }
+    public override void ModuleDestroyed(ElementType elementType) {
+        // Debug.Log("ElementType :"+ ElementType);
+        // Status : 0 : fixed and running / 1 : damaged / 2 : dead
+        if (elementType == ElementType.engine) {
+            EngineCount--;
+            if (EngineCount == 0){
+                Movement.SetDead(true);
+                if (GetComponent<ShipDamageControl>())
+                    DamageControl.SetDamagedEngine(2);
+            } else {
+                Movement.SetDamaged(EngineCount/EngineCountTotal);
+                if (GetComponent<ShipDamageControl>())
+                    DamageControl.SetDamagedEngine(1);
+            }
+        } else if (elementType == ElementType.steering) {
+            Movement.SetAllowTurnInputChange(false);
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetDamagedSteering(true);
+        } else if (elementType == ElementType.ammo) {
+            Health.AmmoExplosion();
+        } else if (elementType == ElementType.fuel) {
+            Health.StartFire();
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetFireBurning(true);
+        }
+    }
+    public override void ModuleRepaired(ElementType elementType) {
+        if (elementType == ElementType.engine) {
+            EngineCount++;
+            if (EngineCount > 0)
+                Movement.SetDead(false);
+                if (GetComponent<ShipDamageControl>() && EngineCount < EngineCountTotal)
+                    DamageControl.SetDamagedEngine(1);
+                else
+                    DamageControl.SetDamagedEngine(0);
+            Movement.SetDamaged(EngineCount/EngineCountTotal);
+        } else if (elementType == ElementType.steering) {
+            Movement.SetAllowTurnInputChange(true);
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetDamagedSteering(false);
+        } else if (elementType == ElementType.fuel) {
+            Health.EndFire();
+            if (GetComponent<ShipDamageControl>())
+                DamageControl.SetFireBurning(false);
+        }
+    }
+    public override void BuoyancyCompromised(ElementType ElementType, float damage) {
+        //If a water tight compartment is hit, apply effects here
+        // Debug.Log("ElementType :"+ ElementType);
+        // Debug.Log("damage :"+ damage);
+        TargetpositionY -= damage * 0.001f;
+        if (ElementType == ElementType.underwaterFrontLeft) {
+            TargetRotationX += damage * 0.01f;
+            TargetRotationZ += damage * 0.1f;
+        } else if (ElementType == ElementType.underwaterFrontRight) {
+            TargetRotationX += damage * 0.01f;
+            TargetRotationZ += damage * -0.1f;
+        } else if (ElementType == ElementType.underwaterBackLeft) {
+            TargetRotationX += damage * -0.01f;
+            TargetRotationZ += damage * 0.1f;
+        } else if (ElementType == ElementType.underwaterBackRight) {
+            TargetRotationX += damage * -0.01f;
+            TargetRotationZ += damage * -0.1f;
+        }
+
+        LeakRatio += damage * 0.003f;
+        TakingWater = true;
+
+        ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
+
+        ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+
+        if (DamageControl)
+            DamageControl.SetBuoyancyCompromised(TakingWater);
+
+        // Debug.Log("ShipModel :"+ ShipModel);
+        // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
+        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);  
+    }
+    public override void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
+    public override void SendHitInfoToDamageControl (bool armorPenetrated) {
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
+    }
+    public override void DestroyUnit(){
         // Debug.Log ("Destroy unit : "+gameObject.name);
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
@@ -467,11 +476,16 @@ public class ShipController : MonoBehaviour {
             DamageControl.Destroy();
         UI.KillAllUIInstances();
         if (GameManager) {
-            // if (Active)
-            //     PlayerManager.SetCurrentUnitDead(true);
-            // PlayerManager.UnitDead(this.gameObject, Team, Active);
             GameManager.UnitDead(this.gameObject, Team, Active);
         }
-        Destroy (gameObject);
+        base.DestroyUnit();
     }
+
+    public override void SetPlayerManager(PlayerManager playerManager){
+        PlayerManager = playerManager;
+        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
+        if (GetComponent<TurretManager>())
+            Turrets.SetPlayerManager(PlayerManager);
+    }
+    public override void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
 }

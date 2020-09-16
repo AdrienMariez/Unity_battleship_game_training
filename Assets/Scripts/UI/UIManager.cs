@@ -241,26 +241,12 @@ namespace UI {
 
         public void SetActiveTarget(GameObject Target) {
             ActiveTarget = Target;
-            // m_UnitName.text = ActiveTarget.name;
-            // if (ActiveTarget.GetComponent<TurretManager>()) {
-            //     CreateTurretsStatusDisplay();
-            // }
 
-            if (TargetType == "Tank") {
-                if (ActiveTarget.GetComponent<TankHealth>())
-                    StartingHP = ActiveTarget.GetComponent<TankHealth>().GetStartingHealth();
-            } else if (TargetType == "Building") {
-                if (ActiveTarget.GetComponent<BuildingHealth>())
-                    StartingHP = ActiveTarget.GetComponent<BuildingHealth>().GetStartingHealth();
-            } else if (TargetType == "Aircraft") {
-                if (ActiveTarget.GetComponent<AircraftHealth>())
-                    StartingHP = ActiveTarget.GetComponent<AircraftHealth>().GetStartingHealth();
-            } else if (TargetType == "Ship") {
-                StartingHP = ActiveTarget.GetComponent<ShipHealth>().GetStartingHealth();
-                SetCurrentUnitHealth(ActiveTarget.GetComponent<ShipHealth>().GetCurrentHealth());
-                ChangeSpeedStep(ActiveTarget.GetComponent<ShipMovement>().GetCurrentSpeedStep());
-                CurrentUnitDead = ActiveTarget.GetComponent<ShipController>().GetDeath();
-            }
+            if (ActiveTarget.GetComponent<UnitMasterController>())
+                StartingHP = ActiveTarget.GetComponent<UnitMasterController>().GetStartingHealth();
+                SetCurrentUnitHealth(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentHealth());
+                CurrentUnitDead = ActiveTarget.GetComponent<UnitMasterController>().GetDeath();
+                ChangeSpeedStep(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentSpeedStep());
 
             SetOpenUI();
         }
