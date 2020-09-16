@@ -165,18 +165,18 @@ public class BuildingController : UnitMasterController {
         float currentHealth = Health.GetCurrentHealth();
         UI.SetCurrentHealth(currentHealth);
     }
-    public override void ModuleDestroyed(ShipController.ElementType elementType) {
+    public override void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ ElementType);
         // Status : 0 : fixed and running / 1 : damaged / 2 : dead
-        if (elementType == ShipController.ElementType.ammo) {
+        if (elementType == ElementType.ammo) {
             Health.AmmoExplosion();
-        } else if (elementType == ShipController.ElementType.fuel) {
+        } else if (elementType == ElementType.fuel) {
             Health.StartFire();
         }
     }
 
-    public override void ModuleRepaired(ShipController.ElementType elementType) {
-        if (elementType == ShipController.ElementType.fuel) {
+    public override void ModuleRepaired(ElementType elementType) {
+        if (elementType == ElementType.fuel) {
             Health.EndFire();
         }
     }

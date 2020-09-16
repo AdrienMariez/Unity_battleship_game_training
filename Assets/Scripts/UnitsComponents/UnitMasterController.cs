@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitMasterController : MonoBehaviour {
+    public enum ElementType {
+        hull,
+        engine,
+        steering,
+        ammo,
+        fuel,
+        turret,
+        underwaterFrontLeft,
+        underwaterFrontRight,
+        underwaterBackLeft,
+        underwaterBackRight,
+        armorPlate
+    }
     // Turrets
     public virtual void SetTotalTurrets(int turrets) { }
     public virtual void SetMaxTurretRange(float maxRange) { }
@@ -22,9 +35,9 @@ public class UnitMasterController : MonoBehaviour {
 
     // Damage control
     public virtual void ApplyDamage(float damage) { }
-    public virtual void ModuleDestroyed(ShipController.ElementType elementType) { }
-    public virtual void ModuleRepaired(ShipController.ElementType elementType) { }
-    public virtual void BuoyancyCompromised(ShipController.ElementType ElementType, float damage) { }
+    public virtual void ModuleDestroyed(ElementType elementType) { }
+    public virtual void ModuleRepaired(ElementType elementType) { }
+    public virtual void BuoyancyCompromised(ElementType ElementType, float damage) { }
     public virtual void SendHitInfoToDamageControl (bool armorPenetrated) { }
     public virtual void SetDamageControlEngineCount(){ }
     public virtual float GetRepairRate(){ return(0f); }

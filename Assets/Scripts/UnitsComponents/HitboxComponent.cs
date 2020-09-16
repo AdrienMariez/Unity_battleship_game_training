@@ -6,7 +6,7 @@ public class HitboxComponent : MonoBehaviour {
     [Tooltip("Armor of the element (equivalent in rolled steel mm) Buoyancy elements do not use this (use conventionnal armors or hull parts to make belt armors)")]
     public float m_ElementArmor = 100.0f;
     [Tooltip("Type of element")]
-    public ShipController.ElementType m_ElementType = ShipController.ElementType.hull;
+    public UnitMasterController.ElementType m_ElementType = UnitMasterController.ElementType.hull;
 
     [Header("FX")]
     [Tooltip("When the element is destroyed, will it emit smoke ?")]
@@ -30,14 +30,14 @@ public class HitboxComponent : MonoBehaviour {
     private UnitMasterController UnitMasterController;
 
     private void Start () {
-        if (m_ElementType == ShipController.ElementType.hull) {
+        if (m_ElementType == UnitMasterController.ElementType.hull) {
             ImmortalComponent = true;
         }
-        if (m_ElementType == ShipController.ElementType.underwaterFrontLeft || m_ElementType == ShipController.ElementType.underwaterFrontRight || m_ElementType == ShipController.ElementType.underwaterBackLeft || m_ElementType == ShipController.ElementType.underwaterBackRight) {
+        if (m_ElementType == UnitMasterController.ElementType.underwaterFrontLeft || m_ElementType == UnitMasterController.ElementType.underwaterFrontRight || m_ElementType == UnitMasterController.ElementType.underwaterBackLeft || m_ElementType == UnitMasterController.ElementType.underwaterBackRight) {
             BuoyancyComponent = true;
             ImmortalComponent = true;
         }
-        if (m_ElementType == ShipController.ElementType.armorPlate) {
+        if (m_ElementType == UnitMasterController.ElementType.armorPlate) {
             ArmorComponent = true;
         }
         CurrentHealth = m_ElementHealth;
@@ -51,7 +51,7 @@ public class HitboxComponent : MonoBehaviour {
         RepairRate = UnitMasterController.GetRepairRate();
 
         // Depending of the ElementType, send it to the UnitController
-        if (m_ElementType == ShipController.ElementType.engine){
+        if (m_ElementType == UnitMasterController.ElementType.engine){
             // Will be used only for mobile units...
             UnitMasterController.SetDamageControlEngineCount();
 
@@ -124,11 +124,11 @@ public class HitboxComponent : MonoBehaviour {
         // If the module is destroyed, repair it to full health while keeping it disabled as long as it's not fully repaired
         float ModuleRepairRate;
         // If the module type is either engine, steering or a turret, accelerate the repair time of the module with damage control teams
-        if (m_ElementType == ShipController.ElementType.engine || m_ElementType == ShipController.ElementType.steering) {
+        if (m_ElementType == UnitMasterController.ElementType.engine || m_ElementType == UnitMasterController.ElementType.steering) {
             ModuleRepairRate = RepairRate * (EngineRepairRate + 1) * Time.deltaTime;
-        } else if (m_ElementType == ShipController.ElementType.fuel) {
+        } else if (m_ElementType == UnitMasterController.ElementType.fuel) {
             ModuleRepairRate = RepairRate * (FireRepairRate + 1) * Time.deltaTime;
-        }  else if (m_ElementType == ShipController.ElementType.ammo) {
+        }  else if (m_ElementType == UnitMasterController.ElementType.ammo) {
             // Make all ammo repair time a fixed time, otherwise ships with great damage control will end up with much more explosions than ships with none...
             ModuleRepairRate = 1 * Time.deltaTime;
         } else {
@@ -157,7 +157,7 @@ public class HitboxComponent : MonoBehaviour {
     }
     public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }
     public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
-    public ShipController.ElementType GetElementType(){ return m_ElementType; }
+    public UnitMasterController.ElementType GetElementType(){ return m_ElementType; }
     public float GetElementArmor(){ return m_ElementArmor; }
     public bool GetBuoyancyComponent(){ return BuoyancyComponent; }
 }

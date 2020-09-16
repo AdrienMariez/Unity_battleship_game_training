@@ -1580,6 +1580,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
         type: 3}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_SinglePlayerTeam
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_SinglePlayerMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086803692809, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_LocalPosition.x

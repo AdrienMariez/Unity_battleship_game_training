@@ -91,6 +91,8 @@ public class BuildingHealth : MonoBehaviour {
         // Turn the tank off.
         // gameObject.SetActive (false);
 
+        // Debug.Log("A building was destroyed due to health getting to 0");
+
         BuildingController.CallDeath();
     }
 

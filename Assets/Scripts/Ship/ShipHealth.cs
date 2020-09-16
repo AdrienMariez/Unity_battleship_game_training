@@ -91,6 +91,8 @@ public class ShipHealth : MonoBehaviour {
         // Turn the tank off.
         // gameObject.SetActive (false);
 
+        // Debug.Log("A ship was destroyed due to health getting to 0");
+
         ShipController.CallDeath();
     }
 

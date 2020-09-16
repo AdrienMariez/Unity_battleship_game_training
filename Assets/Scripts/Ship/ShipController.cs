@@ -22,20 +22,6 @@ public class ShipController : UnitMasterController {
     private ShipUI UI;
     private Transform ShipModel;
 
-    public enum ElementType {
-        hull,
-        engine,
-        steering,
-        ammo,
-        fuel,
-        turret,
-        underwaterFrontLeft,
-        underwaterFrontRight,
-        underwaterBackLeft,
-        underwaterBackRight,
-        armorPlate
-    }
-
     
     private float CurrentRotationX  = 0.0f;
     private float CurrentRotationZ = 0.0f;
@@ -199,8 +185,10 @@ public class ShipController : UnitMasterController {
         ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
 
         // Check death by taking in too much water
-        if (CurrentpositionY < -2 && !Dead)
+        if (CurrentpositionY < -2 && !Dead) {
+            // Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY);
             CallDeath();
+        }
     }
     private void BuoyancyCorrectXZ(float ratio) {
         if (CurrentRotationX > TargetRotationX) {
@@ -222,8 +210,10 @@ public class ShipController : UnitMasterController {
         ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         // Check death by taking in too much water
-        if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead)
+        if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead) {
+            // Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " - or Z being : " + CurrentRotationZ);
             CallDeath();
+        }
     }
 
     public void CallDeath() {
@@ -385,7 +375,7 @@ public class ShipController : UnitMasterController {
         UI.SetCurrentHealth(currentHealth);
     }
     public override void ModuleDestroyed(ElementType elementType) {
-        // Debug.Log("ElementType :"+ ElementType);
+        // Debug.Log("ElementType :"+ elementType);
         // Status : 0 : fixed and running / 1 : damaged / 2 : dead
         if (elementType == ElementType.engine) {
             EngineCount--;
@@ -469,6 +459,8 @@ public class ShipController : UnitMasterController {
             DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
     }
     public override void DestroyUnit(){
+        // This removes the unit from the scene
+
         // Debug.Log ("Destroy unit : "+gameObject.name);
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);

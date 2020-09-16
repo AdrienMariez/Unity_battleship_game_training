@@ -325,7 +325,7 @@ public class ShellStat : MonoBehaviour
 
             if (targetHitboxComponent != null) {
                 // This small check prevents any multiple damages on hull damage models with one shell
-                if (targetHitboxComponent.GetElementType() == ShipController.ElementType.hull) {
+                if (targetHitboxComponent.GetElementType() == UnitMasterController.ElementType.hull) {
                     if (hullDamaged) {
                         continue;
                     } else {
