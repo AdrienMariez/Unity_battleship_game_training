@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public enum GameModes {
         Duel,
         Points,
-        Training
+        Custom
     }
     public GameModes m_GameMode;
     private GameModesManager CurrentGameMode;
@@ -42,12 +42,14 @@ public class GameManager : MonoBehaviour {
         PlayerManager.SetPlayerCanvas(PlayerCanvas, PlayerMapCanvas);
 
         // Everything is set, now use only the GameMode selected
-
-
         if (m_GameMode == GameModes.Duel) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
         } else if (m_GameMode == GameModes.Points) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModePoints>();
+        } else if (m_GameMode == GameModes.Custom) {
+            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeCustom>();
+        } else {
+            Debug.Log ("No suitable file found for the selected scenario !");
         }
         CurrentGameMode.SetGameManager(this);
         CurrentGameMode.Begin();

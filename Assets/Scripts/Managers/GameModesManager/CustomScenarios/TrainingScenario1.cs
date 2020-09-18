@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class GameModeDuel : GameModesManager {
+public class TrainingScenario1 : CustomScenariosManager {
+    // Put only one of those files in a scene !
     private GameManager GameManager;
     private WorldUnitsManager WorldUnitsManager;
 
@@ -25,6 +26,7 @@ public class GameModeDuel : GameModesManager {
     private WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
 
     public override void SetGameManager(GameManager gameManager) {
+        // Debug.Log ("TrainingScenario1 - SetGameManager");
         base.SetGameManager(gameManager);
         GameManager = gameManager;
     }

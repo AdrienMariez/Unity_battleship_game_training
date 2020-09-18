@@ -815,6 +815,7 @@ GameObject:
   - component: {fileID: 2703731806918365590}
   - component: {fileID: 5519007140959177228}
   - component: {fileID: 8322520787321326853}
+  - component: {fileID: 745723519812465980}
   - component: {fileID: 7765476883459488792}
   m_Layer: 0
   m_Name: GameModes
@@ -886,6 +887,18 @@ MonoBehaviour:
   m_NumRoundsToWin: 5
   m_StartDelay: 3
   m_EndDelay: 3
+--- !u!114 &745723519812465980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288381753715508376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7f0f2623f605b498118a5c119246f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7765476883459488792
 MonoBehaviour:
   m_ObjectHideFlags: 0
