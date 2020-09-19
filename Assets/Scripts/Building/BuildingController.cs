@@ -5,18 +5,11 @@ using System.Collections.Generic;
 public class BuildingController : UnitMasterController {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_BuildingComponents;
-    private bool Active = false;
-    private bool Dead = false;
     public WorldUnitsManager.BuildingSubCategories m_BuildingCategory;
-    private WorldUnitsManager.Teams Team;
-
-    private GameManager GameManager;
-    private PlayerManager PlayerManager;
 
     private BuildingHealth Health;
     private BuildingAI BuildingAI;
     private BuildingUI UI;
-    private TurretManager Turrets;
 
     private float RepairRate = 1;
 
@@ -49,14 +42,14 @@ public class BuildingController : UnitMasterController {
         yield return new WaitForSeconds(0.3f);
         ResumeStart();
     }
-    private void ResumeStart() {
-        if (GameManager != null) {
-            GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
-        } else if (GameObject.Find("GameManager") != null) {
-            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
-        }
-    }
+    // private void ResumeStart() {
+    //     if (GameManager != null) {
+    //         GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
+    //     } else if (GameObject.Find("GameManager") != null) {
+    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    //         GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
+    //     }
+    // }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
@@ -130,14 +123,14 @@ public class BuildingController : UnitMasterController {
             Turrets.SetPause();
     }
     public override void SetTag(WorldUnitsManager.Teams team){
+        base.SetTag(team);
         Team = team;
-        gameObject.tag = team.ToString("g");
         UI.SetUnitTeam(team);
         BuildingAI.SetUnitTeam(team.ToString("g"));
 
     }
     public override void SetName(string name){
-        gameObject.name = name;
+        base.SetName(name);
         UI.SetName(name);
         BuildingAI.SetName(name);
     }
@@ -190,12 +183,4 @@ public class BuildingController : UnitMasterController {
         }
         base.DestroyUnit();
     }
-
-    public override void SetPlayerManager(PlayerManager playerManager){
-        PlayerManager = playerManager;
-        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
-        if (GetComponent<TurretManager>())
-            Turrets.SetPlayerManager(PlayerManager);
-    }
-    public override void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
 }

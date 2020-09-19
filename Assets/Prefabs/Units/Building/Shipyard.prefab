@@ -611,6 +611,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83a9d8f46c1a23849b082378a6e4d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_UnitName: Shipyard
+  m_UnitCategory: 4
+  m_UnitSubCategory: 10
+  m_Team: 0
+  m_Nation: 0
+  m_UnitCost: 0
+  m_UnitPointValue: 0
+  m_UnitMapModel: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
+    type: 3}
   m_BuildingComponents:
   - {fileID: 6811753195341331640}
   - {fileID: 515165354297429714}

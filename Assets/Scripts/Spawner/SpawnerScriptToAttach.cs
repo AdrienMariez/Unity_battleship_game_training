@@ -61,7 +61,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         if (trySpawn) {
             GameObject spawnedUnitInstance =
-                Instantiate (WorldUnitsManager.m_WorldShipsUnits[0].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
+                Instantiate (WorldUnitsManager.m_WorldShipsUnits[1].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
         } else {
             Debug.Log("No spawn location available !");
         }

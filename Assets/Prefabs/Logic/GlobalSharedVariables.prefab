@@ -72,34 +72,33 @@ MonoBehaviour:
   m_WorldGroundUnits:
   - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
       type: 3}
-    m_UnitCategory: 2
+    m_UnitCategory: 0
     m_Team: 0
     m_Nation: 0
     m_UnitCost: 0
-  m_MapBattleship: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
-    type: 3}
-  m_MapCruiser: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
-    type: 3}
-  m_MapDestroyer: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
-    type: 3}
-  m_MapCarrier: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapSubmarine: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapFighter: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapLightBomber: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapBomber: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapTank: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
-  m_MapLandBase: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-    type: 3}
-  m_MapShipyard: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-    type: 3}
-  m_MapAirfield: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-    type: 3}
+  m_WorldSingleUnit:
+  - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      type: 3}
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
+      type: 3}
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+      type: 3}
+  ShipBattleship: {fileID: 0}
+  ShipCarrier: {fileID: 0}
+  ShipCruiser: {fileID: 0}
+  ShipDestroyer: {fileID: 0}
+  SubmarineSubmarine: {fileID: 0}
+  PlaneFighter: {fileID: 0}
+  PlaneLightBomber: {fileID: 0}
+  PlaneBomber: {fileID: 0}
+  GroundTank: {fileID: 0}
+  BuildingLandBase: {fileID: 0}
+  BuildingShipyard: {fileID: 0}
+  BuildingAirfield: {fileID: 0}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

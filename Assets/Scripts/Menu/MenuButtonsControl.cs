@@ -13,7 +13,14 @@ public class MenuButtonsControl : MonoBehaviour {
     private GameObject CreditsUIInstance;
     private bool DisplayHelpImage = false;
 
+
     void Start() {
+        if (WorldStart.WorldGetFirstLoad()) {
+            // Creation of the full unit list, this may move if other files are made for the process !
+            WorldStart.WorldSetUnits();
+            WorldStart.WorldSetFirstLoad(false);
+        }
+
         OpenMainMenu();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -21,7 +28,6 @@ public class MenuButtonsControl : MonoBehaviour {
     }
 
     protected void Update() {
-        
     }
 
     protected void OpenMainMenu() {

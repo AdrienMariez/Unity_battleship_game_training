@@ -9,6 +9,7 @@ public class WorldUnitsManager : MonoBehaviour {
     public WorldSingleSubmarineUnit[] m_WorldSubmarinesUnits;
     public WorldSinglePlaneUnit[] m_WorldPlanesUnits;
     public WorldSingleGroundUnit[] m_WorldGroundUnits;
+    public WorldSingleUnit[] m_WorldSingleUnit;
 
     public enum SimpleTeams {
         Allies,
@@ -39,6 +40,13 @@ public class WorldUnitsManager : MonoBehaviour {
         ground,
         building
     }
+    public enum UnitSubCategories {
+        ShipBattleship,ShipCarrier,ShipCruiser,ShipDestroyer,
+        SubmarineSubmarine,
+        PlaneFighter,PlaneLightBomber,PlaneBomber,
+        GroundTank,
+        BuildingLandBase,BuildingShipyard,BuildingAirfield
+    }
 
     public enum ShipSubCategories {
         battleship,
@@ -47,42 +55,57 @@ public class WorldUnitsManager : MonoBehaviour {
         destroyer
     }
     [Header("Ships map models")]
-        public GameObject m_MapBattleship;
-        public GameObject m_MapCruiser;
-        public GameObject m_MapDestroyer;
-        public GameObject m_MapCarrier;
+        public GameObject ShipBattleship;
+        public GameObject ShipCarrier, ShipCruiser, ShipDestroyer;
     public enum SubmarineSubCategories {
         submarine
     }
     [Header("Submarines map models")]
-        public GameObject m_MapSubmarine;
+        public GameObject SubmarineSubmarine;
     public enum PlaneSubCategories {
         fighter,
         lightBomber,
         Bomber
     }
     [Header("Planes map models")]
-        public GameObject m_MapFighter;
-        public GameObject m_MapLightBomber;
-        public GameObject m_MapBomber;
+        public GameObject PlaneFighter;
+        public GameObject PlaneLightBomber, PlaneBomber;
     public enum GroundSubCategories {
-        tank
+        GroundTank
     }
     [Header("Ground map models")]
-        public GameObject m_MapTank;
+        public GameObject GroundTank;
     public enum BuildingSubCategories {
         landBase,
         shipyard,
         airfield
     }
     [Header("Buildings map models")]
-        public GameObject m_MapLandBase;
-        public GameObject m_MapShipyard;
-        public GameObject m_MapAirfield;
+        public GameObject BuildingLandBase;
+        public GameObject BuildingShipyard, BuildingAirfield;
         
     private GameObject TempModel;
+    private GameObject TempMapModel;
 
-    void Start() { }
+    private static bool FirstLoad = true;
+    void Start() {
+        if (FirstLoad){
+            FirstLoad = false;
+            Debug.Log ("WorldSetUnits");
+        }
+    }
+
+    /*public static void SetFirstLoad(bool firstLoad) {
+        FirstLoad = firstLoad;
+    }
+    public static bool GetFirstLoad() {
+        return FirstLoad;
+    }
+    public static void SetUnitList() {
+        // This is set once in the whole game session !
+        // WorldSetMapInstances();
+        // Debug.Log ("Test");
+    }*/
 
     protected void Update() { }
 
@@ -103,17 +126,25 @@ public class WorldUnitsManager : MonoBehaviour {
         Renderer.material.SetColor("_Color", SetColor(team));
     }
     */
+    public void CreateNewUnit(GameObject unitGameObject, Teams team) {
+        //Create the map element corresponding to the unit
+        TempModel = Instantiate(unitGameObject.GetComponent<UnitMasterController>().GetUnitMapModel(), unitGameObject.transform);
+        var Renderer = TempModel.GetComponent<Renderer>();
+        Renderer.material.SetColor("_Color", SetColor(team));
+    }
+
+
     public void CreateShipElement(GameObject unitGameObject, Teams team, ShipSubCategories unitType) {
         // Debug.Log("unitType :"+ unitType);
-        if (unitType == ShipSubCategories.battleship) {
-            TempModel = Instantiate(m_MapBattleship, unitGameObject.transform);
-        } else if (unitType == ShipSubCategories.cruiser) {
-            TempModel = Instantiate(m_MapCruiser, unitGameObject.transform);
-        } else if (unitType == ShipSubCategories.destroyer) {
-            TempModel = Instantiate(m_MapDestroyer, unitGameObject.transform);
-        } else if (unitType == ShipSubCategories.carrier) {
-            TempModel = Instantiate(m_MapCarrier, unitGameObject.transform);
-        }
+        // if (unitType == ShipSubCategories.battleship) {
+        //     TempModel = Instantiate(m_MapBattleship, unitGameObject.transform);
+        // } else if (unitType == ShipSubCategories.cruiser) {
+        //     TempModel = Instantiate(m_MapCruiser, unitGameObject.transform);
+        // } else if (unitType == ShipSubCategories.destroyer) {
+        //     TempModel = Instantiate(m_MapDestroyer, unitGameObject.transform);
+        // } else if (unitType == ShipSubCategories.carrier) {
+        //     TempModel = Instantiate(m_MapCarrier, unitGameObject.transform);
+        // }
 
         var Renderer = TempModel.GetComponent<Renderer>();
 
@@ -122,13 +153,13 @@ public class WorldUnitsManager : MonoBehaviour {
 
     public void CreateBuildingElement(GameObject unitGameObject, Teams team, BuildingSubCategories unitType) {
         // Debug.Log("unitType :"+ unitType);
-        if (unitType == BuildingSubCategories.landBase) {
-            TempModel = Instantiate(m_MapLandBase, unitGameObject.transform);
-        } else if (unitType == BuildingSubCategories.shipyard) {
-            TempModel = Instantiate(m_MapShipyard, unitGameObject.transform);
-        } else if (unitType == BuildingSubCategories.airfield) {
-            TempModel = Instantiate(m_MapAirfield, unitGameObject.transform);
-        }
+        // if (unitType == BuildingSubCategories.landBase) {
+        //     TempModel = Instantiate(m_MapLandBase, unitGameObject.transform);
+        // } else if (unitType == BuildingSubCategories.shipyard) {
+        //     TempModel = Instantiate(m_MapShipyard, unitGameObject.transform);
+        // } else if (unitType == BuildingSubCategories.airfield) {
+        //     TempModel = Instantiate(m_MapAirfield, unitGameObject.transform);
+        // }
 
         var Renderer = TempModel.GetComponent<Renderer>();
 

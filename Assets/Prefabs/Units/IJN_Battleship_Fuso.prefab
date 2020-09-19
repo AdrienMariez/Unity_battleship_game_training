@@ -111,6 +111,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -122,6 +123,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -225,6 +227,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -236,6 +239,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -361,9 +365,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300022, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &913574416097140486
 MonoBehaviour:
@@ -424,9 +428,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300018, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &6791678826079902113
 MonoBehaviour:
@@ -500,6 +504,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -511,6 +516,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -614,7 +620,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300030, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -628,9 +634,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300052, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1291629633739045507
 MeshCollider:
@@ -642,9 +648,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300054, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2752926655714518964
 MeshCollider:
@@ -656,9 +662,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300056, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6474037242477406472
 MeshCollider:
@@ -670,9 +676,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300058, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3482072346064036640
 MeshCollider:
@@ -684,9 +690,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300060, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1129748127281961147
 MeshCollider:
@@ -698,9 +704,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300062, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &201512363474619319
 MeshCollider:
@@ -712,9 +718,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300064, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2941171422448565874
 MeshCollider:
@@ -726,9 +732,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300066, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &4564020881504370721
 MeshCollider:
@@ -740,9 +746,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300032, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6658286144435371560
 MeshCollider:
@@ -754,9 +760,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300034, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2982344236001881805
 MeshCollider:
@@ -768,9 +774,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300036, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8863627311667681186
 MeshCollider:
@@ -782,9 +788,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300038, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2838409525060086091
 MeshCollider:
@@ -796,9 +802,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300040, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6363449491478562100
 MeshCollider:
@@ -810,9 +816,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300042, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8261891454047210862
 MeshCollider:
@@ -824,9 +830,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300044, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3433674618802585082
 MeshCollider:
@@ -838,9 +844,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300046, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3102760591755885283
 MeshCollider:
@@ -852,9 +858,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300048, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3992946633118273460
 MeshCollider:
@@ -866,9 +872,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300050, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &1927603479543668698
 GameObject:
@@ -912,9 +918,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300028, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!114 &3533645129493180642
 MonoBehaviour:
@@ -975,9 +981,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300026, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &3395698301752406961
 MonoBehaviour:
@@ -1072,9 +1078,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!114 &7362181918184703242
 MonoBehaviour:
@@ -1149,6 +1155,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1160,6 +1167,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1249,9 +1257,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300024, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &2762561901157487566
 MonoBehaviour:
@@ -1374,6 +1382,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9029c3b320aaf764690630082a4b8272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_UnitName: Fuso class
+  m_UnitCategory: 0
+  m_UnitSubCategory: 0
+  m_Team: 1
+  m_Nation: 1
+  m_UnitCost: 0
+  m_UnitPointValue: 0
+  m_UnitMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+    type: 3}
   m_ShipComponents:
   - {fileID: 6811753195341331640}
   - {fileID: 7729455201337281497}
@@ -1400,7 +1417,7 @@ MonoBehaviour:
   - {fileID: 1195826780730953236}
   - {fileID: 2646211758298468833}
   - {fileID: 2330803967291815325}
-  m_UnitType: 0
+  m_ShipCategory: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1700,6 +1717,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1711,6 +1729,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1779,6 +1798,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1790,6 +1810,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1879,9 +1900,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &7903555697243355712
 MonoBehaviour:
@@ -1942,9 +1963,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &111944579467443917
 MonoBehaviour:
@@ -2005,9 +2026,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300020, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &7317159794959609511
 MonoBehaviour:
@@ -2087,9 +2108,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300160, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6159620255748194042
 MeshCollider:
@@ -2101,9 +2122,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300162, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1551100822804064909
 MeshCollider:
@@ -2115,9 +2136,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300164, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &4053382485838253359
 GameObject:
@@ -2283,9 +2304,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300128, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7789158659267749287
 MeshCollider:
@@ -2297,7 +2318,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300130, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -2311,7 +2332,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300132, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -2357,9 +2378,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300010, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &5407277585782852399
 MonoBehaviour:
@@ -2434,6 +2455,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2445,6 +2467,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2546,6 +2569,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2560,6 +2584,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 0.17748986
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2626,6 +2651,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2644,6 +2670,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 0.17748986
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2710,6 +2737,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2723,6 +2751,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1.4772211
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2789,6 +2818,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2803,6 +2833,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1.4772211
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2869,6 +2900,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2886,6 +2918,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 0.9380292
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2952,6 +2985,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2963,6 +2997,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3029,6 +3064,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3042,6 +3078,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3108,6 +3145,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3126,6 +3164,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3285,6 +3324,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3302,6 +3342,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 0.36930528
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3368,6 +3409,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3379,6 +3421,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1.6012992
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3445,6 +3488,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3457,6 +3501,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1.6012992
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3523,6 +3568,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3542,6 +3588,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1.6012992
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3596,9 +3643,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!114 &6878349190550124564
 MonoBehaviour:
@@ -3659,9 +3706,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300012, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &894765999702641064
 MonoBehaviour:
@@ -3821,7 +3868,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300116, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3835,7 +3882,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300118, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3849,7 +3896,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300120, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3863,7 +3910,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300122, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3877,7 +3924,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300124, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3891,7 +3938,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300126, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3976,7 +4023,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300070, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
@@ -3990,9 +4037,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300092, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7376274073779155457
 MeshCollider:
@@ -4004,9 +4051,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300102, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &5322110009529015124
 MeshCollider:
@@ -4018,9 +4065,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300104, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7806824269467563847
 MeshCollider:
@@ -4032,9 +4079,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300106, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8517340110121415432
 MeshCollider:
@@ -4046,9 +4093,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300108, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &5773698245690383511
 MeshCollider:
@@ -4060,9 +4107,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300110, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7256124136218741252
 MeshCollider:
@@ -4074,9 +4121,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300112, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8094321722547130884
 MeshCollider:
@@ -4088,9 +4135,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300114, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1367150989924315547
 MeshCollider:
@@ -4102,9 +4149,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300072, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3599087674160338280
 MeshCollider:
@@ -4116,9 +4163,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300074, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &660700935571555887
 MeshCollider:
@@ -4130,9 +4177,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300076, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &4775556376151801611
 MeshCollider:
@@ -4144,9 +4191,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300078, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &4425642988073362240
 MeshCollider:
@@ -4158,9 +4205,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300080, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &5298290790109127569
 MeshCollider:
@@ -4172,9 +4219,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300082, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6346314169124066009
 MeshCollider:
@@ -4186,9 +4233,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300084, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8386374871681202951
 MeshCollider:
@@ -4200,9 +4247,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300086, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6110458426269908466
 MeshCollider:
@@ -4214,9 +4261,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300088, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2090302098543183022
 MeshCollider:
@@ -4228,9 +4275,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300090, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6375287923486169594
 MeshCollider:
@@ -4242,9 +4289,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300094, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1791899709362210132
 MeshCollider:
@@ -4256,9 +4303,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300096, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7765066066152601728
 MeshCollider:
@@ -4270,9 +4317,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300098, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &8378370178012805689
 MeshCollider:
@@ -4284,9 +4331,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300100, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &7180298826850744640
 GameObject:
@@ -4330,9 +4377,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300014, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &7930656960348946660
 MonoBehaviour:
@@ -4407,6 +4454,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4418,6 +4466,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4507,9 +4556,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300008, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &8792237932493503288
 MonoBehaviour:
@@ -4570,9 +4619,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300016, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &581749117984523380
 MonoBehaviour:
@@ -4654,9 +4703,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300140, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6990952995505505103
 MeshCollider:
@@ -4668,9 +4717,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300142, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1315931192370136144
 MeshCollider:
@@ -4682,9 +4731,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300144, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1587956012399308400
 MeshCollider:
@@ -4696,9 +4745,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300146, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &959237820457014396
 MeshCollider:
@@ -4710,9 +4759,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300148, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &7729455201337281497
 GameObject:
@@ -4775,9 +4824,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300134, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1253061842058114195
 MeshCollider:
@@ -4789,9 +4838,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300136, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6141475618407856867
 MeshCollider:
@@ -4803,9 +4852,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300138, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &8205077246347016682
 GameObject:
@@ -4868,9 +4917,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300166, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &6927257381617033180
 MeshCollider:
@@ -4882,9 +4931,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300168, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2252003650408611938
 MeshCollider:
@@ -4896,9 +4945,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300170, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &8221208147222745231
 GameObject:
@@ -4956,6 +5005,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4967,6 +5017,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5056,9 +5107,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300006, guid: eda30e9d4eb883c449e8755d04f1a2ff, type: 3}
 --- !u!114 &4836261371295215946
 MonoBehaviour:
@@ -5133,6 +5184,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5144,6 +5196,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5254,9 +5307,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300150, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &3921837275438522468
 MeshCollider:
@@ -5268,9 +5321,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300152, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &2430342302879675183
 MeshCollider:
@@ -5282,9 +5335,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300154, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &7084643911853476656
 MeshCollider:
@@ -5296,9 +5349,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300156, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!64 &1167581862032802179
 MeshCollider:
@@ -5310,9 +5363,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300158, guid: 86bfe7f3f19120343b4df5ed52752cbc, type: 3}
 --- !u!1 &9123445489472617060
 GameObject:
@@ -5368,6 +5421,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5379,6 +5433,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

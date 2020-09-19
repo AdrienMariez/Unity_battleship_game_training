@@ -4,19 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShipController : UnitMasterController {
+
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
-    private bool Active = false;
-    private bool Dead = false;
-    public WorldUnitsManager.ShipSubCategories m_ShipCategory;
-    private WorldUnitsManager.Teams Team;
 
-    private GameManager GameManager;
-    private PlayerManager PlayerManager;
+    public WorldUnitsManager.ShipSubCategories m_ShipCategory;
+
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
     private ShipHealth Health;
-    private TurretManager Turrets;
     private ShipDamageControl DamageControl;
     private ShipAI ShipAI;
     private ShipUI UI;
@@ -81,14 +77,14 @@ public class ShipController : UnitMasterController {
         yield return new WaitForSeconds(0.3f);
         ResumeStart();
     }
-    private void ResumeStart() {
-        if (GameManager != null) {
-            GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
-        } else if (GameObject.Find("GameManager") != null) {
-            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
-        }
-    }
+    // private void ResumeStart() {
+    //     if (GameManager != null) {
+    //         GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
+    //     } else if (GameObject.Find("GameManager") != null) {
+    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    //         GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
+    //     }
+    // }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
@@ -328,14 +324,14 @@ public class ShipController : UnitMasterController {
             Turrets.SetPause();
     }
     public override void SetTag(WorldUnitsManager.Teams team){
+        base.SetTag(team);
         Team = team;
-        gameObject.tag = team.ToString("g");
         UI.SetUnitTeam(team);
         ShipAI.SetUnitTeam(team.ToString("g"));
 
     }
     public override void SetName(string name){
-        gameObject.name = name;
+        base.SetName(name);
         UI.SetName(name);
         if (GetComponent<ShipDamageControl>()) {
             DamageControl.SetName(name);
@@ -472,12 +468,4 @@ public class ShipController : UnitMasterController {
         }
         base.DestroyUnit();
     }
-
-    public override void SetPlayerManager(PlayerManager playerManager){
-        PlayerManager = playerManager;
-        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
-        if (GetComponent<TurretManager>())
-            Turrets.SetPlayerManager(PlayerManager);
-    }
-    public override void SetGameManager(GameManager gameManager){ GameManager = gameManager; }
 }

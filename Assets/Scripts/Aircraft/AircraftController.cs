@@ -278,15 +278,10 @@ using UnityEngine;
         public override void SetMap(bool map) {
         }
         public override void SetTag(WorldUnitsManager.Teams team){
+            base.SetTag(team);
         }
-        public override void SetName(string name){
-        }
-        public override void SetPlayerManager(PlayerManager playerManager){
-            // PlayerManager = playerManager;
-            // if (GetComponent<TurretManager>())
-            //     Turrets.SetPlayerManager(PlayerManager);
-        }
-        public override void SetGameManager(GameManager gameManager){ 
+        public override void SetName(string name){ 
+            base.SetName(name);
         }
         public override float GetStartingHealth() { return(GetComponent<AircraftHealth>().GetStartingHealth()); }
         public override float GetCurrentHealth() { return(GetComponent<AircraftHealth>().GetCurrentHealth()); }

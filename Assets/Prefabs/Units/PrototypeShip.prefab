@@ -56,6 +56,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -67,6 +68,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -156,9 +158,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 94c4f6457a46c7e4989bdca599a8a335, type: 3}
 --- !u!114 &3992816113410691544
 MonoBehaviour:
@@ -294,6 +296,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -305,6 +308,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -483,6 +487,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -494,6 +499,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -681,6 +687,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9029c3b320aaf764690630082a4b8272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_UnitName: 
+  m_UnitCategory: 0
+  m_UnitSubCategory: 0
+  m_Team: 0
+  m_Nation: 0
+  m_UnitCost: 0
+  m_UnitPointValue: 0
+  m_UnitMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+    type: 3}
   m_ShipComponents:
   - {fileID: 610677313978783278}
   - {fileID: 993795375933283818}
@@ -690,6 +705,7 @@ MonoBehaviour:
   - {fileID: 8355142522631704766}
   - {fileID: 7249044125137320703}
   - {fileID: 5636582554979631985}
+  m_ShipCategory: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,18 +799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a061fd6183f97ea4c817b1b4402515a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UnitName: {fileID: 4494080055764097807, guid: 0feffdfcb2b04ff47819ecd277edb1c2,
-    type: 3}
-  m_UnitDistance: {fileID: 3835573356130547971, guid: f060a9708bc3842409a6114e3be521a2,
-    type: 3}
-  m_UnitHealth: {fileID: 6431504518210083437, guid: c36c139c6d6ee224da0ec469ca3b5a80,
-    type: 3}
-  m_MapUnitName: {fileID: 465840837921445169, guid: 880e0b12bf2718d47a86cd2c6c99913d,
-    type: 3}
-  m_MapUnitDistance: {fileID: 7694528954705614530, guid: 1debc675aded9654aacad3456c573465,
-    type: 3}
-  m_MapUnitHealth: {fileID: 6431504518210083437, guid: 996b509c26c286a4caa3a6de10be81ff,
-    type: 3}
 --- !u!114 &2712527079116648786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e2d05e7c905e044bf8c77187cefd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AIState: 0
 --- !u!114 &8857893665739000309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,6 +1020,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1026,6 +1032,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1107,6 +1114,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1118,6 +1126,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1358,6 +1367,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1369,6 +1379,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1636,6 +1647,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1647,6 +1659,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1750,6 +1763,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1761,6 +1775,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1926,6 +1941,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1937,6 +1953,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

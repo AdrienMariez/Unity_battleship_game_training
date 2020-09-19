@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     public GameObject m_Player;
     [Header("For single Player : ")]
     [Tooltip("Check this box if it is a single player game mode.")]
-    public bool m_SinglePlayerMode;
+    public bool m_SinglePlayerMode; // Unused yet
     public WorldUnitsManager.Teams m_SinglePlayerTeam;
 
     [Header("Gameplay options")]
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
     private GameObject PlayerMapCanvas;
 
     private void Start() {
+        // Debug.Log (GlobalStart.GlobalUnitList[0]);
         WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
         PlayerManager = m_Player.GetComponent<PlayerManager>();
         PlayerManager.SetGameManager(this);
@@ -55,6 +56,9 @@ public class GameManager : MonoBehaviour {
         CurrentGameMode.Begin();
     }
 
+    public void UnitSpawned() {
+    }
+
     public void ShipSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.ShipSubCategories unitType) {
         WorldUnitsManager.CreateShipElement(unitGameObject, unitTeam, unitType);
         UnitSpawned(unitGameObject, unitTeam);
@@ -63,7 +67,19 @@ public class GameManager : MonoBehaviour {
         WorldUnitsManager.CreateBuildingElement(unitGameObject, unitTeam, unitType);
         UnitSpawned(unitGameObject, unitTeam);
     }
-    private void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam) {
+
+    public void UnitSpawnedConvertFromSimpleTeam(GameObject unitGameObject, WorldUnitsManager.SimpleTeams unitTeam) {
+        // In case a unit is spawned from a SimpleTeams line.
+        if (unitTeam == WorldUnitsManager.SimpleTeams.Allies) {
+            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.Allies);
+        } else if(unitTeam == WorldUnitsManager.SimpleTeams.Axis) {
+            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.Axis);
+        } else {
+            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.NeutralAI);
+        }
+    }
+    public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam) {
+        WorldUnitsManager.CreateNewUnit(unitGameObject, unitTeam);
         /*
             if (m_SinglePlayerTeam == WorldUnitsManager.Teams.Allies) {
                 if (unitTeam == WorldUnitsManager.Teams.Allies) {
