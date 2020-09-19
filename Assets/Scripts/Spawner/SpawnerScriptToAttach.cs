@@ -4,19 +4,19 @@ using System.Collections;
 public class SpawnerScriptToAttach : MonoBehaviour {
 
     [Tooltip("Ships categories spawnable")]
-    public SpawnerShipCategory[] m_ShipsCategories;
+    public SpawnerUnitCategory[] m_ShipsCategories;
     public Transform m_ShipSpawnPosition;
 
     [Tooltip("Submarines categories spawnable")]
-    public SpawnerSubmarineCategory[] m_SubmarinesCategories;
+    public SpawnerUnitCategory[] m_SubmarinesCategories;
     public Transform m_SubmarineSpawnPosition;
 
     [Tooltip("Planes categories spawnable")]
-    public SpawnerPlaneCategory[] m_PlanesCategories;
+    public SpawnerUnitCategory[] m_PlanesCategories;
     public Transform m_PlanesSpawnPosition;
 
     [Tooltip("Ground units categories spawnable")]
-    public SpawnerGroundCategory[] m_GroundCategories;
+    public SpawnerUnitCategory[] m_GroundCategories;
     public Transform m_GroundSpawnPosition;
 
     private bool Active;
@@ -61,7 +61,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         if (trySpawn) {
             GameObject spawnedUnitInstance =
-                Instantiate (WorldUnitsManager.m_WorldShipsUnits[1].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
+                Instantiate (WorldUnitsManager.m_WorldSingleUnit[1].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
         } else {
             Debug.Log("No spawn location available !");
         }
@@ -72,7 +72,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // } else {
         //     Debug.Log("Spawn !");
         //     GameObject spawnedUnitInstance =
-        //         Instantiate (WorldUnitsManager.m_WorldShipsUnits[0].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
+        //         Instantiate (WorldUnitsManager.m_WorldSingleUnit[0].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
         // }
     }
 

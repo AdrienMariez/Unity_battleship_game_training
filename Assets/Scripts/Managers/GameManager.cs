@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     public GameObject m_Player;
     [Header("For single Player : ")]
     [Tooltip("Check this box if it is a single player game mode.")]
-    public bool m_SinglePlayerMode; // Unused yet
+    public bool m_SinglePlayerMode; // Unused
     public WorldUnitsManager.Teams m_SinglePlayerTeam;
 
     [Header("Gameplay options")]
@@ -54,18 +54,6 @@ public class GameManager : MonoBehaviour {
         }
         CurrentGameMode.SetGameManager(this);
         CurrentGameMode.Begin();
-    }
-
-    public void UnitSpawned() {
-    }
-
-    public void ShipSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.ShipSubCategories unitType) {
-        WorldUnitsManager.CreateShipElement(unitGameObject, unitTeam, unitType);
-        UnitSpawned(unitGameObject, unitTeam);
-    }
-    public void BuildingSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, WorldUnitsManager.BuildingSubCategories unitType) {
-        WorldUnitsManager.CreateBuildingElement(unitGameObject, unitTeam, unitType);
-        UnitSpawned(unitGameObject, unitTeam);
     }
 
     public void UnitSpawnedConvertFromSimpleTeam(GameObject unitGameObject, WorldUnitsManager.SimpleTeams unitTeam) {

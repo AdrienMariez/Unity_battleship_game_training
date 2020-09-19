@@ -77,7 +77,6 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void SetNewEnemyList(List <GameObject> unitsObjectList) {}
     public void SetPlayerManager(PlayerManager playerManager) {
         PlayerManager = playerManager;
-        // PlayerManager.UnitSpawned(this.gameObject, Team, m_UnitType);
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
     }

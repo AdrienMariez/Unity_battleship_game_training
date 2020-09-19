@@ -4,11 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ShipController : UnitMasterController {
+    [Header("Ship units elements : ")]
 
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
-
-    public WorldUnitsManager.ShipSubCategories m_ShipCategory;
 
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
@@ -77,14 +76,6 @@ public class ShipController : UnitMasterController {
         yield return new WaitForSeconds(0.3f);
         ResumeStart();
     }
-    // private void ResumeStart() {
-    //     if (GameManager != null) {
-    //         GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
-    //     } else if (GameObject.Find("GameManager") != null) {
-    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    //         GameManager.ShipSpawned(this.gameObject, Team, m_ShipCategory);
-    //     }
-    // }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;

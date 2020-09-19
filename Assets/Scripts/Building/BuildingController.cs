@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BuildingController : UnitMasterController {
+    [Header("Building units elements : ")]
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_BuildingComponents;
-    public WorldUnitsManager.BuildingSubCategories m_BuildingCategory;
 
     private BuildingHealth Health;
     private BuildingAI BuildingAI;
@@ -42,14 +42,6 @@ public class BuildingController : UnitMasterController {
         yield return new WaitForSeconds(0.3f);
         ResumeStart();
     }
-    // private void ResumeStart() {
-    //     if (GameManager != null) {
-    //         GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
-    //     } else if (GameObject.Find("GameManager") != null) {
-    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    //         GameManager.BuildingSpawned(this.gameObject, Team, m_BuildingCategory);
-    //     }
-    // }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
