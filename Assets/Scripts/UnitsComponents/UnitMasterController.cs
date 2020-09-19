@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UnitMasterController : MonoBehaviour {
     [Header("Global units elements : ")]
+    // Same as WorldSingleUnit !
     public string m_UnitName;
     public WorldUnitsManager.UnitCategories m_UnitCategory;
     public WorldUnitsManager.UnitSubCategories m_UnitSubCategory;
@@ -48,7 +49,7 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void KillAllUIInstances() { }
     public virtual float GetStartingHealth() { return(0f); }
     public virtual float GetCurrentHealth() { return(0f); }
-    public virtual bool GetDeath() { return(false); }
+    public virtual bool GetDeath() { return(Dead); }
     public virtual int GetCurrentSpeedStep() { return(0); }
 
     // Damage control

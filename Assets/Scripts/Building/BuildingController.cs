@@ -142,7 +142,6 @@ public class BuildingController : UnitMasterController {
     public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
-    public override bool GetDeath(){ return Dead; }
 
     // Damage control
     public override void ApplyDamage(float damage) {

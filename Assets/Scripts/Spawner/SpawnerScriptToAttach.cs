@@ -1,23 +1,22 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnerScriptToAttach : MonoBehaviour {
-
-    [Tooltip("Ships categories spawnable")]
-    public SpawnerUnitCategory[] m_ShipsCategories;
+    [Tooltip("Spawnableunits, by category")]
+    public SpawnerUnitCategory[] m_SpawnableCategories;
+    [Tooltip("Ships units spawnpoint")]
     public Transform m_ShipSpawnPosition;
 
-    [Tooltip("Submarines categories spawnable")]
-    public SpawnerUnitCategory[] m_SubmarinesCategories;
+    [Tooltip("Submarines units spawnpoint")]
     public Transform m_SubmarineSpawnPosition;
 
-    [Tooltip("Planes categories spawnable")]
-    public SpawnerUnitCategory[] m_PlanesCategories;
+    [Tooltip("Planes units spawnpoint")]
     public Transform m_PlanesSpawnPosition;
 
-    [Tooltip("Ground units categories spawnable")]
-    public SpawnerUnitCategory[] m_GroundCategories;
+    [Tooltip("Ground units spawnpoint")]
     public Transform m_GroundSpawnPosition;
+    public List<WorldSingleUnit> SpawnableUnitsList;
 
     private bool Active;
     private bool Dead;
@@ -30,20 +29,44 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
         SpawnerUI = worldUIVariables.m_SpawnerUI;
         WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
+        CreateSpawnList();
+    }
+    private void CreateSpawnList () {
+        foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
+            for (int i=0; i < subCategory.Count; i++) {
+                // Debug.Log(subCategory[0].GetUnitName());
+
+                if (subCategory[0] != null) {
+                    List<WorldSingleUnit> fff;
+                    foreach (var categorySelected in m_SpawnableCategories) {
+                        // Check the first element of each category, if it is good !
+                        if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory) {
+                            SpawnableUnitsList.Add(subCategory[i]);
+                        }
+                    }
+                } else {
+                    // if nothing is in the list (as intended, stop checking)
+                    break;
+                }
+            }
+        }
     }
 
     protected void Update() {
         if (Input.GetButtonDown ("SpawnMenu") && Active && !Dead) {
+            OpenSpawnMenu();
             SpawnUnit();
             // Debug.Log("SpawnMenu pushed, show spawn list !");
         }
     }
 
-    protected void CreateSpawnList () {
-        // for (int i = 0; i < TurretStatus.Count; i++) {
-        //     GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
-        // }
+    private void OpenSpawnMenu(){
+        foreach (WorldSingleUnit unit in SpawnableUnitsList) {
+            Debug.Log (unit.GetUnitSubCategory());
+            Debug.Log (unit.GetUnitName());
+        }
     }
+
     protected void SpawnUnit () {
         Vector3 spawnPosition = m_ShipSpawnPosition.position;
 

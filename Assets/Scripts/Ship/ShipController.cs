@@ -9,6 +9,7 @@ public class ShipController : UnitMasterController {
     [Tooltip("Components (game object with collider + Hitbox Component script)")]
     public GameObject[] m_ShipComponents;
 
+
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
     private ShipHealth Health;
@@ -352,7 +353,6 @@ public class ShipController : UnitMasterController {
     public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
-    public override bool GetDeath(){ return Dead; }
     public override int GetCurrentSpeedStep() { return(Movement.GetCurrentSpeedStep()); }
 
     // Damage control

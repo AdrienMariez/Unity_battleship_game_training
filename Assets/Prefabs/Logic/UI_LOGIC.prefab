@@ -1786,34 +1786,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalSharedVariables
       objectReference: {fileID: 0}
-    - target: {fileID: 7135658397945489505, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-        type: 3}
-      propertyPath: m_WorldSingleUnit.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135658397945489505, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-        type: 3}
-      propertyPath: m_MapLandBase
-      value: 
-      objectReference: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-        type: 3}
-    - target: {fileID: 7135658397945489505, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-        type: 3}
-      propertyPath: m_MapShipyard
-      value: 
-      objectReference: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-        type: 3}
-    - target: {fileID: 7135658397945489505, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-        type: 3}
-      propertyPath: m_WorldSingleUnit.Array.data[0].m_UnitCategory
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8091174073427879976, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-        type: 3}
-      propertyPath: m_ShellCamera
-      value: 
-      objectReference: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 7282808943058949632, guid: 8300ed9d77cdb0b45aa01bfe396f61ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8300ed9d77cdb0b45aa01bfe396f61ca, type: 3}

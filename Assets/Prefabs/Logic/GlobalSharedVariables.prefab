@@ -45,37 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WorldShipsUnits:
-  - m_UnitName: Fuso class battleship
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
-      type: 3}
-    m_UnitCategory: 0
-    m_Team: 1
-    m_Nation: 1
-    m_UnitCost: 0
-  - m_UnitName: Takao class cruiser
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-      type: 3}
-    m_UnitCategory: 2
-    m_Team: 1
-    m_Nation: 1
-    m_UnitCost: 0
-  - m_UnitName: Test class carrier
-    m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
-      type: 3}
-    m_UnitCategory: 1
-    m_Team: 1
-    m_Nation: 1
-    m_UnitCost: 0
-  m_WorldSubmarinesUnits: []
-  m_WorldPlanesUnits: []
-  m_WorldGroundUnits:
-  - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
-      type: 3}
-    m_UnitCategory: 0
-    m_Team: 0
-    m_Nation: 0
-    m_UnitCost: 0
   m_WorldSingleUnit:
   - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
       type: 3}
@@ -85,20 +54,30 @@ MonoBehaviour:
       type: 3}
   - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
       type: 3}
-  - m_UnitPrefab: {fileID: 7484466486366397282, guid: 8a78096122b8374409e9b56d646666f7,
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
       type: 3}
-  ShipBattleship: {fileID: 0}
-  ShipCarrier: {fileID: 0}
-  ShipCruiser: {fileID: 0}
-  ShipDestroyer: {fileID: 0}
-  SubmarineSubmarine: {fileID: 0}
-  PlaneFighter: {fileID: 0}
-  PlaneLightBomber: {fileID: 0}
-  PlaneBomber: {fileID: 0}
-  GroundTank: {fileID: 0}
-  BuildingLandBase: {fileID: 0}
-  BuildingShipyard: {fileID: 0}
-  BuildingAirfield: {fileID: 0}
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
+      type: 3}
+  - m_UnitPrefab: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
+      type: 3}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

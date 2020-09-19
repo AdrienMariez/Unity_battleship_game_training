@@ -1,54 +1,11 @@
+using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WorldUnitsManager : MonoBehaviour {
 
-    // public WorldCategoriesUnitsManager[] m_UnitsCategories;
-    // public WorldSingleUnitManager[] m_WorldUnits;
-
-    // TODO See if useless :
-    /*public WorldSingleShipUnit[] m_WorldShipsUnits;
-    public WorldSingleSubmarineUnit[] m_WorldSubmarinesUnits;
-    public WorldSinglePlaneUnit[] m_WorldPlanesUnits;
-    public WorldSingleGroundUnit[] m_WorldGroundUnits;
-        public enum ShipSubCategories {
-        battleship,
-        carrier,
-        cruiser,
-        destroyer
-    }
-    [Header("Ships map models")]
-        public GameObject ShipBattleship;
-        public GameObject ShipCarrier, ShipCruiser, ShipDestroyer;
-    public enum SubmarineSubCategories {
-        submarine
-    }
-    [Header("Submarines map models")]
-        public GameObject SubmarineSubmarine;
-    public enum PlaneSubCategories {
-        fighter,
-        lightBomber,
-        Bomber
-    }
-    [Header("Planes map models")]
-        public GameObject PlaneFighter;
-        public GameObject PlaneLightBomber, PlaneBomber;
-    public enum GroundSubCategories {
-        GroundTank
-    }
-    [Header("Ground map models")]
-        public GameObject GroundTank;
-    public enum BuildingSubCategories {
-        landBase,
-        shipyard,
-        airfield
-    }
-    [Header("Buildings map models")]
-        public GameObject BuildingLandBase;
-        public GameObject BuildingShipyard, BuildingAirfield;*/
-    // END TODO
-
-
+    [Header("Add all units of the game to this list !")]
     public WorldSingleUnit[] m_WorldSingleUnit;
 
     public enum SimpleTeams {
@@ -91,12 +48,59 @@ public class WorldUnitsManager : MonoBehaviour {
     private GameObject TempModel;
     private GameObject TempMapModel;
 
+    /*[Serializable] public class VariableHolder
+    {
+        public bool var1;
+        public float var2 = 150f;
+        public float var3 = 25f;
+    }
+ 
+    public VariableHolder instance = new VariableHolder();*/
+
     private static bool FirstLoad = true;
-    void Start() {
+    private void Start() {
         if (FirstLoad){
             FirstLoad = false;
-            Debug.Log ("WorldSetUnits");
+            WorldSetUnits();
         }
+    }
+    
+    // List<StarSystem> starSystems = new List<StarSystem>();
+    // List<Planet> planets = new List<Planet>();
+    // List<Sat> satellites = new List<Sat>();
+    static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
+    private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
+
+    public List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
+    
+    private void WorldSetUnits() {
+        foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
+            SubCategories.Add(category);
+        }
+
+        foreach (UnitSubCategories category in SubCategories) {
+            List<WorldSingleUnit> categoryObjects = new List<WorldSingleUnit>();
+            foreach (WorldSingleUnit unit in m_WorldSingleUnit) {
+                if (unit.m_UnitPrefab.GetComponent<UnitMasterController>()) {
+                    if (unit.m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitSubCategory == category) {
+                        unit.SetUnit();
+                        categoryObjects.Add(unit);
+                        // Debug.Log (category +" - "+ unit.m_UnitPrefab);
+                    }
+                } else {
+                    Debug.Log (" A unit without a UnitMasterController was found ! It will not be used in the listings ! Error situated in : "+ unit.m_UnitPrefab);
+                }
+            }
+            UnitsBySubcategory.Add(categoryObjects);
+        }
+
+        // This is to view each element and its category.
+        /*foreach (List<WorldSingleUnit> category in UnitsBySubcategory) {
+            foreach (WorldSingleUnit unit in category) {
+                Debug.Log (unit.GetUnitSubCategory());
+                Debug.Log (unit.GetUnitName());
+            }
+        }*/
     }
 
     /*public static void SetFirstLoad(bool firstLoad) {
