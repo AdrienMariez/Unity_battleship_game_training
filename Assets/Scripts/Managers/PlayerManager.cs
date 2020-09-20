@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     private bool Pause = false;
     private bool MapActive = false;
     private bool DamageControl = false;
+    private bool SpawnerMenu = false;
     private bool FreeCamera = false;
     public FreeLookCam m_FreeLookCamera;
     public Camera m_MapCamera;
@@ -264,16 +265,6 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Current target for player manager : "+ ActiveTarget);
     }
 
-    private void CheckCameraRotation(){
-        if (MapActive || DamageControl || Pause) {
-            m_FreeLookCamera.SetRotation(false);
-            m_FreeLookCamera.SetMouse(true);
-        } else {
-            m_FreeLookCamera.SetRotation(true);
-            m_FreeLookCamera.SetMouse(false);
-        }
-    }
-
     // public void SetPlayer(WorldUnitsManager.Teams PlayerTeam){}
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
 
@@ -302,9 +293,31 @@ public class PlayerManager : MonoBehaviour
     }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
-        UIManager.SetOverlayUI(DamageControl);
+        SetOverlayUI();
         CheckCameraRotation();
     }
+    public void SetSpawnerMenu(bool spawnerMenu){
+        SpawnerMenu = spawnerMenu;
+        SetOverlayUI();
+        CheckCameraRotation();
+    }
+    private void SetOverlayUI(){
+        if (MapActive || DamageControl || SpawnerMenu) {
+            UIManager.SetOverlayUI(true);
+        } else {
+            UIManager.SetOverlayUI(false);
+        }
+    }
+    private void CheckCameraRotation(){
+        if (MapActive || DamageControl || Pause || SpawnerMenu) {
+            m_FreeLookCamera.SetRotation(false);
+            m_FreeLookCamera.SetMouse(true);
+        } else {
+            m_FreeLookCamera.SetRotation(true);
+            m_FreeLookCamera.SetMouse(false);
+        }
+    }
+
     public void SetCurrentUnitHealth(float health){ UIManager.SetCurrentUnitHealth(health); }
     public void SetCurrentUnitDead(bool isUnitDead){ UIManager.SetCurrentUnitDead(isUnitDead); }
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }

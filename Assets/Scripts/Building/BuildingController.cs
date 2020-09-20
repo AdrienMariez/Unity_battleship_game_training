@@ -69,23 +69,6 @@ public class BuildingController : UnitMasterController {
     //     ActionPaused2= true;
     // }
 
-    public void CallDeath() {
-        // Debug.Log("DEATH"+Dead);
-        Dead = true;
-
-        if (GetComponent<TurretManager>())
-            Turrets.SetDeath(true);
-        
-        UI.SetDead();
-        if (GameManager)
-            GameManager.UnitDead(this.gameObject, Team, Active);
-
-        if (GetComponent<SpawnerScriptToAttach>())
-            GetComponent<SpawnerScriptToAttach>().SetDeath(true);
-
-        tag = "Untagged";
-    }
-
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     
     public void SetCurrentTarget(GameObject targetUnit) {
@@ -97,26 +80,15 @@ public class BuildingController : UnitMasterController {
 
     // ALL OVERRIDES METHODS
     public override void SetActive(bool activate) {
-        Active = activate;
-        if (GetComponent<TurretManager>())
-                Turrets.SetActive(Active);
-        // if (Active)
-        //     Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
+        base.SetActive(activate);
         BuildingAI.SetAIActive(!Active);
-        if (GetComponent<SpawnerScriptToAttach>())
-            GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
     public override void SetMap(bool map) {
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
     }
-    public override void SetPause(bool pause){
-        if (GetComponent<TurretManager>())
-            Turrets.SetPause();
-    }
     public override void SetTag(WorldUnitsManager.Teams team){
         base.SetTag(team);
-        Team = team;
         UI.SetUnitTeam(team);
         BuildingAI.SetUnitTeam(team.ToString("g"));
 
@@ -158,11 +130,14 @@ public class BuildingController : UnitMasterController {
             Health.StartFire();
         }
     }
-
     public override void ModuleRepaired(ElementType elementType) {
         if (elementType == ElementType.fuel) {
             Health.EndFire();
         }
+    }
+    public override void CallDeath() {
+        base.CallDeath();    
+        UI.SetDead();
     }
     public override void DestroyUnit(){
         // Debug.Log ("Destroy unit : "+gameObject.name);

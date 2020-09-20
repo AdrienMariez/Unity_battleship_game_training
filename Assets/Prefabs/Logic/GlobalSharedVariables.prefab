@@ -117,11 +117,14 @@ MonoBehaviour:
     type: 3}
   m_PauseMenu: {fileID: 2857608438053203770, guid: c6848c63a56ee124b943be9809d20048,
     type: 3}
-  TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
+  m_TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
   IconsSpacing: 22
-  m_SpawnerUI: {fileID: 6431504518210083437, guid: 98540111e42054e4a90966d5757c4900,
+  m_SpawnerUI: {fileID: 3767798349071585903, guid: 98540111e42054e4a90966d5757c4900,
     type: 3}
+  m_SpawnerUnitSelect: {fileID: 6431504518210083437, guid: 59e992760bddd3e42a90189199ebdf5b,
+    type: 3}
+  SpawnerSpacing: 33
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
   m_TimeToDestroyCamera: 3

@@ -270,12 +270,6 @@ using UnityEngine;
         }
 
         // All the airplane controller should be redone. Nothing works in the workflow atm.
-        public override void SetActive(bool activate) {
-
-        }
-        public override void SetPause(bool pause){
-
-        }
         public override void SetMap(bool map) {
         }
         public override void SetTag(WorldUnitsManager.Teams team){

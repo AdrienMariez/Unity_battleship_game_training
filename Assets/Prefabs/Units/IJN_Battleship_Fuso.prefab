@@ -1385,8 +1385,8 @@ MonoBehaviour:
   m_UnitName: Fuso class
   m_UnitCategory: 0
   m_UnitSubCategory: 0
-  m_Team: 1
-  m_Nation: 1
+  m_Team: 0
+  m_Nation: 0
   m_UnitCost: 0
   m_UnitPointValue: 0
   m_UnitMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
@@ -1417,7 +1417,6 @@ MonoBehaviour:
   - {fileID: 1195826780730953236}
   - {fileID: 2646211758298468833}
   - {fileID: 2330803967291815325}
-  m_ShipCategory: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0

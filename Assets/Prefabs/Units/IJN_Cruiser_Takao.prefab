@@ -1796,7 +1796,7 @@ MonoBehaviour:
   m_UnitName: takao class
   m_UnitCategory: 0
   m_UnitSubCategory: 2
-  m_Team: 1
+  m_Team: 0
   m_Nation: 1
   m_UnitCost: 0
   m_UnitPointValue: 0
@@ -1830,7 +1830,6 @@ MonoBehaviour:
   - {fileID: 6421004131832386266}
   - {fileID: 3147915150935776012}
   - {fileID: 7986316009790141948}
-  m_ShipCategory: 2
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,10 +11,12 @@ public class WorldUIVariables : MonoBehaviour {
         public GameObject m_TurretUI;
         public GameObject m_PauseMenu;
     [Header("Turrets status icons")]
-        public GameObject TurretStatusSprites;
+        public GameObject m_TurretStatusSprites;
         public float IconsSpacing = 22;
     [Header("Spawner UI")]
         public GameObject m_SpawnerUI;
+        public GameObject m_SpawnerUnitSelect;
+        public float SpawnerSpacing = 22;
     [Header("Shell Camera")]
         public GameObject m_ShellCamera;
         public float m_TimeToDestroyCamera = 3;

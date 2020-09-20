@@ -681,11 +681,14 @@ MonoBehaviour:
   m_SpawnableCategories:
   - m_UnitSubCategory: 0
   - m_UnitSubCategory: 1
+  - m_UnitSubCategory: 2
+  - m_UnitSubCategory: 10
   m_ShipSpawnPosition: {fileID: 6119007043914030161}
   m_SubmarineSpawnPosition: {fileID: 6119007043914030161}
   m_PlanesSpawnPosition: {fileID: 6119007043914030161}
   m_GroundSpawnPosition: {fileID: 6119007043914030161}
   SpawnableUnitsList: []
+  TeamedSpawnableUnitsList: []
 --- !u!1 &2999055004668866483
 GameObject:
   m_ObjectHideFlags: 0

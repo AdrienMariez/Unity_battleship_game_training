@@ -1,6 +1,7 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnerScriptToAttach : MonoBehaviour {
     [Tooltip("Spawnableunits, by category")]
@@ -16,19 +17,34 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     [Tooltip("Ground units spawnpoint")]
     public Transform m_GroundSpawnPosition;
-    public List<WorldSingleUnit> SpawnableUnitsList;
+    [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
+    [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList;
+
+    UnitMasterController UnitController;
     private bool Active;
     private bool Dead;
+    private bool SpawnMenuOpen = false;
 
+    // Globals
     private WorldUIVariables WorldUIVariables;
     private WorldUnitsManager WorldUnitsManager;
+    protected PlayerManager PlayerManager;
+
+
+    // UI
     private GameObject SpawnerUI;
+    private GameObject SpawnMenuInstance;
+    private GameObject SpawnListContainerInstance;
+    private float SpawnerSpacing;
+
 
     void Start() {
-        WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
-        SpawnerUI = worldUIVariables.m_SpawnerUI;
+        WorldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
         WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
+        SpawnerUI = WorldUIVariables.m_SpawnerUI;
+        SpawnerSpacing = WorldUIVariables.SpawnerSpacing;
+        // UnitController = GetComponent<UnitMasterController>();
         CreateSpawnList();
     }
     private void CreateSpawnList () {
@@ -53,21 +69,92 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
 
     protected void Update() {
-        if (Input.GetButtonDown ("SpawnMenu") && Active && !Dead) {
-            OpenSpawnMenu();
-            SpawnUnit();
+        if (Input.GetButtonDown ("SpawnMenu") && SpawnableUnitsList.Count > 0 && Active && !Dead) {
+            SwitchSpawnMenu();
+            if (SpawnMenuOpen) {
+                if(TryOpenSpawnMenu()) { OpenSpawnMenu(); } // Only case that opens the menu
+                else { SwitchSpawnMenu(); }
+            } else { CloseSpawnMenu(); }
+            // SpawnUnit();
             // Debug.Log("SpawnMenu pushed, show spawn list !");
         }
     }
 
+    private bool TryOpenSpawnMenu(){
+        // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
+        bool success = false;
+        foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
+            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
+                success = true;
+                break;
+            }
+        }
+        if (success) { return true; }
+        else { return false; }
+        
+    }
     private void OpenSpawnMenu(){
-        foreach (WorldSingleUnit unit in SpawnableUnitsList) {
-            Debug.Log (unit.GetUnitSubCategory());
-            Debug.Log (unit.GetUnitName());
+        // Debug.Log ("Spawn menu open and ready !");
+        // Debug.Log (UnitController.m_UnitName);
+
+        SpawnMenuInstance = Instantiate(SpawnerUI);
+        SpawnListContainerInstance = SpawnMenuInstance.transform.Find("SpawnListContainer").gameObject;
+        
+        // Clean and populate the list
+        TeamedSpawnableUnitsList = new List<WorldSingleUnit>();
+        foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
+            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
+                // Debug.Log (singleUnit.GetUnitName());
+                TeamedSpawnableUnitsList.Add(singleUnit);
+            }
+        }
+        CreateUnitSpawnerListDisplay();
+    }
+    private void CreateUnitSpawnerListDisplay() {
+        foreach (var singleUnit in TeamedSpawnableUnitsList) {
+            GameObject listElement = Instantiate(WorldUIVariables.m_SpawnerUnitSelect, SpawnListContainerInstance.transform);
+        }
+
+        float position = 0;
+        if (TeamedSpawnableUnitsList.Count % 2 == 0) {
+            position = (TeamedSpawnableUnitsList.Count*SpawnerSpacing)/2 - (SpawnerSpacing/2);
+        } else {
+            position = (TeamedSpawnableUnitsList.Count*SpawnerSpacing)/2;
+        }
+
+        for (int i = 0; i < TeamedSpawnableUnitsList.Count; i++) {
+            if (!SpawnListContainerInstance) {
+                continue;
+            }
+            if (SpawnListContainerInstance.transform.GetChild(i) == null)
+                continue;
+            Vector3 positionning = SpawnListContainerInstance.transform.GetChild(i).transform.position;
+            positionning.y = position;
+            positionning.x = 0;
+            SpawnListContainerInstance.transform.GetChild(i).transform.localPosition = positionning;
+            position -= SpawnerSpacing;
+            CreateSingleUnitSpawnerListDisplay(TeamedSpawnableUnitsList[i], i);
+        }
+    }
+    private void CreateSingleUnitSpawnerListDisplay(WorldSingleUnit unit, int i) {
+        //This will come in use when fancy cards will be made, I'm sure...
+        SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponentInChildren<Text>().text = TeamedSpawnableUnitsList[i].GetUnitName();
+
+        Button spawnerButton = SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponent<Button>();
+		// spawnerButton.onClick.AddListener(SpawnUnit);
+        spawnerButton.onClick.AddListener(() => { SpawnUnit(unit); });
+    }
+    private void CloseSpawnMenu(){
+        // Debug.Log ("Spawn menu closed !");
+        if (SpawnMenuInstance) {
+            foreach (Transform child in SpawnListContainerInstance.transform) {
+                GameObject.Destroy(child.gameObject);
+            }
+            Destroy (SpawnMenuInstance);
         }
     }
 
-    protected void SpawnUnit () {
+    protected void SpawnUnit (WorldSingleUnit unit) {
         Vector3 spawnPosition = m_ShipSpawnPosition.position;
 
         bool trySpawn = false;
@@ -84,7 +171,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         if (trySpawn) {
             GameObject spawnedUnitInstance =
-                Instantiate (WorldUnitsManager.m_WorldSingleUnit[1].m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
+                Instantiate (unit.m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
         } else {
             Debug.Log("No spawn location available !");
         }
@@ -99,10 +186,33 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // }
     }
 
+    private void SwitchSpawnMenu() {
+        SpawnMenuOpen = !SpawnMenuOpen;
+        PlayerManager.SetSpawnerMenu(SpawnMenuOpen);
+    }
+        
     public void SetActive(bool active) {
         Active = active;
+        if (SpawnMenuOpen) {
+            SwitchSpawnMenu();
+            if (!Active) {
+                CloseSpawnMenu();
+            }
+        }
     }
     public void SetDeath(bool dead) {
         Dead = dead;
+        if (SpawnMenuOpen) {
+            SwitchSpawnMenu();
+            if (Dead) {
+                CloseSpawnMenu();
+            }
+        }
+    }
+    public void SetPlayerManager(PlayerManager playerManager) {
+        PlayerManager = playerManager;
+    }
+    public void SetUnitController(UnitMasterController unitController) {
+        UnitController = unitController;
     }
 }

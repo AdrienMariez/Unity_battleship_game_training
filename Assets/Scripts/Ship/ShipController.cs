@@ -40,6 +40,7 @@ public class ShipController : UnitMasterController {
     private GameObject EnemyTargetUnit;
 
     private void Awake() {
+        base.SpawnUnit();
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
@@ -51,7 +52,6 @@ public class ShipController : UnitMasterController {
         UI.SetCurrentHealth(HP);
 
         if (GetComponent<TurretManager>())
-            Turrets = GetComponent<TurretManager>();
             ShipAI.SetTurretManager(Turrets);
 
         if (GetComponent<ShipDamageControl>()) {
@@ -204,43 +204,6 @@ public class ShipController : UnitMasterController {
         }
     }
 
-    public void CallDeath() {
-        // Debug.Log("DEATH"+Dead);
-        Dead = true;
-
-        // Sink the ship
-        if (TargetRotationX > 1 && TargetRotationZ > 5 || TargetRotationX < -1 && TargetRotationZ < -5) {
-            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, TargetRotationZ);
-        } else if (TargetRotationX > 1 || TargetRotationX < -1) {
-            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, 0);
-        } else if (TargetRotationZ > 5 || TargetRotationZ < -5) {
-            Buoyancy.Sink(1f + LeakRatio, 0, TargetRotationZ);
-        } else {
-            Buoyancy.Sink(1f + LeakRatio, 0, 0);
-        }
-        if (GetComponent<TurretManager>())
-            Turrets.SetDeath(true);
-        if (GetComponent<ShipDamageControl>())
-            DamageControl.SetShipDeath(true);
-        Movement.SetDead(true);
-        Buoyancy.SetDead(true);
-        UI.SetDead();
-        if (GameManager)
-            GameManager.UnitDead(this.gameObject, Team, Active);
-        
-        if (GetComponent<SpawnerScriptToAttach>())
-            GetComponent<SpawnerScriptToAttach>().SetDeath(true);
-
-        tag = "Untagged";
-    }
-
-    public void SetDamageControl(bool damageControl) {
-        if (GetComponent<TurretManager>())
-            Turrets.SetDamageControl(damageControl);
-        if (PlayerManager != null)
-            PlayerManager.SetDamageControl(damageControl);
-    }
-
     public void SetDamageControlEngine(int setCrew){
         EngineRepairCrew = setCrew;
         for (int i = 0; i < m_ShipComponents.Length; i++) {
@@ -288,18 +251,12 @@ public class ShipController : UnitMasterController {
         ShipAI.SetNewEnemyList(enemiesUnitsObjectList);
     }
     public override void SetActive(bool activate) {
-        Active = activate;
-        if (GetComponent<TurretManager>())
-                Turrets.SetActive(Active);
+        base.SetActive(activate);
         Movement.SetActive(Active);
-        // if (Active)
-        //     Debug.Log("Unit : "+ gameObject.name  +" - Active = "+ Active);
         ShipAI.SetAIActive(!Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
-        if (GetComponent<SpawnerScriptToAttach>())
-            GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
     public override void SetMap(bool map) {
         if (GetComponent<TurretManager>())
@@ -310,14 +267,12 @@ public class ShipController : UnitMasterController {
         Movement.SetMap(map);
     }
     public override void SetPause(bool pause){
+        base.SetPause(pause);
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetPause();
-        if (GetComponent<TurretManager>())
-            Turrets.SetPause();
     }
     public override void SetTag(WorldUnitsManager.Teams team){
         base.SetTag(team);
-        Team = team;
         UI.SetUnitTeam(team);
         ShipAI.SetUnitTeam(team.ToString("g"));
 
@@ -444,6 +399,26 @@ public class ShipController : UnitMasterController {
     public override void SendHitInfoToDamageControl (bool armorPenetrated) {
         if (GetComponent<ShipDamageControl>())
             DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
+    }
+    public override void CallDeath() {
+        base.CallDeath();
+
+        // Sink the ship
+        if (TargetRotationX > 1 && TargetRotationZ > 5 || TargetRotationX < -1 && TargetRotationZ < -5) {
+            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, TargetRotationZ);
+        } else if (TargetRotationX > 1 || TargetRotationX < -1) {
+            Buoyancy.Sink(1f + LeakRatio, TargetRotationX, 0);
+        } else if (TargetRotationZ > 5 || TargetRotationZ < -5) {
+            Buoyancy.Sink(1f + LeakRatio, 0, TargetRotationZ);
+        } else {
+            Buoyancy.Sink(1f + LeakRatio, 0, 0);
+        }
+
+        if (GetComponent<ShipDamageControl>())
+            DamageControl.SetShipDeath(true);
+        Movement.SetDead(true);
+        Buoyancy.SetDead(true);
+        UI.SetDead();
     }
     public override void DestroyUnit(){
         // This removes the unit from the scene
