@@ -123,6 +123,7 @@ public class UnitMasterController : MonoBehaviour {
     }
     public void ResumeStart() {
         if (GameManager != null) {
+            // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
             if (Team != null) { GameManager.UnitSpawned(this.gameObject, Team); }
             else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
         }

@@ -103,7 +103,8 @@ public class PlayerManager : MonoBehaviour
         } else {
             Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f;
         }
-        ActiveTarget.GetComponent<UnitMasterController>().SetPause(Pause);
+        if (ActiveTarget != null)
+            ActiveTarget.GetComponent<UnitMasterController>().SetPause(Pause);
         CheckCameraRotation();
     }
 

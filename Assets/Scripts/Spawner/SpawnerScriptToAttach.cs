@@ -53,7 +53,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 // Debug.Log(subCategory[0].GetUnitName());
 
                 if (subCategory[0] != null) {
-                    List<WorldSingleUnit> fff;
                     foreach (var categorySelected in m_SpawnableCategories) {
                         // Check the first element of each category, if it is good !
                         if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory) {

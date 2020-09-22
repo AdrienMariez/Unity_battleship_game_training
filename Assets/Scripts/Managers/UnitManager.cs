@@ -7,8 +7,8 @@ using UnityEngine;
 [Serializable]
 public class UnitManager {
 
-    public WorldUnitsManager.Teams m_Team;
-    public WorldUnitsManager.Nations m_Nation;
+    public WorldUnitsManager.Teams m_Team;                  // In time, this may go out
+    public WorldUnitsManager.Nations m_Nation;              // This remains here in hope it will be usefull to test a flag model sometime, who knows ?
     public GameObject m_UnitPrefab;                         // The unit itself
     public string m_UnitName;
     public bool m_UseSpawnpoint;                            // Should the game use a spawnpoint for spawning ?

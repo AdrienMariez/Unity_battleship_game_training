@@ -1102,7 +1102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6283074086476641189}
-  - component: {fileID: 6283074086476641210}
+  - component: {fileID: 5611101723053189019}
   - component: {fileID: 6283074086476641188}
   - component: {fileID: 4108665965408059122}
   m_Layer: 0
@@ -1126,7 +1126,7 @@ Transform:
   m_Father: {fileID: 6283074086803692809}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6283074086476641210
+--- !u!114 &5611101723053189019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1139,9 +1139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GameMode: 0
-  m_Player: {fileID: 3008125112453024953}
-  m_SinglePlayerMode: 0
   m_SinglePlayerTeam: 0
+  m_Players:
+  - m_Player: {fileID: 3008125112453024953}
+    m_PlayerTeam: 0
+  PlayersManager: []
 --- !u!82 &6283074086476641188
 AudioSource:
   m_ObjectHideFlags: 0
