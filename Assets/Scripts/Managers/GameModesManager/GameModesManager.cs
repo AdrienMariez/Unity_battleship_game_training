@@ -86,7 +86,13 @@ public class GameModesManager : MonoBehaviour {
                 unit.SetInstance(Instantiate(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation) as GameObject);
             // }
             unit.SetGameManager(GameManager);
-            unit.SetPlayerManager(GameManager.GetPlayerManager());
+
+            // If there are no corresponding playermanager, none will be sent... May cause bugs in the future, to check.
+            foreach (PlayerManagerList playerManagerSingle in GameManager.GetPlayerManagerList()) {
+                if (unit.m_Team == playerManagerSingle.m_PlayerTeam) {
+                    unit.SetPlayerManager(playerManagerSingle.m_Player.GetComponent<PlayerManager>());
+                }
+            }
             unit.Setup();
             unit.SetUnactive();
         }
@@ -188,28 +194,18 @@ public class GameModesManager : MonoBehaviour {
         string message;
 
         if (GameManager.GetTeamAlliesUnits() >  1) {
-            message = "Player units : " + GameManager.GetTeamAlliesUnits() +"\n";
+            message = "Allied units : " + GameManager.GetTeamAlliesUnits() +"\n";
         } else {
-            message = "Player unit : " + GameManager.GetTeamAlliesUnits() +"\n";
+            message = "Allied unit : " + GameManager.GetTeamAlliesUnits() +"\n";
         }
+        message += "Wins : "+ WinsAllies +"/"+ NumRoundsToWin +"\n";
 
-        if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
-            message += "Wins : "+ WinsAllies +"/"+ NumRoundsToWin +"\n";
+        if (GameManager.GetTeamOppositionUnits() >  1) {
+            message += "Axis units : " + GameManager.GetTeamOppositionUnits() +"\n";
         } else {
-            message += "Wins : "+ WinsAxis +"/"+ NumRoundsToWin +"\n";
+            message += "Axis unit : " + GameManager.GetTeamOppositionUnits() +"\n";
         }
-
-        if (GameManager.GetTeamAlliesUnits() >  1) {
-            message += "Enemy units : " + GameManager.GetTeamOppositionUnits() +"\n";
-        } else {
-            message += "Enemy unit : " + GameManager.GetTeamOppositionUnits() +"\n";
-        }
-
-        if (GameManager.GetSoloPlayerTeam() == WorldUnitsManager.Teams.Allies) {
-            message += "Wins : "+ WinsAxis +"/"+ NumRoundsToWin +"\n";
-        } else {
-            message += "Wins : "+ WinsAllies +"/"+ NumRoundsToWin +"\n";
-        }
+        message += "Wins : "+ WinsAxis +"/"+ NumRoundsToWin +"\n";
 
         return message;
     }

@@ -290,7 +290,9 @@ public class PlayerManager : MonoBehaviour
     }
     public void SetGameManager(GameManager gameManager) {
         GameManager = gameManager;
-        PlayerTeam = GameManager.GetPlayer();
+    }
+    public void SetPlayerTeam(WorldUnitsManager.Teams playerTeam) {
+        PlayerTeam = playerTeam;
     }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
