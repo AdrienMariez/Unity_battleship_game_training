@@ -994,6 +994,11 @@ PrefabInstance:
       propertyPath: m_Players.Array.data[1].m_PlayerTeam
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5611101723053189019, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_GameMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086435933565, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -1455,7 +1460,7 @@ PrefabInstance:
     - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
@@ -1477,7 +1482,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Units.Array.data[1].m_SpawnPoint
       value: 
-      objectReference: {fileID: 1841410181}
+      objectReference: {fileID: 1945539148}
     - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[1].m_UnitPrefab
@@ -1509,6 +1514,52 @@ PrefabInstance:
       propertyPath: m_Units.Array.data[1].m_Nation
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: ScenarioUsesCommandPointsForSpawnSystem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_TeamCommandPoints
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_RequiredVictoryPointsToWin
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_Team
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_Nation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_UnitPrefab
+      value: 
+      objectReference: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
+        type: 3}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_UnitName
+      value: QQQQQQ
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_UseSpawnpoint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765476883459488792, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_SpawnPoint
+      value: 
+      objectReference: {fileID: 882318817}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.size

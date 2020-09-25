@@ -13,8 +13,8 @@ public class WorldSingleUnit {
     private WorldUnitsManager.UnitSubCategories UnitSubCategory;
     private WorldUnitsManager.SimpleTeams Team;
     private WorldUnitsManager.Nations Nation;
-    private int UnitCost;
-    private int UnitPointValue;
+    private int UnitCommandPointsCost;
+    private int UnitVictoryPointsValue;
 
     public void SetUnit() {
         UnitName = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitName;
@@ -22,14 +22,14 @@ public class WorldSingleUnit {
         UnitSubCategory = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitSubCategory;
         Team = m_UnitPrefab.GetComponent<UnitMasterController>().m_Team;
         Nation = m_UnitPrefab.GetComponent<UnitMasterController>().m_Nation;
-        UnitCost = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitCost;
-        UnitPointValue = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitPointValue;
+        UnitCommandPointsCost = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitCommandPointsCost;
+        UnitVictoryPointsValue = m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitVictoryPointsValue;
     }
     public string GetUnitName(){ return UnitName; }
     public WorldUnitsManager.UnitCategories GetUnitCategory(){ return UnitCategory; }
     public WorldUnitsManager.UnitSubCategories GetUnitSubCategory(){ return UnitSubCategory; }
     public WorldUnitsManager.SimpleTeams GetUnitTeam(){ return Team; }
     public WorldUnitsManager.Nations GetUnitNation(){ return Nation; }
-    public int GetUnitCost(){ return UnitCost; }
-    public int GetUnitPointValue(){ return UnitPointValue; }
+    public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
+    public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
 }

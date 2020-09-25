@@ -115,6 +115,7 @@ namespace UI {
             CloseGameUI();
             CloseTurretUI();
             if (DisplayGameUI && !DisplayMapUI && DisplayUI) {
+                // Debug.Log("SetOpenUI :  - TargetType = "+ TargetType);
                 if (TargetType == "Tank") {
                     OpenTankUI();
                 } else if (TargetType == "Building") {
@@ -243,13 +244,12 @@ namespace UI {
         public void SetActiveTarget(GameObject Target) {
             ActiveTarget = Target;
 
+            SetOpenUI();
             if (ActiveTarget.GetComponent<UnitMasterController>())
                 StartingHP = ActiveTarget.GetComponent<UnitMasterController>().GetStartingHealth();
                 SetCurrentUnitHealth(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentHealth());
                 CurrentUnitDead = ActiveTarget.GetComponent<UnitMasterController>().GetDeath();
                 ChangeSpeedStep(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentSpeedStep());
-
-            SetOpenUI();
         }
 
         public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) {
@@ -378,18 +378,18 @@ namespace UI {
         }
 
         private void CheckHealthColor() {
-        // updates health bar color depending on the health of the current unit
-        Color color;
-        if (CurrentHP <= (0.2f * StartingHP)) {
-            color = Color.red;
-        } else if (CurrentHP <= (0.6f * StartingHP)) {
-            color = Color.yellow;
-        } else {
-            color = new Color(0.0f, 0.75f, 0.14f);
+            // updates health bar color depending on the health of the current unit
+            Color color;
+            if (CurrentHP <= (0.2f * StartingHP)) {
+                color = Color.red;
+            } else if (CurrentHP <= (0.6f * StartingHP)) {
+                color = Color.yellow;
+            } else {
+                color = new Color(0.0f, 0.75f, 0.14f);
+            }
+            if (PlayerUIInstance)
+                UnitHPColor.color = color;
         }
-        if (PlayerUIInstance)
-            UnitHPColor.color = color;
-    }
 
         protected void OpenPauseUI(){
             PauseUIInstance = Instantiate(PauseUI, PlayerUI.transform);
@@ -450,13 +450,19 @@ namespace UI {
         }
         public void ChangeSpeedStep(int currentSpeedStep){
             SpeedStep = currentSpeedStep;
-            if (PlayerUIInstance)
-                ShipSpeedStep.value = SpeedStep;
+            if (PlayerUIInstance) {
+                if (TargetType == "Ship") {
+                    ShipSpeedStep.value = SpeedStep;
+                }
+            }
         }
         public void SetRotationInput(float rotation){
             CurrentRotation = rotation;
-            if (PlayerUIInstance)
-                ShipTurningSpeed.value = CurrentRotation;
+            if (PlayerUIInstance) {
+                if (TargetType == "Ship") {
+                    ShipTurningSpeed.value = CurrentRotation;
+                }
+            }
         }
         public void SetHideUI() {
             DisplayUI = !DisplayUI;

@@ -18,9 +18,14 @@ public class GameModesManager : MonoBehaviour {
     protected WorldUnitsManager.Teams RoundWinner;                  // Who won this particular round ?
     protected WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
     protected int RoundNumber;                  // Which round the game is currently on.
+
+    [Header("General options : ")]
+    public bool ScenarioUsesCommandPointsForSpawnSystem;
+
     
     public virtual void SetGameManager(GameManager gameManager) {
         GameManager = gameManager;
+        GameManager.SetCommandPointSystem(ScenarioUsesCommandPointsForSpawnSystem);
         if (GetComponent<CustomScenariosManager>()) {
             CustomScenario = true;
             CustomScenariosManager = GetComponent<CustomScenariosManager>();
@@ -75,9 +80,8 @@ public class GameModesManager : MonoBehaviour {
 
         GameManager.SetScoreMessage(StartMessage());
 
-        // Reset counters
-        GameManager.SetTeamAlliesUnits(0);
-        GameManager.SetTeamOppositionUnits(0);
+        // Reset all counters
+        GameManager.ResetCounters();
 
         // Setup each unit
         foreach (var unit in Units) {
@@ -110,10 +114,10 @@ public class GameModesManager : MonoBehaviour {
         EnableUnitsControl ();
 
         // Show score on the screen.
-        GameManager.SetScoreMessage(GameMessage());
+        UpdateMessage();
 
-        // While there is not one side reduced to 0...
-        while (!NoUnitLeftOnOneSide()) {
+        // While the objective isn't accomplished for either side...
+        while (!ObectiveAccomplished()) {
             // ... return on the next frame.
             yield return null;
         }
@@ -126,7 +130,7 @@ public class GameModesManager : MonoBehaviour {
         RoundWinner = WorldUnitsManager.Teams.NeutralAI;
 
         // See if there is a winner now the round is over.
-        RoundWinner = GetRoundWinner ();
+        RoundWinner = GetRoundWinner();
 
         // If there is a winner, increment their score.
         if (RoundWinner != WorldUnitsManager.Teams.NeutralAI){
@@ -148,16 +152,16 @@ public class GameModesManager : MonoBehaviour {
         yield return EndWait;
     }
     // Returns for game loop
-    protected virtual bool NoUnitLeftOnOneSide() {
-        // If there are still playable units or enemy units...
-        bool sideExterminated = false;
+    protected virtual bool ObectiveAccomplished() {
+        // BASIC : If there are still playable units or enemy units...
+        bool obectiveAccomplishedForOneSide = false;
         if (GameManager.GetTeamAlliesUnits() == 0 || GameManager.GetTeamOppositionUnits() == 0) {
-            sideExterminated = true;
+            obectiveAccomplishedForOneSide = true;
         }
-        return sideExterminated;
+        return obectiveAccomplishedForOneSide;
     }
     protected virtual WorldUnitsManager.Teams GetRoundWinner() {
-        // Returns the winner of a single round
+        // BASIC : Returns the winner of a single round
         if (GameManager.GetTeamAlliesUnits() == 0 && GameManager.GetTeamOppositionUnits() > 0) {
             return WorldUnitsManager.Teams.Axis;
         } else if (GameManager.GetTeamAlliesUnits() > 0 && GameManager.GetTeamOppositionUnits() == 0) {
@@ -190,9 +194,27 @@ public class GameModesManager : MonoBehaviour {
         return message;
     }
     protected virtual string GameMessage() {
-        // Displays the message shown on screen during the duration of a round / of gameplay
+        // Displays basic message shown on screen during the duration of a round / of gameplay for all players.
         string message;
+        if (GameManager.GetTeamAlliesUnits() >  1) {
+            message = "Allied units : " + GameManager.GetTeamAlliesUnits() +"\n";
+        } else {
+            message = "Allied unit : " + GameManager.GetTeamAlliesUnits() +"\n";
+        }
+        message += "Wins : "+ WinsAllies +"/"+ NumRoundsToWin +"\n";
 
+        if (GameManager.GetTeamOppositionUnits() >  1) {
+            message += "Axis units : " + GameManager.GetTeamOppositionUnits() +"\n";
+        } else {
+            message += "Axis unit : " + GameManager.GetTeamOppositionUnits() +"\n";
+        }
+        message += "Wins : "+ WinsAxis +"/"+ NumRoundsToWin +"\n";
+
+        return message;
+    }
+    public virtual string GameMessageTeam(WorldUnitsManager.Teams team) {
+        // Displays personnalized for each team message shown on screen during the duration of a round / of gameplay 
+        string message;
         if (GameManager.GetTeamAlliesUnits() >  1) {
             message = "Allied units : " + GameManager.GetTeamAlliesUnits() +"\n";
         } else {
@@ -245,8 +267,6 @@ public class GameModesManager : MonoBehaviour {
         // Activated when a unit spawns or dies.
         if (CustomScenario)
             CustomScenariosManager.UpdateMessage();
-        // The main message could be updated here if needed
-        GameManager.SetScoreMessage(GameMessage());
     }
     public virtual void UpdateGameplay() {
         // Activated when a unit spawns or dies.

@@ -1798,8 +1798,8 @@ MonoBehaviour:
   m_UnitSubCategory: 2
   m_Team: 0
   m_Nation: 1
-  m_UnitCost: 0
-  m_UnitPointValue: 0
+  m_UnitCommandPointsCost: 200
+  m_UnitVictoryPointsValue: 250
   m_UnitMapModel: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
     type: 3}
   m_ShipComponents:
@@ -1947,6 +1947,7 @@ MonoBehaviour:
   UnitCanMove: 1
   UnitCanShoot: 1
   UnitCanSpawn: 1
+  ShipAISpawnState: 0
 --- !u!114 &8857893665739000309
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,6 +29,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     // Globals
     private WorldUIVariables WorldUIVariables;
     private WorldUnitsManager WorldUnitsManager;
+    protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
 
@@ -81,16 +82,17 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     private bool TryOpenSpawnMenu(){
         // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
-        bool success = false;
+        // bool success = false;
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
             if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
-                success = true;
-                break;
+                // success = true;
+                // break;
+                return true;
             }
         }
-        if (success) { return true; }
-        else { return false; }
-        
+        // if (success) { return true; }
+        // else { return false; }
+        return false;
     }
     private void OpenSpawnMenu(){
         // Debug.Log ("Spawn menu open and ready !");
@@ -137,7 +139,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     private void CreateSingleUnitSpawnerListDisplay(WorldSingleUnit unit, int i) {
         //This will come in use when fancy cards will be made, I'm sure...
-        SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponentInChildren<Text>().text = TeamedSpawnableUnitsList[i].GetUnitName();
+        if (GameManager.GetCommandPointSystem()) {
+            string text;
+            text = TeamedSpawnableUnitsList[i].GetUnitName() +" - / - "+ TeamedSpawnableUnitsList[i].GetUnitCommandPointsCost() +"\n";
+            SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponentInChildren<Text>().text = text;
+        } else {
+            SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponentInChildren<Text>().text = TeamedSpawnableUnitsList[i].GetUnitName();
+        }
 
         Button spawnerButton = SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponent<Button>();
 		// spawnerButton.onClick.AddListener(SpawnUnit);
@@ -156,23 +164,44 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     protected void SpawnUnit (WorldSingleUnit unit) {
         Vector3 spawnPosition = m_ShipSpawnPosition.position;
 
-        bool trySpawn = false;
+        bool trySpawn1 = false;
+        bool trySpawn2 = false;
         for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
             spawnPosition = m_ShipSpawnPosition.position;
             spawnPosition.x = m_ShipSpawnPosition.position.x + Random.Range(-500, 500);
             spawnPosition.z = m_ShipSpawnPosition.position.z + Random.Range(-500, 500);
             Collider[] hitColliders = Physics.OverlapSphere(spawnPosition, 100f);
             if (hitColliders.Length == 0) {
-                trySpawn = true; //Spawn location correct !
+                trySpawn1 = true; //Spawn location correct !
                 break;
             }
         }
 
-        if (trySpawn) {
+        if (GameManager.GetCommandPointSystem()) {
+            if (unit.GetUnitTeam() == WorldUnitsManager.SimpleTeams.Allies) {
+                if ((GameManager.GetAlliesTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
+                    trySpawn2 = true;
+                }
+            } else if (unit.GetUnitTeam() == WorldUnitsManager.SimpleTeams.Axis) {
+                if ((GameManager.GetAxisTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
+                    trySpawn2 = true;
+                }
+            }
+        } else {
+            // When using slots, this will be changed.
+            trySpawn2 = true;
+        }
+
+        if (trySpawn1 && trySpawn2) {
             GameObject spawnedUnitInstance =
                 Instantiate (unit.m_UnitPrefab, spawnPosition, m_ShipSpawnPosition.rotation);
         } else {
-            Debug.Log("No spawn location available !");
+            if (!trySpawn1) {
+                Debug.Log("No spawn location available !");
+            }
+            if (!trySpawn2) {
+                Debug.Log("No points available !");
+            }
         }
 
 
@@ -207,6 +236,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 CloseSpawnMenu();
             }
         }
+    }
+    public void SetGameManager(GameManager gameManager) {
+        GameManager = gameManager;
     }
     public void SetPlayerManager(PlayerManager playerManager) {
         PlayerManager = playerManager;

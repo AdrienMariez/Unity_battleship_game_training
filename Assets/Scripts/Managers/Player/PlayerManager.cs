@@ -294,6 +294,7 @@ public class PlayerManager : MonoBehaviour
     public void SetPlayerTeam(WorldUnitsManager.Teams playerTeam) {
         PlayerTeam = playerTeam;
     }
+    public WorldUnitsManager.Teams GetPlayerTeam() { return PlayerTeam; }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
         SetOverlayUI();

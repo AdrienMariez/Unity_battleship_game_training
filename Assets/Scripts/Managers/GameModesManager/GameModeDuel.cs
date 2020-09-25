@@ -22,12 +22,16 @@ public class GameModeDuel : GameModesManager {
         // Send all units to the GameModesManager list.
         Units = m_Units;
 
-        // foreach (var units in Units) {
-        //     Debug.Log ("Unit : "+ units.m_UnitPrefab);
-        // }
-
         // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());
+    }
+    protected override bool ObectiveAccomplished() {
+        // BASIC : If there are still playable units or enemy units...
+        bool obectiveAccomplishedForOneSide = false;
+        if (GameManager.GetTeamAlliesUnits() == 0 || GameManager.GetTeamOppositionUnits() == 0) {
+            obectiveAccomplishedForOneSide = true;
+        }
+        return obectiveAccomplishedForOneSide;
     }
 
     // Message system
@@ -50,11 +54,12 @@ public class GameModeDuel : GameModesManager {
     public override void UpdateMessage() { 
         //Hi I am needed by GameManager, please do not mess with me.
         base.UpdateMessage();
+        // The main message could be updated here if needed
         GameManager.SetScoreMessage(GameMessage());
     }
 
     public override void UpdateGameplay() {
-        base.UpdateMessage();
+        base.UpdateGameplay();
         //Hi I am needed by GameManager, please do not mess with me.
         //Add specifics for gameplay when a unit dies/spawns here
     }

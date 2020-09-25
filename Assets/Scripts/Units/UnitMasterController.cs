@@ -10,8 +10,8 @@ public class UnitMasterController : MonoBehaviour {
     public WorldUnitsManager.UnitSubCategories m_UnitSubCategory;
     public WorldUnitsManager.SimpleTeams m_Team = WorldUnitsManager.SimpleTeams.NeutralAI;
     public WorldUnitsManager.Nations m_Nation;
-    public int m_UnitCost;
-    public int m_UnitPointValue;
+    public int m_UnitCommandPointsCost;
+    public int m_UnitVictoryPointsValue;
     [Tooltip("Place here the prefab of the map model")] public GameObject m_UnitMapModel;
 
 
@@ -136,6 +136,7 @@ public class UnitMasterController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
         if (GetComponent<SpawnerScriptToAttach>()){
+            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
             GetComponent<SpawnerScriptToAttach>().SetUnitController(this);
         }
@@ -145,6 +146,12 @@ public class UnitMasterController : MonoBehaviour {
     }
     public GameObject GetUnitMapModel() {
         return m_UnitMapModel;
+    }
+    public int GetUnitCommandPointsCost() {
+        return m_UnitCommandPointsCost;
+    }
+    public int GetUnitVictoryPointsValue() {
+        return m_UnitVictoryPointsValue;
     }
     public void ResumeStart() {
         if (GameManager != null) {
