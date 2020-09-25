@@ -23,6 +23,9 @@ public class UnitMasterController : MonoBehaviour {
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
+    protected UnitAIController UnitAI;
+    private GameObject EnemyTargetUnit;
+
     public enum ElementType {
         hull,
         engine,
@@ -38,7 +41,7 @@ public class UnitMasterController : MonoBehaviour {
     }
     // Turrets
     public virtual void SetTotalTurrets(int turrets) { }
-    public virtual void SetMaxTurretRange(float maxRange) { }
+    public virtual void SetMaxTurretRange(float maxRange) { UnitAI.SetMaxTurretRange(maxRange); }
     public virtual void SetDamagedTurrets(int turrets) { }
     public virtual void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ }
     public virtual void SendPlayerShellToUI(GameObject shellInstance){ }
@@ -82,13 +85,31 @@ public class UnitMasterController : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    // Artificial Intelligence
+    public virtual void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList) {
+        UnitAI.SetNewEnemyList(enemiesUnitsObjectList);
+    }
+    public void SetCurrentTarget(GameObject targetUnit) {
+        EnemyTargetUnit = targetUnit;
+        if (Active) {
+            PlayerManager.SendCurrentEnemyTarget(targetUnit);
+        }
+    }
+
     // Main Gameplay
     public void SpawnUnit() {
+        // Set turrets
         if (GetComponent<TurretManager>())
             Turrets = GetComponent<TurretManager>();
+        // Set AI
+        UnitAI = GetComponent<UnitAIController>();
+
+        if (GetComponent<TurretManager>())
+            UnitAI.SetTurretManager(Turrets);
     }
     public virtual void SetActive(bool activate) {
         Active = activate;
+        UnitAI.SetAIActive(!Active);
         if (GetComponent<TurretManager>())
             Turrets.SetActive(Active);
         if (GetComponent<SpawnerScriptToAttach>())
@@ -100,12 +121,16 @@ public class UnitMasterController : MonoBehaviour {
     }
     public virtual void SetMap(bool mapActive) {}
     public virtual void SetTag(WorldUnitsManager.Teams team){
+        // Debug.Log("Unit : "+ m_UnitName +" - SetTag = "+ team);
         gameObject.tag = team.ToString("g");
         Team = team;
+        UnitAI.SetUnitTeam(Team);
     }
     public WorldUnitsManager.SimpleTeams GetTeam() { return m_Team; }
-    public virtual void SetName(string name){ gameObject.name = name; }
-    public virtual void SetNewEnemyList(List <GameObject> unitsObjectList) {}
+    public virtual void SetName(string name){
+        UnitAI.SetName(name);
+        gameObject.name = name;
+    }
     public void SetPlayerManager(PlayerManager playerManager) {
         PlayerManager = playerManager;
         if (GetComponent<TurretManager>())

@@ -476,6 +476,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5611101723053189019, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Players.Array.data[0].m_PlayerTeam
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.size
@@ -1879,6 +1884,11 @@ PrefabInstance:
       propertyPath: m_Units.Array.data[7].m_SpawnPoint
       value: 
       objectReference: {fileID: 47285869}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_Team
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2705952565844710751, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}

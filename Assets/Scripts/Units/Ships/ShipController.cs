@@ -14,7 +14,6 @@ public class ShipController : UnitMasterController {
     private ShipMovement Movement;
     private ShipHealth Health;
     private ShipDamageControl DamageControl;
-    private ShipAI ShipAI;
     private ShipUI UI;
     private Transform ShipModel;
 
@@ -37,22 +36,17 @@ public class ShipController : UnitMasterController {
     private float WaterRepairCrew;
     private float TurretsRepairCrew;
 
-    private GameObject EnemyTargetUnit;
-
-    private void Awake() {
+    protected void Awake() {
         base.SpawnUnit();
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Health = GetComponent<ShipHealth>();
-        ShipAI = GetComponent<ShipAI>();
         float HP = Health.GetStartingHealth();
 
         UI = GetComponent<ShipUI>();
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 
-        if (GetComponent<TurretManager>())
-            ShipAI.SetTurretManager(Turrets);
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
@@ -61,6 +55,9 @@ public class ShipController : UnitMasterController {
 
         if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);
+
+        // Set the name unit to be the class name, it will get overwritten by any specific name afterwards.
+        SetName(m_UnitName);
 
         ShipModel = this.gameObject.transform.GetChild(0);
 
@@ -237,23 +234,14 @@ public class ShipController : UnitMasterController {
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
     public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
-    public void SetAITurnInputValue(float turnInputValue){ ShipAI.SetAITurnInputValue(turnInputValue); }
-    public void SetCurrentTarget(GameObject targetUnit) {
-        EnemyTargetUnit = targetUnit;
-        if (Active) {
-            PlayerManager.SendCurrentEnemyTarget(targetUnit);
-        }
-    }
+    public void SetAITurnInputValue(float turnInputValue){ UnitAI.SetAITurnInputValue(turnInputValue); }
+    
 
 
     // ALL OVERRIDES METHODS
-    public override void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList) {
-        ShipAI.SetNewEnemyList(enemiesUnitsObjectList);
-    }
     public override void SetActive(bool activate) {
         base.SetActive(activate);
         Movement.SetActive(Active);
-        ShipAI.SetAIActive(!Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
@@ -274,8 +262,6 @@ public class ShipController : UnitMasterController {
     public override void SetTag(WorldUnitsManager.Teams team){
         base.SetTag(team);
         UI.SetUnitTeam(team);
-        ShipAI.SetUnitTeam(team.ToString("g"));
-
     }
     public override void SetName(string name){
         base.SetName(name);
@@ -283,13 +269,11 @@ public class ShipController : UnitMasterController {
         if (GetComponent<ShipDamageControl>()) {
             DamageControl.SetName(name);
         }
-        ShipAI.SetName(name);
     }
     public override float GetRepairRate(){ return RepairRate; }
 
     // Turrets
     public override void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
-    public override void SetMaxTurretRange(float maxRange){ ShipAI.SetMaxTurretRange(maxRange); }
     public override void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
     public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
         if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }

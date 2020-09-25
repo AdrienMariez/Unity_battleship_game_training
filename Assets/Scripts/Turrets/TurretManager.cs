@@ -275,6 +275,14 @@ public class TurretManager : MonoBehaviour
     public GameObject[] GetTurrets() {
         return m_Turrets;
     }
+    public bool GetIsEmpty() {
+        if (m_Turrets.Length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     public TurretFireManager.TurretType GetCurrentTurretType() { return CurrentControlledTurretType; }
     public void FeedbackShellHit(bool armorPenetrated) {
         UnitMasterController.FeedbackShellHit(armorPenetrated);

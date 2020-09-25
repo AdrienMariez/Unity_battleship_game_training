@@ -8,28 +8,20 @@ public class BuildingController : UnitMasterController {
     public GameObject[] m_BuildingComponents;
 
     private BuildingHealth Health;
-    private BuildingAI BuildingAI;
     private BuildingUI UI;
 
     private float RepairRate = 1;
 
-    private GameObject EnemyTargetUnit;
-
-    private void Awake() {
+    protected void Awake() {
+        base.SpawnUnit();
         Health = GetComponent<BuildingHealth>();
-        BuildingAI = GetComponent<BuildingAI>();
         float HP = Health.GetStartingHealth();
 
         UI = GetComponent<BuildingUI>();
         UI.SetStartingHealth(HP);
         UI.SetCurrentHealth(HP);
 
-        if (GetComponent<TurretManager>())
-            Turrets = GetComponent<TurretManager>();
-            BuildingAI.SetTurretManager(Turrets);
-
-        if (GetComponent<TurretManager>())
-            Turrets.SetRepairRate(RepairRate);
+        SetName(m_UnitName);
 
         for (int i = 0; i < m_BuildingComponents.Length; i++) {
             m_BuildingComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
@@ -71,17 +63,10 @@ public class BuildingController : UnitMasterController {
 
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     
-    public void SetCurrentTarget(GameObject targetUnit) {
-        EnemyTargetUnit = targetUnit;
-        if (Active) {
-            PlayerManager.SendCurrentEnemyTarget(targetUnit);
-        }
-    }
 
     // ALL OVERRIDES METHODS
     public override void SetActive(bool activate) {
         base.SetActive(activate);
-        BuildingAI.SetAIActive(!Active);
     }
     public override void SetMap(bool map) {
         if (GetComponent<TurretManager>())
@@ -90,13 +75,10 @@ public class BuildingController : UnitMasterController {
     public override void SetTag(WorldUnitsManager.Teams team){
         base.SetTag(team);
         UI.SetUnitTeam(team);
-        BuildingAI.SetUnitTeam(team.ToString("g"));
-
     }
     public override void SetName(string name){
         base.SetName(name);
         UI.SetName(name);
-        BuildingAI.SetName(name);
     }
     public override float GetRepairRate(){ return RepairRate; }
 

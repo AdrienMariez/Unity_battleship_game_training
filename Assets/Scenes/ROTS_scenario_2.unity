@@ -433,6 +433,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5611101723053189019, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Players.Array.data[0].m_PlayerTeam
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6283074086476641210, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.size
