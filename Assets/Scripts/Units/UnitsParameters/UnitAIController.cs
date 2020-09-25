@@ -230,6 +230,7 @@ public class UnitAIController : MonoBehaviour {
         Flee,                           // Go away from a point
         BackToBase,                      // Go back to ally point
         NoAI*/
+        CheckIfCanShoot();
         switch (UnitsAICurrentState){
             case UnitsAIStates.Patrol:
                 PatrolAction();
@@ -258,6 +259,20 @@ public class UnitAIController : MonoBehaviour {
             default:
                 NoAIAction();
                 break;
+        }
+    }
+    protected virtual void CheckIfCanShoot() {
+        Stressed = false;
+        // CHECK IF CAN SHOOT
+        if (TargetUnit != null && UnitCanShoot && UnitsAICurrentState != UnitsAIStates.NoAI) {
+            if ((gameObject.transform.position - TargetUnit.transform.position).magnitude < MaxTurretsRange) {
+                // In this case, there is a target and we can shoot it.
+                // Debug.Log("Unit : "+ Name +" - is ready to shoot");
+                Stressed = true;
+                TurretManager.SetAIHasTarget(true);
+            } else {
+                TurretManager.SetAIHasTarget(false);
+            }
         }
     }
 

@@ -14,7 +14,6 @@ public class ShipAI : UnitAIController {
     // UnitsAIStates
     // UnitsAICurrentState
     protected override void CheckState() {
-        Stressed = false;
         // if (UnitsAICurrentState == UnitsAIStates.NoAI) {
         //     return;
         // }
@@ -32,19 +31,6 @@ public class ShipAI : UnitAIController {
             if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
                 UnitsAICurrentState = UnitsAIStates.Patrol;
             }
-        }
-
-        // CHECK IF CAN SHOOT
-        // Debug.Log("1 : "+ (TargetUnit != null) +" - 2 = "+ UnitCanShoot +" - 3 = "+ (UnitsAICurrentState != UnitsAIStates.NoAI) +" - 4 = "+ ((gameObject.transform.position - TargetUnit.transform.position).magnitude < MaxTurretsRange));
-        if (TargetUnit != null && UnitCanShoot && UnitsAICurrentState != UnitsAIStates.NoAI && (gameObject.transform.position - TargetUnit.transform.position).magnitude < MaxTurretsRange) {
-            // In this case, there is a target and we can shoot it.
-            // Debug.Log("Unit : "+ Name +" - is ready to shoot");
-            Stressed = true;
-            TurretManager.SetAIHasTarget(true);
-        } else {
-            // Debug.Log("Unit : "+ Name +" - not able to shoot");
-            Stressed = false;
-            TurretManager.SetAIHasTarget(false);
         }
 
         base.CheckState();
@@ -75,7 +61,7 @@ public class ShipAI : UnitAIController {
             ShipController.SetAIturn(0);
         }
     }
-    protected virtual void ApproachTargetAction(){
+    protected override void ApproachTargetAction(){
                 // Debug.Log("ApproachTarget");
         ShipController.SetAISpeed(4);
 

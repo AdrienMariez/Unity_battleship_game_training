@@ -8,7 +8,7 @@ public class UnitMasterController : MonoBehaviour {
     public string m_UnitName;
     public WorldUnitsManager.UnitCategories m_UnitCategory;
     public WorldUnitsManager.UnitSubCategories m_UnitSubCategory;
-    public WorldUnitsManager.SimpleTeams m_Team;
+    public WorldUnitsManager.SimpleTeams m_Team = WorldUnitsManager.SimpleTeams.NeutralAI;
     public WorldUnitsManager.Nations m_Nation;
     public int m_UnitCost;
     public int m_UnitPointValue;
@@ -149,12 +149,12 @@ public class UnitMasterController : MonoBehaviour {
     public void ResumeStart() {
         if (GameManager != null) {
             // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
-            if (Team != null) { GameManager.UnitSpawned(this.gameObject, Team); }
+            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
             else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
         }
         else if (GameObject.Find("GameManager") != null) {
             GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            if (Team != null) { GameManager.UnitSpawned(this.gameObject, Team); }
+            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
             else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
         }
     }
