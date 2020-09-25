@@ -39,6 +39,26 @@ public class UnitMasterController : MonoBehaviour {
         underwaterBackRight,
         armorPlate
     }
+    // Spawn
+    private void Start() {
+        StartCoroutine(SpawnPauseLogic());
+    }
+    IEnumerator SpawnPauseLogic(){
+        yield return new WaitForSeconds(0.3f);
+        ResumeStart();
+    }
+    public void ResumeStart() {
+        if (GameManager != null) {
+            // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
+            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
+            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
+        }
+        else if (GameObject.Find("GameManager") != null) {
+            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
+            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
+        }
+    }
     // Turrets
     public virtual void SetTotalTurrets(int turrets) { }
     public virtual void SetMaxTurretRange(float maxRange) { UnitAI.SetMaxTurretRange(maxRange); }
@@ -152,17 +172,5 @@ public class UnitMasterController : MonoBehaviour {
     }
     public int GetUnitVictoryPointsValue() {
         return m_UnitVictoryPointsValue;
-    }
-    public void ResumeStart() {
-        if (GameManager != null) {
-            // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
-            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
-            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
-        }
-        else if (GameObject.Find("GameManager") != null) {
-            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
-            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
-        }
     }
 }

@@ -67,13 +67,6 @@ public class ShipController : UnitMasterController {
             m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
         }
     }
-    private void Start() {
-        StartCoroutine(SpawnPauseLogic());
-    }
-    IEnumerator SpawnPauseLogic(){
-        yield return new WaitForSeconds(0.3f);
-        ResumeStart();
-    }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;

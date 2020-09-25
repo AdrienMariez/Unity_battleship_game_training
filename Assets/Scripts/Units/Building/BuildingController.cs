@@ -27,13 +27,6 @@ public class BuildingController : UnitMasterController {
             m_BuildingComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
         }
     }
-    private void Start() {
-        StartCoroutine(SpawnPauseLogic());
-    }
-    IEnumerator SpawnPauseLogic(){
-        yield return new WaitForSeconds(0.3f);
-        ResumeStart();
-    }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;

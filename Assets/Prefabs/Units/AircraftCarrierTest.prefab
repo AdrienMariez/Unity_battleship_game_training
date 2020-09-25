@@ -1162,7 +1162,6 @@ MonoBehaviour:
   - m_UnitSubCategory: 2
   - m_UnitSubCategory: 0
   - m_UnitSubCategory: 1
-  - m_UnitSubCategory: 10
   m_ShipSpawnPosition: {fileID: 2234937143242066959}
   m_SubmarineSpawnPosition: {fileID: 2234937143242066959}
   m_PlanesSpawnPosition: {fileID: 2234937143242066959}

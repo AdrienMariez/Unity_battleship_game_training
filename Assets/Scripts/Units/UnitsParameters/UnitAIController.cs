@@ -27,21 +27,15 @@ public class UnitAIController : MonoBehaviour {
         NoAI
     }
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
+
+    [Header("What is this particular model allowed to do ?")]
     public bool UnitCanMove = true;
     public bool UnitCanShoot = true;
     public bool UnitCanSpawn = true;
 
     protected virtual void Awake () {
         UnitMasterController = GetComponent<UnitMasterController>();
-        StartCoroutine(PauseOrders());
         // GetTargets();
-
-        if (!GetComponent<TurretManager>()) {
-            UnitCanShoot = false;
-        }
-        if (!GetComponent<SpawnerScriptToAttach>()) {
-            UnitCanSpawn = false;
-        }
 
         // Pre set the AI if needed
         if (!UnitCanMove && !UnitCanShoot) {
@@ -50,51 +44,60 @@ public class UnitAIController : MonoBehaviour {
             UnitsAICurrentState = UnitsAIStates.Idle;
         }
     }
+    void Start () {
+        if (!GetComponent<TurretManager>()) {
+            // Debug.Log("Unit : "+ Name +"can't shoot");
+            UnitCanShoot = false;
+        }
+        if (!GetComponent<SpawnerScriptToAttach>()) {
+            // Debug.Log("Unit : "+ Name +"can't spawn");
+            UnitCanSpawn = false;
+        }
+
+        StartCoroutine(AIOrdersLoop());
+        StartCoroutine(TrySpawnLoop());
+    }
 
     protected virtual void FixedUpdate() {
         // if (UnitsAICurrentState == UnitsAIStates.NoAI) {
         //     return;
         // }
-
         if (Stressed && TargetUnit) {
             SetAITargetRange();
         }
+        // Debug.Log("Unit : "+ Name +" - SpawningPaused = "+ SpawningPaused +" - OrdersPaused = "+ OrdersPaused);
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState);
         // Debug.Log("Unit : "+ Name +" - AIActive = "+ AIActive);
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState +" - AIActive = "+ AIActive);
-        if (AIActive) {
-            // If AI controlled
-            // Debug.Log("AIState : "+ AIState);
-            if (TargetUnit == null &&  UnitCanShoot) {
-                SetNewTarget();
-                return;
-            }
-            CheckState();
-            StartCoroutine(PauseOrders());
-            
-        } else if (!AIActive && !PlayerOrdersPaused) {
+        if (!AIActive) {
             // If player controlled
-            if (Input.GetButtonDown ("SetNewTarget")) {
+            if (Input.GetButtonUp ("SetNewTarget")) {
                 // Debug.Log("SetNewTarget");
                 ChangePlayerTargetIndex();
                 SetPlayerSetTarget();
-                StartCoroutine(PausePlayerOrders());
+            }
+        }   
+    }
+    IEnumerator AIOrdersLoop(){
+        while (true) {
+            yield return new WaitForSeconds(0.3f);
+            if (AIActive) {
+                // Debug.Log("PauseAIOrders");
+                // If AI controlled
+                if (TargetUnit == null &&  UnitCanShoot) {
+                    SetNewTarget();
+                }
+                CheckState();
             }
         }
     }
-    protected bool OrdersPaused = false;
-    IEnumerator PauseOrders(){
-        // Coroutine created to prevent too much calculus for unit behaviour
-        OrdersPaused = true;
-        yield return new WaitForSeconds(0.3f);
-        OrdersPaused = false;
-    }
-    protected bool PlayerOrdersPaused = false;
-    IEnumerator PausePlayerOrders(){
-        // Coroutine created to prevent too much calculus for unit behaviour
-        PlayerOrdersPaused = true;
-        yield return new WaitForSeconds(0.3f);
-        PlayerOrdersPaused = false;
+    IEnumerator TrySpawnLoop(){
+        while (true) {
+            yield return new WaitForSeconds(5f);
+            if (TrySpawn()) {
+                SpawnNewUnit();
+            }
+        }
     }
 
     protected void GetTargets(){
@@ -159,7 +162,6 @@ public class UnitAIController : MonoBehaviour {
     public void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList){
         EnemyUnitsList = enemiesUnitsObjectList;
         // Debug.Log("Unit : "+ Name +" - EnemyUnitsList = "+ EnemyUnitsList.Count);
-        StartCoroutine(PauseOrders());
         CheckIfTargetExists();
     }
     protected void CheckIfTargetExists() {
@@ -269,9 +271,13 @@ public class UnitAIController : MonoBehaviour {
                 // In this case, there is a target and we can shoot it.
                 // Debug.Log("Unit : "+ Name +" - is ready to shoot");
                 Stressed = true;
-                TurretManager.SetAIHasTarget(true);
+                TurretManager.SetAIHasTarget(true);     // Allowed to engage target
             } else {
-                TurretManager.SetAIHasTarget(false);
+                TurretManager.SetAIHasTarget(false);    // If the target is too far
+            }
+        }else {
+            if (UnitCanShoot) {
+                TurretManager.SetAIHasTarget(false);        // If there is no target
             }
         }
     }
@@ -307,6 +313,7 @@ public class UnitAIController : MonoBehaviour {
         // GetTargets();
     }
     public void SetAIActive(bool activate) {
+        // Debug.Log("Unit : "+ Name +" - SetAIActive = "+ activate);
         // If player control, AI inactive
         AIActive = activate;
         UnitMasterController.SetCurrentTarget(TargetUnit);
@@ -322,13 +329,24 @@ public class UnitAIController : MonoBehaviour {
     public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; CheckState(); }
     public virtual void SetAITurnInputValue(float turnInputValue){}
 
-
-    // Not yet used but will get some action soon
     protected virtual bool TrySpawn() {
-        if (UnitsAICurrentState != UnitsAIStates.NoAI || UnitCanSpawn) {
+        if (AIActive && UnitsAICurrentState != UnitsAIStates.NoAI && UnitCanSpawn) {
             return true;
-        } else { 
+        } else {
             return false;
         }
+    }
+    protected void SpawnNewUnit() {
+        // Debug.Log("SpawnNewUnit");
+        SpawnerScriptToAttach spawnerScript = GetComponent<SpawnerScriptToAttach>();
+        int listCount = spawnerScript.GetTeamedSpawnableUnitsList().Count - 1;
+        int unitChosen = Random.Range(0, listCount);
+        // Debug.Log(unitChosen +" / "+listCount);
+        if (spawnerScript.TrySpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {
+            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen]);
+        }
+        // foreach (WorldSingleUnit singleUnit in spawnerScript.GetTeamedSpawnableUnitsList()) {
+        //     Debug.Log(singleUnit.GetUnitName());
+        // }
     }
 }
