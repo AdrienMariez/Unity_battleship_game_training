@@ -12,7 +12,6 @@ public class UnitMasterController : MonoBehaviour {
     public WorldUnitsManager.Nations m_Nation;
     public int m_UnitCommandPointsCost;
     public int m_UnitVictoryPointsValue;
-    [Tooltip("Place here the prefab of the map model")] public GameObject m_UnitMapModel;
 
 
     protected bool Active = false;
@@ -145,6 +144,11 @@ public class UnitMasterController : MonoBehaviour {
         gameObject.tag = team.ToString("g");
         Team = team;
         UnitAI.SetUnitTeam(Team);
+        if (Team == WorldUnitsManager.Teams.Allies) {
+            m_Team = WorldUnitsManager.SimpleTeams.Allies;
+        } else if (Team == WorldUnitsManager.Teams.Axis) {
+            m_Team = WorldUnitsManager.SimpleTeams.Axis;
+        }
     }
     public WorldUnitsManager.SimpleTeams GetTeam() { return m_Team; }
     public virtual void SetName(string name){
@@ -152,20 +156,21 @@ public class UnitMasterController : MonoBehaviour {
         gameObject.name = name;
     }
     public void SetPlayerManager(PlayerManager playerManager) {
+        // Debug.Log ("SetPlayerManager" +m_UnitName);
         PlayerManager = playerManager;
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
-            GetComponent<SpawnerScriptToAttach>().SetUnitController(this);
+            // GetComponent<SpawnerScriptToAttach>().SetUnitController(this);
         }
     }
     public void SetGameManager(GameManager gameManager){
         GameManager = gameManager;
     }
-    public GameObject GetUnitMapModel() {
-        return m_UnitMapModel;
+    public WorldUnitsManager.UnitSubCategories GetUnitSubCategory() {
+        return m_UnitSubCategory;
     }
     public int GetUnitCommandPointsCost() {
         return m_UnitCommandPointsCost;

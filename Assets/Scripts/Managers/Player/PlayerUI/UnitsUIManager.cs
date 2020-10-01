@@ -20,13 +20,7 @@ public class UnitsUIManager : MonoBehaviour {
     private GameObject TempUI;
     private GameObject ActiveUnit;
 
-    private GameObject m_UnitUI;
-    private GameObject m_UnitMapUI;
-
     private void Start() {
-        WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
-        m_UnitUI = worldUIVariables.m_UnitUI;
-        m_UnitMapUI = worldUIVariables.m_UnitMapUI;
     }
 
     public void Init(PlayerManager playerManager, Camera camera){
@@ -72,14 +66,14 @@ public class UnitsUIManager : MonoBehaviour {
         // Debug.Log ("CreateGameDisplay : "+ UnitList.Count);
         if (unitGameObject == null) {return;}
         // Debug.Log ("name : "+ unitGameObject.name);
-        TempUI = Instantiate(m_UnitUI, PlayerCanvas.transform);
+        TempUI = Instantiate(WorldUIVariables.GetUnitUI(), PlayerCanvas.transform);
         unitGameObject.GetComponent<UnitMasterController>().SetUIElement(TempUI);
         TempUI.GetComponent<UnitUIManager>().InitializeUIModule(Cam, unitGameObject, this);
         UnitUIList.Add(TempUI);
     }
     private void CreateUnitMapDisplay(GameObject unitGameObject){
         if (unitGameObject == null) {return;}
-        TempUI = Instantiate(m_UnitMapUI, PlayerMapCanvas.transform);
+        TempUI = Instantiate(WorldUIVariables.GetUnitMapUI(), PlayerMapCanvas.transform);
         unitGameObject.GetComponent<UnitMasterController>().SetUIMapElement(TempUI);
         TempUI.GetComponent<UnitMapUIManager>().InitializeUIModule(MapCam, unitGameObject, this);
         UnitUIMapList.Add(TempUI);

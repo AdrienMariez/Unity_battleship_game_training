@@ -45,17 +45,40 @@ public class UnitAIController : MonoBehaviour {
         }
     }
     void Start () {
+        // CheckMoveAbility();
+        CheckShootAbility();
+        CheckSpawnAbility();
+
+        StartCoroutine(AIOrdersLoop());
+        StartCoroutine(TrySpawnLoop());
+    }
+    public virtual void SetAIFromUnitManager(bool unitCanMove, bool unitCanShoot, bool unitCanSpawn) {      // Start from a spawn point
+        UnitCanMove = unitCanMove;
+        UnitCanShoot = unitCanShoot;
+        UnitCanSpawn = unitCanSpawn;
+        // if (unitCanMove) {
+        //     CheckMoveAbility();
+        // }
+        if (unitCanShoot) {
+            CheckShootAbility();
+        }
+        if (unitCanSpawn) {
+            CheckSpawnAbility();
+        }
+    }
+    // protected void CheckMoveAbility() {
+    // }
+    protected void CheckShootAbility() {
         if (!GetComponent<TurretManager>()) {
             // Debug.Log("Unit : "+ Name +"can't shoot");
             UnitCanShoot = false;
         }
+    }
+    protected void CheckSpawnAbility() {
         if (!GetComponent<SpawnerScriptToAttach>()) {
             // Debug.Log("Unit : "+ Name +"can't spawn");
             UnitCanSpawn = false;
         }
-
-        StartCoroutine(AIOrdersLoop());
-        StartCoroutine(TrySpawnLoop());
     }
 
     protected virtual void FixedUpdate() {
@@ -340,6 +363,7 @@ public class UnitAIController : MonoBehaviour {
         // Debug.Log("SpawnNewUnit");
         SpawnerScriptToAttach spawnerScript = GetComponent<SpawnerScriptToAttach>();
         int listCount = spawnerScript.GetTeamedSpawnableUnitsList().Count - 1;
+        if (listCount < 0 ) { return; } // Check if list is populated
         int unitChosen = Random.Range(0, listCount);
         // Debug.Log(unitChosen +" / "+listCount);
         if (spawnerScript.TrySpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {

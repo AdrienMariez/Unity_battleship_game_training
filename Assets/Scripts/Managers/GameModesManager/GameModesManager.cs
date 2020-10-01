@@ -5,7 +5,6 @@ public class GameModesManager : MonoBehaviour {
     // Global parameters
     protected UnitManager[] Units;
     protected GameManager GameManager;
-    protected WorldUnitsManager WorldUnitsManager;
     bool CustomScenario = false;
     CustomScenariosManager CustomScenariosManager;
 
@@ -37,7 +36,6 @@ public class GameModesManager : MonoBehaviour {
     }
     public virtual void Begin() {
         if (CustomScenario) { CustomScenariosManager.Begin(); }
-        WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
     }
 
     // Game Loop

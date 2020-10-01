@@ -197,7 +197,7 @@ public class PlayerManager : MonoBehaviour
         } else if (PlayerUnits.Count == 1) {
             // Debug.Log ("Case 2");
             ActiveTargetSet = true;
-        } else if (PlayerUnits[CurrentTarget] == null) {
+        } else if (PlayerUnits.Count < CurrentTarget) {         // Previously check was on (PlayerUnits[CurrentTarget] == null)
             // Debug.Log ("Case 3");
             ActiveTargetSet = false;
             SetNextTarget();
@@ -209,7 +209,7 @@ public class PlayerManager : MonoBehaviour
         ActiveTarget = PlayerUnits[CurrentTarget];
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
         // Debug.Log ("CurrentTarget : "+ CurrentTarget);
-        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Length);
+        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Count);
         UIManager.SetTargetType("Unknown");
 
         for (int i = 0; i < PlayerUnits.Count; i++){

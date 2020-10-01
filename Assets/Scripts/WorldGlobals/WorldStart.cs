@@ -6,9 +6,6 @@ public class WorldStart : MonoBehaviour {
     // Hi I am completely useless for the time being...
     private static bool FirstLoad = true;
     public static void WorldSetUnits() {
-        // Debug.Log ("WorldSetUnits");
-        // WorldUnitsManager = m_GlobalSharedVariables.GetComponent<WorldUnitsManager>();
-        // WorldUnitsManager.WorldSetMapInstances();
         // Debug.Log ("Test");
     }
 

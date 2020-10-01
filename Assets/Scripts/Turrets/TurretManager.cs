@@ -265,7 +265,11 @@ public class TurretManager : MonoBehaviour
 
     public void SetSingleTurretStatus(TurretStatusType status, int turretNumber){
         if (Active)
-            UnitMasterController.SetSingleTurretStatus(status, turretNumber);
+            if (!PlayerControl && !AIControl & status == TurretStatusType.Ready) {     // If no one is in control of the turrets, keep them red
+                UnitMasterController.SetSingleTurretStatus(TurretStatusType.PreventFire, turretNumber);
+            } else {
+                UnitMasterController.SetSingleTurretStatus(status, turretNumber);
+            }
     }
     public void SendPlayerShellToUI(GameObject shellInstance){
         if (Active)

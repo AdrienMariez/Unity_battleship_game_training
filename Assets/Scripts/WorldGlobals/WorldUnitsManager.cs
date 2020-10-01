@@ -29,7 +29,7 @@ public class WorldUnitsManager : MonoBehaviour {
         China,
         France
     }
-
+    // Australia,China,France,GreatBritain,Germany,Italy,Japan,NewZealand,USA,USSR
     public enum UnitCategories {
         ship,
         submarine,
@@ -44,19 +44,8 @@ public class WorldUnitsManager : MonoBehaviour {
         GroundTank,
         BuildingLandBase,BuildingShipyard,BuildingAirfield
     }
-        
-    private GameObject TempModel;
-    private GameObject TempMapModel;
 
-    /*[Serializable] public class VariableHolder
-    {
-        public bool var1;
-        public float var2 = 150f;
-        public float var3 = 25f;
-    }
- 
-    public VariableHolder instance = new VariableHolder();*/
-
+    // Carrier,Battleship,Cruiser,Destroyer,Submarine,Fighter,LightBomber,Bomber,Tank,LandBase,Shipyard,Airfield
     private static bool FirstLoad = true;
     private void Start() {
         if (FirstLoad){
@@ -65,13 +54,10 @@ public class WorldUnitsManager : MonoBehaviour {
         }
     }
     
-    // List<StarSystem> starSystems = new List<StarSystem>();
-    // List<Planet> planets = new List<Planet>();
-    // List<Sat> satellites = new List<Sat>();
     static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
     private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
 
-    public List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
+    public static List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
     
     private void WorldSetUnits() {
         foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
@@ -117,10 +103,10 @@ public class WorldUnitsManager : MonoBehaviour {
 
     protected void Update() { }
 
-    public void CreateNewUnit(GameObject unitGameObject, Teams team) {
+    public static void CreateNewUnit(GameObject unitGameObject, Teams team) {
         //Create the map element corresponding to the unit
-        TempModel = Instantiate(unitGameObject.GetComponent<UnitMasterController>().GetUnitMapModel(), unitGameObject.transform);
-        var Renderer = TempModel.GetComponent<Renderer>();
+        GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory()), unitGameObject.transform);
+        var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
     }
 

@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ShipHealth : MonoBehaviour {
-    private bool Dead = false;
     public float m_StartingHealth = 100f;               // The amount of health each tank starts with.
+    public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the Unit dies.
+
+    private bool Dead = false;
     private float CurrentHealth;
 
-
-    public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the tank dies.
 
     private AudioSource m_ExplosionAudio;               // The audio source to play when the tank explodes.
     private ParticleSystem m_ExplosionParticles;        // The particle system the will play when the tank is destroyed.

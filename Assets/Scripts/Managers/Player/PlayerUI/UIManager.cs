@@ -9,24 +9,13 @@ namespace UI {
     public class UIManager : MonoBehaviour {
         // Each instance of this class is linked to a single PlayerManager. Each player has his UI set independantly this way.
         [Header("Units UI")]
-            private GameObject TankUI;
-            private GameObject PlaneUI;
-            private GameObject ShipUI;
-            private GameObject BuildingUI;
             private GameObject PlayerUIInstance;
-            private GameObject PlayerMapUI;
-            private GameObject TurretUI;
             private GameObject TurretUIInstance;
-            private GameObject PlayerUI;
-            private GameObject PauseUI;
+            private GameObject PlayerUI;        // Refers to the gameObject all UI elements will be put in
             private GameObject PauseUIInstance;
-            // private GameObject PlayerCanvas;
-            // private GameObject PlayerMapCanvas;
         [Header("Turrets status icons")]
-            private GameObject TurretStatusSprites;
             private float IconsSpacing = 22;
         [Header("Shell Camera")]
-            private GameObject ShellCamera;
             private float TimeToDestroyCamera = 3;
         private Text Score;
             private string CurrentScore;
@@ -38,7 +27,7 @@ namespace UI {
         private Slider ShipSpeedStep;
             private float SpeedStep;
         private Text ShipCurrentSpeed;
-            const string ShipCurrentSpeedDisplay = "{0} km/h";
+            const string ShipCurrentSpeedDisplay = "{0} m/s";
         private Slider ShipTurningSpeed;
             private float CurrentRotation;
         private GameObject DisplayTurretsArtilleryAimer;
@@ -69,18 +58,8 @@ namespace UI {
 
         private void Start() {
             PlayerUI = GameObject.Find("UI");
-            WorldUIVariables worldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
-            TankUI = worldUIVariables.m_TankUI;
-            PlaneUI = worldUIVariables.m_PlaneUI;
-            ShipUI = worldUIVariables.m_ShipUI;
-            BuildingUI = worldUIVariables.m_BuildingUI;
-            PlayerMapUI = worldUIVariables.m_PlayerMapUI;
-            TurretUI = worldUIVariables.m_TurretUI;
-            PauseUI = worldUIVariables.m_PauseMenu;
-            TurretStatusSprites = worldUIVariables.m_TurretStatusSprites;
-            IconsSpacing = worldUIVariables.IconsSpacing;
-            ShellCamera = worldUIVariables.m_ShellCamera;
-            TimeToDestroyCamera = worldUIVariables.m_TimeToDestroyCamera;
+            IconsSpacing = WorldUIVariables.GetIconsSpacing();
+            TimeToDestroyCamera = WorldUIVariables.GetTimeToDestroyCamera();
         }
         private void Update() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
@@ -133,7 +112,7 @@ namespace UI {
             }
         }
         private void OpenTankUI() {
-            PlayerUIInstance = Instantiate(TankUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(WorldUIVariables.GetTankUI(), PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
@@ -151,7 +130,7 @@ namespace UI {
             Score.text = CurrentScore;
         }
         private void OpenBuildingUI() {
-            PlayerUIInstance = Instantiate(BuildingUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(WorldUIVariables.GetBuildingUI(), PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
@@ -165,7 +144,7 @@ namespace UI {
             Score.text = CurrentScore;
         }
         private void OpenPlaneUI() {
-            PlayerUIInstance = Instantiate(PlaneUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(WorldUIVariables.GetPlaneUI(), PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
@@ -183,7 +162,7 @@ namespace UI {
             Score.text = CurrentScore;
         }
         private void OpenShipUI() {
-            PlayerUIInstance = Instantiate(ShipUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(WorldUIVariables.GetShipUI(), PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
@@ -205,7 +184,7 @@ namespace UI {
                 Destroy (PlayerUIInstance); 
         }
         private void OpenTurretUI() {
-            TurretUIInstance = Instantiate(TurretUI, PlayerUI.transform);
+            TurretUIInstance = Instantiate(WorldUIVariables.GetTurretUI(), PlayerUI.transform);
 
             DisplayTurretsArtilleryAimer = TurretUIInstance.transform.Find("AimerArtillery").gameObject;
             DisplayTurretsAAAimer = TurretUIInstance.transform.Find("AimerAA").gameObject;
@@ -225,7 +204,7 @@ namespace UI {
                 Destroy (TurretUIInstance); 
         }
         private void OpenMapUI() {
-            PlayerUIInstance = Instantiate(PlayerMapUI, PlayerUI.transform);
+            PlayerUIInstance = Instantiate(WorldUIVariables.GetPlayerMapUI(), PlayerUI.transform);
 
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
@@ -290,7 +269,7 @@ namespace UI {
                 // Loop for each position
                 for (int i = 0; i < TurretStatus.Count; i++) {
                     // Debug.Log ("position : "+ position);
-                    GameObject turret = Instantiate(TurretStatusSprites, DisplayTurretsStatus.transform);
+                    GameObject turret = Instantiate(WorldUIVariables.GetTurretStatusSprites(), DisplayTurretsStatus.transform);
                 }
                 StartCoroutine(PauseAction());
             }
@@ -392,7 +371,7 @@ namespace UI {
         }
 
         protected void OpenPauseUI(){
-            PauseUIInstance = Instantiate(PauseUI, PlayerUI.transform);
+            PauseUIInstance = Instantiate(WorldUIVariables.GetPauseMenu(), PlayerUI.transform);
 
             Button buttonResumeGame = PauseUIInstance.transform.Find("ButtonResumeGame").GetComponent<Button>();
             buttonResumeGame.onClick.AddListener(ButtonResumeGameOnClick);
@@ -421,7 +400,7 @@ namespace UI {
         public void SendPlayerShellToUI(GameObject shellInstance){ if (!ShellCameraUsed) { CreatePlayerShellUI(shellInstance); } }
         private void CreatePlayerShellUI(GameObject shellInstance) {
             ShellCameraUsed = true;
-            GameObject shellCamera = Instantiate (ShellCamera, shellInstance.transform);
+            GameObject shellCamera = Instantiate (WorldUIVariables.GetShellCamera(), shellInstance.transform);
             shellInstance.GetComponent<ShellStat>().SetIsFollowedByCamera(PlayerManager, shellCamera, TimeToDestroyCamera);
         }
         public void ShellFollowedByCameraDestroyed() { StartCoroutine(WaitForDestroy()); }

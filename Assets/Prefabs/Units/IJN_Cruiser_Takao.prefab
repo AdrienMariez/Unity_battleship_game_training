@@ -1908,18 +1908,12 @@ MonoBehaviour:
     _offsetPosition: {x: -5, y: 0, z: 15}
   - _weight: 1
     _offsetPosition: {x: 5, y: 0, z: 15}
-  _forceHeightOffset: 0
-  _forceMultiplier: 8000
-  _minSpatialLength: 24
-  _turningHeel: 0.35
-  _dragInWaterUp: 1
-  _dragInWaterRight: 4
-  _dragInWaterForward: 0
-  _enginePower: 2
-  _turnPower: 0.15
-  _playerControlled: 1
-  _engineBias: 0
-  _turnBias: 0
+  _buoyancyMultiplier: 400
+  _objectWidth: 12
+  _dragVertical: 1
+  _enginePower: 35.5
+  _rotationTime: 100
+  _centrifugalForce: 0.35
 --- !u!114 &2323533620668912384
 MonoBehaviour:
   m_ObjectHideFlags: 0

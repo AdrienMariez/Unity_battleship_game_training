@@ -13,6 +13,10 @@ public class UnitManager {
     public string m_UnitName;
     public bool m_UseSpawnpoint;                            // Should the game use a spawnpoint for spawning ?
     public Transform m_SpawnPoint;                          // The position and direction the unit will have when it spawns.
+    [Header("AI control :")]
+    public bool UnitCanMove = true;
+    public bool UnitCanShoot = true;
+    public bool UnitCanSpawn = true;
     private GameObject Instance;                          // A reference to the instance of the tank when it is created.
     // [HideInInspector] public int m_Wins;                    // The number of wins this player has so far.
 
@@ -52,6 +56,9 @@ public class UnitManager {
             //send tag to units
             Instance.GetComponent<UnitMasterController>().SetTag(m_Team);
             Instance.GetComponent<UnitMasterController>().SetName(m_UnitName);
+            if (Instance.GetComponent<UnitAIController>()) {
+                Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(UnitCanMove, UnitCanShoot, UnitCanSpawn);
+            }
         } else{
             // If for some reason this isn't a unit ...?
             Instance.gameObject.tag = m_Team.ToString("g");

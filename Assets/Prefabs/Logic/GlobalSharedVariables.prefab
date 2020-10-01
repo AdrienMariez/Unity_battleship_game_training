@@ -119,16 +119,34 @@ MonoBehaviour:
     type: 3}
   m_TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
-  IconsSpacing: 22
+  m_IconsSpacing: 22
   m_SpawnerUI: {fileID: 3767798349071585903, guid: 98540111e42054e4a90966d5757c4900,
     type: 3}
   m_SpawnerUnitSelect: {fileID: 6431504518210083437, guid: 59e992760bddd3e42a90189199ebdf5b,
     type: 3}
-  SpawnerSpacing: 33
+  m_SpawnerSpacing: 22
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
   m_TimeToDestroyCamera: 3
   m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
     type: 3}
   m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
+    type: 3}
+  m_MapModels:
+  - m_Name: ShipBattleship
+    m_MapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
+      type: 3}
+  - m_Name: ShipCarrier
+    m_MapModel: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
+      type: 3}
+  - m_Name: ShipCruiser
+    m_MapModel: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
+      type: 3}
+  - m_Name: ShipDestroyer
+    m_MapModel: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
+      type: 3}
+  - m_Name: BuildingShipyard
+    m_MapModel: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
+      type: 3}
+  m_MapErrorModel: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
     type: 3}

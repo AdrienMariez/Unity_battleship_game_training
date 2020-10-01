@@ -692,8 +692,8 @@ MonoBehaviour:
   m_UnitSubCategory: 0
   m_Team: 0
   m_Nation: 0
-  m_UnitCost: 0
-  m_UnitPointValue: 0
+  m_UnitCommandPointsCost: 0
+  m_UnitVictoryPointsValue: 0
   m_UnitMapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
     type: 3}
   m_ShipComponents:
@@ -705,7 +705,6 @@ MonoBehaviour:
   - {fileID: 8355142522631704766}
   - {fileID: 7249044125137320703}
   - {fileID: 5636582554979631985}
-  m_ShipCategory: 0
 --- !u!114 &336099227619419933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,18 +774,12 @@ MonoBehaviour:
     _offsetPosition: {x: -5, y: 0, z: 15}
   - _weight: 1
     _offsetPosition: {x: 5, y: 0, z: 15}
-  _forceHeightOffset: 0
-  _forceMultiplier: 8000
-  _minSpatialLength: 24
-  _turningHeel: 0.35
-  _dragInWaterUp: 1
-  _dragInWaterRight: 4
-  _dragInWaterForward: 0
-  _enginePower: 2
-  _turnPower: 0.15
-  _playerControlled: 1
-  _engineBias: 0
-  _turnBias: 0
+  _buoyancyMultiplier: 400
+  _objectWidth: 24
+  _dragVertical: 3
+  _enginePower: 35
+  _rotationTime: 90
+  _centrifugalForce: 0.35
 --- !u!114 &2323533620668912384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,7 +804,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e2d05e7c905e044bf8c77187cefd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AIState: 0
+  UnitCanMove: 1
+  UnitCanShoot: 1
+  UnitCanSpawn: 1
+  ShipAISpawnState: 0
 --- !u!114 &8857893665739000309
 MonoBehaviour:
   m_ObjectHideFlags: 0

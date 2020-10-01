@@ -27,8 +27,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     private bool SpawnMenuOpen = false;
 
     // Globals
-    private WorldUIVariables WorldUIVariables;
-    private WorldUnitsManager WorldUnitsManager;
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
@@ -41,11 +39,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
 
     void Start() {
-        WorldUIVariables = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUIVariables>();
-        WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
-        SpawnerUI = WorldUIVariables.m_SpawnerUI;
-        SpawnerSpacing = WorldUIVariables.SpawnerSpacing;
-        // UnitController = GetComponent<UnitMasterController>();
+        SpawnerUI = WorldUIVariables.GetSpawnerUI();
+        SpawnerSpacing = WorldUIVariables.GetSpawnerSpacing();
+        UnitController = GetComponent<UnitMasterController>();
         CreateSpawnList();
     }
     private void CreateSpawnList() {
@@ -74,7 +70,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         //This method should be called if a building is captured
 
         TeamedSpawnableUnitsList = new List<WorldSingleUnit>();             // Clean the list
+
+        if (SpawnableUnitsList.Count == 0) { return; }
+        // The enemy AI bugs a bit on this part apparently, need to make appropriate checks.
+        // Debug.Log(UnitController.m_UnitName +" - SpawnableUnitsList.Count "+ SpawnableUnitsList.Count);
+
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
+            // Debug.Log(UnitController.m_UnitName +" - UnitController.GetTeam() "+ UnitController.GetTeam());
             if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
                 // Debug.Log (singleUnit.GetUnitName());
                 TeamedSpawnableUnitsList.Add(singleUnit);                   // Populate the list
@@ -127,7 +129,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     private void CreateUnitSpawnerListDisplay() {
         foreach (WorldSingleUnit singleUnit in TeamedSpawnableUnitsList) {
-            GameObject listElement = Instantiate(WorldUIVariables.m_SpawnerUnitSelect, SpawnListContainerInstance.transform);
+            GameObject listElement = Instantiate(WorldUIVariables.GetSpawnerUnitSelect(), SpawnListContainerInstance.transform);
         }
 
         float position = 0;
@@ -153,6 +155,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     private void CreateSingleUnitSpawnerListDisplay(WorldSingleUnit unit, int i) {
         //This will come in use when fancy cards will be made, I'm sure...
+        if (GameManager == null) {
+            
+        }
         if (GameManager.GetCommandPointSystem()) {
             string text;
             text = TeamedSpawnableUnitsList[i].GetUnitName() +" - / - "+ TeamedSpawnableUnitsList[i].GetUnitCommandPointsCost() +"\n";
@@ -238,7 +243,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     private void SwitchSpawnMenu() {
         SpawnMenuOpen = !SpawnMenuOpen;
-        PlayerManager.SetSpawnerMenu(SpawnMenuOpen);
+        if (PlayerManager != null) {   
+            PlayerManager.SetSpawnerMenu(SpawnMenuOpen);
+        }
     }
         
     public void SetActive(bool active) {
@@ -265,8 +272,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     public void SetPlayerManager(PlayerManager playerManager) {
         PlayerManager = playerManager;
     }
-    public void SetUnitController(UnitMasterController unitController) {
-        UnitController = unitController;
-    }
+    // public void SetUnitController(UnitMasterController unitController) {
+    //     UnitController = unitController;
+    // }
     public List<WorldSingleUnit> GetTeamedSpawnableUnitsList() { return TeamedSpawnableUnitsList; }
 }

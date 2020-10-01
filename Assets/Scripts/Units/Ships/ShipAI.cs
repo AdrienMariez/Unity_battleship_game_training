@@ -33,6 +33,12 @@ public class ShipAI : UnitAIController {
             }
         }
 
+        if (UnitsAICurrentState != UnitsAIStates.Idle && UnitsAICurrentState != UnitsAIStates.NoAI) {
+            if (!UnitCanMove) {
+                UnitsAICurrentState = UnitsAIStates.Idle;
+            }
+        }
+
         base.CheckState();
 
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState);

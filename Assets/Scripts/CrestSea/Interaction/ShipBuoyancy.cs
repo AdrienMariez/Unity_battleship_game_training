@@ -17,39 +17,39 @@ namespace Crest
 
         [Header("Forces")]
         [Tooltip("Override RB center of mass, in local space."), SerializeField]
-        Vector3 _centerOfMass = Vector3.zero;
+        public Vector3 _centerOfMass = Vector3.zero;
         [SerializeField, FormerlySerializedAs("ForcePoints")]
-        FloaterForcePoints[] _forcePoints = new FloaterForcePoints[] { };
-
-        [Tooltip("Vertical offset for where engine force should be applied."), SerializeField]
-        float _forceHeightOffset = 0f;
-        [SerializeField]
-        float _forceMultiplier = 10f;
-        [Tooltip("Width dimension of boat. The larger this value, the more filtered/smooth the wave response will be."), SerializeField]
-        float _minSpatialLength = 12f;
-        [SerializeField, Range(0, 1)]
-        float _turningHeel = 0.35f;
+        public FloaterForcePoints[] _forcePoints = new FloaterForcePoints[] { };
+        [Tooltip("Scale of the buoyancy of the unit. The larger this value, the harder will buoyancy limits be. The lowest this value is, the more difficult it will be to keep the unit afloat.")]
+        private float _buoyancyMultiplier;      // Now guessed from the rigidbody mass
+        [Tooltip("Width dimension of the unit. The larger this value, the more filtered/smooth the wave response will be."), SerializeField]
+        public float _objectWidth = 12f;
 
         [Header("Drag")]
-        [SerializeField]
-        float _dragInWaterUp = 3f;
-        [SerializeField]
-        float _dragInWaterRight = 2f;
-        [SerializeField]
-        float _dragInWaterForward = 1f;
+        [Tooltip("Drag of the ship. The higher the value, the lest the ship will up and down~~~~"), SerializeField, Range(0, 4)]
+        public float _dragVertical = 1f;
 
         [Header("Control")]
-        [SerializeField, FormerlySerializedAs("EnginePower")]
-        float _enginePower = 7;
-        [SerializeField, FormerlySerializedAs("TurnPower")]
-        float _turnPower = 0.5f;
-        [Header("Debug Controls")]
-        [SerializeField]
-        bool _playerControlled = true;
-        [Tooltip("Used to automatically add throttle input"), SerializeField]
-        float _engineBias = 0f;
-        [Tooltip("Used to automatically add turning input"), SerializeField]
-        float _turnBias = 0f;
+        [Tooltip("Max speed of the ship in nautical knots."), SerializeField, FormerlySerializedAs("EnginePower")]
+        public float _enginePower = 20;
+        [Tooltip("How long does a ship takes to make a full 180° rotation ? The lowest the value, the faster the ship will turn."), SerializeField, FormerlySerializedAs("TurnPower")]
+        public float _rotationTime = 12.5f;
+        private float _rotationTimeConverted = 0.5f;     // Converted _rotationTime for game mechanic
+        /*
+            0.5 = 12.5 s
+            0.05 = 130 s
+        */
+
+        // [Tooltip("How does the ship behaves when turning ? The higher the value, the more the ship will tip when turning (values too high can induce weird behaviour)"), SerializeField, Range(0, 1)]
+        // public float _centrifugalForce = 0.35f;
+
+        // [Header("Debug Controls")]
+        // [SerializeField]
+        // public bool _playerControlled = true;
+        // [Tooltip("Used to automatically add throttle input"), SerializeField]
+        // public float _engineBias = 0f;
+        // [Tooltip("Used to automatically add turning input"), SerializeField]
+        // public float _turnBias = 0f;
 
 
         private const float WATER_DENSITY = 1000;
@@ -61,7 +61,7 @@ namespace Crest
         Vector3 _displacementToObject = Vector3.zero;
         public override Vector3 CalculateDisplacementToObject() { return _displacementToObject; }
 
-        public override float ObjectWidth { get { return _minSpatialLength; } }
+        public override float ObjectWidth { get { return _objectWidth; } }
         public override bool InWater { get { return true; } }
 
         SamplingData _samplingData = new SamplingData();
@@ -79,6 +79,8 @@ namespace Crest
         private float RotationInput;
 
         private float SinkingFactor;
+        private float RandomSinkingRatio;
+        private float RandomSinkingRatioPoints;
         private float SinkingX;
         private float SinkingZ;
 
@@ -87,8 +89,9 @@ namespace Crest
             _rb = GetComponent<Rigidbody>();
             _rb.centerOfMass = _centerOfMass;
 
-            if (OceanRenderer.Instance == null)
-            {
+            _buoyancyMultiplier = _rb.mass / 10000;
+
+            if (OceanRenderer.Instance == null) {
                 enabled = false;
                 return;
             }
@@ -102,12 +105,15 @@ namespace Crest
             _queryResultVels = new Vector3[_forcePoints.Length + 1];
 
             SinkingFactor = 0f;
+            RandomSinkingRatio = UnityEngine.Random.Range(0.1f, 0.001f);
+            RandomSinkingRatioPoints = UnityEngine.Random.Range(0.001f, 0.00001f);
+
+            _rotationTimeConverted = (1/_rotationTime)*6.25f;
         }
 
         void CalcTotalWeight() {
             _totalWeight = 0f;
-            foreach (var pt in _forcePoints)
-            {
+            foreach (var pt in _forcePoints) {
                 _totalWeight += pt._weight;
             }
         }
@@ -118,8 +124,8 @@ namespace Crest
                 CalcTotalWeight();
             #endif
 
-            // If the ship is sinking, sink it by a factor determined in ShipController
-            if (Dead && SinkingFactor > 0 && _forceMultiplier > 0) {
+            // If the ship is sinking, sink it by a factor determined by _buoyancyMultiplier
+            if (Dead && SinkingFactor > 0 && _buoyancyMultiplier > 0) {
                 Sink(SinkingFactor, SinkingX, SinkingZ);
             }
             // Also, stop engines if the ship is dead.
@@ -129,15 +135,13 @@ namespace Crest
 
             // Trigger processing of displacement textures that have come back this frame. This will be processed
             // anyway in Update(), but FixedUpdate() is earlier so make sure it's up to date now.
-            if (OceanRenderer.Instance._simSettingsAnimatedWaves.CollisionSource == SimSettingsAnimatedWaves.CollisionSources.OceanDisplacementTexturesGPU && GPUReadbackDisps.Instance)
-            {
+            if (OceanRenderer.Instance._simSettingsAnimatedWaves.CollisionSource == SimSettingsAnimatedWaves.CollisionSources.OceanDisplacementTexturesGPU && GPUReadbackDisps.Instance) {
                 GPUReadbackDisps.Instance.ProcessRequests();
             }
 
             var collProvider = OceanRenderer.Instance.CollisionProvider;
             var thisRect = GetWorldAABB();
-            if (!collProvider.GetSamplingData(ref thisRect, _minSpatialLength, _samplingData))
-            {
+            if (!collProvider.GetSamplingData(ref thisRect, _objectWidth, _samplingData)) {
                 // No collision coverage for the sample area, in this case use the null provider.
                 collProvider = CollProviderNull.Instance;
             }
@@ -151,9 +155,8 @@ namespace Crest
 
             var waterSurfaceVel = _queryResultVels[_forcePoints.Length];
 
-            if(QueryFlow.Instance)
-            {
-                _sampleFlowHelper.Init(transform.position, _minSpatialLength);
+            if(QueryFlow.Instance) {
+                _sampleFlowHelper.Init(transform.position, _objectWidth);
                 Vector2 surfaceFlow = Vector2.zero;
                 _sampleFlowHelper.Sample(ref surfaceFlow);
                 waterSurfaceVel += new Vector3(surfaceFlow.x, 0, surfaceFlow.y);
@@ -169,8 +172,7 @@ namespace Crest
 
         void UpdateWaterQueries(ICollProvider collProvider){
             // Update query points
-            for (int i = 0; i < _forcePoints.Length; i++)
-            {
+            for (int i = 0; i < _forcePoints.Length; i++) {
                 _queryPoints[i] = transform.TransformPoint(_forcePoints[i]._offsetPosition + new Vector3(0, _centerOfMass.y, 0));
             }
             _queryPoints[_forcePoints.Length] = transform.position;
@@ -178,33 +180,36 @@ namespace Crest
             collProvider.Query(GetHashCode(), _samplingData, _queryPoints, _queryResultDisps, null, _queryResultVels);
         }
 
-        void FixedUpdateEngine(){
+        void FixedUpdateEngine() {
             var forcePosition = _rb.position;
 
-            if (!_playerControlled) {
-                var forward = _engineBias;
-                var sideways = _turnBias;   
-                _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
-                var rotVec = transform.up + _turningHeel * transform.forward;
-                _rb.AddTorque(rotVec * _turnPower * RotationInput, ForceMode.Acceleration);
-            }else{
-                _rb.AddForceAtPosition(transform.forward * _enginePower * SpeedInput, forcePosition, ForceMode.Acceleration);
-                var rotVec = transform.up + _turningHeel * transform.forward;
-                _rb.AddTorque(rotVec * _turnPower * RotationInput, ForceMode.Acceleration);
-            }
+            // if (!_playerControlled) {
+            //     var forward = _engineBias;
+            //     var sideways = _turnBias;
+            //     _rb.AddForceAtPosition(transform.forward * _enginePower * forward, forcePosition, ForceMode.Acceleration);
+            //     var rotVec = transform.up + _rotationTimeConverted * transform.forward;
+            //     _rb.AddTorque(rotVec * _rotationTimeConverted * RotationInput, ForceMode.Acceleration);
+            // }else{
+                // Convert _enginePower to game speed (m/s)
+                // m/s = * 0.2f
+                // Km/h = *0.055f
+                // Nautical knots = *0.103f
+                _rb.AddForceAtPosition(transform.forward * (_enginePower *0.103f) * SpeedInput, forcePosition, ForceMode.Acceleration);
+                // var rotVec = transform.up + _centrifugalForce * transform.forward;
+                var rotVec = transform.up + 1 * transform.forward;
+                _rb.AddTorque(rotVec * _rotationTimeConverted * RotationInput, ForceMode.Acceleration);
+            // }
         }
 
-        void FixedUpdateBuoyancy(ICollProvider collProvider)
-        {
+        void FixedUpdateBuoyancy(ICollProvider collProvider) {
             var archimedesForceMagnitude = WATER_DENSITY * Mathf.Abs(Physics.gravity.y);
 
-            for (int i = 0; i < _forcePoints.Length; i++)
-            {
+            for (int i = 0; i < _forcePoints.Length; i++) {
                 var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
                 var heightDiff = waterHeight - _queryPoints[i].y;
-                if (heightDiff > 0)
-                {
-                    _rb.AddForceAtPosition(archimedesForceMagnitude * heightDiff * Vector3.up * _forcePoints[i]._weight * _forceMultiplier / _totalWeight, _queryPoints[i]);
+                if (heightDiff > 0) {
+                    // _rb.AddForceAtPosition(archimedesForceMagnitude * heightDiff * Vector3.up * _forcePoints[i]._weight * _buoyancyMultiplier / _totalWeight, _queryPoints[i]);
+                    _rb.AddForceAtPosition(archimedesForceMagnitude * heightDiff * Vector3.up * _forcePoints[i]._weight * _buoyancyMultiplier, _queryPoints[i]);
                 }
             }
         }
@@ -214,10 +219,8 @@ namespace Crest
             // Apply drag relative to water
             var _velocityRelativeToWater = _rb.velocity - waterSurfaceVel;
 
-            var forcePosition = _rb.position + _forceHeightOffset * Vector3.up;
-            _rb.AddForceAtPosition(Vector3.up * Vector3.Dot(Vector3.up, -_velocityRelativeToWater) * _dragInWaterUp, forcePosition, ForceMode.Acceleration);
-            _rb.AddForceAtPosition(transform.right * Vector3.Dot(transform.right, -_velocityRelativeToWater) * _dragInWaterRight, forcePosition, ForceMode.Acceleration);
-            _rb.AddForceAtPosition(transform.forward * Vector3.Dot(transform.forward, -_velocityRelativeToWater) * _dragInWaterForward, forcePosition, ForceMode.Acceleration);
+            var forcePosition = _rb.position + Vector3.up;
+            _rb.AddForceAtPosition(Vector3.up * Vector3.Dot(Vector3.up, -_velocityRelativeToWater) * _dragVertical, forcePosition, ForceMode.Acceleration);
         }
 
         private void OnDrawGizmosSelected()
@@ -273,12 +276,12 @@ namespace Crest
 
         public void Sink(float sinking, float x, float z) {
             // Debug.Log("sinkingfactor = "+ sinking +" - x = "+ x +" - z = "+ z);
-            _forceMultiplier -= sinking;
+            _buoyancyMultiplier -= RandomSinkingRatio * sinking;
             for (int i = 0; i < _forcePoints.Length; i++) {
                 float localX = _forcePoints[i]._offsetPosition.x, localZ = _forcePoints[i]._offsetPosition.z;
                 if (Math.Sign(x) == Math.Sign(localX) || Math.Sign(z) == Math.Sign(localZ)) {
                     if (_forcePoints[i]._weight > 0)
-                        _forcePoints[i]._weight -= 0.0001f * SinkingFactor;
+                        _forcePoints[i]._weight -= RandomSinkingRatioPoints * SinkingFactor;
                 }
             }
 
@@ -293,10 +296,10 @@ namespace Crest
         public void SetSpeedInput(float Speed){ SpeedInput = Speed; }
         public void SetRotationInput(float Rotation){ RotationInput = Rotation; }
         public void SetDead(bool death) { Dead = death; }
-        public float GetRealSpeed(){
-            float Speed = _enginePower * SpeedInput;
-            return Speed;
-        }
+        // public float GetRealSpeed(){
+        //     float Speed = _enginePower * SpeedInput;
+        //     return Speed;
+        // }
     }
 
 

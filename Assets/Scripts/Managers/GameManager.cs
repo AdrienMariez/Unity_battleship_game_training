@@ -35,11 +35,8 @@ public class GameManager : MonoBehaviour {
     private int TeamAlliesUnits;
     private int TeamOppositionUnits;  // The use of Opposition instead of Axis is to prevent confusion between TeamAlliesUnits and TeamAxisUnits
 
-    private WorldUnitsManager WorldUnitsManager;
-
     private void Start() {
         // Debug.Log (GlobalStart.GlobalUnitList[0]);
-        WorldUnitsManager = GameObject.Find("GlobalSharedVariables").GetComponent<WorldUnitsManager>();
         // Set each PlayerManager
         foreach (PlayerManagerList player in m_Players) {
             PlayersManager.Add(player.m_Player.GetComponent<PlayerManager>());
@@ -83,7 +80,6 @@ public class GameManager : MonoBehaviour {
            playerManager.UnitSpawned(unitGameObject, unitTeam); 
         }
 
-        // unitGameObject.GetComponent<UnitMasterController>().GetUnitMapModel();
         UpdateScore(unitGameObject, unitTeam, true);
         UpdateGameModeGameplay();
         UpdateGameModeMessage();
@@ -185,6 +181,9 @@ public class GameManager : MonoBehaviour {
            playerManager.Reset(); 
         }
     }
+
+    
+
     public void EndGame() {
         string sceneName = "MainMenuScene3d";
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

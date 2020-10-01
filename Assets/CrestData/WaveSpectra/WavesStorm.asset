@@ -15,7 +15,7 @@ MonoBehaviour:
   _windSpeed: 10
   _fetch: 500000
   _waveDirectionVariance: 90
-  _gravityScale: 0.3
+  _gravityScale: 1
   _smallWavelengthMultiplier: 1
   _multiplier: 1
   _powerLog:
