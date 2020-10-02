@@ -6,10 +6,8 @@ public class ShipDamageControl : MonoBehaviour {
     private bool Pause = false;
     private bool ShipDead = false;
     private bool MapActive = false;
-    public GameObject m_DamageControlUI;
     private GameObject DamageControlInstance;
 
-    public GameObject m_DamageControlAlertUI;
     private GameObject DamageControlAlertInstance;
     public float RepairRate = 3;
     public int RepairCrew = 3;
@@ -70,7 +68,7 @@ public class ShipDamageControl : MonoBehaviour {
         // Cursor.lockState = CursorLockMode.None;
         // Cursor.visible = true;
 
-        DamageControlInstance = Instantiate(m_DamageControlUI);
+        DamageControlInstance = Instantiate(WorldUIVariables.GetShipDamageControlUI());
         // DamageControlInstance.transform.Find("UnitName").GetComponent<Text>().text = UnitName;
 
         EngineCrewText = DamageControlInstance.transform.Find("EngineCrewCount").GetComponent<Text>();
@@ -277,7 +275,7 @@ public class ShipDamageControl : MonoBehaviour {
         // Debug.Log("SetAlertsDamageControlDisplay()");
         if (Active && !ShipDead && EngineStatus > 0 || Active && !ShipDead && SteeringStatus || Active && !ShipDead && FireStatus || Active && !ShipDead && WaterStatus || Active && !ShipDead && DamagedTurrets > 0) {
             if (!DamageControlAlertInstance) {
-                DamageControlAlertInstance = Instantiate(m_DamageControlAlertUI);
+                DamageControlAlertInstance = Instantiate(WorldUIVariables.GetShipDamageControlAlertUI());
             }
             if (EngineStatus == 2) {
                 DamageControlAlertInstance.transform.Find("EngineDestroyed").gameObject.SetActive(true);

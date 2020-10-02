@@ -1,0 +1,1866 @@
+{
+	"sheets": [
+		{
+			"name": "Units",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "id"
+				},
+				{
+					"typeStr": "0",
+					"name": "Name"
+				},
+				{
+					"typeStr": "6:Units_sub_categories",
+					"name": "Category"
+				},
+				{
+					"typeStr": "6:Countries",
+					"name": "Nation"
+				},
+				{
+					"typeStr": "8",
+					"name": "Score",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "Camera",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "Health",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "Damagecontrol",
+					"opt": true
+				},
+				{
+					"typeStr": "8",
+					"name": "Buoyancy"
+				},
+				{
+					"typeStr": "4",
+					"name": "Unitmass"
+				},
+				{
+					"typeStr": "8",
+					"name": "Unitweapons",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"Name": "Fuso",
+					"Score": [
+						{
+							"Commandpoints": 400,
+							"Victorypoints": 350
+						}
+					],
+					"Camera": [
+						{
+							"Distance": 120,
+							"Height": 25,
+							"Lateraloffset": 0
+						}
+					],
+					"Health": 10000,
+					"Nation": "japan",
+					"Category": "Battleship",
+					"index": 0,
+					"Unitweapons": [
+						{
+							"Type": "JapanBB356mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -25.004,
+									"Pos_z": 56.89,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBB356mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -21.823,
+									"Pos_z": 43.637,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBB356mmB",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -25.13,
+									"Pos_z": 5.06,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 315,
+									"ZoneEnd": 45
+								}
+							],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBB356mmB",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -22.99,
+									"Pos_z": -25.7,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 45,
+									"ZoneEnd": 315
+								}
+							],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBB356mmB",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -25.22,
+									"Pos_z": -56.29,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBB356mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -28.119,
+									"Pos_z": -70.121,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 9.87,
+									"Pos_y": -28.2,
+									"Pos_z": 41.81,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 130
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -9.87,
+									"Pos_y": -28.2,
+									"Pos_z": 41.81,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 130,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 10.95,
+									"Pos_y": -28.2,
+									"Pos_z": 29.26,
+									"Rotation_x": 0,
+									"Rotation_y": 30,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 110
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -10.95,
+									"Pos_y": -28.2,
+									"Pos_z": 29.26,
+									"Rotation_x": 0,
+									"Rotation_y": -30,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 110,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 11.89,
+									"Pos_y": -28.2,
+									"Pos_z": 16.58,
+									"Rotation_x": 0,
+									"Rotation_y": 30,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 120
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -11.89,
+									"Pos_y": -28.2,
+									"Pos_z": 16.58,
+									"Rotation_x": 0,
+									"Rotation_y": -30,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 120,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 12.12,
+									"Pos_y": -28.2,
+									"Pos_z": 0.89,
+									"Rotation_x": 0,
+									"Rotation_y": 150,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 120,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -12.12,
+									"Pos_y": -28.2,
+									"Pos_z": 0.89,
+									"Rotation_x": 0,
+									"Rotation_y": -150,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 120
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 12.08,
+									"Pos_y": -28.2,
+									"Pos_z": -16.7,
+									"Rotation_x": 0,
+									"Rotation_y": 150,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 120,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -12.08,
+									"Pos_y": -28.2,
+									"Pos_z": -16.7,
+									"Rotation_x": 0,
+									"Rotation_y": -150,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 120
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 11.93,
+									"Pos_y": -28.2,
+									"Pos_z": -26.69,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 150,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -11.93,
+									"Pos_y": -28.2,
+									"Pos_z": -26.69,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 150
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": 9.7,
+									"Pos_y": -28.2,
+									"Pos_z": -38.86,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 125,
+							"Left_traverse_limitation": 0
+						},
+						{
+							"Type": "JapanBBCasemate120mm",
+							"Position": [
+								{
+									"Pos_x": -9.7,
+									"Pos_y": -28.2,
+									"Pos_z": -38.86,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 0,
+							"Left_traverse_limitation": 125
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": 6.96,
+									"Pos_y": -22.14,
+									"Pos_z": 26.27,
+									"Rotation_x": 0,
+									"Rotation_y": 90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 90,
+							"Left_traverse_limitation": 80
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": -6.96,
+									"Pos_y": 22.14,
+									"Pos_z": 26.27,
+									"Rotation_x": 0,
+									"Rotation_y": -90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 80,
+							"Left_traverse_limitation": 90
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": -3.18,
+									"Pos_y": -16.98,
+									"Pos_z": -48.08,
+									"Rotation_x": 0,
+									"Rotation_y": -90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 130,
+							"Left_traverse_limitation": 60
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": 3.18,
+									"Pos_y": -16.98,
+									"Pos_z": -48.08,
+									"Rotation_x": 0,
+									"Rotation_y": 90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 60,
+							"Left_traverse_limitation": 130
+						}
+					],
+					"Buoyancy": [
+						{
+							"Center_of_mass": [
+								{
+									"X": 0,
+									"Y": -2,
+									"Z": 0
+								}
+							],
+							"Force_points": [
+								{
+									"X": 10,
+									"Y": 0,
+									"Z": 80
+								},
+								{
+									"X": -10,
+									"Y": 0,
+									"Z": 80
+								},
+								{
+									"X": 15,
+									"Y": 0,
+									"Z": 0
+								},
+								{
+									"X": -15,
+									"Y": 0,
+									"Z": 0
+								},
+								{
+									"X": 10,
+									"Y": 0,
+									"Z": -80
+								},
+								{
+									"X": -10,
+									"Y": 0,
+									"Z": -80
+								}
+							],
+							"Model_width": 24,
+							"Vertical_drag": 3,
+							"Engine_power": 24.7,
+							"Rotation_time": 120
+						}
+					],
+					"Damagecontrol": [
+						{
+							"Repairrate": 3,
+							"Repaircrew": 3
+						}
+					],
+					"Unitmass": 38536000,
+					"id": "fuso"
+				},
+				{
+					"Name": "Takao",
+					"Category": "Battleship",
+					"Nation": "japan",
+					"Score": [
+						{
+							"Commandpoints": 200,
+							"Victorypoints": 100
+						}
+					],
+					"Camera": [
+						{
+							"Distance": 105,
+							"Height": 25,
+							"Lateral Offset": 0,
+							"Lateraloffset": 0
+						}
+					],
+					"Health": 8000,
+					"index": 1,
+					"Buoyancy": [
+						{
+							"Center_of_mass": [
+								{
+									"X": 0,
+									"Y": -2,
+									"Z": 0
+								}
+							],
+							"Force_points": [
+								{
+									"X": 8,
+									"Y": 0,
+									"Z": 70
+								},
+								{
+									"X": -8,
+									"Y": 0,
+									"Z": 70
+								},
+								{
+									"X": 10,
+									"Y": 0,
+									"Z": 0
+								},
+								{
+									"X": -10,
+									"Y": 0,
+									"Z": 0
+								},
+								{
+									"X": 8,
+									"Y": 0,
+									"Z": -70
+								},
+								{
+									"X": -8,
+									"Y": 0,
+									"Z": -70
+								}
+							],
+							"Model_width": 10,
+							"Vertical_drag": 2,
+							"Engine_power": 35.5,
+							"Rotation_time": 100
+						}
+					],
+					"Unitweapons": [
+						{
+							"Type": "JapanCA200mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -27.227,
+									"Pos_z": 55.6,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 145,
+							"Left_traverse_limitation": 145
+						},
+						{
+							"Type": "JapanCA200mmB",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -24.37,
+									"Pos_z": 46.27,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 155,
+									"ZoneEnd": 205
+								}
+							],
+							"Right_traverse_limitation": 155,
+							"Left_traverse_limitation": 155
+						},
+						{
+							"Type": "JapanCA200mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -27.344,
+									"Pos_z": 37.892,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [
+								{
+									"ZoneBegin": 315,
+									"ZoneEnd": 45,
+									"VerticalMinOverride": 130,
+									"VerticalMaxOverride": 0
+								}
+							],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 315,
+									"ZoneEnd": 45
+								}
+							],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanCA200mmY",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -23.84,
+									"Pos_z": -52.75,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 140,
+							"Left_traverse_limitation": 140
+						},
+						{
+							"Type": "JapanCA200mmA",
+							"Position": [
+								{
+									"Pos_x": 0,
+									"Pos_y": -27.239,
+									"Pos_z": -61.148,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 145,
+							"Left_traverse_limitation": 145
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": -7.47,
+									"Pos_y": -25.49,
+									"Pos_z": 6.4,
+									"Rotation_x": 0,
+									"Rotation_y": -90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 60,
+							"Left_traverse_limitation": 60
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": 7.47,
+									"Pos_y": -25.49,
+									"Pos_z": 6.4,
+									"Rotation_x": 0,
+									"Rotation_y": 90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 60,
+							"Left_traverse_limitation": 60
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": -7.47,
+									"Pos_y": -25.49,
+									"Pos_z": -12.97,
+									"Rotation_x": 0,
+									"Rotation_y": -90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 60,
+							"Left_traverse_limitation": 60
+						},
+						{
+							"Type": "Japan120mmType10AATwin",
+							"Position": [
+								{
+									"Pos_x": 7.47,
+									"Pos_y": -25.49,
+									"Pos_z": -12.97,
+									"Rotation_x": 0,
+									"Rotation_y": 90,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [],
+							"Right_traverse_limitation": 60,
+							"Left_traverse_limitation": 60
+						},
+						{
+							"Type": "JapanTorpedo4CA",
+							"Position": [
+								{
+									"Pos_x": -7.96,
+									"Pos_y": -27.88,
+									"Pos_z": 11.58,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 330,
+									"ZoneEnd": 50
+								}
+							],
+							"Right_traverse_limitation": 100,
+							"Left_traverse_limitation": 5
+						},
+						{
+							"Type": "JapanTorpedo4CA",
+							"Position": [
+								{
+									"Pos_x": 7.96,
+									"Pos_y": -27.88,
+									"Pos_z": 11.58,
+									"Rotation_x": 0,
+									"Rotation_y": 0,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 330,
+									"ZoneEnd": 50
+								}
+							],
+							"Right_traverse_limitation": 5,
+							"Left_traverse_limitation": 100
+						},
+						{
+							"Type": "JapanTorpedo4CA",
+							"Position": [
+								{
+									"Pos_x": -8.66,
+									"Pos_y": -27.88,
+									"Pos_z": -6.61,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": true,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 330,
+									"ZoneEnd": 50
+								}
+							],
+							"Right_traverse_limitation": 5,
+							"Left_traverse_limitation": 100
+						},
+						{
+							"Type": "JapanTorpedo4CA",
+							"Position": [
+								{
+									"Pos_x": 8.66,
+									"Pos_y": -27.88,
+									"Pos_z": -6.61,
+									"Rotation_x": 0,
+									"Rotation_y": 180,
+									"Rotation_z": 0
+								}
+							],
+							"Mirror": false,
+							"Elevation_zones": [],
+							"No_fire_zones": [
+								{
+									"ZoneBegin": 330,
+									"ZoneEnd": 50
+								}
+							],
+							"Right_traverse_limitation": 100,
+							"Left_traverse_limitation": 5
+						}
+					],
+					"Damagecontrol": [
+						{
+							"Repairrate": 3,
+							"Repaircrew": 5
+						}
+					],
+					"Unitmass": 12781000,
+					"id": "takao"
+				}
+			],
+			"separators": [],
+			"props": {
+				"hasIndex": true
+			}
+		},
+		{
+			"name": "Units@Score",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "Commandpoints"
+				},
+				{
+					"typeStr": "3",
+					"name": "Victorypoints"
+				}
+			]
+		},
+		{
+			"name": "Units@Camera",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "Distance",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Height",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Lateraloffset"
+				}
+			]
+		},
+		{
+			"name": "Units@Damagecontrol",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "Repairrate"
+				},
+				{
+					"typeStr": "3",
+					"name": "Repaircrew",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "Units_categories",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				}
+			],
+			"lines": [
+				{
+					"Name": "Ship",
+					"index": 0,
+					"id": "ship"
+				},
+				{
+					"Name": "Submarine",
+					"index": 1,
+					"id": "submarine"
+				},
+				{
+					"Name": "Aircraft",
+					"index": 2,
+					"id": "aircraft"
+				},
+				{
+					"Name": "Ground",
+					"index": 3,
+					"id": "ground"
+				},
+				{
+					"Name": "Building",
+					"index": 4,
+					"id": "building"
+				}
+			],
+			"separators": [],
+			"props": {
+				"hasIndex": true,
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Units_sub_categories",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "Classification"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "6:Units_categories",
+					"name": "Category",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"Name": "Battleship",
+					"Category": "ship",
+					"index": 0,
+					"Classification": "BB",
+					"id": "Battleship"
+				},
+				{
+					"Name": "Carrier",
+					"Category": "ship",
+					"index": 1,
+					"Classification": "CV",
+					"id": "Carrier"
+				},
+				{
+					"Name": "Heavy_Cruiser",
+					"Category": "ship",
+					"index": 2,
+					"Classification": "CA",
+					"id": "Heavy_Cruiser"
+				},
+				{
+					"Name": "Light_Cruiser",
+					"Category": "ship",
+					"index": 3,
+					"Classification": "CL",
+					"id": "Light_Cruiser"
+				},
+				{
+					"Name": "Destroyer",
+					"Category": "ship",
+					"index": 4,
+					"Classification": "DD",
+					"id": "Destroyer"
+				},
+				{
+					"Name": "Attack_Submarine",
+					"Category": "ship",
+					"index": 5,
+					"Classification": "SS",
+					"id": "Attack_Submarine"
+				},
+				{
+					"Name": "Fighter",
+					"Category": "aircraft",
+					"index": 6,
+					"Classification": "AF",
+					"id": "Fighter"
+				},
+				{
+					"Name": "Light_Bomber",
+					"Category": "aircraft",
+					"index": 7,
+					"Classification": "ALB",
+					"id": "Light_Bomber"
+				},
+				{
+					"Name": "Heavy_Bomber",
+					"Category": "aircraft",
+					"index": 8,
+					"Classification": "AHB",
+					"id": "Heavy_Bomber"
+				},
+				{
+					"Name": "Tank",
+					"Category": "ground",
+					"index": 9,
+					"Classification": "GBT",
+					"id": "Tank"
+				},
+				{
+					"Name": "Airfield",
+					"Category": "building",
+					"index": 10,
+					"Classification": "BAF",
+					"id": "Airfield"
+				},
+				{
+					"Name": "Shipyard",
+					"Category": "building",
+					"index": 11,
+					"Classification": "BSY",
+					"id": "Shipyard"
+				},
+				{
+					"Name": "LandBase",
+					"Category": "building",
+					"index": 12,
+					"Classification": "BLB",
+					"id": "LandBase"
+				}
+			],
+			"separators": [
+				5,
+				6,
+				9,
+				10
+			],
+			"props": {
+				"hasIndex": true,
+				"hasGroup": true,
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Teams",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				}
+			],
+			"lines": [
+				{
+					"Name": "Allies",
+					"index": 0,
+					"id": "Allies"
+				},
+				{
+					"Name": "Axis",
+					"index": 1,
+					"id": "Axis"
+				},
+				{
+					"Name": "Neutral",
+					"index": 2,
+					"id": "Neutral"
+				}
+			],
+			"separators": [],
+			"props": {
+				"hasIndex": true,
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Countries",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "6:Teams",
+					"name": "Team",
+					"display": null
+				},
+				{
+					"typeStr": "7",
+					"name": "Flag",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"Name": "Australia",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 0,
+					"id": "australia"
+				},
+				{
+					"Name": "China",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 1,
+					"id": "china"
+				},
+				{
+					"Name": "France",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 2,
+					"id": "france"
+				},
+				{
+					"Name": "GreatBritain",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 3,
+					"id": "greatbritain"
+				},
+				{
+					"Name": "Germany",
+					"Flag": "",
+					"Team": "Axis",
+					"index": 4,
+					"id": "germany"
+				},
+				{
+					"Name": "Italy",
+					"Flag": "",
+					"Team": "Axis",
+					"index": 5,
+					"id": "italy"
+				},
+				{
+					"Name": "Japan",
+					"Flag": "",
+					"Team": "Axis",
+					"index": 6,
+					"id": "japan"
+				},
+				{
+					"Name": "NewZealand",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 7,
+					"id": "newzealand"
+				},
+				{
+					"Name": "USA",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 8,
+					"id": "usa"
+				},
+				{
+					"Name": "USSR",
+					"Flag": "",
+					"Team": "Allies",
+					"index": 9,
+					"id": "ussr"
+				}
+			],
+			"separators": [],
+			"props": {
+				"hasIndex": true,
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Weapons",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "2",
+					"name": "Isavariant"
+				},
+				{
+					"typeStr": "6:Weapons",
+					"name": "Variant",
+					"opt": true
+				},
+				{
+					"typeStr": "13",
+					"name": "Model",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Health",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Armor",
+					"opt": true
+				},
+				{
+					"typeStr": "6:Weapons_types",
+					"name": "Weapon_type",
+					"opt": true
+				},
+				{
+					"typeStr": "6:Ammos",
+					"name": "Ammo",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Max_range",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Min_range",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Muzzle_velocity",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Reload_time",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "Precision",
+					"display": 1,
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Rotation_speed",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Elevation_speed",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Max_vertical_traverse",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Min_vertical_traverse",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"Health": 200,
+					"Armor": 279,
+					"Name": "JpBB356A",
+					"Precision": 75,
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_A.prefab",
+					"Ammo": "ShellJapan356mm",
+					"Isavariant": false,
+					"Weapon_type": "artillery",
+					"Max_range": 35450,
+					"Min_range": 500,
+					"Muzzle_velocity": 775,
+					"Reload_time": 15,
+					"Rotation_speed": 10,
+					"Elevation_speed": 10,
+					"Min_vertical_traverse": 80,
+					"Max_vertical_traverse": 124,
+					"id": "JapanBB356mmA"
+				},
+				{
+					"Name": "JpBB356B",
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Fuso_Main_B.prefab",
+					"Variant": "JapanBB356mmA",
+					"Isavariant": true,
+					"id": "JapanBB356mmB"
+				},
+				{
+					"Name": "JpCA200A",
+					"Health": 200,
+					"Armor": 25,
+					"Ammo": "ShellJapan200mm",
+					"Precision": 75,
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_A.prefab",
+					"Isavariant": false,
+					"Weapon_type": "artillery",
+					"Max_range": 29000,
+					"Min_range": 300,
+					"Muzzle_velocity": 835,
+					"Reload_time": 10,
+					"Rotation_speed": 15,
+					"Elevation_speed": 15,
+					"Min_vertical_traverse": 80,
+					"Max_vertical_traverse": 145,
+					"id": "JapanCA200mmA"
+				},
+				{
+					"Name": "JpCA200B",
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_B.prefab",
+					"Variant": "JapanCA200mmA",
+					"Isavariant": true,
+					"id": "JapanCA200mmB"
+				},
+				{
+					"Name": "JpCA200Y",
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_Y.prefab",
+					"Variant": "JapanCA200mmA",
+					"Isavariant": true,
+					"id": "JapanCA200mmY"
+				},
+				{
+					"Name": "Jp120Type10AAx2",
+					"Health": 100,
+					"Armor": 12,
+					"Ammo": "ShellJapan152mm",
+					"Precision": 60,
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/TurretJapan120mmType10AATwin.prefab",
+					"Isavariant": false,
+					"Weapon_type": "antiairartillery",
+					"Max_range": 16000,
+					"Min_range": 200,
+					"Muzzle_velocity": 825,
+					"Reload_time": 2,
+					"Rotation_speed": 15,
+					"Elevation_speed": 15,
+					"Min_vertical_traverse": 85,
+					"Max_vertical_traverse": 165,
+					"id": "Japan120mmType10AATwin"
+				},
+				{
+					"Name": "JpBBCasemate120",
+					"Health": 100,
+					"Armor": 100,
+					"Ammo": "ShellJapan120mm",
+					"Precision": 80,
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Fuso_Casemate.prefab",
+					"Isavariant": false,
+					"Weapon_type": "artillery",
+					"Max_range": 19000,
+					"Min_range": 5,
+					"Muzzle_velocity": 855,
+					"Reload_time": 10,
+					"Rotation_speed": 10,
+					"Elevation_speed": 10,
+					"Min_vertical_traverse": 80,
+					"Max_vertical_traverse": 124,
+					"id": "JapanBBCasemate120mm"
+				},
+				{
+					"Name": "JpTorp4CA",
+					"Health": 100,
+					"Armor": 12,
+					"Model": "../battleship_game/Assets/Prefabs/Weapons/TorpedoLauncherJapanQuadTakao.prefab",
+					"Ammo": "TorpedoJapan610mm",
+					"Precision": 77,
+					"Isavariant": false,
+					"Weapon_type": "torpedoes",
+					"Max_range": 16000,
+					"Min_range": 0,
+					"Muzzle_velocity": 17,
+					"Reload_time": 15,
+					"Rotation_speed": 35,
+					"Elevation_speed": 1,
+					"Min_vertical_traverse": 90,
+					"Max_vertical_traverse": 90,
+					"id": "JapanTorpedo4CA"
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Weapons_types",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				}
+			],
+			"lines": [
+				{
+					"Name": "Artillery",
+					"id": "artillery"
+				},
+				{
+					"Name": "AntiAirArtillery",
+					"id": "antiairartillery"
+				},
+				{
+					"Name": "AntiAir",
+					"id": "antiair"
+				},
+				{
+					"Name": "Torpedoes",
+					"id": "torpedoes"
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Ammos",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "4",
+					"name": "Weight",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "DamageMax",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "DamageMin",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "ArmorPenetration",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "ExplosionRadius",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "MaxLifeTime",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"Name": "ShellJapan356mm",
+					"Weight": 673.5,
+					"ArmorPenetration": 100,
+					"ExplosionRadius": 30,
+					"MaxLifeTime": 3,
+					"DamageMax": 150,
+					"DamageMin": 10,
+					"id": "ShellJapan356mm"
+				},
+				{
+					"Name": "ShellJapan200mm",
+					"Weight": 120,
+					"ArmorPenetration": 100,
+					"ExplosionRadius": 20,
+					"MaxLifeTime": 3,
+					"DamageMax": 100,
+					"DamageMin": 10,
+					"id": "ShellJapan200mm"
+				},
+				{
+					"Name": "ShellJapan152mm",
+					"Weight": 45,
+					"ArmorPenetration": 100,
+					"ExplosionRadius": 10,
+					"MaxLifeTime": 3,
+					"DamageMax": 20,
+					"DamageMin": 10,
+					"id": "ShellJapan152mm"
+				},
+				{
+					"Name": "ShellJapan120mm",
+					"Weight": 20.6,
+					"DamageMax": 20,
+					"DamageMin": 10,
+					"ArmorPenetration": 30,
+					"ExplosionRadius": 10,
+					"MaxLifeTime": 3,
+					"id": "ShellJapan120mm"
+				},
+				{
+					"Name": "TorpedoJapan610mm",
+					"Weight": 2700,
+					"DamageMax": 300,
+					"DamageMin": 10,
+					"ArmorPenetration": 200,
+					"ExplosionRadius": 40,
+					"MaxLifeTime": 300,
+					"id": "TorpedoJapan610mm"
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Units@Unitweapons",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Weapons",
+					"name": "Type",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "Position"
+				},
+				{
+					"typeStr": "2",
+					"name": "Mirror",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Left_traverse_limitation",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Right_traverse_limitation",
+					"opt": true
+				},
+				{
+					"typeStr": "8",
+					"name": "No_fire_zones"
+				},
+				{
+					"typeStr": "8",
+					"name": "Elevation_zones"
+				}
+			]
+		},
+		{
+			"name": "Units@Buoyancy",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "8",
+					"name": "Center_of_mass"
+				},
+				{
+					"typeStr": "8",
+					"name": "Force_points"
+				},
+				{
+					"typeStr": "4",
+					"name": "Model_width",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Vertical_drag",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Engine_power",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Rotation_time",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "Units@Buoyancy@Center_of_mass",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "X",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Y",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "Z",
+					"opt": true,
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Units@Buoyancy@Force_points",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "X"
+				},
+				{
+					"typeStr": "4",
+					"name": "Y",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Z",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Units@Unitweapons@No_fire_zones",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "ZoneBegin",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "ZoneEnd",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Units@Unitweapons@Elevation_zones",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "ZoneBegin",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "ZoneEnd",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "VerticalMaxOverride"
+				},
+				{
+					"typeStr": "4",
+					"name": "VerticalMinOverride",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Units@Unitweapons@Position",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "Pos_x"
+				},
+				{
+					"typeStr": "4",
+					"name": "Pos_y"
+				},
+				{
+					"typeStr": "4",
+					"name": "Pos_z"
+				},
+				{
+					"typeStr": "4",
+					"name": "Rotation_x"
+				},
+				{
+					"typeStr": "4",
+					"name": "Rotation_y"
+				},
+				{
+					"typeStr": "4",
+					"name": "Rotation_z"
+				}
+			]
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

@@ -23,6 +23,9 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Units UI")]
         public GameObject m_UnitUI;
         public GameObject m_UnitMapUI;
+    [Header("Damage Control UI")]
+        public GameObject m_ShipDamageControlUI;
+        public GameObject m_ShipDamageControlAlertUI;
     [Header("Map Models")]
         public MapModelsList[] m_MapModels;
         public GameObject m_MapErrorModel;
@@ -50,7 +53,10 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Static Units UI")]
         private static GameObject UnitUI;
         private static GameObject UnitMapUI;
-    [Header("Map Models")]
+    [Header("Static Damage Control UI")]
+        private static GameObject ShipDamageControlUI;
+        private static GameObject ShipDamageControlAlertUI;
+    [Header("Static Map Models")]
         private static MapModelsList[] MapModels;
         private static GameObject MapErrorModel;
 
@@ -69,15 +75,23 @@ public class WorldUIVariables : MonoBehaviour {
         PlayerMapUI = m_PlayerMapUI;
         TurretUI = m_TurretUI;
         PauseMenu = m_PauseMenu;
+
         TurretStatusSprites = m_TurretStatusSprites;
         IconsSpacing = m_IconsSpacing;
+
         SpawnerUI = m_SpawnerUI;
         SpawnerUnitSelect = m_SpawnerUnitSelect;
         SpawnerSpacing = m_SpawnerSpacing;
+
         ShellCamera = m_ShellCamera;
         TimeToDestroyCamera = m_TimeToDestroyCamera;
+
         UnitUI = m_UnitUI;
         UnitMapUI = m_UnitMapUI;
+
+        ShipDamageControlUI = m_ShipDamageControlUI;
+        ShipDamageControlAlertUI = m_ShipDamageControlAlertUI;
+
         MapModels = m_MapModels;
         MapErrorModel = m_MapErrorModel;
     }
@@ -88,13 +102,20 @@ public class WorldUIVariables : MonoBehaviour {
     public static GameObject GetPlayerMapUI() { return PlayerMapUI; }
     public static GameObject GetTurretUI() { return TurretUI; }
     public static GameObject GetPauseMenu() { return PauseMenu; }
+
     public static GameObject GetTurretStatusSprites() { return TurretStatusSprites; }
     public static float GetIconsSpacing() { return IconsSpacing; }
+
     public static GameObject GetSpawnerUI() { return SpawnerUI; }
     public static GameObject GetSpawnerUnitSelect() { return SpawnerUnitSelect; }
     public static float GetSpawnerSpacing() { return SpawnerSpacing; }
+
     public static GameObject GetShellCamera() { return ShellCamera; }
     public static float GetTimeToDestroyCamera() { return TimeToDestroyCamera; }
+
+    public static GameObject GetShipDamageControlUI() { return ShipDamageControlUI; }
+    public static GameObject GetShipDamageControlAlertUI() { return ShipDamageControlAlertUI; }
+
     public static GameObject GetUnitUI() { return UnitUI; }
     public static GameObject GetUnitMapUI() { return UnitMapUI; }
 

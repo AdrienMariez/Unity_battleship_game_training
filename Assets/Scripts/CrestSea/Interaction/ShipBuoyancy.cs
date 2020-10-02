@@ -305,8 +305,8 @@ namespace Crest
 
     [Serializable]
     public class FloaterForcePoints {
-        [FormerlySerializedAs("_factor")]
-        public float _weight = 1f;
+        // [FormerlySerializedAs("_factor")]
+        [HideInInspector]public float _weight = 1f;
 
         public Vector3 _offsetPosition;
     }

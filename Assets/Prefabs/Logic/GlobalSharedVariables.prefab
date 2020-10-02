@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4040051506252021485}
+  - component: {fileID: 7782165745089125454}
   - component: {fileID: 7135658397945489505}
   - component: {fileID: 282135415314082085}
   - component: {fileID: 8091174073427879976}
@@ -33,6 +34,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7782165745089125454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 889c7839baca67c47b8a2997695b0595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - waveCount: 0
+    enemies:
+    - 43
+    - 45544
+    - 4545
+    selectedEnemy: 1
+    enemyLVL: 
+    delay: []
 --- !u!114 &7135658397945489505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,6 +67,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waves:
+  - waveCount: 0
+    enemies:
+    - G
+    - GFG
+    selectedEnemy: 1
+    enemyLVL: 
+    delay: []
   m_WorldSingleUnit:
   - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
       type: 3}
@@ -78,6 +108,8 @@ MonoBehaviour:
       type: 3}
   - m_UnitPrefab: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
       type: 3}
+  m_WorldSingleTurret: []
+  m_WorldSingleShell: []
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +151,7 @@ MonoBehaviour:
     type: 3}
   m_TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
     type: 3}
-  m_IconsSpacing: 22
+  m_IconsSpacing: 15
   m_SpawnerUI: {fileID: 3767798349071585903, guid: 98540111e42054e4a90966d5757c4900,
     type: 3}
   m_SpawnerUnitSelect: {fileID: 6431504518210083437, guid: 59e992760bddd3e42a90189199ebdf5b,
@@ -131,6 +163,10 @@ MonoBehaviour:
   m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
     type: 3}
   m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
+    type: 3}
+  m_ShipDamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
+    type: 3}
+  m_ShipDamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
     type: 3}
   m_MapModels:
   - m_Name: ShipBattleship

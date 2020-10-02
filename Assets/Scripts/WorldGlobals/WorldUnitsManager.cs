@@ -5,8 +5,16 @@ using System.Collections.Generic;
 
 public class WorldUnitsManager : MonoBehaviour {
 
+    // public WaveList.Wave[] waves;
+
     [Header("Add all units of the game to this list !")]
     public WorldSingleUnit[] m_WorldSingleUnit;
+
+    [Header("Add all turrets of the game to this list !")]
+    public WorldSingleTurret[] m_WorldSingleTurret;
+    [Header("Add all shells of the game to this list !")]
+    public WorldSingleShell[] m_WorldSingleShell;
+
 
     public enum SimpleTeams {
         Allies,
@@ -37,6 +45,7 @@ public class WorldUnitsManager : MonoBehaviour {
         ground,
         building
     }
+    // See https://en.wikipedia.org/wiki/Hull_classification_symbol
     public enum UnitSubCategories {
         ShipBattleship,ShipCarrier,ShipCruiser,ShipDestroyer,
         SubmarineSubmarine,

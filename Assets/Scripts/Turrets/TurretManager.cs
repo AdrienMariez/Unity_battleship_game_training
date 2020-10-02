@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using FreeLookCamera;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TurretManager : MonoBehaviour
-{    
+public class TurretManager : MonoBehaviour {   
+    // public singleTurret [] m_Turrets2;
     public GameObject[] m_Turrets;
     private bool Active = false;
     private bool Dead = false;
@@ -61,6 +62,7 @@ public class TurretManager : MonoBehaviour
                 MinRange = MinR;
             m_Turrets[i].GetComponent<TurretHealth>().SetTurretManager(this);
             m_Turrets[i].GetComponent<TurretFireManager>().SetTurretManager(this);
+            m_Turrets[i].GetComponent<TurretRotation>().SetTurretFireManager(m_Turrets[i].GetComponent<TurretFireManager>());
             // m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(i);
             if (m_Turrets[i].GetComponent<TurretFireManager>().GetTurretType() == TurretFireManager.TurretType.Artillery) {
                 ArtilleryTurrets.Add(m_Turrets[i]);
@@ -323,4 +325,21 @@ public class TurretManager : MonoBehaviour
         // Debug.Log ("AITargetRange : "+ AITargetRange);
     }
     public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
+
+    [Serializable] public class singleTurret {      // All variable elements for each turret
+        public GameObject m_TurretModel;
+        [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
+            public bool m_LimitTraverse = false;
+        [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
+            [Range(0.0f, 180.0f)]
+            public float m_LeftTraverse = 60.0f;
+            private float LocalLeftTraverse;
+        [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
+            [Range(0.0f, 180.0f)]
+            public float m_RightTraverse = 60.0f; 
+            private float LocalRightTraverse;
+        public FireZonesManager[] m_NoFireZones;
+        [Header("Vertical elevation")]
+            public ElevationZonesManager[] m_ElevationZones;
+    }
 }

@@ -68,7 +68,6 @@ public class TurretRotation : MonoBehaviour
     private bool TurretSleep = true;
 
     private void Awake(){
-        TurretFireManager = GetComponent<TurretFireManager>();
         ParentEulerAngles = m_Parent.transform.rotation.eulerAngles;
         TurretEulerAngle = m_TurretTurret.transform.localRotation.eulerAngles.y;
         TurretEulerElevAngle = 90;
@@ -179,12 +178,11 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void TurretRotate() {
-        // Get parent current rotation rate
-        float parentRotationAng = m_Parent.transform.rotation.eulerAngles.y-ParentEulerAngles.y;
-        if (parentRotationAng<-360)
-            parentRotationAng += 360;
-        else if (parentRotationAng>360)
-            parentRotationAng -= 360;
+        // float parentRotationAng = m_Parent.transform.rotation.eulerAngles.y-ParentEulerAngles.y;     // Get parent current rotation rate
+        // if (parentRotationAng<-360)                                                                  // Works but apparently useless
+        //     parentRotationAng += 360;
+        // else if (parentRotationAng>360)
+        //     parentRotationAng -= 360;
 
 
         float TargetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - m_TurretTurret.transform.position).eulerAngles.y;
@@ -203,19 +201,19 @@ public class TurretRotation : MonoBehaviour
 
         // currentAng = m_TurretTurret.transform.localRotation.eulerAngles.y;
 
-        // if (debug) { Debug.Log("parentRotationAng = "+ parentRotationAng); }
+        // if (debug) { Debug.Log("TargetAng = "+ TargetAng); }
+
+        // Add parent rotation rate to the new current angle so that a rotating unit can turn its turret while rotating himself
+        // Tests indicated this was not neccessary...
+        // CurrentAng += parentRotationAng * Time.fixedDeltaTime;
         
         // Rotate
-        CurrentAng = BuildRotation(CurrentAng,TargetAng);
+        CurrentAng = BuildRotation(CurrentAng, TargetAng);
 
         // Check if the turret is hitting a limitation
         if (m_LimitTraverse) {
             CurrentAng = CheckLimitTraverse(CurrentAng);
         }
-
-        // Add parent rotation rate to the new current angle so that a rotating tank can turn its turret while rotating himself
-        CurrentAng += parentRotationAng;
-
 
         if (CurrentAng<0)
             CurrentAng += 360;
@@ -592,10 +590,11 @@ public class TurretRotation : MonoBehaviour
         // Update the turret angle
         m_TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
     }
+
+    public void SetTurretFireManager(TurretFireManager turretFireManager){ TurretFireManager = turretFireManager; }
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; SetTurretSleep(); }
     public void SetAIControl(bool aiControl) { AIControl = aiControl; SetTurretSleep(); }
-
-    private void SetTurretSleep(){
+    private void SetTurretSleep() {
         if (!PlayerControl && !AIControl){
             TurretSleep = true;
             // TargetPosition = m_IdlePointer.transform.position;
