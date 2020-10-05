@@ -79,7 +79,7 @@ public class ShellStat : MonoBehaviour
                 SignedAnglePositive = false;
 
             // Debug.Log("TargetRange = "+ TargetRange);
-            // Debug.Log("TargetPosition = "+ TargetPosition);
+            // Debug.Log("ShellPrecision = "+ ShellPrecision);
 
             //Prebuild shell dispersion here
             ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);

@@ -199,7 +199,7 @@ MonoBehaviour:
   m_MinRange: 500
   m_MuzzleVelocity: 775
   m_ReloadTime: 15
-  m_Precision: 45
+  m_Precision: 100
   m_FireFx: {fileID: 195792, guid: 0ba256c9af5f0c64494e78603e032d3c, type: 3}
   debug: 0
 --- !u!114 &536144026725449547

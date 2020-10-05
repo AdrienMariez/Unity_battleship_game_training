@@ -10,6 +10,7 @@ namespace CompiledTypes
     {
         public string id;
 public string Name;
+public string Model;
 public Units_sub_categories Category;
 public Countries Nation;
 public List<Score> ScoreList = new List<Score>();
@@ -29,6 +30,7 @@ takao
             SimpleJSON.JSONNode node = root.GetSheetWithName("Units").Rows[(int)line];
 id = node["id"];
 Name = node["Name"];
+Model = node["Model"];
 Category = new CompiledTypes.Units_sub_categories(root,CompiledTypes.Units_sub_categories.GetRowValue(node["Category"]));
 Nation = new CompiledTypes.Countries(root,CompiledTypes.Countries.GetRowValue(node["Nation"]));
 foreach(var item in node["Score"]) { ScoreList.Add(new Score(root, item));}

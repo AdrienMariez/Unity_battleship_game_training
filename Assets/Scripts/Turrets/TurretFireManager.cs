@@ -25,8 +25,8 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Reload time (seconds)")]
     public float m_ReloadTime = 5f;
     [Tooltip("Dispersion of shells for this turret. 100 is the best precision.")] [Range(0, 100)]
-    public int m_Precision = 50;
-    [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] private float Precision = 0.1f; 
+    public float m_Precision = 50;
+    [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] private float Precision = 0.01f; 
 
     [Header("FX")]
     public GameObject m_FireFx;
@@ -59,6 +59,7 @@ public class TurretFireManager : MonoBehaviour
         TurretRotation = GetComponent<TurretRotation>();
         // FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
         Precision = 2 - ( m_Precision / 50);        // Transform the public precision percentage data to game use.
+        // Debug.Log("Precision = "+ Precision);
     }
 
     private void Update () {
@@ -124,7 +125,7 @@ public class TurretFireManager : MonoBehaviour
     private void Fire () {
         for (int i = 0; i < m_FireMuzzles.Length; i++) {
             //Build a lateral random factor for the shell launch
-            float shellPrecisionZ = Random.Range(-m_Precision, m_Precision);
+            float shellPrecisionZ = Random.Range(-Precision, Precision);
             Quaternion firingDirection = m_FireMuzzles[i].rotation;
             firingDirection.z += shellPrecisionZ * 0.02f;
 
@@ -166,7 +167,7 @@ public class TurretFireManager : MonoBehaviour
             shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);
         }
         shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
-        shellInstance.GetComponent<ShellStat> ().SetPrecision(m_Precision);
+        shellInstance.GetComponent<ShellStat> ().SetPrecision(Precision);
         shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
     }
 

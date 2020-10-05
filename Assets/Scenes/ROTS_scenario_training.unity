@@ -982,6 +982,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 796226780292555382, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_TiltMin
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 921506271196169349, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_AnchorMax.y

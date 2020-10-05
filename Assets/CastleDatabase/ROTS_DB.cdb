@@ -12,6 +12,10 @@
 					"name": "Name"
 				},
 				{
+					"typeStr": "13",
+					"name": "Model"
+				},
+				{
 					"typeStr": "6:Units_sub_categories",
 					"name": "Category"
 				},
@@ -571,7 +575,8 @@
 						}
 					],
 					"Unitmass": 38536000,
-					"id": "fuso"
+					"id": "fuso",
+					"Model": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
 				},
 				{
 					"Name": "Takao",
@@ -920,7 +925,8 @@
 						}
 					],
 					"Unitmass": 12781000,
-					"id": "takao"
+					"id": "takao",
+					"Model": "../Prefabs/Units/IJN_Cruiser_Takao.prefab"
 				}
 			],
 			"separators": [],
@@ -1396,7 +1402,7 @@
 					"Armor": 279,
 					"Name": "JpBB356A",
 					"Precision": 75,
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_A.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_A.prefab",
 					"Ammo": "ShellJapan356mm",
 					"Isavariant": false,
 					"Weapon_type": "artillery",
@@ -1412,7 +1418,7 @@
 				},
 				{
 					"Name": "JpBB356B",
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Fuso_Main_B.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_B.prefab",
 					"Variant": "JapanBB356mmA",
 					"Isavariant": true,
 					"id": "JapanBB356mmB"
@@ -1423,7 +1429,7 @@
 					"Armor": 25,
 					"Ammo": "ShellJapan200mm",
 					"Precision": 75,
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_A.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Takao_Main_A.prefab",
 					"Isavariant": false,
 					"Weapon_type": "artillery",
 					"Max_range": 29000,
@@ -1438,14 +1444,14 @@
 				},
 				{
 					"Name": "JpCA200B",
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_B.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Takao_Main_B.prefab",
 					"Variant": "JapanCA200mmA",
 					"Isavariant": true,
 					"id": "JapanCA200mmB"
 				},
 				{
 					"Name": "JpCA200Y",
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Takao_Main_Y.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Takao_Main_Y.prefab",
 					"Variant": "JapanCA200mmA",
 					"Isavariant": true,
 					"id": "JapanCA200mmY"
@@ -1456,7 +1462,7 @@
 					"Armor": 12,
 					"Ammo": "ShellJapan152mm",
 					"Precision": 60,
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/TurretJapan120mmType10AATwin.prefab",
+					"Model": "../Prefabs/Weapons/TurretJapan120mmType10AATwin.prefab",
 					"Isavariant": false,
 					"Weapon_type": "antiairartillery",
 					"Max_range": 16000,
@@ -1475,7 +1481,7 @@
 					"Armor": 100,
 					"Ammo": "ShellJapan120mm",
 					"Precision": 80,
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/Turret_Fuso_Casemate.prefab",
+					"Model": "../Prefabs/Weapons/Turret_Fuso_Casemate.prefab",
 					"Isavariant": false,
 					"Weapon_type": "artillery",
 					"Max_range": 19000,
@@ -1492,7 +1498,7 @@
 					"Name": "JpTorp4CA",
 					"Health": 100,
 					"Armor": 12,
-					"Model": "../battleship_game/Assets/Prefabs/Weapons/TorpedoLauncherJapanQuadTakao.prefab",
+					"Model": "../Prefabs/Weapons/TorpedoLauncherJapanQuadTakao.prefab",
 					"Ammo": "TorpedoJapan610mm",
 					"Precision": 77,
 					"Isavariant": false,
