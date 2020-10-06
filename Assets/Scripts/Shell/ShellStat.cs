@@ -30,15 +30,21 @@ public class ShellStat : MonoBehaviour
 
     private Rigidbody rb;
     private float MuzzleVelocity;
-    private Vector3 StartPosition;
 
-    private float currentRange;                     // Distance between the shell and the starting point
+    private Vector3 StartPosition;                  // Start position P1
+    private Vector3 BezierCurvePeak;                // Curve peak P2
+    private Vector3 TargetPosition;                 // Target position P3
+    private Vector3 CurrentPositionInCurve;
+    private Vector3 CurrentPositionFlat;
+
+    private float CurrentRangeRatio;                // Range established in proportion (0 = start 1 = target met) K
+
+    private float CurrentRange;                     // Distance between the shell and the starting point
     private float TargetRange;                      // Distance between the target point and the starting point. The target point is always at the same
     private float currentAltitudeGain;
     private float xBasis;
     private float x;
     private Vector3 V;
-    private Vector3 TargetPosition;
     private bool SignedAnglePositive = true;
     private float ShellPrecision;
     private bool RangePassed = false;
@@ -61,12 +67,20 @@ public class ShellStat : MonoBehaviour
             xBasis = 360 - xBasis;
             xBasis -= 90;
 
-            // Make a vector in the direction of the facing of the shell, flattened on the Y axis, if V.y was switched to 0.1f, it will target a high place target, so it could be used to fire on hih-placed land targets with some tweaks
+            // Make a vector in the direction of the facing of the shell, flattened on the Y axis, if V.y was switched to 0.1f, it will target a high place target, so it could be used to fire on high-placed land targets with some tweaks
             V = transform.TransformDirection(Vector3.forward);
             V.y = 0;
             V.Normalize();
+
+
             //Then create a point that is the target point of the cannon.
             TargetPosition = transform.position + V * TargetRange;
+
+            float peakDistance = TargetRange/3;
+
+            BezierCurvePeak = transform.position + transform.TransformDirection(Vector3.forward) * peakDistance;             // Create Bezier curve peak
+
+            
 
             // get initial parameters of the shell, as using Vector3.SignedAngle is better than an Angle but can produce negative values. So we check first if the SignedAngle is + or -.
 
@@ -83,6 +97,8 @@ public class ShellStat : MonoBehaviour
 
             //Prebuild shell dispersion here
             ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
+
+            CurrentPositionFlat = transform.position;
         }
         else if (ShellType == TurretFireManager.TurretType.AA) {
             // Make a vector in the direction of the facing of the shell
@@ -110,12 +126,54 @@ public class ShellStat : MonoBehaviour
 
     private void FixedUpdate () {
         if (ShellType == TurretFireManager.TurretType.Artillery) {
-            CalculateTrajectoryArtillery ();
+            // CalculateTrajectoryArtillery();
+            CalculateTrajectoryNavalArtillery();
             CheckIfShellNeedsToDieArtillery();
         } else if (ShellType == TurretFireManager.TurretType.AA) {
             CalculateTrajectoryAA ();
         } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
             CalculateTrajectoryTorpedo ();
+        }
+    }
+
+    public static Vector3 GetBezierPosition (Vector3 p0, Vector3 p1, Vector3 p2, float t) {
+		return Vector3.Lerp(Vector3.Lerp(p0, p1, t), Vector3.Lerp(p1, p2, t), t);
+	}
+
+    private void CalculateTrajectoryNavalArtillery () {
+        float distanceToTarget = Vector3.Distance(TargetPosition, CurrentPositionFlat);                                         // Get remaining distance to travel
+
+        CurrentRangeRatio = 1 - (((distanceToTarget * 100) / TargetRange)/100);                                                 // Used in Bezier to find position in the curve
+
+        CurrentPositionInCurve = GetBezierPosition(StartPosition, BezierCurvePeak, TargetPosition, CurrentRangeRatio);
+
+        // Debug.Log("signedAngle = "+ signedAngle);
+
+        // Lots of shiny drawray !
+        // Yellow : from firing spawn to Bezier Curve Peak
+            // Debug.DrawRay(StartPosition, BezierCurvePeak - StartPosition, Color.yellow);
+        // red : from start to Bezier Curve current position
+            Debug.DrawRay(StartPosition, CurrentPositionInCurve - StartPosition , Color.red);
+        // Green : The vector between the shell and the target
+            // Debug.DrawRay(transform.position, TargetPosition - transform.position , Color.green);
+        // blue : The vector between the fake flat trajectory and the target
+            // Debug.DrawRay(CurrentPositionFlat, TargetPosition - CurrentPositionFlat , Color.blue);
+        
+
+        if (!SelfDestruct) {        // Normal behaviour until the target position is met
+            transform.LookAt(CurrentPositionInCurve);
+            
+            transform.position = CurrentPositionInCurve;
+            
+            CurrentPositionFlat = Vector3.MoveTowards(CurrentPositionFlat, TargetPosition, MuzzleVelocity * Time.deltaTime);
+        }
+
+        if (CurrentRangeRatio >=1 && !SelfDestruct) {               // Engage auto destruct if the range is passed
+            // Debug.Log("engage self destruct !");
+            SelfDestruct = true;
+            DestroyShell(m_MaxLifeTime);
+
+            rb.velocity = transform.forward * MuzzleVelocity;       // Give a forward velocity to the shell for the last instants.
         }
     }
 
@@ -128,21 +186,23 @@ public class ShellStat : MonoBehaviour
         // Debug.Log("signedAngle = "+ signedAngle);
 
         // Lots of shiny drawray !
+            //Yellow : from firing spawn to Bezier Curve Peak
+            Debug.DrawRay(StartPosition, BezierCurvePeak - StartPosition, Color.yellow);
             //Blue : from firing spawn to target position
-            Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
+            // Debug.DrawRay(StartPosition, TargetPosition - StartPosition, Color.blue);
             // Red : facing of shell
-            Debug.DrawRay(transform.position, transform.forward * TargetRange, Color.red);
+            // Debug.DrawRay(transform.position, transform.forward * TargetRange, Color.red);
             // Green : The vector between the shell and the target
-            Debug.DrawRay(transform.position, targetDir * TargetRange , Color.green);
+            Debug.DrawRay(transform.position, TargetPosition - transform.position , Color.green);
 
 
-        currentRange = Vector3.Distance(StartPosition, transform.position);
+        CurrentRange = Vector3.Distance(StartPosition, transform.position);
 
-        float distanceToTarget = TargetRange - currentRange;
+        float distanceToTarget = TargetRange - CurrentRange;
         float distanceToTargetRatio = (distanceToTarget * 100) / TargetRange;
 
-        // Debug.Log("distanceToTarget = "+ distanceToTarget);
-        // Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
+        Debug.Log("distanceToTarget = "+ distanceToTarget);
+        Debug.Log("distanceToTargetRatio = "+ distanceToTargetRatio);
         // Debug.Log("signedAngle = "+ signedAngle);
 
 
@@ -221,8 +281,8 @@ public class ShellStat : MonoBehaviour
 
         transform.Translate(0, 0, MuzzleVelocity * Time.deltaTime, Space.Self);
 
-        currentRange = Vector3.Distance(StartPosition, transform.position);
-        float distanceToTarget = TargetRange - currentRange;
+        CurrentRange = Vector3.Distance(StartPosition, transform.position);
+        float distanceToTarget = TargetRange - CurrentRange;
         float distanceToTargetRatio = (distanceToTarget * 100) / TargetRange;
 
         if (distanceToTargetRatio < 0 && !SelfDestruct) {

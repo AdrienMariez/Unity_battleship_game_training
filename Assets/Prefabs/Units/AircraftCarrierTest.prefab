@@ -1075,6 +1075,7 @@ GameObject:
   - component: {fileID: 4877774010700237345}
   - component: {fileID: 8380954490411808174}
   - component: {fileID: 4820114647795486464}
+  - component: {fileID: 46417622783480629}
   m_Layer: 0
   m_Name: AircraftCarrierTest
   m_TagString: Player
@@ -1132,8 +1133,6 @@ MonoBehaviour:
   m_Nation: 0
   m_UnitCommandPointsCost: 300
   m_UnitVictoryPointsValue: 200
-  m_UnitMapModel: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-    type: 3}
   m_ShipComponents:
   - {fileID: 3641422958090581612}
   - {fileID: 9196748789309648236}
@@ -1225,12 +1224,10 @@ MonoBehaviour:
     _offsetPosition: {x: -10, y: 0, z: -80}
   - _weight: 1
     _offsetPosition: {x: 10, y: 0, z: -80}
-  _buoyancyMultiplier: 1460
   _objectWidth: 12
   _dragVertical: 1
   _enginePower: 28
   _rotationTime: 120
-  _centrifugalForce: 0.35
 --- !u!114 &6082689571148189627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,10 +1268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754885def86a1a0499138431163ec791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
-    type: 3}
-  m_DamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
-    type: 3}
   RepairRate: 3
   RepairCrew: 3
 --- !u!54 &8380954490411808174
@@ -1390,6 +1383,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &46417622783480629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036194036648923335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92342036ea94734aa7ff4c74a465d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Turrets:
+  - {fileID: 8999221112671638939}
 --- !u!1 &4172623873491412436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2179,7 +2186,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8677980535261432990}
   m_Father: {fileID: 4676003223697204548}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2381,4 +2389,90 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1919360169161122828, guid: 54db5ef7cf5864f4bbaa6ab6af6d264a,
     type: 3}
   m_PrefabInstance: {fileID: 351427741573613471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8935051545107534734
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 771872493843128420}
+    m_Modifications:
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 536144026725449547, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_Parent
+      value: 
+      objectReference: {fileID: 8380954490411808174}
+    - target: {fileID: 840146293658127578, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Turret_Fuso_Main_A
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6fef9f34d5019ef408c07f4508ce57a8, type: 3}
+--- !u!1 &8999221112671638939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 512295342537803285, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8935051545107534734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8677980535261432990 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8935051545107534734}
   m_PrefabAsset: {fileID: 0}
