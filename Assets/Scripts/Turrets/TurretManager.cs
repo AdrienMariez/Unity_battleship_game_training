@@ -117,9 +117,9 @@ public class TurretManager : MonoBehaviour {
             // Debug.Log("fakeCameraPercentage = "+ fakeCameraPercentage);
 
             foreach (GameObject turret in m_Turrets) {
-                turret.GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
-                turret.GetComponent<TurretRotation>().SetCameraPercentage(CameraPercentage);
-                turret.GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
+                turret.GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
+                turret.GetComponent<TurretRotation>().SetCameraPercentage(fakeCameraPercentage);
+                turret.GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
             }
         }
         
