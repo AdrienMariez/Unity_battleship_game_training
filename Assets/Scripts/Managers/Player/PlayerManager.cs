@@ -80,7 +80,7 @@ public class PlayerManager : MonoBehaviour
 
     private void SetHideUI(){
         // This is used to hide all UI elements
-        m_FreeLookCamera.SetHideUI();
+        // m_FreeLookCamera.SetHideUI();
         UIManager.SetHideUI();
     }
 
@@ -328,7 +328,10 @@ public class PlayerManager : MonoBehaviour
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
     public void SendPlayerShellToUI(GameObject shellInstance){ UIManager.SendPlayerShellToUI(shellInstance); }
-    public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) { UIManager.SetPlayerUITurretType(currentControlledTurret); }
+    public void SetPlayerTurretRole(TurretFireManager.TurretRole currentControlledTurret) {
+        UIManager.SetPlayerUITurretRole(currentControlledTurret);       // Send the current turret control to the AI
+        m_FreeLookCamera.SetCurrentTurretRole(currentControlledTurret);
+    }
     public void ShellFollowedByCameraDestroyed() { UIManager.ShellFollowedByCameraDestroyed(); }
     public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
 

@@ -9,9 +9,6 @@ namespace FreeLookCamera {
         // 	Camera Rig
         // 		Pivot
         // 			Camera
-
-        private Transform Target;            // The target object to follow
-        private Rigidbody targetRigidbody;
         private Camera Cam; // Main camera
         private Transform Pivot; // the point at which the camera points to
         private Transform Axis; // the point at which the camera pivots around
@@ -27,16 +24,14 @@ namespace FreeLookCamera {
             [Tooltip("Field of View when focused")] [Range(1f, 150f)] [SerializeField] private float m_FieldOfViewFocus = 40f;
             [Tooltip("Multiplier for the Turn speed when focused")] [Range(0f, 1f)] [SerializeField] private float m_TurnSpeedFocus = 0.2f;
         [Header("Basic position values")]
-            [Tooltip("Those variables should be overrriden for each unit, but basic static values are stored here.")] public float m_CameraDistance = 12;  // x
-            public float m_CameraHeight = 2;    // y
-            public float m_CameraLateralOffset = 0;   // z
+            [Tooltip("Those variables should be overwritten for each unit, but basic static values are stored here.")]
+            public float m_CameraDistance = 12, m_CameraHeight = 2, m_CameraLateralOffset = 0;
+            private float CameraDistance, CameraHeight, CameraLateralOffset;        // X, Y, Z
 
         [Header("Raycast")]
             [Tooltip("Layer to filter what the raycast will hit.")] public LayerMask RaycastLayerMask;
             private GameObject m_RaycastProjector;
         public RaycastHit RaycastHit;
-        // private GameObject TargetCircle;
-        private Vector3 TargetPosition;
 
         private float LookAngle;                    // The rig's y axis rotation.
         private float TiltAngle;                    // The pivot's x axis rotation.
@@ -44,10 +39,17 @@ namespace FreeLookCamera {
 		private Vector3 AxisEulers;
 		private Quaternion AxisTargetRot;
 		private Quaternion TransformTargetRot;
-        private GameObject ActiveTarget;
         private bool AllowCameraRotation = true;
         private bool FreeCamera = false;
         private bool DisplayUI = true;
+
+        private float TiltMin, TiltMax;                                         // Current used Tilt limitations
+
+        private Vector3 RaycastTargetPosition;                                  // Point set by the camera raycast
+        private GameObject ActivePlayerUnit;                                    // Current controlled unit
+        private Transform ActivePlayerUnitTransform;                                    // Current controlled unit transform
+        public WorldUnitsManager.UnitCategories ActivePlayerUnitCategory;
+        private TurretFireManager.TurretRole CurrentControlledTurretRole;
 
         protected virtual void Start() {
 			AxisEulers = Axis.rotation.eulerAngles;
@@ -57,6 +59,10 @@ namespace FreeLookCamera {
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            CameraDistance = m_CameraDistance;
+            CameraHeight = m_CameraHeight;
+            CameraLateralOffset = m_CameraLateralOffset;
         }
 
         private void Awake(){
@@ -65,12 +71,11 @@ namespace FreeLookCamera {
             Axis = Pivot.parent;
 
             m_RaycastProjector = GameObject.Find("RaycastProjector");
-            // TargetCircle = GameObject.Find("TargetCircle");
         }
 
         protected void Update() {
             // Debug.Log ("m_Axis   : "+ m_Axis);
-            if (ActiveTarget != null) {
+            if (ActivePlayerUnit != null) {
                 FollowTarget(Time.deltaTime);
 
                 if (Input.GetButton ("FocusCamera")){
@@ -81,38 +86,44 @@ namespace FreeLookCamera {
                     Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
 
-                if (ActiveTarget.GetComponent<AircraftController>() && !FreeCamera) {
-                    // If it's a plane. Keep the camera behind the unit.
-                    FollowPlaneMovement();
-                } else if (AllowCameraRotation){
-                    // Allow free cam if the camera can turn
-                    HandleRotationMovement();
-                }
-                
-                // Debug.Log ("m_RaycastPoint : "+ m_RaycastProjector);
-                
-                if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
-                    Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
-                    // TargetCircle.transform.position = RaycastHit.point;
-                    TargetPosition = RaycastHit.point;
-                } else {
-                    Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
-                    // TargetCircle.transform.position = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
-                    TargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+                if (ActivePlayerUnitCategory == WorldUnitsManager.UnitCategories.plane && !FreeCamera) {
+                    FollowPlaneMovement();                          // If it's a plane. Keep the camera behind the unit.
+                } else if (AllowCameraRotation) {
+                    HandleRotationMovement();                       // Allow free cam if the camera can turn
                 }
 
-                CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
+                if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
+                    TargetRangeCameraTilt();
+                }
+                
+                TargetRangeRayCast();
+                // Debug.Log ("RaycastTargetPosition : "+ RaycastTargetPosition);
+                
+
+                
                 // Debug.Log("targetDistance = "+ targetDistance);
+            }
+        }
+        protected void TargetRangeCameraTilt() {
+            CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
+        }
+        protected void TargetRangeRayCast() {
+            if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
+                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
+                RaycastTargetPosition = RaycastHit.point;
+            } else {
+                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
+                RaycastTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
         }
 
         public virtual void SetTarget(Transform newTransform) {
-            Target = newTransform;
+            ActivePlayerUnitTransform = newTransform;
         }
 
-        protected virtual void FollowTarget(float deltaTime) {
+        protected void FollowTarget(float deltaTime) {
             // Move the rig towards target position.
-            transform.position = Vector3.Lerp(transform.position, Target.position, deltaTime * m_MoveSpeed);
+            transform.position = Vector3.Lerp(transform.position, ActivePlayerUnitTransform.position, deltaTime * m_MoveSpeed);
         }
 
         private void HandleRotationMovement() {
@@ -159,10 +170,10 @@ namespace FreeLookCamera {
 			if(Time.timeScale < float.Epsilon)
 			return;
             // Get target plane rotation
-            Vector3 planeeulerAngles = Target.rotation.eulerAngles;
+            Vector3 planeeulerAngles = ActivePlayerUnitTransform.rotation.eulerAngles;
 
             // Give it to the local camera rig transform
-            transform.rotation = Quaternion.Euler(Target.rotation.eulerAngles.x, Target.rotation.eulerAngles.y, Target.rotation.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(ActivePlayerUnitTransform.rotation.eulerAngles.x, ActivePlayerUnitTransform.rotation.eulerAngles.y, ActivePlayerUnitTransform.rotation.eulerAngles.z);
         }
 
         public void SetFreeCamera(bool freeCamera) { FreeCamera = freeCamera; }
@@ -177,40 +188,47 @@ namespace FreeLookCamera {
         }
 
         public void SetActiveTarget(GameObject TargetSent) {
-            ActiveTarget = TargetSent;
-            Target = ActiveTarget.transform;
+            ActivePlayerUnit = TargetSent;
+            ActivePlayerUnitTransform = ActivePlayerUnit.transform;
 
-            // Set camera position relative to the target
-            if (ActiveTarget.GetComponent<TargetCameraParameters>()) {
-                m_CameraDistance = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraDistance;
-                m_CameraHeight = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraHeight;
-                m_CameraLateralOffset = ActiveTarget.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
+            if (ActivePlayerUnit.GetComponent<UnitMasterController>()) {
+                ActivePlayerUnitCategory = ActivePlayerUnit.GetComponent<UnitMasterController>().m_UnitCategory;
+            }
+
+            if (ActivePlayerUnit.GetComponent<TargetCameraParameters>()) {                                      // Set camera position relative to the target
+                m_CameraDistance = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraDistance;
+                m_CameraHeight = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraHeight;
+                m_CameraLateralOffset = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
             } else {
-                m_CameraDistance = 12;
-                m_CameraHeight = 2;
-                m_CameraLateralOffset = 0;
+                m_CameraDistance = CameraDistance;
+                m_CameraHeight = CameraHeight;
+                m_CameraLateralOffset = CameraLateralOffset;
             }
 
             Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
         }
+
+        public void SetCurrentTurretRole(TurretFireManager.TurretRole currentControlledTurret) {
+            CurrentControlledTurretRole = currentControlledTurret;
+        }
         public Vector3 GetTargetPosition() {
-            return TargetPosition;
+            return RaycastTargetPosition;
         }
 
         public float GetTiltPercentage() {
             return CameraTiltPercentage;
         }
-        public float GetTargetPointRange() {
-            float Range = Vector3.Distance(Target.position, TargetPosition);
-            return Range;
-        }
-        public void SetHideUI(){
+        // public float GetTargetPointRange() {
+        //     float Range = Vector3.Distance(ActivePlayerUnitTransform.position, TargetPosition);
+        //     return Range;
+        // }
+        /*public void SetHideUI(){
             DisplayUI = !DisplayUI;
-            if (DisplayUI) {
-                Cam.cullingMask |= 1 << LayerMask.NameToLayer("UI");
+            if (DisplayUI) {                                                         // This is supposed to allow only parts of the game to render.
+                Cam.cullingMask |= 1 << LayerMask.NameToLayer("UI");                 // Commented to test, nothing changed ? Will maybe produce unexpected errors ?
             } else {
                 Cam.cullingMask &=  ~(1 << LayerMask.NameToLayer("UI"));
             }
-        }
+        }*/
     }
 }

@@ -1340,8 +1340,8 @@
 					"opt": true
 				},
 				{
-					"typeStr": "6:Weapons_types",
-					"name": "Weapon_type",
+					"typeStr": "8",
+					"name": "WeaponRoles",
 					"opt": true
 				},
 				{
@@ -1405,7 +1405,6 @@
 					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_A.prefab",
 					"Ammo": "ShellJapan356mm",
 					"Isavariant": false,
-					"Weapon_type": "artillery",
 					"Max_range": 35450,
 					"Min_range": 500,
 					"Muzzle_velocity": 775,
@@ -1414,7 +1413,15 @@
 					"Elevation_speed": 10,
 					"Min_vertical_traverse": 80,
 					"Max_vertical_traverse": 124,
-					"id": "JapanBB356mmA"
+					"id": "JapanBB356mmA",
+					"WeaponRoles": [
+						{
+							"Weaponrole": "artillery"
+						},
+						{
+							"Weaponrole": "navalartillery"
+						}
+					]
 				},
 				{
 					"Name": "JpBB356B",
@@ -1431,7 +1438,6 @@
 					"Precision": 75,
 					"Model": "../Prefabs/Weapons/Turret_Takao_Main_A.prefab",
 					"Isavariant": false,
-					"Weapon_type": "artillery",
 					"Max_range": 29000,
 					"Min_range": 300,
 					"Muzzle_velocity": 835,
@@ -1440,7 +1446,15 @@
 					"Elevation_speed": 15,
 					"Min_vertical_traverse": 80,
 					"Max_vertical_traverse": 145,
-					"id": "JapanCA200mmA"
+					"id": "JapanCA200mmA",
+					"WeaponRoles": [
+						{
+							"Weaponrole": "navalartillery"
+						},
+						{
+							"Weaponrole": "artillery"
+						}
+					]
 				},
 				{
 					"Name": "JpCA200B",
@@ -1464,7 +1478,6 @@
 					"Precision": 60,
 					"Model": "../Prefabs/Weapons/TurretJapan120mmType10AATwin.prefab",
 					"Isavariant": false,
-					"Weapon_type": "antiairartillery",
 					"Max_range": 16000,
 					"Min_range": 200,
 					"Muzzle_velocity": 825,
@@ -1473,7 +1486,15 @@
 					"Elevation_speed": 15,
 					"Min_vertical_traverse": 85,
 					"Max_vertical_traverse": 165,
-					"id": "Japan120mmType10AATwin"
+					"id": "Japan120mmType10AATwin",
+					"WeaponRoles": [
+						{
+							"Weaponrole": "navalartillery"
+						},
+						{
+							"Weaponrole": "artillery"
+						}
+					]
 				},
 				{
 					"Name": "JpBBCasemate120",
@@ -1483,7 +1504,6 @@
 					"Precision": 80,
 					"Model": "../Prefabs/Weapons/Turret_Fuso_Casemate.prefab",
 					"Isavariant": false,
-					"Weapon_type": "artillery",
 					"Max_range": 19000,
 					"Min_range": 5,
 					"Muzzle_velocity": 855,
@@ -1492,7 +1512,15 @@
 					"Elevation_speed": 10,
 					"Min_vertical_traverse": 80,
 					"Max_vertical_traverse": 124,
-					"id": "JapanBBCasemate120mm"
+					"id": "JapanBBCasemate120mm",
+					"WeaponRoles": [
+						{
+							"Weaponrole": "navalartillery"
+						},
+						{
+							"Weaponrole": "artillery"
+						}
+					]
 				},
 				{
 					"Name": "JpTorp4CA",
@@ -1502,7 +1530,6 @@
 					"Ammo": "TorpedoJapan610mm",
 					"Precision": 77,
 					"Isavariant": false,
-					"Weapon_type": "torpedoes",
 					"Max_range": 16000,
 					"Min_range": 0,
 					"Muzzle_velocity": 17,
@@ -1511,7 +1538,12 @@
 					"Elevation_speed": 1,
 					"Min_vertical_traverse": 90,
 					"Max_vertical_traverse": 90,
-					"id": "JapanTorpedo4CA"
+					"id": "JapanTorpedo4CA",
+					"WeaponRoles": [
+						{
+							"Weaponrole": "torpedoes"
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -1520,7 +1552,7 @@
 			}
 		},
 		{
-			"name": "Weapons_types",
+			"name": "Weapons_roles",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1537,11 +1569,11 @@
 					"id": "artillery"
 				},
 				{
-					"Name": "AntiAirArtillery",
-					"id": "antiairartillery"
+					"id": "navalartillery",
+					"Name": "Naval Artillery"
 				},
 				{
-					"Name": "AntiAir",
+					"Name": "Anti Air",
 					"id": "antiair"
 				},
 				{
@@ -1863,6 +1895,20 @@
 				{
 					"typeStr": "4",
 					"name": "Rotation_z"
+				}
+			]
+		},
+		{
+			"name": "Weapons@WeaponRoles",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Weapons_roles",
+					"name": "Weaponrole"
 				}
 			]
 		}

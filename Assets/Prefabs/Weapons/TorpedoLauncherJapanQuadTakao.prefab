@@ -179,7 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a43129454671d6444a28fbca8cc8c9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TurretType: 3
+  m_TurretRole: 0
+  m_TurretRoles: 03000000
   m_Shell: {fileID: 1340822690796195968, guid: 57771caebe4d4634195e2e6f00f5c9e4, type: 3}
   m_FireMuzzles:
   - {fileID: 6972174185670022508}

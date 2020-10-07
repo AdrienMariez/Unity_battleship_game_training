@@ -129,10 +129,13 @@ public class TurretRotation : MonoBehaviour
     private void FixedUpdate(){
 
         if (!Dead) {
+            // if (debug) { Debug.Log("TargetPosition: " + TargetPosition); }
             TurretRotate();
-            if (CurrentControlledTurretType == TurretFireManager.TurretType.Artillery) {   
+            if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {   
                 CannonElevationArtillery();
-            } else if (CurrentControlledTurretType == TurretFireManager.TurretType.AA) {
+            } else if (CurrentControlledTurretRole == TurretFireManager.TurretRole.Artillery) {   
+                CannonElevationArtillery();
+            } else if (CurrentControlledTurretRole == TurretFireManager.TurretRole.AA) {
                 CannonElevationAA();
             } else {
                 
@@ -201,7 +204,7 @@ public class TurretRotation : MonoBehaviour
 
         // currentAng = m_TurretTurret.transform.localRotation.eulerAngles.y;
 
-        // if (debug) { Debug.Log("TargetAng = "+ TargetAng); }
+        // if (debug) { Debug.Log("TurretSleep = "+ TurretSleep); }
 
         // Add parent rotation rate to the new current angle so that a rotating unit can turn its turret while rotating himself
         // Tests indicated this was not neccessary...
@@ -601,6 +604,8 @@ public class TurretRotation : MonoBehaviour
         } else {
             TurretSleep = false;
         }
+        // if (debug) { Debug.Log("SetTurretSleep = "+ TurretSleep +" - "+ PlayerControl+" / "+ AIControl); }
+
     }
     public void SetAIGroundTargetPosition(Vector3 groundTargetPosition) {  }
     public void SetTurretDeath(bool IsShipDead) { Dead = IsShipDead; }
@@ -611,6 +616,6 @@ public class TurretRotation : MonoBehaviour
     }
     public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
 
-    private TurretFireManager.TurretType CurrentControlledTurretType;
-    public void SetCurrentControlledTurretType(TurretFireManager.TurretType currentControlledTurretType) { CurrentControlledTurretType = currentControlledTurretType; }
+    private TurretFireManager.TurretRole CurrentControlledTurretRole;
+    public void SetCurrentControlledTurretRole(TurretFireManager.TurretRole currentControlledTurretRole) { CurrentControlledTurretRole = currentControlledTurretRole; }
 }

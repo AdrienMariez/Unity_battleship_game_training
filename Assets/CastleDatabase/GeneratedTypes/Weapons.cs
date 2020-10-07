@@ -15,7 +15,7 @@ public Weapons Variant;
 public string Model;
 public float Health;
 public float Armor;
-public Weapons_types Weapon_type;
+public List<WeaponRoles> WeaponRolesList = new List<WeaponRoles>();
 public Ammos Ammo;
 public float Max_range;
 public float Min_range;
@@ -47,7 +47,7 @@ Variant = new CompiledTypes.Weapons(root,CompiledTypes.Weapons.GetRowValue(node[
 Model = node["Model"];
 Health = node["Health"].AsFloat;
 Armor = node["Armor"].AsFloat;
-Weapon_type = new CompiledTypes.Weapons_types(root,CompiledTypes.Weapons_types.GetRowValue(node["Weapon_type"]));
+foreach(var item in node["WeaponRoles"]) { WeaponRolesList.Add(new WeaponRoles(root, item));}
 Ammo = new CompiledTypes.Ammos(root,CompiledTypes.Ammos.GetRowValue(node["Ammo"]));
 Max_range = node["Max_range"].AsFloat;
 Min_range = node["Min_range"].AsFloat;

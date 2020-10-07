@@ -358,7 +358,7 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
-    m_Name: SetWeaponArtillery
+    m_Name: SetWeaponNavalArtillery
     descriptiveName: Naval units - Set artillery as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
@@ -374,11 +374,27 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
+    m_Name: SetWeaponArtillery
+    descriptiveName: Naval units - Set artillery as the current firemode
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 2
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
     m_Name: SetWeaponAA
     descriptiveName: Naval units - Set AA as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 2
+    positiveButton: 3
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -394,7 +410,7 @@ InputManager:
     descriptiveName: Naval units - Set torpedoes as the current firemode
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 3
+    positiveButton: 4
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

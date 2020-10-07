@@ -51,7 +51,7 @@ public class ShellStat : MonoBehaviour
     private bool SelfDestruct = false;
 
     private void Start () {
-        if (ShellType == TurretFireManager.TurretType.Artillery) {
+        if (ShellType == TurretFireManager.TurretRole.NavalArtillery || ShellType == TurretFireManager.TurretRole.Artillery) {
             // ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
             rb = GetComponent<Rigidbody>();
             // currentAltitudeGain = rb.velocity.y;
@@ -100,7 +100,7 @@ public class ShellStat : MonoBehaviour
 
             CurrentPositionFlat = transform.position;
         }
-        else if (ShellType == TurretFireManager.TurretType.AA) {
+        else if (ShellType == TurretFireManager.TurretRole.AA) {
             // Make a vector in the direction of the facing of the shell
             V = transform.TransformDirection(Vector3.forward);
             V.Normalize();
@@ -111,7 +111,7 @@ public class ShellStat : MonoBehaviour
             //Prebuild shell dispersion here
             ShellPrecision = Random.Range(-ShellPrecision, ShellPrecision);
         }
-        else if (ShellType == TurretFireManager.TurretType.Torpedo) {
+        else if (ShellType == TurretFireManager.TurretRole.Torpedo) {
             // Torpedoes auto die after their lifetime is expended
             Destroy (gameObject, m_MaxLifeTime);
             // Prevent torpedoes from exploding in their tubes at creation
@@ -125,13 +125,13 @@ public class ShellStat : MonoBehaviour
     }
 
     private void FixedUpdate () {
-        if (ShellType == TurretFireManager.TurretType.Artillery) {
+        if (ShellType == TurretFireManager.TurretRole.NavalArtillery || ShellType == TurretFireManager.TurretRole.Artillery) {
             // CalculateTrajectoryArtillery();
             CalculateTrajectoryNavalArtillery();
             CheckIfShellNeedsToDieArtillery();
-        } else if (ShellType == TurretFireManager.TurretType.AA) {
+        } else if (ShellType == TurretFireManager.TurretRole.AA) {
             CalculateTrajectoryAA ();
-        } else if (ShellType == TurretFireManager.TurretType.Torpedo) {
+        } else if (ShellType == TurretFireManager.TurretRole.Torpedo) {
             CalculateTrajectoryTorpedo ();
         }
     }
@@ -155,7 +155,7 @@ public class ShellStat : MonoBehaviour
         // red : from start to Bezier Curve current position
             Debug.DrawRay(StartPosition, CurrentPositionInCurve - StartPosition , Color.red);
         // Green : The vector between the shell and the target
-            // Debug.DrawRay(transform.position, TargetPosition - transform.position , Color.green);
+            Debug.DrawRay(transform.position, TargetPosition - transform.position , Color.green);
         // blue : The vector between the fake flat trajectory and the target
             // Debug.DrawRay(CurrentPositionFlat, TargetPosition - CurrentPositionFlat , Color.blue);
         
@@ -302,11 +302,11 @@ public class ShellStat : MonoBehaviour
     private float CollisionArmor;
     private float PenetrationRatio;
     private void OnTriggerEnter (Collider colliderHit) {
-        if (ShellType == TurretFireManager.TurretType.Artillery) {
+        if (ShellType == TurretFireManager.TurretRole.Artillery) {
             OnTriggerEnterArtillery(colliderHit);
-        } else if (ShellType == TurretFireManager.TurretType.AA) {
+        } else if (ShellType == TurretFireManager.TurretRole.AA) {
             OnTriggerEnterArtillery(colliderHit);
-        } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
+        } else if (ShellType == TurretFireManager.TurretRole.Torpedo && !PreventExplosion) {
             OnTriggerEnterArtillery(colliderHit);
         }
     }
@@ -413,11 +413,11 @@ public class ShellStat : MonoBehaviour
         ShellExplosionFX();
     }
     private void ShellExplosionFX(){
-        if (ShellType == TurretFireManager.TurretType.Artillery) {
+        if (ShellType == TurretFireManager.TurretRole.Artillery) {
             ShellExplosionFXArtillery();
-        }if (ShellType == TurretFireManager.TurretType.AA) {
+        }if (ShellType == TurretFireManager.TurretRole.AA) {
             ShellExplosionFXAA();
-        } else if (ShellType == TurretFireManager.TurretType.Torpedo && !PreventExplosion) {
+        } else if (ShellType == TurretFireManager.TurretRole.Torpedo && !PreventExplosion) {
             ShellExplosionFXTorpedo();
         }
     }
@@ -480,8 +480,8 @@ public class ShellStat : MonoBehaviour
     public void SetTargetRange(float range) { TargetRange = range; }
     public void SetMuzzleVelocity(float velocity) { MuzzleVelocity = velocity; }
     public void SetPrecision(float precision) { ShellPrecision = precision; }
-    private TurretFireManager.TurretType ShellType;
-    public void SetFiringMode(TurretFireManager.TurretType shellType) { ShellType = shellType; }
+    private TurretFireManager.TurretRole ShellType;
+    public void SetFiringMode(TurretFireManager.TurretRole shellType) { ShellType = shellType; }
     private TurretManager TurretManager;
     public void SetParentTurretManager(TurretManager turretManager) { TurretManager = turretManager; }
     private bool FollowedByCamera = false;

@@ -196,7 +196,7 @@ namespace UI {
             DisplayTurretsCurrentTorpedoes = TurretUIInstance.transform.Find("TurretsCurrentTorpedoes").gameObject;
             DisplayTurretsCurrentDepthCharges = TurretUIInstance.transform.Find("TurretsCurrentDepthCharges").gameObject;
             CreateTurretsStatusDisplay();
-            SetPlayerUITurretType(ActiveTarget.GetComponent<TurretManager>().GetCurrentTurretType());
+            SetPlayerUITurretRole(ActiveTarget.GetComponent<TurretManager>().GetCurrentTurretRole());
             DisplayAITurretOverlay();
         }
         private void CloseTurretUI() {
@@ -231,7 +231,7 @@ namespace UI {
                 ChangeSpeedStep(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentSpeedStep());
         }
 
-        public void SetPlayerUITurretType(TurretFireManager.TurretType currentControlledTurret) {
+        public void SetPlayerUITurretRole(TurretFireManager.TurretRole currentControlledTurret) {
             if (TurretUIInstance) {
                 // Debug.Log ("currentControlledTurret : "+ currentControlledTurret);
                 DisplayTurretsArtilleryAimer.SetActive(false);
@@ -240,19 +240,23 @@ namespace UI {
                 DisplayTurretsCurrentAA.SetActive(false);
                 DisplayTurretsCurrentTorpedoes.SetActive(false);
                 DisplayTurretsCurrentDepthCharges.SetActive(false);
-                if (currentControlledTurret == TurretFireManager.TurretType.Artillery) {
+                if (currentControlledTurret == TurretFireManager.TurretRole.NavalArtillery) {
                     DisplayTurretsArtilleryAimer.SetActive(true);
                     DisplayTurretsCurrentArtillery.SetActive(true);
                 }
-                if (currentControlledTurret == TurretFireManager.TurretType.AA) {
+                if (currentControlledTurret == TurretFireManager.TurretRole.Artillery) {
+                    DisplayTurretsAAAimer.SetActive(true);
+                    DisplayTurretsCurrentArtillery.SetActive(true);
+                }
+                if (currentControlledTurret == TurretFireManager.TurretRole.AA) {
                     DisplayTurretsAAAimer.SetActive(true);
                     DisplayTurretsCurrentAA.SetActive(true);
                 }
-                if (currentControlledTurret == TurretFireManager.TurretType.Torpedo) {
+                if (currentControlledTurret == TurretFireManager.TurretRole.Torpedo) {
                     DisplayTurretsArtilleryAimer.SetActive(true);
                     DisplayTurretsCurrentTorpedoes.SetActive(true);
                 }
-                if (currentControlledTurret == TurretFireManager.TurretType.DepthCharge) {
+                if (currentControlledTurret == TurretFireManager.TurretRole.DepthCharge) {
                     DisplayTurretsCurrentDepthCharges.SetActive(true);
                 }
                 CreateTurretsStatusDisplay();

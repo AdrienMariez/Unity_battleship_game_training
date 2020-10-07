@@ -15,13 +15,13 @@ public Units_sub_categoriesType Units_sub_categories;
 public TeamsType Teams;
 public CountriesType Countries;
 public WeaponsType Weapons;
-public Weapons_typesType Weapons_types;
+public Weapons_rolesType Weapons_roles;
 public AmmosType Ammos;
 
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Units = new UnitsType();Units_categories = new Units_categoriesType();Units_sub_categories = new Units_sub_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_types = new Weapons_typesType();Ammos = new AmmosType();
+            Units = new UnitsType();Units_categories = new Units_categoriesType();Units_sub_categories = new Units_sub_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();
         }
         public class UnitsType 
  {public Units fuso { get { return Get(CompiledTypes.Units.RowValues.fuso); } } 
@@ -148,24 +148,24 @@ private Weapons Get(CompiledTypes.Weapons.RowValues line) { return new Weapons(p
                     return returnList;
                 }
  } //END OF Weapons 
-public class Weapons_typesType 
- {public Weapons_types artillery { get { return Get(CompiledTypes.Weapons_types.RowValues.artillery); } } 
-public Weapons_types antiairartillery { get { return Get(CompiledTypes.Weapons_types.RowValues.antiairartillery); } } 
-public Weapons_types antiair { get { return Get(CompiledTypes.Weapons_types.RowValues.antiair); } } 
-public Weapons_types torpedoes { get { return Get(CompiledTypes.Weapons_types.RowValues.torpedoes); } } 
-private Weapons_types Get(CompiledTypes.Weapons_types.RowValues line) { return new Weapons_types(parsedDB.Root, line); }
+public class Weapons_rolesType 
+ {public Weapons_roles artillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.artillery); } } 
+public Weapons_roles navalartillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.navalartillery); } } 
+public Weapons_roles antiair { get { return Get(CompiledTypes.Weapons_roles.RowValues.antiair); } } 
+public Weapons_roles torpedoes { get { return Get(CompiledTypes.Weapons_roles.RowValues.torpedoes); } } 
+private Weapons_roles Get(CompiledTypes.Weapons_roles.RowValues line) { return new Weapons_roles(parsedDB.Root, line); }
 
-                public Weapons_types[] GetAll() 
+                public Weapons_roles[] GetAll() 
                 {
-                    var values = (CompiledTypes.Weapons_types.RowValues[])Enum.GetValues(typeof(CompiledTypes.Weapons_types.RowValues));
-                    Weapons_types[] returnList = new Weapons_types[values.Length];
+                    var values = (CompiledTypes.Weapons_roles.RowValues[])Enum.GetValues(typeof(CompiledTypes.Weapons_roles.RowValues));
+                    Weapons_roles[] returnList = new Weapons_roles[values.Length];
                     for (int i = 0; i < values.Length; i++)
                     {
                         returnList[i] = Get(values[i]);
                     }
                     return returnList;
                 }
- } //END OF Weapons_types 
+ } //END OF Weapons_roles 
 public class AmmosType 
  {public Ammos ShellJapan356mm { get { return Get(CompiledTypes.Ammos.RowValues.ShellJapan356mm); } } 
 public Ammos ShellJapan200mm { get { return Get(CompiledTypes.Ammos.RowValues.ShellJapan200mm); } } 

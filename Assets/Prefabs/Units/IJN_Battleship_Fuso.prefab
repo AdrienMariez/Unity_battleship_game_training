@@ -8129,7 +8129,7 @@ PrefabInstance:
     - target: {fileID: 536144026725449547, guid: 6fef9f34d5019ef408c07f4508ce57a8,
         type: 3}
       propertyPath: debug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 840146293658127578, guid: 6fef9f34d5019ef408c07f4508ce57a8,
         type: 3}

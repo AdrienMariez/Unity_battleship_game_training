@@ -10,7 +10,9 @@ public class TurretFireManager : MonoBehaviour
     private bool PlayerControl = false;
     private bool UIActive = false;
     private bool Dead;
-    [Tooltip("Type of turret")] public TurretType m_TurretType;
+    // [Tooltip("Type of turret")] public TurretRole m_TurretRole;
+    [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles;
+    private TurretRole TurretCurrentRole;
     [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
     public Transform[] m_FireMuzzles;
@@ -44,12 +46,13 @@ public class TurretFireManager : MonoBehaviour
     private float TargetRange;
     // private FreeLookCam FreeLookCam;
     private TurretManager.TurretStatusType TurretStatus;
-    public enum TurretType {
+    public enum TurretRole {
+        NavalArtillery,
         Artillery,
-        ArtilleryAA,
         AA,
         Torpedo,
-        DepthCharge
+        DepthCharge,
+        None
     }
 
     private bool AIControl = false;
@@ -64,7 +67,7 @@ public class TurretFireManager : MonoBehaviour
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
-        if (TargetRange > m_MaxRange && m_TurretType == TurretType.Artillery || TargetRange > m_MaxRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery) {
+        if (TargetRange > m_MaxRange && TurretCurrentRole == TurretRole.NavalArtillery || TargetRange > m_MaxRange && TurretCurrentRole == TurretRole.Artillery) {
             OutOfRange = true;
             CheckTurretStatus();
         }else{
@@ -156,16 +159,12 @@ public class TurretFireManager : MonoBehaviour
         }
     }
     private void SendNeededInfoToShell(GameObject shellInstance) {
-        if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || m_TurretType == TurretType.Artillery) {
-            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.Artillery);
+        if (TurretCurrentRole == TurretRole.Artillery || TurretCurrentRole == TurretRole.NavalArtillery) {
             shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
-        } else if (m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.AA || m_TurretType == TurretType.AA) {
-            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretType.AA);
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);
         } else {
-            shellInstance.GetComponent<ShellStat>().SetFiringMode(m_TurretType);
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);
+            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
         }
+        shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretCurrentRole);
         shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
         shellInstance.GetComponent<ShellStat> ().SetPrecision(Precision);
         shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
@@ -206,24 +205,10 @@ public class TurretFireManager : MonoBehaviour
     }
 
     private void CheckTurretStatus() {
-        TurretManager.TurretStatusType statusType = TurretManager.TurretStatusType.Ready;
-        if (UIActive) {
-            if (Dead){
-                statusType = TurretManager.TurretStatusType.Dead;
-            } else if (Reloading){
-                statusType = TurretManager.TurretStatusType.Reloading;
-            } else if (PreventFire){
-                statusType = TurretManager.TurretStatusType.PreventFire;
-            } else if (OutOfRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || OutOfRange && m_TurretType == TurretType.Artillery){
-                statusType = TurretManager.TurretStatusType.PreventFire;
-            } else {
-                statusType = TurretManager.TurretStatusType.Ready;
-            }
-
-            if (statusType != TurretStatus) {
-                // Debug.Log ("TurretNumber : "+ TurretNumber);
-                TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
-            }
+        TurretManager.TurretStatusType statusType = GetTurretStatus();
+        if (UIActive && statusType != TurretStatus) {
+            // Debug.Log ("TurretNumber : "+ TurretNumber);
+            TurretManager.SetSingleTurretStatus(statusType, TurretNumber);
         }
         TurretStatus = statusType;
     }
@@ -233,7 +218,7 @@ public class TurretFireManager : MonoBehaviour
             status = TurretManager.TurretStatusType.Dead;
         } else if  (PreventFire){
             status = TurretManager.TurretStatusType.PreventFire;
-        } else if  (OutOfRange && m_TurretType == TurretType.ArtilleryAA && CurrentControlledTurretType == TurretType.Artillery || OutOfRange && m_TurretType == TurretType.Artillery){
+        } else if  (OutOfRange){
             status = TurretManager.TurretStatusType.PreventFire;
         } else if (Reloading){
             status = TurretManager.TurretStatusType.Reloading;
@@ -254,7 +239,6 @@ public class TurretFireManager : MonoBehaviour
     public void ReturnActiveTurretsStatus() { TurretManager.SetSingleTurretStatus(TurretStatus, TurretNumber); }
     public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
     public void SetTurretUIActive(bool uiActive){ UIActive = uiActive; }
-    private TurretType CurrentControlledTurretType;
-    public void SetCurrentControlledTurretType(TurretType currentControlledTurretType) { CurrentControlledTurretType = currentControlledTurretType; }
-    public TurretType GetTurretType() { return m_TurretType; }
+    public void SetCurrentControlledTurretRole(TurretRole currentControlledTurretRole) { TurretCurrentRole = currentControlledTurretRole; }
+    public TurretRole[] GetTurretRoles() { return m_TurretRoles; }
 }
