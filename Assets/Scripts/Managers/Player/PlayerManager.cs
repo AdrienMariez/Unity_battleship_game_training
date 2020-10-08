@@ -76,6 +76,8 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetButtonDown ("PauseMenu"))
             SetPause();
+
+        UIManager.SetAimerPosition(m_FreeLookCamera.GetRaycastScreenPosition());
     }
 
     private void SetHideUI(){

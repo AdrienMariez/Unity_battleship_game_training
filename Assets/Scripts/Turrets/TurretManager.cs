@@ -21,7 +21,7 @@ public class TurretManager : MonoBehaviour {
         // private List <GameObject> ArtilleryTurrets;
         private List <GameObject> NavalArtilleryTurrets = new List<GameObject>();
         private List <GameObject> ArtilleryTurrets = new List<GameObject>();
-        private float CameraPercentage;
+        private float ElevationRatio;               // % of elevation needed
         private float TargetRange;
         private Vector3 TargetPosition;
         private float MaxRange = -1;
@@ -94,31 +94,35 @@ public class TurretManager : MonoBehaviour {
         if (PlayerControl) {
             // Debug.Log("if (PlayerControl) {");
             CheckForTurretSwitch();
-            // if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
-                // Get the angle of the camera here
-                CameraPercentage = FreeLookCam.GetTiltPercentage();
-                // Debug.Log(CameraPercentage + " : CameraPercentage");
-
-                TargetRange = ((MaxRange - MinRange) / 100 * CameraPercentage) + MinRange;
-                TargetPosition = FreeLookCam.GetTargetPosition();
-            // } else {
-                
-            // }
+            if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
+                ElevationRatio = FreeLookCam.GetTiltPercentage();                                               // Get the angle of the camera here
+                TargetRange = ((MaxRange - MinRange) / 100 * ElevationRatio) + MinRange;
+                TargetPosition = FreeLookCam.GetRaycastAbstractTargetPosition();                                // Long range raycast
+            } else {
+                TargetRange = FreeLookCam.GetRaycastRange();                                                    // Get the distance with the raycast point
+                TargetPosition = FreeLookCam.GetRaycastTargetPosition();                                        // Short range raycast
+                ElevationRatio = Mathf.Round((TargetRange - MinRange) * 100 / (MaxRange - MinRange));
+            }
+            // Debug.Log(ElevationRatio + " : ElevationRatio");
 
             foreach (GameObject turret in m_Turrets) {
                 turret.GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
-                turret.GetComponent<TurretRotation>().SetCameraPercentage(CameraPercentage);
+                turret.GetComponent<TurretFireManager>().SetTargetPosition(TargetPosition);
                 turret.GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
+                turret.GetComponent<TurretRotation>().SetElevationRatio(ElevationRatio);
             }
         }
         if (!PlayerControl && AIControl) {
             // Debug.Log("if (!PlayerControl && AIControl) {");
-            float fakeCameraPercentage = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
-            // Debug.Log("fakeCameraPercentage = "+ fakeCameraPercentage);
+            ElevationRatio = Mathf.Round((AITargetRange - MinRange) * 100 / (MaxRange - MinRange));
+            // ElevationRatio = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
+            TargetRange = AITargetRange;                                                        // So the UI Knows the current AI range ?
+            // Debug.Log("ElevationRatio = "+ ElevationRatio);
 
             foreach (GameObject turret in m_Turrets) {
                 turret.GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
-                turret.GetComponent<TurretRotation>().SetCameraPercentage(fakeCameraPercentage);
+                turret.GetComponent<TurretFireManager>().SetTargetPosition(AITargetPosition);
+                turret.GetComponent<TurretRotation>().SetElevationRatio(ElevationRatio);
                 turret.GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
             }
         }
@@ -322,9 +326,6 @@ public class TurretManager : MonoBehaviour {
     }
 
     public void SetAITargetToFireOn(Vector3 targetPosition) {
-        AITargetPosition = targetPosition;
-        // A bit of cheating here, before a correct fake camera angle can be implemented
-        targetPosition.y += 500;
         AITargetPosition = targetPosition;
         // if (!Active) {
         //     Debug.Log ("AITargetPosition : "+ AITargetPosition);

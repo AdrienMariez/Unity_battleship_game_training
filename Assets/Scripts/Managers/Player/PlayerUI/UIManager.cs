@@ -54,6 +54,8 @@ namespace UI {
         private GameObject PlayerCanvas;
         private PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
+        private Vector3 AimerPosition;                              // Position of the target reticule
+        TurretFireManager.TurretRole CurrentControlledTurret;
         private WorldUIVariables WorldUIVariables;
 
         private void Start() {
@@ -85,6 +87,16 @@ namespace UI {
                         DisplayTurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayKilometer, TurretTargetRange);
                     } else {
                         DisplayTurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, Mathf.Round(TurretTargetRange));
+                    }
+
+                    if (CurrentControlledTurret == TurretFireManager.TurretRole.NavalArtillery) {
+                        DisplayTurretsArtilleryAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
+                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.Artillery) {
+                        DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
+                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.AA) {
+                        DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
+                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.Torpedo) {
+                        DisplayTurretsArtilleryAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
                     }
                 }
             }
@@ -233,6 +245,7 @@ namespace UI {
 
         public void SetPlayerUITurretRole(TurretFireManager.TurretRole currentControlledTurret) {
             if (TurretUIInstance) {
+                CurrentControlledTurret = currentControlledTurret;
                 // Debug.Log ("currentControlledTurret : "+ currentControlledTurret);
                 DisplayTurretsArtilleryAimer.SetActive(false);
                 DisplayTurretsAAAimer.SetActive(false);
@@ -456,6 +469,9 @@ namespace UI {
             CurrentUnitDead = isUnitDead;
             DisplayGameUI = !isUnitDead;
             SetOpenUI();
+        }
+        public void SetAimerPosition(Vector3 aimerPosition) {
+            AimerPosition = aimerPosition;
         }
         public void Reset() {
             CurrentUnitDead = false;

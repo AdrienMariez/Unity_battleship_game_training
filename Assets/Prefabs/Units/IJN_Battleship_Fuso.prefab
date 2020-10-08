@@ -8136,6 +8136,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret_Fuso_Main_A
       objectReference: {fileID: 0}
+    - target: {fileID: 1653871051627078444, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+        type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8933853122373449585, guid: 6fef9f34d5019ef408c07f4508ce57a8,
         type: 3}
       propertyPath: m_LocalPosition.y

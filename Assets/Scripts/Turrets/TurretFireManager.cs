@@ -44,7 +44,7 @@ public class TurretFireManager : MonoBehaviour
     private bool PreventFire;
     private bool OutOfRange;
     private float TargetRange;
-    // private FreeLookCam FreeLookCam;
+    private Vector3 TargetPosition;
     private TurretManager.TurretStatusType TurretStatus;
     public enum TurretRole {
         NavalArtillery,
@@ -78,19 +78,16 @@ public class TurretFireManager : MonoBehaviour
             CheckTurretStatus();
             if (Input.GetButtonDown ("FireMainWeapon")) {
                 //start the reloading process immediately
-                Reloading = true;
+                Reloading = true;                                               // Start the reloading process immediately
                 ReloadingTimer = m_ReloadTime;
-                CheckTurretStatus();
-                // ... launch the shell.
                 Fire ();
+                CheckTurretStatus();
             }
         } else if (AIControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
             CheckTurretStatus();
             if (!AIPauseFire) {
-                //start the reloading process immediately
-                Reloading = true;
+                Reloading = true;                                               // Start the reloading process immediately
                 ReloadingTimer = m_ReloadTime;
-                // ... launch the shell.
                 Fire ();
                 CheckTurretStatus();    
             }
@@ -160,14 +157,20 @@ public class TurretFireManager : MonoBehaviour
     }
     private void SendNeededInfoToShell(GameObject shellInstance) {
         if (TurretCurrentRole == TurretRole.Artillery || TurretCurrentRole == TurretRole.NavalArtillery) {
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(TargetRange);
+            shellInstance.GetComponent<ShellStat>().SetTargetRange(TargetRange);
+            if (AIControl) {
+                shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretRole.NavalArtillery);       // Don't let the AI shoot Artillery
+            }
         } else {
-            shellInstance.GetComponent<ShellStat> ().SetTargetRange(m_MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
+            shellInstance.GetComponent<ShellStat>().SetTargetRange(m_MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
+            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretCurrentRole);
         }
-        shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretCurrentRole);
-        shellInstance.GetComponent<ShellStat> ().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
-        shellInstance.GetComponent<ShellStat> ().SetPrecision(Precision);
-        shellInstance.GetComponent<ShellStat> ().SetParentTurretManager(TurretManager);
+        shellInstance.GetComponent<ShellStat>().SetTargetPosition(TargetPosition);
+        shellInstance.GetComponent<ShellStat>().SetWasAILaunched(AIControl);
+
+        shellInstance.GetComponent<ShellStat>().SetMuzzleVelocity(m_MuzzleVelocity * 0.58f);
+        shellInstance.GetComponent<ShellStat>().SetPrecision(Precision);
+        shellInstance.GetComponent<ShellStat>().SetParentTurretManager(TurretManager);
     }
 
     private void FireFX(Transform fireMuzzle) {
@@ -198,6 +201,9 @@ public class TurretFireManager : MonoBehaviour
     public float GetMaxRange(){ return m_MaxRange; }
     public float GetMinRange(){ return m_MinRange; }
     public void SetTargetRange(float range){ TargetRange = range; }
+    public void SetTargetPosition(Vector3 position) { 
+        TargetPosition = position;
+    }
     public void SetTurretDeath(bool IsShipDead) {
         Dead = IsShipDead;
         if (Dead)

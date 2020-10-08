@@ -46,9 +46,11 @@ namespace FreeLookCamera {
         private float TiltMin, TiltMax;                                         // Current used Tilt limitations
 
         private Vector3 RaycastTargetPosition;                                  // Point set by the camera raycast
+        private Vector3 RaycastAbstractTargetPosition;                          // Point set very far by the raycast
+        private float RaycastRange;                                             // Distance from unit to point
         private GameObject ActivePlayerUnit;                                    // Current controlled unit
         private Transform ActivePlayerUnitTransform;                                    // Current controlled unit transform
-        public WorldUnitsManager.UnitCategories ActivePlayerUnitCategory;
+        private WorldUnitsManager.UnitCategories ActivePlayerUnitCategory;
         private TurretFireManager.TurretRole CurrentControlledTurretRole;
 
         protected virtual void Start() {
@@ -92,11 +94,12 @@ namespace FreeLookCamera {
                     HandleRotationMovement();                       // Allow free cam if the camera can turn
                 }
 
+                TargetRangeRayCast();
+
                 if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
                     TargetRangeCameraTilt();
                 }
                 
-                TargetRangeRayCast();
                 // Debug.Log ("RaycastTargetPosition : "+ RaycastTargetPosition);
                 
 
@@ -108,13 +111,40 @@ namespace FreeLookCamera {
             CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
         }
         protected void TargetRangeRayCast() {
-            if (Physics.Raycast(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward), out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {
+            Ray ray = new Ray(m_RaycastProjector.transform.position, m_RaycastProjector.transform.forward);
+            Plane hPlane = new Plane(Vector3.up, Vector3.zero);         // This is a plane at 0,0,0 which simulates the sea collision model
+            float distance = 0; 
+
+            if (Physics.Raycast(ray, out RaycastHit, Mathf.Infinity, RaycastLayerMask)) {               // If a collision model is hit
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
                 RaycastTargetPosition = RaycastHit.point;
-            } else {
+            } else if (hPlane.Raycast(ray, out distance)) {                                             // If the "water" is hit
+                Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * distance, Color.red);
+                RaycastTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * distance;
+            } else {                                                                                    // If it is in the sky
                 Debug.DrawRay(m_RaycastProjector.transform.position + (m_RaycastProjector.transform.forward * m_CameraDistance), m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
                 RaycastTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
+            RaycastAbstractTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+
+            // void Update(){
+            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // // create a plane at 0,0,0 whose normal points to +Y:
+            // Plane hPlane = new Plane(Vector3.up, Vector3.zero);
+            // // Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
+            // float distance = 0; 
+            // // if the ray hits the plane...
+            // if (hPlane.Raycast(ray, out distance)){
+            //     // get the hit point:
+            //     temp.transform.position = ray.GetPoint(distance);
+            // }
+            // }
+
+            BuildRaycastRange();
+        }
+
+        protected void BuildRaycastRange() {
+            RaycastRange = (ActivePlayerUnitTransform.position - RaycastTargetPosition).magnitude;
         }
 
         public virtual void SetTarget(Transform newTransform) {
@@ -211,8 +241,24 @@ namespace FreeLookCamera {
         public void SetCurrentTurretRole(TurretFireManager.TurretRole currentControlledTurret) {
             CurrentControlledTurretRole = currentControlledTurret;
         }
-        public Vector3 GetTargetPosition() {
+        public Vector3 GetRaycastScreenPosition() {
+            Vector3 screenPosition;
+            if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {       // If naval artillery is used, keep the pointer at horizon level far away
+                screenPosition = RaycastAbstractTargetPosition;
+                screenPosition.y = 0;
+                return Cam.WorldToScreenPoint(screenPosition);
+            } else{
+                return Cam.WorldToScreenPoint(RaycastTargetPosition);                               // Else give the raycast hit point
+            }
+        }
+        public Vector3 GetRaycastTargetPosition() {
             return RaycastTargetPosition;
+        }
+        public Vector3 GetRaycastAbstractTargetPosition() {
+            return RaycastAbstractTargetPosition;
+        }
+        public float GetRaycastRange() {
+            return RaycastRange;
         }
 
         public float GetTiltPercentage() {
