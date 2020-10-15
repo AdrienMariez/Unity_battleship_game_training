@@ -288,12 +288,12 @@ public class TurretRotation : MonoBehaviour
 
         // Check first if any no fire zones are implemented, and if the turret is in it
         if (m_NoFireZones.Length > 0) {
-            for (int i = 0; i < m_NoFireZones.Length; i++) {
-                if (m_NoFireZones[i].ZoneBegin > m_NoFireZones[i].ZoneEnd) {
-                    if (CurrentAngle > m_NoFireZones[i].ZoneBegin || CurrentAngle < m_NoFireZones[i].ZoneEnd) {
+            foreach (FireZonesManager fireZone in m_NoFireZones) {
+                if (fireZone.ZoneBegin > fireZone.ZoneEnd) {
+                    if (CurrentAngle > fireZone.ZoneBegin || CurrentAngle < fireZone.ZoneEnd) {
                         PreventFire = true;
                     }
-                } else if (CurrentAngle > m_NoFireZones[i].ZoneBegin && CurrentAngle < m_NoFireZones[i].ZoneEnd ) {
+                } else if (CurrentAngle > fireZone.ZoneBegin && CurrentAngle < fireZone.ZoneEnd ) {
                     PreventFire = true;
                 }
             }
@@ -331,7 +331,6 @@ public class TurretRotation : MonoBehaviour
         targetAngleWorld += 180;
         targetAngleWorld = 360 - targetAngleWorld;
         targetAngleWorld -= 180;
-        // if (debug) { Debug.Log("targetAngleWorld --- = "+ targetAngleWorld); }
 
         if (ElevationRatio + 20 > 100)          // Gives a little boost to the elevation to prevent shells trajectories too flat or ending in the water. May be upgraded to better account for smaller trajectories
             ElevationRatio = 100;
@@ -339,6 +338,8 @@ public class TurretRotation : MonoBehaviour
             ElevationRatio += 20;
 
         TargetAngElev = (ElevationRatio * (m_UpTraverse - m_DownTraverse) / 100) + m_DownTraverse;      // Build traverse with the range required
+
+        // if (debug) { Debug.Log("targetAngleWorld --- = "+ targetAngleWorld); }
 
         TargetAngElev += targetAngleWorld;                                                              // Add the angle to the target
 
@@ -370,6 +371,14 @@ public class TurretRotation : MonoBehaviour
         }
 
         PreventFireVert = CheckNoFireVertical(CurrentAngElev,TargetAngElev);
+
+        
+
+        // Create a vector between the current position and the target
+        //     Vector3 targetDir = TargetPosition - m_TurretCannon.transform.position;
+        // // Get the angle between the facing of the current position and the new vector
+        //     float signedAngle = Vector3.SignedAngle(targetDir, m_TurretCannon.transform.forward, Vector3.forward);
+        // if (debug) { Debug.Log("signedAngle = "+ signedAngle); }   
         
         CurrentAngElev += 90;                                                                           // Transform back the elevation variable into the same axis than the limitations
         CurrentAngElev = 360 - CurrentAngElev;
@@ -466,6 +475,7 @@ public class TurretRotation : MonoBehaviour
         if (currentAngElev > TargetAngleMax || currentAngElev < TargetAngleMin){
             PreventFire = true;
         }
+        
         // if (debug && PreventFire) {
         //     Debug.Log("currentAngElev = "+ currentAngElev+"- targetAngElev = "+ targetAngElev);
         // }

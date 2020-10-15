@@ -126,6 +126,7 @@ namespace FreeLookCamera {
                 RaycastTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
             }
             RaycastAbstractTargetPosition = m_RaycastProjector.transform.position + m_RaycastProjector.transform.TransformDirection(Vector3.forward) * 100000;
+            RaycastAbstractTargetPosition.y = 0;
 
             // void Update(){
             // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -244,9 +245,7 @@ namespace FreeLookCamera {
         public Vector3 GetRaycastScreenPosition() {
             Vector3 screenPosition;
             if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {       // If naval artillery is used, keep the pointer at horizon level far away
-                screenPosition = RaycastAbstractTargetPosition;
-                screenPosition.y = 0;
-                return Cam.WorldToScreenPoint(screenPosition);
+                return Cam.WorldToScreenPoint(RaycastAbstractTargetPosition);
             } else{
                 return Cam.WorldToScreenPoint(RaycastTargetPosition);                               // Else give the raycast hit point
             }
