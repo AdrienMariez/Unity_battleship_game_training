@@ -6,14 +6,14 @@ using SimpleJSON;
 using CastleDBImporter;
 namespace CompiledTypes
 { 
-    public class Camera
+    public class UnitCameraParameters
     {
         public float Distance;
 public float Height;
 public float Lateraloffset;
 
          
-        public Camera (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
+        public UnitCameraParameters (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
         {
             Distance = node["Distance"].AsFloat;
 Height = node["Height"].AsFloat;

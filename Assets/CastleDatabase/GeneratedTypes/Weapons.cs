@@ -11,7 +11,7 @@ namespace CompiledTypes
         public string id;
 public string Name;
 public bool Isavariant;
-public Weapons Variant;
+public List<WeaponVariantReference> WeaponVariantReferenceList = new List<WeaponVariantReference>();
 public string Model;
 public float Health;
 public float Armor;
@@ -43,7 +43,7 @@ JapanTorpedo4CA
 id = node["id"];
 Name = node["Name"];
 Isavariant = node["Isavariant"].AsBool;
-Variant = new CompiledTypes.Weapons(root,CompiledTypes.Weapons.GetRowValue(node["Variant"]));
+foreach(var item in node["WeaponVariantReference"]) { WeaponVariantReferenceList.Add(new WeaponVariantReference(root, item));}
 Model = node["Model"];
 Health = node["Health"].AsFloat;
 Armor = node["Armor"].AsFloat;

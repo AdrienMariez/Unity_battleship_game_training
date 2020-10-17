@@ -1,46 +1,43 @@
 {
 	"sheets": [
 		{
-			"name": "Units",
+			"name": "Global_Units",
 			"columns": [
 				{
-					"typeStr": "1",
+					"typeStr": "0",
 					"name": "id"
 				},
 				{
-					"typeStr": "0",
-					"name": "Name"
+					"typeStr": "1",
+					"name": "UnitName"
 				},
 				{
 					"typeStr": "13",
-					"name": "Model"
+					"name": "UnitModel"
 				},
 				{
 					"typeStr": "6:Units_sub_categories",
-					"name": "Category"
+					"name": "UnitCategory"
 				},
 				{
 					"typeStr": "6:Countries",
-					"name": "Nation"
+					"name": "UnitNation"
 				},
 				{
 					"typeStr": "8",
-					"name": "Score",
-					"display": null
+					"name": "UnitScore"
 				},
 				{
 					"typeStr": "8",
-					"name": "Camera",
-					"display": null
+					"name": "UnitCameraParameters"
 				},
 				{
 					"typeStr": "3",
-					"name": "Health",
-					"display": null
+					"name": "UnitHealth"
 				},
 				{
 					"typeStr": "8",
-					"name": "Damagecontrol",
+					"name": "UnitDamagecontrol",
 					"opt": true
 				},
 				{
@@ -59,23 +56,6 @@
 			],
 			"lines": [
 				{
-					"Name": "Fuso",
-					"Score": [
-						{
-							"Commandpoints": 400,
-							"Victorypoints": 350
-						}
-					],
-					"Camera": [
-						{
-							"Distance": 120,
-							"Height": 25,
-							"Lateraloffset": 0
-						}
-					],
-					"Health": 10000,
-					"Nation": "japan",
-					"Category": "Battleship",
 					"index": 0,
 					"Unitweapons": [
 						{
@@ -97,7 +77,7 @@
 							"Left_traverse_limitation": 140
 						},
 						{
-							"Type": "JapanBB356mmA",
+							"Type": "JapanBB356mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -568,35 +548,34 @@
 							"Rotation_time": 120
 						}
 					],
-					"Damagecontrol": [
+					"Unitmass": 38536000,
+					"id": "fuso",
+					"UnitName": "Fuso",
+					"UnitDamagecontrol": [
 						{
 							"Repairrate": 3,
 							"Repaircrew": 3
 						}
 					],
-					"Unitmass": 38536000,
-					"id": "fuso",
-					"Model": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
-				},
-				{
-					"Name": "Takao",
-					"Category": "Battleship",
-					"Nation": "japan",
-					"Score": [
+					"UnitHealth": 10000,
+					"UnitCameraParameters": [
 						{
-							"Commandpoints": 200,
-							"Victorypoints": 100
-						}
-					],
-					"Camera": [
-						{
-							"Distance": 105,
+							"Distance": 120,
 							"Height": 25,
-							"Lateral Offset": 0,
 							"Lateraloffset": 0
 						}
 					],
-					"Health": 8000,
+					"UnitScore": [
+						{
+							"Commandpoints": 400,
+							"Victorypoints": 350
+						}
+					],
+					"UnitNation": "japan",
+					"UnitCategory": "Battleship",
+					"UnitModel": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
+				},
+				{
 					"index": 1,
 					"Buoyancy": [
 						{
@@ -918,15 +897,33 @@
 							"Left_traverse_limitation": 5
 						}
 					],
-					"Damagecontrol": [
+					"Unitmass": 12781000,
+					"id": "takao",
+					"UnitName": "Takao",
+					"UnitDamagecontrol": [
 						{
 							"Repairrate": 3,
 							"Repaircrew": 5
 						}
 					],
-					"Unitmass": 12781000,
-					"id": "takao",
-					"Model": "../Prefabs/Units/IJN_Cruiser_Takao.prefab"
+					"UnitHealth": 8000,
+					"UnitCameraParameters": [
+						{
+							"Distance": 105,
+							"Height": 25,
+							"Lateral Offset": 0,
+							"Lateraloffset": 0
+						}
+					],
+					"UnitScore": [
+						{
+							"Commandpoints": 200,
+							"Victorypoints": 100
+						}
+					],
+					"UnitNation": "japan",
+					"UnitCategory": "Battleship",
+					"UnitModel": "../Prefabs/Units/IJN_Cruiser_Takao.prefab"
 				}
 			],
 			"separators": [],
@@ -935,7 +932,7 @@
 			}
 		},
 		{
-			"name": "Units@Score",
+			"name": "Global_Units@UnitScore",
 			"props": {
 				"hide": true
 			},
@@ -953,7 +950,7 @@
 			]
 		},
 		{
-			"name": "Units@Camera",
+			"name": "Global_Units@UnitCameraParameters",
 			"props": {
 				"hide": true
 			},
@@ -977,7 +974,7 @@
 			]
 		},
 		{
-			"name": "Units@Damagecontrol",
+			"name": "Global_Units@UnitDamagecontrol",
 			"props": {
 				"hide": true
 			},
@@ -1320,9 +1317,8 @@
 					"name": "Isavariant"
 				},
 				{
-					"typeStr": "6:Weapons",
-					"name": "Variant",
-					"opt": true
+					"typeStr": "8",
+					"name": "WeaponVariantReference"
 				},
 				{
 					"typeStr": "13",
@@ -1421,14 +1417,19 @@
 						{
 							"Weaponrole": "navalartillery"
 						}
-					]
+					],
+					"WeaponVariantReference": []
 				},
 				{
 					"Name": "JpBB356B",
 					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_B.prefab",
-					"Variant": "JapanBB356mmA",
 					"Isavariant": true,
-					"id": "JapanBB356mmB"
+					"id": "JapanBB356mmB",
+					"WeaponVariantReference": [
+						{
+							"WeaponVariantRef": "JapanBB356mmA"
+						}
+					]
 				},
 				{
 					"Name": "JpCA200A",
@@ -1454,21 +1455,30 @@
 						{
 							"Weaponrole": "artillery"
 						}
-					]
+					],
+					"WeaponVariantReference": []
 				},
 				{
 					"Name": "JpCA200B",
 					"Model": "../Prefabs/Weapons/Turret_Takao_Main_B.prefab",
-					"Variant": "JapanCA200mmA",
 					"Isavariant": true,
-					"id": "JapanCA200mmB"
+					"id": "JapanCA200mmB",
+					"WeaponVariantReference": [
+						{
+							"WeaponVariantRef": "JapanCA200mmA"
+						}
+					]
 				},
 				{
 					"Name": "JpCA200Y",
 					"Model": "../Prefabs/Weapons/Turret_Takao_Main_Y.prefab",
-					"Variant": "JapanCA200mmA",
 					"Isavariant": true,
-					"id": "JapanCA200mmY"
+					"id": "JapanCA200mmY",
+					"WeaponVariantReference": [
+						{
+							"WeaponVariantRef": "JapanCA200mmA"
+						}
+					]
 				},
 				{
 					"Name": "Jp120Type10AAx2",
@@ -1494,7 +1504,8 @@
 						{
 							"Weaponrole": "artillery"
 						}
-					]
+					],
+					"WeaponVariantReference": []
 				},
 				{
 					"Name": "JpBBCasemate120",
@@ -1520,7 +1531,8 @@
 						{
 							"Weaponrole": "artillery"
 						}
-					]
+					],
+					"WeaponVariantReference": []
 				},
 				{
 					"Name": "JpTorp4CA",
@@ -1543,7 +1555,8 @@
 						{
 							"Weaponrole": "torpedoes"
 						}
-					]
+					],
+					"WeaponVariantReference": []
 				}
 			],
 			"separators": [],
@@ -1686,7 +1699,7 @@
 			}
 		},
 		{
-			"name": "Units@Unitweapons",
+			"name": "Global_Units@Unitweapons",
 			"props": {
 				"hide": true
 			},
@@ -1728,7 +1741,7 @@
 			]
 		},
 		{
-			"name": "Units@Buoyancy",
+			"name": "Global_Units@Buoyancy",
 			"props": {
 				"hide": true
 			},
@@ -1766,7 +1779,7 @@
 			]
 		},
 		{
-			"name": "Units@Buoyancy@Center_of_mass",
+			"name": "Global_Units@Buoyancy@Center_of_mass",
 			"props": {
 				"hide": true
 			},
@@ -1792,7 +1805,7 @@
 			]
 		},
 		{
-			"name": "Units@Buoyancy@Force_points",
+			"name": "Global_Units@Buoyancy@Force_points",
 			"props": {
 				"hide": true
 			},
@@ -1816,7 +1829,7 @@
 			]
 		},
 		{
-			"name": "Units@Unitweapons@No_fire_zones",
+			"name": "Global_Units@Unitweapons@No_fire_zones",
 			"props": {
 				"hide": true
 			},
@@ -1836,7 +1849,7 @@
 			]
 		},
 		{
-			"name": "Units@Unitweapons@Elevation_zones",
+			"name": "Global_Units@Unitweapons@Elevation_zones",
 			"props": {
 				"hide": true
 			},
@@ -1865,7 +1878,7 @@
 			]
 		},
 		{
-			"name": "Units@Unitweapons@Position",
+			"name": "Global_Units@Unitweapons@Position",
 			"props": {
 				"hide": true
 			},
@@ -1909,6 +1922,20 @@
 				{
 					"typeStr": "6:Weapons_roles",
 					"name": "Weaponrole"
+				}
+			]
+		},
+		{
+			"name": "Weapons@WeaponVariantReference",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Weapons",
+					"name": "WeaponVariantRef"
 				}
 			]
 		}

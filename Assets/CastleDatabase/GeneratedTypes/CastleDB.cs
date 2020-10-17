@@ -9,7 +9,7 @@ namespace CompiledTypes
     public class CastleDB
     {
         static CastleDBParser parsedDB;
-        public UnitsType Units;
+        public Global_UnitsType Global_Units;
 public Units_categoriesType Units_categories;
 public Units_sub_categoriesType Units_sub_categories;
 public TeamsType Teams;
@@ -21,24 +21,24 @@ public AmmosType Ammos;
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Units = new UnitsType();Units_categories = new Units_categoriesType();Units_sub_categories = new Units_sub_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();
+            Global_Units = new Global_UnitsType();Units_categories = new Units_categoriesType();Units_sub_categories = new Units_sub_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();
         }
-        public class UnitsType 
- {public Units fuso { get { return Get(CompiledTypes.Units.RowValues.fuso); } } 
-public Units takao { get { return Get(CompiledTypes.Units.RowValues.takao); } } 
-private Units Get(CompiledTypes.Units.RowValues line) { return new Units(parsedDB.Root, line); }
+        public class Global_UnitsType 
+ {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
+public Global_Units takao { get { return Get(CompiledTypes.Global_Units.RowValues.takao); } } 
+private Global_Units Get(CompiledTypes.Global_Units.RowValues line) { return new Global_Units(parsedDB.Root, line); }
 
-                public Units[] GetAll() 
+                public Global_Units[] GetAll() 
                 {
-                    var values = (CompiledTypes.Units.RowValues[])Enum.GetValues(typeof(CompiledTypes.Units.RowValues));
-                    Units[] returnList = new Units[values.Length];
+                    var values = (CompiledTypes.Global_Units.RowValues[])Enum.GetValues(typeof(CompiledTypes.Global_Units.RowValues));
+                    Global_Units[] returnList = new Global_Units[values.Length];
                     for (int i = 0; i < values.Length; i++)
                     {
                         returnList[i] = Get(values[i]);
                     }
                     return returnList;
                 }
- } //END OF Units 
+ } //END OF Global_Units 
 public class Units_categoriesType 
  {public Units_categories ship { get { return Get(CompiledTypes.Units_categories.RowValues.ship); } } 
 public Units_categories submarine { get { return Get(CompiledTypes.Units_categories.RowValues.submarine); } } 

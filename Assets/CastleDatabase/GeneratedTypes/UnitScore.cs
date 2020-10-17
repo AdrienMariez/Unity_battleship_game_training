@@ -6,13 +6,13 @@ using SimpleJSON;
 using CastleDBImporter;
 namespace CompiledTypes
 { 
-    public class Score
+    public class UnitScore
     {
         public int Commandpoints;
 public int Victorypoints;
 
          
-        public Score (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
+        public UnitScore (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
         {
             Commandpoints = node["Commandpoints"].AsInt;
 Victorypoints = node["Victorypoints"].AsInt;

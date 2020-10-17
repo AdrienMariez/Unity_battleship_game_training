@@ -3,7 +3,9 @@ guid: d96e5e131f5c8ab4a93afdf3c912853f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - CastleDBAsset: {fileID: 1042094116111776886, guid: c26edfb4d6471ae42ad77881eef5f271,
+      type: 3}
   executionOrder: -100
   icon: {instanceID: 0}
   userData: 

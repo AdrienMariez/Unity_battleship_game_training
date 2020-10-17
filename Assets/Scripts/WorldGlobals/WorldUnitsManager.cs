@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using CompiledTypes;
 
 public class WorldUnitsManager : MonoBehaviour {
 
@@ -14,6 +15,10 @@ public class WorldUnitsManager : MonoBehaviour {
     public WorldSingleTurret[] m_WorldSingleTurret;
     [Header("Add all shells of the game to this list !")]
     public WorldSingleShell[] m_WorldSingleShell;
+
+    public TextAsset CastleDBAsset;
+    private CastleDB DB;
+    // private Units fuso = DB.Units.fuso;
 
 
     public enum SimpleTeams {
@@ -59,16 +64,49 @@ public class WorldUnitsManager : MonoBehaviour {
     private void Start() {
         if (FirstLoad){
             FirstLoad = false;
+            DB = new CastleDB(CastleDBAsset);
             WorldSetUnits();
         }
     }
     
     static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
     private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
-
     public static List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
+
+    static List<CompiledTypes.Units_sub_categories> SubCategoriesDB = new List<CompiledTypes.Units_sub_categories>();
     
     private void WorldSetUnits() {
+
+        // Get one element from an asset
+        // Units_categories ship = DB.Units_categories.ship;
+        // string shipName = ship.Name;
+        // Debug.Log (shipName);
+
+        
+        // Get all elements in a list 
+        // foreach (CompiledTypes.Teams team in DB.Teams.GetAll()) {
+        //     TeamsDB.Add(team);
+        // }
+
+        // foreach (var test in DB.TEST.GetAll()) {
+        //     Debug.Log (test.id+" - "+test.UnitName+" - "+test.UnitPrefabFile+" - "+test.UnitHealth+" - "+test.UnitMass+" - "+test.UnitCountry.id+" - "+test.UnitSubCategory.id);
+        //     foreach (var item in test.UnitWeaponsTestList) {
+        //         Debug.Log (item.id+" - "+item.UnitWeaponTeam.Name+" - "+item.UnitWeaponRotZ);
+        //     }
+        // }
+
+        foreach (var test in DB.Global_Units.GetAll()) {
+            Debug.Log (test.id+" - "+test.UnitName+" - "+test.UnitNation.Team.Name);
+            foreach (var item in test.UnitweaponsList) {
+                Debug.Log (" - "+item.Type.id);
+            }
+        }
+
+
+
+
+
+
         foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
             SubCategories.Add(category);
         }

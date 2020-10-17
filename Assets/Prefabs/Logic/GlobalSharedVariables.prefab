@@ -67,14 +67,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - waveCount: 0
-    enemies:
-    - G
-    - GFG
-    selectedEnemy: 1
-    enemyLVL: 
-    delay: []
   m_WorldSingleUnit:
   - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
       type: 3}
@@ -110,6 +102,8 @@ MonoBehaviour:
       type: 3}
   m_WorldSingleTurret: []
   m_WorldSingleShell: []
+  CastleDBAsset: {fileID: 1042094116111776886, guid: c26edfb4d6471ae42ad77881eef5f271,
+    type: 3}
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0
