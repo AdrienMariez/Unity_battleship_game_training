@@ -10,6 +10,8 @@ namespace CompiledTypes
     {
         public string id;
 public string Name;
+public string ScriptPaths;
+public string FileName;
 
         public enum RowValues { 
 ship, 
@@ -23,6 +25,8 @@ building
             SimpleJSON.JSONNode node = root.GetSheetWithName("Units_categories").Rows[(int)line];
 id = node["id"];
 Name = node["Name"];
+ScriptPaths = node["ScriptPaths"];
+FileName = node["FileName"];
 
         }  
         

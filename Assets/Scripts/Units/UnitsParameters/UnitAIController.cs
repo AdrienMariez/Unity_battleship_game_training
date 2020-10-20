@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class UnitAIController : MonoBehaviour {
     protected bool AIActive = true;
-    protected WorldUnitsManager.Teams Team;
+    protected CompiledTypes.Teams.RowValues Team;
     protected string Name;                // For debug purposes
     protected bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
     protected float TurnInputLimit = 0;
@@ -130,9 +130,9 @@ public class UnitAIController : MonoBehaviour {
         TargetUnit = null;
         float range = 0f;
 
-        if (Team == WorldUnitsManager.Teams.Allies || Team == WorldUnitsManager.Teams.AlliesAI) {
-            WorldUnitsManager.Teams[] tagsToTarget = { WorldUnitsManager.Teams.Axis, WorldUnitsManager.Teams.AxisAI };
-            foreach (WorldUnitsManager.Teams tag in tagsToTarget) {
+        if (Team == CompiledTypes.Teams.RowValues.Allies) {
+            CompiledTypes.Teams.RowValues[] tagsToTarget = { CompiledTypes.Teams.RowValues.Axis };
+            foreach (CompiledTypes.Teams.RowValues tag in tagsToTarget) {
                 GameObject[] possibleTargetUnits = GameObject.FindGameObjectsWithTag (tag.ToString());
                 foreach (GameObject gameObj in possibleTargetUnits) {
                     float distance = (gameObject.transform.position - gameObj.transform.position).magnitude;
@@ -144,9 +144,9 @@ public class UnitAIController : MonoBehaviour {
                     }
                 }
             }
-        } else if (Team == WorldUnitsManager.Teams.Axis || Team == WorldUnitsManager.Teams.AxisAI) {
-            WorldUnitsManager.Teams[] tagsToTarget = { WorldUnitsManager.Teams.Allies, WorldUnitsManager.Teams.AlliesAI };
-            foreach (WorldUnitsManager.Teams tag in tagsToTarget) {
+        } else if (Team == CompiledTypes.Teams.RowValues.Axis) {
+            CompiledTypes.Teams.RowValues[] tagsToTarget = { CompiledTypes.Teams.RowValues.Allies };
+            foreach (CompiledTypes.Teams.RowValues tag in tagsToTarget) {
                 GameObject[] possibleTargetUnits = GameObject.FindGameObjectsWithTag (tag.ToString());
                 foreach (GameObject gameObj in possibleTargetUnits) {
                     float distance = (gameObject.transform.position - gameObj.transform.position).magnitude;
@@ -330,7 +330,7 @@ public class UnitAIController : MonoBehaviour {
 
     }
 
-    public void SetUnitTeam(WorldUnitsManager.Teams team){ Team = team; }
+    public void SetUnitTeam(CompiledTypes.Teams.RowValues team){ Team = team; }
     public void SetName(string name) {
         Name = name;
         // GetTargets();

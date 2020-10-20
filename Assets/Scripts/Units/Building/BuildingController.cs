@@ -65,7 +65,7 @@ public class BuildingController : UnitMasterController {
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
     }
-    public override void SetTag(WorldUnitsManager.Teams team){
+    public override void SetTag(CompiledTypes.Teams.RowValues team){
         base.SetTag(team);
         UI.SetUnitTeam(team);
     }

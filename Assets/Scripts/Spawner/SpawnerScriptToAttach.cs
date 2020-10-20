@@ -51,7 +51,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
                 if (subCategory[0] != null) {                                                       // Check the first element of each category, if it is good !
                     foreach (var categorySelected in m_SpawnableCategories) {
-                        if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory) {
+                        if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory.ToString()) {
                             SpawnableUnitsList.Add(subCategory[i]);
                         }
                     }
@@ -77,7 +77,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
             // Debug.Log(UnitController.m_UnitName +" - UnitController.GetTeam() "+ UnitController.GetTeam());
-            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
+            if (singleUnit.GetUnitTeam() == UnitController.GetTeam().ToString()) {
                 // Debug.Log (singleUnit.GetUnitName());
                 TeamedSpawnableUnitsList.Add(singleUnit);                   // Populate the list
             }
@@ -100,7 +100,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
         // bool success = false;
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
-            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
+            if (singleUnit.GetUnitTeam() == UnitController.GetTeam().ToString()) {
                 // success = true;
                 // break;
                 return true;
@@ -192,13 +192,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         bool trySpawn2 = false;
         // Checks if gameplay allows spawn
         if (GameManager.GetCommandPointSystem()) {
-            if (unit.GetUnitTeam() == WorldUnitsManager.SimpleTeams.Allies) {
+            if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Allies.ToString()) {
                 if ((GameManager.GetAlliesTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
                     trySpawn2 = true;
                 } else {
                     return false;
                 }
-            } else if (unit.GetUnitTeam() == WorldUnitsManager.SimpleTeams.Axis) {
+            } else if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Axis.ToString()) {
                 if ((GameManager.GetAxisTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
                     trySpawn2 = true;
                 } else {
@@ -237,8 +237,10 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
     public void SpawnUnit (WorldSingleUnit unit) {
-        GameObject spawnedUnitInstance =
-            Instantiate (unit.m_UnitPrefab, SpawnPosition, m_ShipSpawnPosition.rotation);
+        // GameObject spawnedUnitInstance =
+        //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
+
+        WorldUnitsManager.BuildUnit(unit, SpawnPosition, m_ShipSpawnPosition.rotation);
     }
 
     private void SwitchSpawnMenu() {

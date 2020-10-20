@@ -10,6 +10,9 @@ namespace CompiledTypes
     {
         public string id;
 public string Name;
+public float TeamColorRed;
+public float TeamColorGreen;
+public float TeamColorBlue;
 
         public enum RowValues { 
 Allies, 
@@ -21,6 +24,9 @@ Neutral
             SimpleJSON.JSONNode node = root.GetSheetWithName("Teams").Rows[(int)line];
 id = node["id"];
 Name = node["Name"];
+TeamColorRed = node["TeamColorRed"].AsFloat;
+TeamColorGreen = node["TeamColorGreen"].AsFloat;
+TeamColorBlue = node["TeamColorBlue"].AsFloat;
 
         }  
         

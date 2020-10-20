@@ -119,7 +119,7 @@ public class WorldUIVariables : MonoBehaviour {
     public static GameObject GetUnitUI() { return UnitUI; }
     public static GameObject GetUnitMapUI() { return UnitMapUI; }
 
-    public static GameObject BuildMapModel(WorldUnitsManager.UnitSubCategories unitCategory) {
+    public static GameObject BuildMapModel(CompiledTypes.Units_sub_categories.RowValues unitCategory) {
         string unitCat = unitCategory.ToString();
         foreach (var mapModel in MapModels) {
             if (mapModel.m_Name == unitCat) {

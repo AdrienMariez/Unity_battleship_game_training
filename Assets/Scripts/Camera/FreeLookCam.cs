@@ -50,7 +50,7 @@ namespace FreeLookCamera {
         private float RaycastRange;                                             // Distance from unit to point
         private GameObject ActivePlayerUnit;                                    // Current controlled unit
         private Transform ActivePlayerUnitTransform;                                    // Current controlled unit transform
-        private WorldUnitsManager.UnitCategories ActivePlayerUnitCategory;
+        private CompiledTypes.Units_categories.RowValues ActivePlayerUnitCategory;
         private TurretFireManager.TurretRole CurrentControlledTurretRole;
 
         protected virtual void Start() {
@@ -88,7 +88,7 @@ namespace FreeLookCamera {
                     Cam.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
 
-                if (ActivePlayerUnitCategory == WorldUnitsManager.UnitCategories.plane && !FreeCamera) {
+                if (ActivePlayerUnitCategory == CompiledTypes.Units_categories.RowValues.aircraft && !FreeCamera) {
                     FollowPlaneMovement();                          // If it's a plane. Keep the camera behind the unit.
                 } else if (AllowCameraRotation) {
                     HandleRotationMovement();                       // Allow free cam if the camera can turn
@@ -227,9 +227,10 @@ namespace FreeLookCamera {
             }
 
             if (ActivePlayerUnit.GetComponent<TargetCameraParameters>()) {                                      // Set camera position relative to the target
-                m_CameraDistance = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraDistance;
-                m_CameraHeight = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraHeight;
-                m_CameraLateralOffset = ActivePlayerUnit.GetComponent<TargetCameraParameters>().m_CameraLateralOffset;
+                m_CameraDistance = ActivePlayerUnit.GetComponent<TargetCameraParameters>().GetCameraDistance();
+                m_CameraHeight = ActivePlayerUnit.GetComponent<TargetCameraParameters>().GetCameraHeight();
+                m_CameraLateralOffset = ActivePlayerUnit.GetComponent<TargetCameraParameters>().GetCameraLateralOffset();
+                // Debug.Log (m_CameraDistance+" / "+m_CameraHeight);
             } else {
                 m_CameraDistance = CameraDistance;
                 m_CameraHeight = CameraHeight;

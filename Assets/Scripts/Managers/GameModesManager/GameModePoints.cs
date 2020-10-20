@@ -21,7 +21,6 @@ public class GameModePoints : GameModesManager {
         // Set the real values in the parent class
 
         GameManager.SetMaxTeamCommandPoints(m_TeamCommandPoints);
-        // GameManager.SetTeamsCommandPoints(m_TeamCommandPoints);
         GameManager.SetRequiredVictoryPointsToWin(m_RequiredVictoryPointsToWin);
         Units = m_Units;
 
@@ -37,15 +36,15 @@ public class GameModePoints : GameModesManager {
         }
         return obectiveAccomplishedForOneSide;
     }
-    protected override WorldUnitsManager.Teams GetRoundWinner() {
+    protected override CompiledTypes.Teams.RowValues GetRoundWinner() {
         // Returns the winner of a single round
         if (GameManager.GetAlliesTeamCurrentVictoryPoints() >= GameManager.GetRequiredVictoryPointsToWin() && GameManager.GetAxisTeamCurrentVictoryPoints() < GameManager.GetRequiredVictoryPointsToWin()) {
-            return WorldUnitsManager.Teams.Allies;
+            return CompiledTypes.Teams.RowValues.Allies;
         } else if (GameManager.GetAxisTeamCurrentVictoryPoints() >= GameManager.GetRequiredVictoryPointsToWin() && GameManager.GetAlliesTeamCurrentVictoryPoints() < GameManager.GetRequiredVictoryPointsToWin()) {
-            return WorldUnitsManager.Teams.Axis;
+            return CompiledTypes.Teams.RowValues.Axis;
         } else {
             // Any other case gives a draw
-            return WorldUnitsManager.Teams.NeutralAI;
+            return CompiledTypes.Teams.RowValues.Neutral;
         }
     }
 
@@ -61,14 +60,14 @@ public class GameModePoints : GameModesManager {
         // Displays basic message shown on screen during the duration of a round / of gameplay for all players.
         return message;
     }*/
-    public override string GameMessageTeam(WorldUnitsManager.Teams team) {
+    public override string GameMessageTeam(CompiledTypes.Teams.RowValues team) {
         string message = "";
         // Displays personnalized for each team message shown on screen during the duration of a round / of gameplay
-        if (team == WorldUnitsManager.Teams.Allies) {
+        if (team == CompiledTypes.Teams.RowValues.Allies) {
             message = "Command Points : " + GameManager.GetAlliesTeamCurrentCommandPoints() +" / "+ GameManager.GetMaxTeamCommandPoints() +"\n";
             message += "Victory Points : " + GameManager.GetAlliesTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
             message += "Enemy victory Points : " + GameManager.GetAxisTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
-        } else if (team == WorldUnitsManager.Teams.Axis) {
+        } else if (team == CompiledTypes.Teams.RowValues.Axis) {
             message = "Command Points : " + GameManager.GetAxisTeamCurrentCommandPoints() +" / "+ GameManager.GetMaxTeamCommandPoints() +"\n";
             message += "Victory Points : " + GameManager.GetAxisTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
             message += "Enemy Victory Points : " + GameManager.GetAlliesTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";

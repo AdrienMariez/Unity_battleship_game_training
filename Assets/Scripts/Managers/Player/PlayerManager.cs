@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     public FreeLookCam m_FreeLookCamera;
     public Camera m_MapCamera;
     private GameManager GameManager;
-    private WorldUnitsManager.Teams PlayerTeam;
+    private CompiledTypes.Teams.RowValues PlayerTeam;
     private UIManager UIManager;
     private MapManager MapManager;
     private UnitsUIManager UnitsUIManager;
@@ -145,7 +145,7 @@ public class PlayerManager : MonoBehaviour
         PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
         // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
-    public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams team) {
+    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {
         // Debug.Log ("UnitSpawned : "+ unitGameObject.name);
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
@@ -157,7 +157,7 @@ public class PlayerManager : MonoBehaviour
         //     Debug.Log ("Playable units : "+ unit);
         // }
     }
-    public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
+    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool unitActive) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         PlayerUnits.Remove(unitGameObject);
         UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
@@ -268,7 +268,7 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Current target for player manager : "+ ActiveTarget);
     }
 
-    // public void SetPlayer(WorldUnitsManager.Teams PlayerTeam){}
+    // public void SetPlayer(CompiledTypes.Teams.RowValues PlayerTeam){}
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
 
     // public void InitUnitsUI() { UnitsUIManager.Init(); }
@@ -293,10 +293,10 @@ public class PlayerManager : MonoBehaviour
     public void SetGameManager(GameManager gameManager) {
         GameManager = gameManager;
     }
-    public void SetPlayerTeam(WorldUnitsManager.Teams playerTeam) {
+    public void SetPlayerTeam(CompiledTypes.Teams.RowValues playerTeam) {
         PlayerTeam = playerTeam;
     }
-    public WorldUnitsManager.Teams GetPlayerTeam() { return PlayerTeam; }
+    public CompiledTypes.Teams.RowValues GetPlayerTeam() { return PlayerTeam; }
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
         SetOverlayUI();

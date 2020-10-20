@@ -8,56 +8,55 @@ public class WorldUnitsManager : MonoBehaviour {
 
     // public WaveList.Wave[] waves;
 
-    [Header("Add all units of the game to this list !")]
-    public WorldSingleUnit[] m_WorldSingleUnit;
+    // [Header("Add all units of the game to this list !")]
+    // public WorldSingleUnit[] m_WorldSingleUnit;
 
-    [Header("Add all turrets of the game to this list !")]
-    public WorldSingleTurret[] m_WorldSingleTurret;
-    [Header("Add all shells of the game to this list !")]
-    public WorldSingleShell[] m_WorldSingleShell;
+    // [Header("Add all turrets of the game to this list !")]
+    // public WorldSingleTurret[] m_WorldSingleTurret;
 
     public TextAsset CastleDBAsset;
-    private CastleDB DB;
-    // private Units fuso = DB.Units.fuso;
+    private static CastleDB DB;
+    
+    public static CastleDB GetDB(){ return DB; }
 
 
-    public enum SimpleTeams {
-        Allies,
-        Axis,
-        NeutralAI
-    }
-    public enum Teams {
-        Allies,
-        AlliesAI,
-        Axis,
-        AxisAI,
-        NeutralAI
-    }
-    public enum Nations {
-        US,
-        Japan,
-        GB,
-        Germany,
-        USSR,
-        China,
-        France
-    }
+    // public enum SimpleTeams {
+    //     Allies,
+    //     Axis,
+    //     NeutralAI
+    // }
+    // public enum Teams {
+    //     Allies,
+    //     AlliesAI,
+    //     Axis,
+    //     AxisAI,
+    //     NeutralAI
+    // }
+    // public enum Nations {
+    //     US,
+    //     Japan,
+    //     GB,
+    //     Germany,
+    //     USSR,
+    //     China,
+    //     France
+    // }
     // Australia,China,France,GreatBritain,Germany,Italy,Japan,NewZealand,USA,USSR
-    public enum UnitCategories {
-        ship,
-        submarine,
-        plane,
-        ground,
-        building
-    }
+    // public enum UnitCategories {
+    //     ship,
+    //     submarine,
+    //     plane,
+    //     ground,
+    //     building
+    // }
     // See https://en.wikipedia.org/wiki/Hull_classification_symbol
-    public enum UnitSubCategories {
-        ShipBattleship,ShipCarrier,ShipCruiser,ShipDestroyer,
-        SubmarineSubmarine,
-        PlaneFighter,PlaneLightBomber,PlaneBomber,
-        GroundTank,
-        BuildingLandBase,BuildingShipyard,BuildingAirfield
-    }
+    // public enum UnitSubCategories {
+    //     ShipBattleship,ShipCarrier,ShipCruiser,ShipDestroyer,
+    //     SubmarineSubmarine,
+    //     PlaneFighter,PlaneLightBomber,PlaneBomber,
+    //     GroundTank,
+    //     BuildingLandBase,BuildingShipyard,BuildingAirfield
+    // }
 
     // Carrier,Battleship,Cruiser,Destroyer,Submarine,Fighter,LightBomber,Bomber,Tank,LandBase,Shipyard,Airfield
     private static bool FirstLoad = true;
@@ -69,7 +68,7 @@ public class WorldUnitsManager : MonoBehaviour {
         }
     }
     
-    static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
+    // static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
     private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
     public static List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
 
@@ -88,26 +87,42 @@ public class WorldUnitsManager : MonoBehaviour {
         //     TeamsDB.Add(team);
         // }
 
-        // foreach (var test in DB.TEST.GetAll()) {
-        //     Debug.Log (test.id+" - "+test.UnitName+" - "+test.UnitPrefabFile+" - "+test.UnitHealth+" - "+test.UnitMass+" - "+test.UnitCountry.id+" - "+test.UnitSubCategory.id);
-        //     foreach (var item in test.UnitWeaponsTestList) {
-        //         Debug.Log (item.id+" - "+item.UnitWeaponTeam.Name+" - "+item.UnitWeaponRotZ);
+        // foreach (CompiledTypes.Global_Units unit in DB.Global_Units.GetAll()) {
+        //     Debug.Log (unit.id+" - "+unit.UnitName+" - "+unit.UnitNation.Team.Name);
+        //     foreach (var weapon in unit.UnitweaponsList) {
+        //         Debug.Log (" - "+weapon.Type.id);
         //     }
         // }
 
-        foreach (var test in DB.Global_Units.GetAll()) {
-            Debug.Log (test.id+" - "+test.UnitName+" - "+test.UnitNation.Team.Name);
-            foreach (var item in test.UnitweaponsList) {
-                Debug.Log (" - "+item.Type.id);
+        foreach (CompiledTypes.Units_sub_categories category in DB.Units_sub_categories.GetAll()) {
+            SubCategoriesDB.Add(category);
+        }
+
+        foreach (CompiledTypes.Units_sub_categories subCategory in SubCategoriesDB) {
+            List<WorldSingleUnit> categoryObjects = new List<WorldSingleUnit>();
+            foreach (CompiledTypes.Global_Units unit in DB.Global_Units.GetAll()) {
+                if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
+                    CompiledTypes.Global_Units masterUnitReference = unit.UnitVariantReferenceList[0].UnitVariantRef;
+                    if (masterUnitReference.UnitCategory.id == subCategory.id) {
+                        WorldSingleUnit newUnit = new WorldSingleUnit();
+                        newUnit.SetUnit(unit);
+                        categoryObjects.Add(newUnit);
+                    }
+                } else if (unit.UnitCategory.id == subCategory.id) {
+                    WorldSingleUnit newUnit = new WorldSingleUnit();
+                    newUnit.SetUnit(unit);
+                    categoryObjects.Add(newUnit);
+                }
             }
+            UnitsBySubcategory.Add(categoryObjects);
         }
 
 
 
 
 
-
-        foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
+        // Old system using m_WorldSingleUnit
+        /*foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
             SubCategories.Add(category);
         }
 
@@ -125,15 +140,14 @@ public class WorldUnitsManager : MonoBehaviour {
                 }
             }
             UnitsBySubcategory.Add(categoryObjects);
-        }
+        }*/
 
         // This is to view each element and its category.
-        /*foreach (List<WorldSingleUnit> category in UnitsBySubcategory) {
-            foreach (WorldSingleUnit unit in category) {
-                Debug.Log (unit.GetUnitSubCategory());
-                Debug.Log (unit.GetUnitName());
-            }
-        }*/
+        // foreach (List<WorldSingleUnit> category in UnitsBySubcategory) {
+        //     foreach (WorldSingleUnit unit in category) {
+        //         Debug.Log (unit.GetUnitSubCategory()+" / "+unit.GetUnitName()+" / "+unit.GetUnitTeam());
+        //     }
+        // }
     }
 
     /*public static void SetFirstLoad(bool firstLoad) {
@@ -150,25 +164,54 @@ public class WorldUnitsManager : MonoBehaviour {
 
     protected void Update() { }
 
-    public static void CreateNewUnit(GameObject unitGameObject, Teams team) {
+    public static GameObject BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation) {
+        // MODEL
+            GameObject spawnedUnitInstance =
+                Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
+
+        // SCRIPTS
+            // MANAGER
+                string UnitControllerScript = unit.GetUnitReference_DB().UnitCategory.Category.FileName +"Controller";
+                UnitMasterController UnitController = spawnedUnitInstance.AddComponent(Type.GetType(UnitControllerScript)) as UnitMasterController;
+
+            // CAMERA
+                TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
+
+        // NAME
+        
+
+        // CATEGORY && SUBCATEGORY
+
+        // NATION
+
+        // SCORES
+
+        // CAMERA
+            TCP.SetCameraDistance(unit.GetUnitCameraDistance());
+            TCP.SetCameraHeight(unit.GetUnitCameraHeight());
+            TCP.SetCameraLateralOffset(unit.GetUnitCameraCameraOffset());
+        
+
+
+
+
+        // WorldUnitsManager.CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam());        // Commented for now, as
+        return spawnedUnitInstance;
+    }
+
+    public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {
         //Create the map element corresponding to the unit
         GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory()), unitGameObject.transform);
         var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
     }
 
-    public static Color SetColor(WorldUnitsManager.Teams team) {
-        Color color = Color.yellow;;
-        if (team == WorldUnitsManager.Teams.Allies) {
-            color = new Color(0f, 0.47f, 1f, 1f);
-        } else if (team == WorldUnitsManager.Teams.AlliesAI) {
-            color = new Color(0f, 0.1f, 1f, 1f);
-        } else if (team == WorldUnitsManager.Teams.Axis) {
-            color = new Color(1f, 0.22f, 0.29f, 1f);
-        } else if (team == WorldUnitsManager.Teams.AxisAI) {
-            color = new Color(1f, 0.0f, 0.0f, 0.49f);
-        } else if (team == WorldUnitsManager.Teams.NeutralAI) {
-            color = Color.yellow;
+    public static Color SetColor(CompiledTypes.Teams.RowValues team) {
+        Color color = Color.yellow;
+        foreach (CompiledTypes.Teams globalTeam in DB.Teams.GetAll()) {
+            if (team.ToString() == globalTeam.id) {
+                color = new Color(globalTeam.TeamColorRed, globalTeam.TeamColorGreen, globalTeam.TeamColorBlue, 1f);
+            }
         }
         return color;
     }

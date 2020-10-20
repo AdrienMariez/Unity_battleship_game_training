@@ -14,8 +14,8 @@ public class GameModesManager : MonoBehaviour {
     protected WaitForSeconds EndWait;           // Used to have a delay whilst the round or game ends.
     protected int WinsAllies;                     // How many Allies round victories this far ?
     protected int WinsAxis;                       // How many Axis round victories this far ?
-    protected WorldUnitsManager.Teams RoundWinner;                  // Who won this particular round ?
-    protected WorldUnitsManager.Teams GameWinner;                   // Who won the whole game ?
+    protected CompiledTypes.Teams.RowValues RoundWinner;                  // Who won this particular round ?
+    protected CompiledTypes.Teams.RowValues GameWinner;                   // Who won the whole game ?
     protected int RoundNumber;                  // Which round the game is currently on.
 
     [Header("General options : ")]
@@ -52,7 +52,7 @@ public class GameModesManager : MonoBehaviour {
         yield return StartCoroutine (RoundEnding());
 
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (GameWinner != WorldUnitsManager.Teams.NeutralAI) {
+        if (GameWinner != CompiledTypes.Teams.RowValues.Neutral) {
             // If there is a game winner, restart the level.
             // SceneManager.LoadScene (0);
             GameManager.EndGame();
@@ -86,6 +86,8 @@ public class GameModesManager : MonoBehaviour {
             // TODO if not using a spawn point...
             // if (unit.m_UseSpawnpoint) {
                 unit.SetInstance(Instantiate(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation) as GameObject);
+                // Will need to replace previous line with next line to use DB.
+                // unit.SetInstance(WorldUnitsManager.BuildUnit(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation));
             // }
             unit.SetGameManager(GameManager);
 
@@ -125,17 +127,17 @@ public class GameModesManager : MonoBehaviour {
         DisableUnitsControl ();
 
         // Clear the winner from the previous round.
-        RoundWinner = WorldUnitsManager.Teams.NeutralAI;
+        RoundWinner = CompiledTypes.Teams.RowValues.Neutral;
 
         // See if there is a winner now the round is over.
         RoundWinner = GetRoundWinner();
 
         // If there is a winner, increment their score.
-        if (RoundWinner != WorldUnitsManager.Teams.NeutralAI){
-            if (RoundWinner == WorldUnitsManager.Teams.Allies) {
+        if (RoundWinner != CompiledTypes.Teams.RowValues.Neutral){
+            if (RoundWinner == CompiledTypes.Teams.RowValues.Allies) {
                 WinsAllies++;
             }
-            if (RoundWinner == WorldUnitsManager.Teams.Axis) {
+            if (RoundWinner == CompiledTypes.Teams.RowValues.Axis) {
                 WinsAxis++;
             }
         }
@@ -158,28 +160,28 @@ public class GameModesManager : MonoBehaviour {
         }
         return obectiveAccomplishedForOneSide;
     }
-    protected virtual WorldUnitsManager.Teams GetRoundWinner() {
+    protected virtual CompiledTypes.Teams.RowValues GetRoundWinner() {
         // BASIC : Returns the winner of a single round
         if (GameManager.GetTeamAlliesUnits() == 0 && GameManager.GetTeamOppositionUnits() > 0) {
-            return WorldUnitsManager.Teams.Axis;
+            return CompiledTypes.Teams.RowValues.Axis;
         } else if (GameManager.GetTeamAlliesUnits() > 0 && GameManager.GetTeamOppositionUnits() == 0) {
-            return WorldUnitsManager.Teams.Allies;
+            return CompiledTypes.Teams.RowValues.Allies;
         } else {
             // Any other case gives a draw
-            return WorldUnitsManager.Teams.NeutralAI;
+            return CompiledTypes.Teams.RowValues.Neutral;
         }
     }
-    protected virtual WorldUnitsManager.Teams GetGameWinner() {
+    protected virtual CompiledTypes.Teams.RowValues GetGameWinner() {
         // Returns the winner of the game
         if (WinsAllies == NumRoundsToWin) {
-            return WorldUnitsManager.Teams.Allies;
+            return CompiledTypes.Teams.RowValues.Allies;
         }
         if (WinsAxis == NumRoundsToWin) {
-            return WorldUnitsManager.Teams.Axis;
+            return CompiledTypes.Teams.RowValues.Axis;
         }
 
         // If no side enough rounds to win, return null.
-        return WorldUnitsManager.Teams.NeutralAI;
+        return CompiledTypes.Teams.RowValues.Neutral;
     }
 
     // Message system (displays info to players)
@@ -210,7 +212,7 @@ public class GameModesManager : MonoBehaviour {
 
         return message;
     }
-    public virtual string GameMessageTeam(WorldUnitsManager.Teams team) {
+    public virtual string GameMessageTeam(CompiledTypes.Teams.RowValues team) {
         // Displays personnalized for each team message shown on screen during the duration of a round / of gameplay 
         string message;
         if (GameManager.GetTeamAlliesUnits() >  1) {
@@ -235,16 +237,16 @@ public class GameModesManager : MonoBehaviour {
         string message = "DRAW!";
 
         // If there is a ROUND winner...
-        if (RoundWinner != WorldUnitsManager.Teams.NeutralAI) {
-            if (RoundWinner == WorldUnitsManager.Teams.Allies) {
+        if (RoundWinner != CompiledTypes.Teams.RowValues.Neutral) {
+            if (RoundWinner == CompiledTypes.Teams.RowValues.Allies) {
                 message = "Allies won the round.";
             } else {
                 message = "Axis won the round.";
             }
         }
         // If there is a GAME winner... NOT THE SAME !
-        if (GameWinner != WorldUnitsManager.Teams.NeutralAI) {
-            if (GameWinner == WorldUnitsManager.Teams.Allies) {
+        if (GameWinner != CompiledTypes.Teams.RowValues.Neutral) {
+            if (GameWinner == CompiledTypes.Teams.RowValues.Allies) {
                 message = "Allies won the game !";
             } else {
                 message = "Axis won the game !";
@@ -254,7 +256,7 @@ public class GameModesManager : MonoBehaviour {
         // Add some line breaks after the initial message.
         message += "\n\n\n\n";
 
-        // Display WorldUnitsManager.Teams scores :
+        // Display CompiledTypes.Teams.RowValues scores :
         // Does not display correct score for unsolved reasons (TODO)
         // message += "Allies victories : " + WinsAllies + " victories.\n";
         // message += "Axis victories : " + WinsAllies + " victories.\n";

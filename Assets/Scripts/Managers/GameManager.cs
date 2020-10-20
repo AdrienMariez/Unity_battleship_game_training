@@ -63,18 +63,8 @@ public class GameManager : MonoBehaviour {
         CurrentGameMode.Begin();
     }
 
-    public void UnitSpawnedConvertFromSimpleTeam(GameObject unitGameObject, WorldUnitsManager.SimpleTeams unitTeam) {
-        // In case a unit is spawned from a SimpleTeams line.
-        if (unitTeam == WorldUnitsManager.SimpleTeams.Allies) {
-            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.Allies);
-        } else if(unitTeam == WorldUnitsManager.SimpleTeams.Axis) {
-            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.Axis);
-        } else {
-            UnitSpawned(unitGameObject, WorldUnitsManager.Teams.NeutralAI);
-        }
-    }
-    public void UnitSpawned(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam) {
-        WorldUnitsManager.CreateNewUnit(unitGameObject, unitTeam);
+    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam) {
+        WorldUnitsManager.CreateNewUnitMapModel(unitGameObject, unitTeam);  // Ultimately, this should disappear.
 
         foreach (var playerManager in PlayersManager) {
            playerManager.UnitSpawned(unitGameObject, unitTeam); 
@@ -84,7 +74,7 @@ public class GameManager : MonoBehaviour {
         UpdateGameModeGameplay();
         UpdateGameModeMessage();
     }
-    public void UnitDead(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool unitActive) {
+    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool unitActive) {
         foreach (var playerManager in PlayersManager) {
            playerManager.UnitDead(unitGameObject, unitTeam, unitActive); 
         }
@@ -94,9 +84,9 @@ public class GameManager : MonoBehaviour {
         UpdateGameModeMessage();
     }
 
-    private void UpdateScore(GameObject unitGameObject, WorldUnitsManager.Teams unitTeam, bool positive) {
+    private void UpdateScore(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool positive) {
         // positive stands for " does the score need too be updated in a positive (unit spawned) or a negative way ?"
-        if (unitTeam == WorldUnitsManager.Teams.Allies || unitTeam == WorldUnitsManager.Teams.AlliesAI) {
+        if (unitTeam == CompiledTypes.Teams.RowValues.Allies) {
             if (positive) {                                                                                                                 // If unit is spawned... 
                 TeamAlliesUnits += 1;                                                                                                           // Unit counter goes up
                 AlliesTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is deduced
@@ -105,7 +95,7 @@ public class GameManager : MonoBehaviour {
                 AlliesTeamCurrentCommandPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is refund
                 AxisTeamCurrentVictoryPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitVictoryPointsValue();                // Enemy is credited with the points.
             }
-        } else if (unitTeam == WorldUnitsManager.Teams.Axis || unitTeam == WorldUnitsManager.Teams.AxisAI) {
+        } else if (unitTeam == CompiledTypes.Teams.RowValues.Axis) {
             if (positive) {
                 TeamOppositionUnits += 1; 
                 AxisTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();

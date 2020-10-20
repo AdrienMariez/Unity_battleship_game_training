@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerManagerList {
 
     public GameObject m_Player;
-    public WorldUnitsManager.Teams m_PlayerTeam;
+    public CompiledTypes.Teams.RowValues m_PlayerTeam;
 
     public void Setup () {
     }

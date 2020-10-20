@@ -26,6 +26,8 @@ public AmmosType Ammos;
         public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
 public Global_Units takao { get { return Get(CompiledTypes.Global_Units.RowValues.takao); } } 
+public Global_Units fusoUSA { get { return Get(CompiledTypes.Global_Units.RowValues.fusoUSA); } } 
+public Global_Units takaoUSA { get { return Get(CompiledTypes.Global_Units.RowValues.takaoUSA); } } 
 private Global_Units Get(CompiledTypes.Global_Units.RowValues line) { return new Global_Units(parsedDB.Root, line); }
 
                 public Global_Units[] GetAll() 

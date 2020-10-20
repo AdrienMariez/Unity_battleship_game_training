@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class SpawnerUnitCategory {
 
-    public WorldUnitsManager.UnitSubCategories m_UnitSubCategory;
+    public CompiledTypes.Units_sub_categories.RowValues m_UnitSubCategory;
 
     public void Setup () {
     }

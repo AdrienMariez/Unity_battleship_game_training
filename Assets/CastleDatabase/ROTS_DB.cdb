@@ -8,32 +8,51 @@
 					"name": "id"
 				},
 				{
+					"typeStr": "2",
+					"name": "Isavariant"
+				},
+				{
+					"typeStr": "8",
+					"name": "UnitVariantReference",
+					"opt": true
+				},
+				{
 					"typeStr": "1",
 					"name": "UnitName"
 				},
 				{
-					"typeStr": "13",
+					"typeStr": "1",
+					"name": "UnitPath",
+					"display": null
+				},
+				{
+					"typeStr": "1",
 					"name": "UnitModel"
 				},
 				{
 					"typeStr": "6:Units_sub_categories",
-					"name": "UnitCategory"
+					"name": "UnitCategory",
+					"opt": true
 				},
 				{
 					"typeStr": "6:Countries",
-					"name": "UnitNation"
+					"name": "UnitNation",
+					"opt": true
 				},
 				{
 					"typeStr": "8",
-					"name": "UnitScore"
+					"name": "UnitScore",
+					"opt": true
 				},
 				{
 					"typeStr": "8",
-					"name": "UnitCameraParameters"
+					"name": "UnitCameraParameters",
+					"opt": true
 				},
 				{
 					"typeStr": "3",
-					"name": "UnitHealth"
+					"name": "UnitHealth",
+					"opt": true
 				},
 				{
 					"typeStr": "8",
@@ -42,11 +61,13 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "Buoyancy"
+					"name": "Buoyancy",
+					"opt": true
 				},
 				{
 					"typeStr": "4",
-					"name": "Unitmass"
+					"name": "Unitmass",
+					"opt": true
 				},
 				{
 					"typeStr": "8",
@@ -572,8 +593,10 @@
 						}
 					],
 					"UnitNation": "japan",
-					"UnitCategory": "Battleship",
-					"UnitModel": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
+					"UnitPath": "Prefabs/Units/Ship",
+					"UnitModel": "IJN_Battleship_Fuso",
+					"Isavariant": false,
+					"UnitCategory": "Battleship"
 				},
 				{
 					"index": 1,
@@ -922,8 +945,38 @@
 						}
 					],
 					"UnitNation": "japan",
-					"UnitCategory": "Battleship",
-					"UnitModel": "../Prefabs/Units/IJN_Cruiser_Takao.prefab"
+					"UnitCategory": "Heavy_Cruiser",
+					"UnitPath": "Prefabs/Units/Ship",
+					"UnitModel": "IJN_Cruiser_Takao",
+					"Isavariant": false
+				},
+				{
+					"id": "fusoUSA",
+					"UnitName": "FusoUSA",
+					"Isavariant": true,
+					"UnitVariantReference": [
+						{
+							"UnitVariantRef": "fuso"
+						}
+					],
+					"UnitPath": "",
+					"UnitModel": "",
+					"UnitNation": "usa",
+					"index": 2
+				},
+				{
+					"id": "takaoUSA",
+					"UnitName": "TakaoUSA",
+					"Isavariant": true,
+					"UnitVariantReference": [
+						{
+							"UnitVariantRef": "takao"
+						}
+					],
+					"UnitPath": "",
+					"UnitModel": "",
+					"UnitNation": "usa",
+					"index": 3
 				}
 			],
 			"separators": [],
@@ -1002,33 +1055,53 @@
 				{
 					"typeStr": "1",
 					"name": "Name"
+				},
+				{
+					"typeStr": "1",
+					"name": "ScriptPaths",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "FileName",
+					"display": null
 				}
 			],
 			"lines": [
 				{
 					"Name": "Ship",
 					"index": 0,
-					"id": "ship"
+					"id": "ship",
+					"ScriptPaths": "Scripts/Units/Ship",
+					"FileName": "Ship"
 				},
 				{
 					"Name": "Submarine",
 					"index": 1,
-					"id": "submarine"
+					"id": "submarine",
+					"ScriptPaths": "",
+					"FileName": ""
 				},
 				{
 					"Name": "Aircraft",
 					"index": 2,
-					"id": "aircraft"
+					"id": "aircraft",
+					"ScriptPaths": "",
+					"FileName": ""
 				},
 				{
 					"Name": "Ground",
 					"index": 3,
-					"id": "ground"
+					"id": "ground",
+					"ScriptPaths": "",
+					"FileName": ""
 				},
 				{
 					"Name": "Building",
 					"index": 4,
-					"id": "building"
+					"id": "building",
+					"ScriptPaths": "Scripts/Units/Building",
+					"FileName": "Building"
 				}
 			],
 			"separators": [],
@@ -1057,6 +1130,11 @@
 					"typeStr": "6:Units_categories",
 					"name": "Category",
 					"display": null
+				},
+				{
+					"typeStr": "13",
+					"name": "MapModel",
+					"display": null
 				}
 			],
 			"lines": [
@@ -1065,91 +1143,104 @@
 					"Category": "ship",
 					"index": 0,
 					"Classification": "BB",
-					"id": "Battleship"
+					"id": "Battleship",
+					"MapModel": "../Prefabs/Map/Battleship.prefab"
 				},
 				{
 					"Name": "Carrier",
 					"Category": "ship",
 					"index": 1,
 					"Classification": "CV",
-					"id": "Carrier"
+					"id": "Carrier",
+					"MapModel": "../Prefabs/Map/Carrier.prefab"
 				},
 				{
 					"Name": "Heavy_Cruiser",
 					"Category": "ship",
 					"index": 2,
 					"Classification": "CA",
-					"id": "Heavy_Cruiser"
+					"id": "Heavy_Cruiser",
+					"MapModel": "../Prefabs/Map/Cruiser.prefab"
 				},
 				{
 					"Name": "Light_Cruiser",
 					"Category": "ship",
 					"index": 3,
 					"Classification": "CL",
-					"id": "Light_Cruiser"
+					"id": "Light_Cruiser",
+					"MapModel": "../Prefabs/Map/Cruiser.prefab"
 				},
 				{
 					"Name": "Destroyer",
 					"Category": "ship",
 					"index": 4,
 					"Classification": "DD",
-					"id": "Destroyer"
+					"id": "Destroyer",
+					"MapModel": "../Prefabs/Map/Destroyer.prefab"
 				},
 				{
 					"Name": "Attack_Submarine",
 					"Category": "ship",
 					"index": 5,
 					"Classification": "SS",
-					"id": "Attack_Submarine"
+					"id": "Attack_Submarine",
+					"MapModel": "../Prefabs/Map/Shipyard.prefab"
 				},
 				{
 					"Name": "Fighter",
 					"Category": "aircraft",
 					"index": 6,
 					"Classification": "AF",
-					"id": "Fighter"
+					"id": "Fighter",
+					"MapModel": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
 				},
 				{
 					"Name": "Light_Bomber",
 					"Category": "aircraft",
 					"index": 7,
 					"Classification": "ALB",
-					"id": "Light_Bomber"
+					"id": "Light_Bomber",
+					"MapModel": ""
 				},
 				{
 					"Name": "Heavy_Bomber",
 					"Category": "aircraft",
 					"index": 8,
 					"Classification": "AHB",
-					"id": "Heavy_Bomber"
+					"id": "Heavy_Bomber",
+					"MapModel": ""
 				},
 				{
 					"Name": "Tank",
 					"Category": "ground",
 					"index": 9,
 					"Classification": "GBT",
-					"id": "Tank"
+					"id": "Tank",
+					"MapModel": ""
 				},
 				{
 					"Name": "Airfield",
 					"Category": "building",
 					"index": 10,
 					"Classification": "BAF",
-					"id": "Airfield"
+					"id": "Airfield",
+					"MapModel": ""
 				},
 				{
 					"Name": "Shipyard",
 					"Category": "building",
 					"index": 11,
 					"Classification": "BSY",
-					"id": "Shipyard"
+					"id": "Shipyard",
+					"MapModel": "../Prefabs/Map/Shipyard.prefab"
 				},
 				{
 					"Name": "LandBase",
 					"Category": "building",
 					"index": 12,
 					"Classification": "BLB",
-					"id": "LandBase"
+					"id": "LandBase",
+					"MapModel": ""
 				}
 			],
 			"separators": [
@@ -1175,23 +1266,45 @@
 				{
 					"typeStr": "1",
 					"name": "Name"
+				},
+				{
+					"typeStr": "4",
+					"name": "TeamColorRed"
+				},
+				{
+					"typeStr": "4",
+					"name": "TeamColorGreen",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "TeamColorBlue"
 				}
 			],
 			"lines": [
 				{
 					"Name": "Allies",
 					"index": 0,
-					"id": "Allies"
+					"id": "Allies",
+					"TeamColorRed": 0,
+					"TeamColorGreen": 0.47,
+					"TeamColorBlue": 1
 				},
 				{
 					"Name": "Axis",
 					"index": 1,
-					"id": "Axis"
+					"id": "Axis",
+					"TeamColorRed": 1,
+					"TeamColorGreen": 0.22,
+					"TeamColorBlue": 0.29
 				},
 				{
 					"Name": "Neutral",
 					"index": 2,
-					"id": "Neutral"
+					"id": "Neutral",
+					"TeamColorRed": 1,
+					"TeamColorGreen": 1,
+					"TeamColorBlue": 0
 				}
 			],
 			"separators": [],
@@ -1938,8 +2051,22 @@
 					"name": "WeaponVariantRef"
 				}
 			]
+		},
+		{
+			"name": "Global_Units@UnitVariantReference",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Global_Units",
+					"name": "UnitVariantRef"
+				}
+			]
 		}
 	],
 	"customTypes": [],
-	"compress": false
+	"compress": true
 }

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 public class BuildingUI : MonoBehaviour {
     private bool Dead = false;
     private string Name;
-    private WorldUnitsManager.Teams Team;
+    private CompiledTypes.Teams.RowValues Team;
     private float MaximumHealth;
     private float CurrentHealth;
     private List <GameObject> UIElement = new List<GameObject>();
     private List <GameObject> UIMapElement = new List<GameObject>();
 
     public void SetName(string name) { Name = name; }
-    public void SetUnitTeam(WorldUnitsManager.Teams team){ Team = team; }
+    public void SetUnitTeam(CompiledTypes.Teams.RowValues team){ Team = team; }
     public void SetStartingHealth(float FullHP) {
         MaximumHealth = FullHP;
         CurrentHealth = FullHP;

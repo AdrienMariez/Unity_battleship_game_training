@@ -12,6 +12,7 @@ namespace CompiledTypes
 public string Classification;
 public string Name;
 public Units_categories Category;
+public string MapModel;
 
         public enum RowValues { 
 Battleship, 
@@ -35,6 +36,7 @@ id = node["id"];
 Classification = node["Classification"];
 Name = node["Name"];
 Category = new CompiledTypes.Units_categories(root,CompiledTypes.Units_categories.GetRowValue(node["Category"]));
+MapModel = node["MapModel"];
 
         }  
         

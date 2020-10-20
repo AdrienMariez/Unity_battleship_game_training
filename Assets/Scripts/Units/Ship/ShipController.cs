@@ -252,7 +252,7 @@ public class ShipController : UnitMasterController {
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetPause();
     }
-    public override void SetTag(WorldUnitsManager.Teams team){
+    public override void SetTag(CompiledTypes.Teams.RowValues team){
         base.SetTag(team);
         UI.SetUnitTeam(team);
     }

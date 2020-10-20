@@ -6,17 +6,16 @@ public class UnitMasterController : MonoBehaviour {
     [Header("Global units elements : ")]
     // Same as WorldSingleUnit !
     public string m_UnitName;
-    public WorldUnitsManager.UnitCategories m_UnitCategory;
-    public WorldUnitsManager.UnitSubCategories m_UnitSubCategory;
-    public WorldUnitsManager.SimpleTeams m_Team = WorldUnitsManager.SimpleTeams.NeutralAI;
-    public WorldUnitsManager.Nations m_Nation;
+    public CompiledTypes.Units_categories.RowValues m_UnitCategory;
+    public CompiledTypes.Units_sub_categories.RowValues m_UnitSubCategory;
+    public CompiledTypes.Countries.RowValues m_Nation;
     public int m_UnitCommandPointsCost;
     public int m_UnitVictoryPointsValue;
 
 
     protected bool Active = false;
     protected bool Dead = false;
-    protected WorldUnitsManager.Teams Team;  // Ok this is weird, there should be only One Team OR m_Team but fixing this now will ruin all test scenario.
+    protected CompiledTypes.Teams.RowValues Team;
     protected TurretManager Turrets;
     private SpawnerScriptToAttach Spawner;
     protected GameManager GameManager;
@@ -49,13 +48,11 @@ public class UnitMasterController : MonoBehaviour {
     public void ResumeStart() {
         if (GameManager != null) {
             // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
-            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
-            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
+            GameManager.UnitSpawned(this.gameObject, Team);
         }
         else if (GameObject.Find("GameManager") != null) {
             GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            if (Team != WorldUnitsManager.Teams.NeutralAI) { GameManager.UnitSpawned(this.gameObject, Team); }
-            else{ GameManager.UnitSpawnedConvertFromSimpleTeam(this.gameObject, m_Team); }
+            GameManager.UnitSpawned(this.gameObject, Team);
         }
     }
     // Turrets
@@ -139,18 +136,13 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {}
-    public virtual void SetTag(WorldUnitsManager.Teams team){
+    public virtual void SetTag(CompiledTypes.Teams.RowValues team){
         // Debug.Log("Unit : "+ m_UnitName +" - SetTag = "+ team);
-        gameObject.tag = team.ToString("g");
+        gameObject.tag = team.ToString();
         Team = team;
         UnitAI.SetUnitTeam(Team);
-        if (Team == WorldUnitsManager.Teams.Allies) {
-            m_Team = WorldUnitsManager.SimpleTeams.Allies;
-        } else if (Team == WorldUnitsManager.Teams.Axis) {
-            m_Team = WorldUnitsManager.SimpleTeams.Axis;
-        }
     }
-    public WorldUnitsManager.SimpleTeams GetTeam() { return m_Team; }
+    public CompiledTypes.Teams.RowValues GetTeam() { return Team; }
     public virtual void SetName(string name){
         UnitAI.SetName(name);
         gameObject.name = name;
@@ -169,7 +161,7 @@ public class UnitMasterController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){
         GameManager = gameManager;
     }
-    public WorldUnitsManager.UnitSubCategories GetUnitSubCategory() {
+    public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() {
         return m_UnitSubCategory;
     }
     public int GetUnitCommandPointsCost() {
