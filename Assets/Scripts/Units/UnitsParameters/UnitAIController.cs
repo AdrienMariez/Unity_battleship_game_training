@@ -33,7 +33,7 @@ public class UnitAIController : MonoBehaviour {
     public bool UnitCanShoot = true;
     public bool UnitCanSpawn = true;
 
-    protected virtual void Awake () {
+    public virtual void BeginOperations () {
         UnitMasterController = GetComponent<UnitMasterController>();
         // GetTargets();
 

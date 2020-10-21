@@ -536,7 +536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4676003223697204548}
   m_Layer: 0
-  m_Name: Hull
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1111,9 +1111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dacdccc41487b44ba906fce7aaf052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CameraDistance: 165
-  m_CameraHeight: 30
-  m_CameraLateralOffset: 0
 --- !u!114 &1284883941723226239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1126,12 +1123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9029c3b320aaf764690630082a4b8272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UnitName: carrier
-  m_UnitCategory: 0
-  m_UnitSubCategory: 1
-  m_Nation: 6
-  m_UnitCommandPointsCost: 300
-  m_UnitVictoryPointsValue: 200
   m_ShipComponents:
   - {fileID: 3641422958090581612}
   - {fileID: 9196748789309648236}

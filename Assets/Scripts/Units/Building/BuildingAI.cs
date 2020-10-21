@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BuildingAI : UnitAIController {
     private BuildingController BuildingController;
-    protected override void Awake () {
+    public override void BeginOperations () {
 
         // Still need the specific unit Controller for specific methods
         BuildingController = GetComponent<BuildingController>();
@@ -12,6 +12,6 @@ public class BuildingAI : UnitAIController {
         // Building...can't move.
         UnitCanMove = false;
         // UnitsAICurrentState for buildings is set in base.Awake()
-        base.Awake();
+        base.BeginOperations();
     }
 }

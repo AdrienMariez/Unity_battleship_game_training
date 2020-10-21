@@ -115,6 +115,7 @@ public class WorldUnitsManager : MonoBehaviour {
                 }
             }
             UnitsBySubcategory.Add(categoryObjects);
+            // Debug.Log ("loop in WUM");
         }
 
 
@@ -170,27 +171,24 @@ public class WorldUnitsManager : MonoBehaviour {
                 Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
 
         // SCRIPTS
+            // UI
+                UnitUI UnitUI = spawnedUnitInstance.AddComponent<UnitUI>();
             // MANAGER
                 string UnitControllerScript = unit.GetUnitReference_DB().UnitCategory.Category.FileName +"Controller";
+                // Debug.Log("script Name for "+ unit.GetUnitName()+ " which is a " + unit.GetUnitReference_DB().UnitCategory.Category.id +"  is :"+ UnitControllerScript);
                 UnitMasterController UnitController = spawnedUnitInstance.AddComponent(Type.GetType(UnitControllerScript)) as UnitMasterController;
 
             // CAMERA
                 TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
 
-        // NAME
-        
-
-        // CATEGORY && SUBCATEGORY
-
-        // NATION
-
-        // SCORES
 
         // CAMERA
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());
             TCP.SetCameraLateralOffset(unit.GetUnitCameraCameraOffset());
         
+        // COMMON DATA
+            UnitController.SetUnitFromWorldUnitsManager(unit);
 
 
 

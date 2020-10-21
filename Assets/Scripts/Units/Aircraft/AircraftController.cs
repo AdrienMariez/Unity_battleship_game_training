@@ -272,12 +272,6 @@ using UnityEngine;
         // All the airplane controller should be redone. Nothing works in the workflow atm.
         public override void SetMap(bool map) {
         }
-        public override void SetTag(CompiledTypes.Teams.RowValues team){
-            base.SetTag(team);
-        }
-        public override void SetName(string name){ 
-            base.SetName(name);
-        }
         public override float GetStartingHealth() { return(GetComponent<AircraftHealth>().GetStartingHealth()); }
         public override float GetCurrentHealth() { return(GetComponent<AircraftHealth>().GetCurrentHealth()); }
         public override void DestroyUnit(){

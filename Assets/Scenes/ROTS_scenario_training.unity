@@ -1958,12 +1958,12 @@ PrefabInstance:
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[0].UnitCanShoot
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: m_Units.Array.data[0].UnitCanMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
@@ -2004,6 +2004,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Units.Array.data[1].m_Team
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[0].m_Unit
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[1].m_Unit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[2].m_Unit
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[3].m_Unit
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[4].m_Unit
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[5].m_Unit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: m_Units.Array.data[7].m_Unit
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}

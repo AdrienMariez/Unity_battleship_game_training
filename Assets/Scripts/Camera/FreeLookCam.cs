@@ -41,7 +41,7 @@ namespace FreeLookCamera {
 		private Quaternion TransformTargetRot;
         private bool AllowCameraRotation = true;
         private bool FreeCamera = false;
-        private bool DisplayUI = true;
+        // private bool DisplayUI = true;
 
         private float TiltMin, TiltMax;                                         // Current used Tilt limitations
 
@@ -223,7 +223,7 @@ namespace FreeLookCamera {
             ActivePlayerUnitTransform = ActivePlayerUnit.transform;
 
             if (ActivePlayerUnit.GetComponent<UnitMasterController>()) {
-                ActivePlayerUnitCategory = ActivePlayerUnit.GetComponent<UnitMasterController>().m_UnitCategory;
+                ActivePlayerUnitCategory = ActivePlayerUnit.GetComponent<UnitMasterController>().GetUnitCategory();
             }
 
             if (ActivePlayerUnit.GetComponent<TargetCameraParameters>()) {                                      // Set camera position relative to the target
@@ -244,7 +244,6 @@ namespace FreeLookCamera {
             CurrentControlledTurretRole = currentControlledTurret;
         }
         public Vector3 GetRaycastScreenPosition() {
-            Vector3 screenPosition;
             if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {       // If naval artillery is used, keep the pointer at horizon level far away
                 return Cam.WorldToScreenPoint(RaycastAbstractTargetPosition);
             } else{

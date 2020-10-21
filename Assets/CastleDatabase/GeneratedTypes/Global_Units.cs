@@ -28,7 +28,11 @@ public List<Unitweapons> UnitweaponsList = new List<Unitweapons>();
 fuso, 
 takao, 
 fusoUSA, 
-takaoUSA
+takaoUSA, 
+TrainingCarrier, 
+TrainingCarrierUSA, 
+ShipyardJapan, 
+ShipyardUSA
  } 
         public Global_Units (CastleDBParser.RootNode root, RowValues line) 
         {

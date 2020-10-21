@@ -440,12 +440,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2661556145241615459}
-  - component: {fileID: 2661556145241615460}
   - component: {fileID: 8237782044557327271}
   - component: {fileID: 6341268151872624709}
-  - component: {fileID: 8195883728619423646}
   - component: {fileID: 8944562449185586522}
-  - component: {fileID: 5513275371970116649}
   - component: {fileID: 6951975475739686028}
   - component: {fileID: 6883374081042125866}
   m_Layer: 0
@@ -471,21 +468,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2661556145241615460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3dacdccc41487b44ba906fce7aaf052, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CameraDistance: 120
-  m_CameraHeight: 25
-  m_CameraLateralOffset: 0
 --- !u!54 &8237782044557327271
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -599,31 +581,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8195883728619423646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83a9d8f46c1a23849b082378a6e4d024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UnitName: Shipyard
-  m_UnitCategory: 4
-  m_UnitSubCategory: 10
-  m_Nation: 0
-  m_UnitCommandPointsCost: 0
-  m_UnitVictoryPointsValue: 0
-  m_BuildingComponents:
-  - {fileID: 6811753195341331640}
-  - {fileID: 515165354297429714}
-  - {fileID: 7708217133564538801}
-  - {fileID: 8659602765511096167}
-  - {fileID: 2999055004668866483}
-  - {fileID: 5275854561434995322}
 --- !u!114 &8944562449185586522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,18 +595,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHealth: 100
   m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
---- !u!114 &5513275371970116649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93f1e1f4537db1e49ab21b41458fa7eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6951975475739686028
 MonoBehaviour:
   m_ObjectHideFlags: 0

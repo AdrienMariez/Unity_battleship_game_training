@@ -45,10 +45,10 @@ public class ShipDamageControl : MonoBehaviour {
     private bool DmgCtrlOpen = false;
 
 
-    private void Awake() {
+    public void BeginOperations(ShipController unitController) {
         UnsetCrew = RepairCrew;
 
-        ShipController = GetComponent<ShipController>();
+        ShipController = unitController;
         // TurretsRepairCrew += RepairCrew;
 
         ShipController.SetDamageControlEngine(EngineRepairCrew);

@@ -28,6 +28,10 @@ public AmmosType Ammos;
 public Global_Units takao { get { return Get(CompiledTypes.Global_Units.RowValues.takao); } } 
 public Global_Units fusoUSA { get { return Get(CompiledTypes.Global_Units.RowValues.fusoUSA); } } 
 public Global_Units takaoUSA { get { return Get(CompiledTypes.Global_Units.RowValues.takaoUSA); } } 
+public Global_Units TrainingCarrier { get { return Get(CompiledTypes.Global_Units.RowValues.TrainingCarrier); } } 
+public Global_Units TrainingCarrierUSA { get { return Get(CompiledTypes.Global_Units.RowValues.TrainingCarrierUSA); } } 
+public Global_Units ShipyardJapan { get { return Get(CompiledTypes.Global_Units.RowValues.ShipyardJapan); } } 
+public Global_Units ShipyardUSA { get { return Get(CompiledTypes.Global_Units.RowValues.ShipyardUSA); } } 
 private Global_Units Get(CompiledTypes.Global_Units.RowValues line) { return new Global_Units(parsedDB.Root, line); }
 
                 public Global_Units[] GetAll() 

@@ -4,28 +4,19 @@ using System.Collections.Generic;
 
 public class BuildingController : UnitMasterController {
     [Header("Building units elements : ")]
-    [Tooltip("Components (game object with collider + Hitbox Component script)")]
-    public GameObject[] m_BuildingComponents;
-
     private BuildingHealth Health;
-    private BuildingUI UI;
-
-    private float RepairRate = 1;
 
     protected void Awake() {
         base.SpawnUnit();
         Health = GetComponent<BuildingHealth>();
         float HP = Health.GetStartingHealth();
 
-        UI = GetComponent<BuildingUI>();
-        UI.SetStartingHealth(HP);
-        UI.SetCurrentHealth(HP);
+        UnitUI.SetStartingHealth(HP);
+        UnitUI.SetCurrentHealth(HP);
+    }
 
-        SetName(m_UnitName);
-
-        for (int i = 0; i < m_BuildingComponents.Length; i++) {
-            m_BuildingComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
-        }
+    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+        base.SetUnitFromWorldUnitsManager(unit);
     }
 
     // private bool ActionPaused = false;
@@ -65,15 +56,6 @@ public class BuildingController : UnitMasterController {
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
     }
-    public override void SetTag(CompiledTypes.Teams.RowValues team){
-        base.SetTag(team);
-        UI.SetUnitTeam(team);
-    }
-    public override void SetName(string name){
-        base.SetName(name);
-        UI.SetName(name);
-    }
-    public override float GetRepairRate(){ return RepairRate; }
 
     // Turrets
     public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
@@ -84,9 +66,6 @@ public class BuildingController : UnitMasterController {
     }
 
     // UI
-    public override void SetUIElement(GameObject uiElement) { UI.SetUIElement(uiElement); }
-    public override void SetUIMapElement(GameObject uiElement) { UI.SetUIMapElement(uiElement); }
-    public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
 
@@ -94,7 +73,8 @@ public class BuildingController : UnitMasterController {
     public override void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
         float currentHealth = Health.GetCurrentHealth();
-        UI.SetCurrentHealth(currentHealth);
+        UnitUI.SetCurrentHealth(currentHealth);
+        base.ApplyDamage(damage);
     }
     public override void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ ElementType);
@@ -110,18 +90,11 @@ public class BuildingController : UnitMasterController {
             Health.EndFire();
         }
     }
-    public override void CallDeath() {
-        base.CallDeath();    
-        UI.SetDead();
-    }
+    // public override void CallDeath() {
+    //     base.CallDeath();    
+    // }
     public override void DestroyUnit(){
         // Debug.Log ("Destroy unit : "+gameObject.name);
-        if (GetComponent<TurretManager>())
-            Turrets.SetDeath(true);
-        UI.KillAllUIInstances();
-        if (GameManager) {
-            GameManager.UnitDead(this.gameObject, Team, Active);
-        }
         base.DestroyUnit();
     }
 }

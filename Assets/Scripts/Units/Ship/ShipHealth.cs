@@ -21,9 +21,9 @@ public class ShipHealth : MonoBehaviour {
     private bool AutorepairPaused = false;
 
 
-    private void Awake () {
+    public void BeginOperations(ShipController unitController) {
         CurrentHealth = m_StartingHealth;
-        ShipController = GetComponent<ShipController>();
+        ShipController = unitController;
         // Instantiate the explosion prefab and get a reference to the particle system on it.
         m_ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
 

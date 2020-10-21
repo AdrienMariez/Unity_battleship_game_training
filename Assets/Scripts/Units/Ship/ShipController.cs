@@ -5,67 +5,63 @@ using System.Collections.Generic;
 
 public class ShipController : UnitMasterController {
     [Header("Ship units elements : ")]
-
-    [Tooltip("Components (game object with collider + Hitbox Component script)")]
-    public GameObject[] m_ShipComponents;
-
-
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
     private ShipHealth Health;
     private ShipDamageControl DamageControl;
-    private ShipUI UI;
-    private Transform ShipModel;
 
-    
-    private float CurrentRotationX  = 0.0f;
-    private float CurrentRotationZ = 0.0f;
-    private float CurrentpositionY = 0.0f;
-    private float TargetRotationX  = 0.0f;
-    private float TargetRotationZ = 0.0f;
-    private float TargetpositionY = 0.0f;
-    private float LeakRatio = 0.0f;
-    private bool TakingWater = false;
+    // Water damage parameters
+        private Transform ShipModel;                // instead of moving the whole when it's taking water (but not sinking), only the visible model is tilted.
+        private float CurrentRotationX  = 0.0f;
+        private float CurrentRotationZ = 0.0f;
+        private float CurrentpositionY = 0.0f;
+        private float TargetRotationX  = 0.0f;
+        private float TargetRotationZ = 0.0f;
+        private float TargetpositionY = 0.0f;
+        private float LeakRatio = 0.0f;
+        private bool TakingWater = false;
 
-    private float EngineCount = -1;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
-    private float EngineCountTotal = -1;
+    // Damage control crew management
+        private float EngineCount = -1;                  // If there is an engine dm component, how many are there ? (If there are more than one, the engine disabling will work differently)
+        private float EngineCountTotal = -1;
 
-    private float RepairRate;
-    private float EngineRepairCrew;
-    private float FireRepairCrew;
-    private float WaterRepairCrew;
-    private float TurretsRepairCrew;
+        private float EngineRepairCrew;
+        private float FireRepairCrew;
+        private float WaterRepairCrew;
+        private float TurretsRepairCrew;
 
     protected void Awake() {
         base.SpawnUnit();
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
+        Movement.BeginOperations(this);
         Health = GetComponent<ShipHealth>();
+        Health.BeginOperations(this);
         float HP = Health.GetStartingHealth();
 
-        UI = GetComponent<ShipUI>();
-        UI.SetStartingHealth(HP);
-        UI.SetCurrentHealth(HP);
+        UnitUI.SetStartingHealth(HP);
+        UnitUI.SetCurrentHealth(HP);
 
 
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
+            DamageControl.BeginOperations(this);
             RepairRate = DamageControl.GetRepairRate();
         }
 
         if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);
 
-        // Set the name unit to be the class name, it will get overwritten by any specific name afterwards.
-        SetName(m_UnitName);
-
         ShipModel = this.gameObject.transform.GetChild(0);
 
-        for (int i = 0; i < m_ShipComponents.Length; i++) {
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetUnitController(this);
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
+        foreach (HitboxComponent component in UnitComponents) {
+            component.SetDamageControlEngine(EngineRepairCrew);
+            component.SetDamageControlFire(FireRepairCrew);
         }
+    }
+
+    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+        base.SetUnitFromWorldUnitsManager(unit);
     }
 
     // private bool ActionPaused = false;
@@ -196,14 +192,14 @@ public class ShipController : UnitMasterController {
 
     public void SetDamageControlEngine(int setCrew){
         EngineRepairCrew = setCrew;
-        for (int i = 0; i < m_ShipComponents.Length; i++) {
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlEngine(EngineRepairCrew);
+        foreach (HitboxComponent component in UnitComponents) {
+            component.SetDamageControlEngine(EngineRepairCrew);
         }
     }
     public void SetDamageControlFire(int setCrew){
         FireRepairCrew = setCrew;
-        for (int i = 0; i < m_ShipComponents.Length; i++) {
-            m_ShipComponents[i].GetComponent<HitboxComponent>().SetDamageControlFire(FireRepairCrew);
+        foreach (HitboxComponent component in UnitComponents) {
+            component.SetDamageControlFire(FireRepairCrew);
         }
     }
     public void SetDamageControlWater(int setCrew){ WaterRepairCrew = setCrew; }
@@ -252,18 +248,6 @@ public class ShipController : UnitMasterController {
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetPause();
     }
-    public override void SetTag(CompiledTypes.Teams.RowValues team){
-        base.SetTag(team);
-        UI.SetUnitTeam(team);
-    }
-    public override void SetName(string name){
-        base.SetName(name);
-        UI.SetName(name);
-        if (GetComponent<ShipDamageControl>()) {
-            DamageControl.SetName(name);
-        }
-    }
-    public override float GetRepairRate(){ return RepairRate; }
 
     // Turrets
     public override void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
@@ -280,9 +264,6 @@ public class ShipController : UnitMasterController {
     }
 
     // UI
-    public override void SetUIElement(GameObject uiElement) { UI.SetUIElement(uiElement); }
-    public override void SetUIMapElement(GameObject uiElement) { UI.SetUIMapElement(uiElement); }
-    public override void KillAllUIInstances() { UI.KillAllUIInstances(); }
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
     public override int GetCurrentSpeedStep() { return(Movement.GetCurrentSpeedStep()); }
@@ -291,7 +272,8 @@ public class ShipController : UnitMasterController {
     public override void ApplyDamage(float damage) {
         Health.ApplyDamage(damage);
         float currentHealth = Health.GetCurrentHealth();
-        UI.SetCurrentHealth(currentHealth);
+        UnitUI.SetCurrentHealth(currentHealth);
+        base.ApplyDamage(damage);
     }
     public override void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ elementType);
@@ -395,20 +377,13 @@ public class ShipController : UnitMasterController {
             DamageControl.SetShipDeath(true);
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
-        UI.SetDead();
     }
     public override void DestroyUnit(){
         // This removes the unit from the scene
-
         // Debug.Log ("Destroy unit : "+gameObject.name);
-        if (GetComponent<TurretManager>())
-            Turrets.SetDeath(true);
         if (GetComponent<ShipDamageControl>())
             DamageControl.Destroy();
-        UI.KillAllUIInstances();
-        if (GameManager) {
-            GameManager.UnitDead(this.gameObject, Team, Active);
-        }
+        
         base.DestroyUnit();
     }
 }

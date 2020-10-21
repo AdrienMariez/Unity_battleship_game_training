@@ -44,8 +44,8 @@ public class ShipMovement : MonoBehaviour
 
     private ShipController ShipController;
 
-    private void Awake() {
-        ShipController = GetComponent<ShipController>();
+    public void BeginOperations(ShipController unitController) {
+        ShipController = unitController;
         // Store the original pitch of the audio source.
         OriginalPitch = m_MovementAudio.pitch;
 

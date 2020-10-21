@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameModesManager : MonoBehaviour {
@@ -85,7 +86,15 @@ public class GameModesManager : MonoBehaviour {
         foreach (var unit in Units) {
             // TODO if not using a spawn point...
             // if (unit.m_UseSpawnpoint) {
-                unit.SetInstance(Instantiate(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation) as GameObject);
+                foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
+                    foreach (WorldSingleUnit worldUnit in subCategory) {
+                        if (unit.GetUnit().ToString() == worldUnit.GetUnitReference_DB().id.ToString()) {
+                            // Debug.Log (unit.GetUnit().ToString()+" / "+worldUnit.GetUnitReference_DB().id.ToString());
+                            unit.SetInstance(WorldUnitsManager.BuildUnit(worldUnit, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation));
+                        }
+                    }
+                }
+                // unit.SetInstance(Instantiate(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation) as GameObject);
                 // Will need to replace previous line with next line to use DB.
                 // unit.SetInstance(WorldUnitsManager.BuildUnit(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation));
             // }
@@ -98,7 +107,7 @@ public class GameModesManager : MonoBehaviour {
                 }
             }
             unit.Setup();
-            unit.SetUnactive();
+            // unit.SetUnactive();
         }
 
         // As soon as the round starts reset the units and make sure they can't move.

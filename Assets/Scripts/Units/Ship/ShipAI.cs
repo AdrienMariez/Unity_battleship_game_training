@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class ShipAI : UnitAIController {
     protected ShipController ShipController;
     public UnitsAIStates ShipAISpawnState = UnitsAIStates.Patrol;
-    protected override void Awake () {
+    public override void BeginOperations () {
         UnitsAICurrentState = ShipAISpawnState;
         // Still need the specific unit Controller for specific methods
         ShipController = GetComponent<ShipController>();
-        base.Awake();
+        base.BeginOperations();
     }
     // UnitsAIStates
     // UnitsAICurrentState

@@ -5,13 +5,15 @@ using UnityEngine;
 public class UnitMasterController : MonoBehaviour {
     [Header("Global units elements : ")]
     // Same as WorldSingleUnit !
-    public string m_UnitName;
-    public CompiledTypes.Units_categories.RowValues m_UnitCategory;
-    public CompiledTypes.Units_sub_categories.RowValues m_UnitSubCategory;
-    public CompiledTypes.Countries.RowValues m_Nation;
-    public int m_UnitCommandPointsCost;
-    public int m_UnitVictoryPointsValue;
+    protected string UnitName;
+    protected CompiledTypes.Units_categories.RowValues UnitCategory;
+    protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
+    protected CompiledTypes.Countries.RowValues Nation;
+    protected int UnitCommandPointsCost;
+    protected int UnitVictoryPointsValue;
 
+    protected List<HitboxComponent> UnitComponents = new List<HitboxComponent>();
+    protected float RepairRate;
 
     protected bool Active = false;
     protected bool Dead = false;
@@ -22,6 +24,7 @@ public class UnitMasterController : MonoBehaviour {
     protected PlayerManager PlayerManager;
 
     protected UnitAIController UnitAI;
+    protected UnitUI UnitUI;
     private GameObject EnemyTargetUnit;
 
     public enum ElementType {
@@ -64,22 +67,24 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void FeedbackShellHit (bool armorPenetrated) { }
 
     // UI
-    public virtual void SetUIElement(GameObject tempUI) {}
-    public virtual void SetUIMapElement(GameObject tempUI) {}
-    public virtual void KillAllUIInstances() { }
+    public virtual void SetUIElement(GameObject uiElement) { UnitUI.SetUIElement(uiElement); }
+    public virtual void SetUIMapElement(GameObject uiElement) { UnitUI.SetUIMapElement(uiElement); }
+    public virtual void KillAllUIInstances() {  UnitUI.KillAllUIInstances();  }
     public virtual float GetStartingHealth() { return(0f); }
     public virtual float GetCurrentHealth() { return(0f); }
     public virtual bool GetDeath() { return(Dead); }
     public virtual int GetCurrentSpeedStep() { return(0); }
 
     // Damage control
-    public virtual void ApplyDamage(float damage) { }
+    public virtual void ApplyDamage(float damage) { 
+        
+    }
     public virtual void ModuleDestroyed(ElementType elementType) { }
     public virtual void ModuleRepaired(ElementType elementType) { }
     public virtual void BuoyancyCompromised(ElementType ElementType, float damage) { }
     public virtual void SendHitInfoToDamageControl (bool armorPenetrated) { }
     public virtual void SetDamageControlEngineCount(){ }
-    public virtual float GetRepairRate(){ return(0f); }
+    public float GetRepairRate(){ return RepairRate; }
     public virtual void SetDamageControl(bool damageControl) {
         if (GetComponent<TurretManager>())
             Turrets.SetDamageControl(damageControl);
@@ -88,6 +93,7 @@ public class UnitMasterController : MonoBehaviour {
     }
     public virtual void CallDeath() {
         Dead = true;
+        UnitUI.SetDead();
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
         if (GameManager)
@@ -98,6 +104,12 @@ public class UnitMasterController : MonoBehaviour {
         tag = "Untagged";
     }
     public virtual void DestroyUnit() {
+        if (GetComponent<TurretManager>())
+            Turrets.SetDeath(true);
+        UnitUI.KillAllUIInstances();
+        if (GameManager) {
+            GameManager.UnitDead(this.gameObject, Team, Active);
+        }
         Destroy(gameObject);
     }
 
@@ -113,15 +125,49 @@ public class UnitMasterController : MonoBehaviour {
     }
 
     // Main Gameplay
+    public virtual void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+        // Sets the basic unit info from WorldUnitsManager and the corresponding WorldSingleUnit info.
+        // Debug.Log ("SetPlayerManager" +UnitName);
+
+        UnitName = unit.GetUnitName();
+            gameObject.name = UnitName;
+            UnitAI.SetName(UnitName);
+        UnitCategory = unit.GetUnitCategory();
+        UnitSubCategory = unit.GetUnitSubCategory();
+        Nation = unit.GetUnitNation();
+        Team = unit.GetUnitTeam();
+            gameObject.tag = Team.ToString();
+            UnitAI.SetUnitTeam(Team);
+            UnitUI.SetUnitTeam(Team);
+
+        UnitCommandPointsCost = unit.GetUnitCommandPointsCost();
+        UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
+    }
     public void SpawnUnit() {
+        // Set UI
+        UnitUI = GetComponent<UnitUI>();
+
         // Set turrets
         if (GetComponent<TurretManager>())
             Turrets = GetComponent<TurretManager>();
         // Set AI
         UnitAI = GetComponent<UnitAIController>();
+        UnitAI.BeginOperations();
 
         if (GetComponent<TurretManager>())
             UnitAI.SetTurretManager(Turrets);
+
+        // Find and set components
+        Transform componentsParents = this.gameObject.transform.Find("Model").Find("Colliders");
+        // Debug.Log(componentsParents+" . "+UnitName);
+
+        foreach (Transform component in componentsParents) {
+            if (component.GetComponent<HitboxComponent>()) {
+                UnitComponents.Add(component.GetComponent<HitboxComponent>());
+                component.GetComponent<HitboxComponent>().SetUnitController(this);
+                // Debug.Log(component.GetComponent<HitboxComponent>().m_ElementType);
+            }
+        }
     }
     public virtual void SetActive(bool activate) {
         Active = activate;
@@ -136,19 +182,10 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {}
-    public virtual void SetTag(CompiledTypes.Teams.RowValues team){
-        // Debug.Log("Unit : "+ m_UnitName +" - SetTag = "+ team);
-        gameObject.tag = team.ToString();
-        Team = team;
-        UnitAI.SetUnitTeam(Team);
-    }
     public CompiledTypes.Teams.RowValues GetTeam() { return Team; }
-    public virtual void SetName(string name){
-        UnitAI.SetName(name);
-        gameObject.name = name;
-    }
+
     public void SetPlayerManager(PlayerManager playerManager) {
-        // Debug.Log ("SetPlayerManager" +m_UnitName);
+        // Debug.Log ("SetPlayerManager" +UnitName);
         PlayerManager = playerManager;
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
@@ -161,13 +198,16 @@ public class UnitMasterController : MonoBehaviour {
     public void SetGameManager(GameManager gameManager){
         GameManager = gameManager;
     }
+    public CompiledTypes.Units_categories.RowValues GetUnitCategory() {
+        return UnitCategory;
+    }
     public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() {
-        return m_UnitSubCategory;
+        return UnitSubCategory;
     }
     public int GetUnitCommandPointsCost() {
-        return m_UnitCommandPointsCost;
+        return UnitCommandPointsCost;
     }
     public int GetUnitVictoryPointsValue() {
-        return m_UnitVictoryPointsValue;
+        return UnitVictoryPointsValue;
     }
 }

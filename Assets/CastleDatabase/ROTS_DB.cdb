@@ -571,7 +571,7 @@
 					],
 					"Unitmass": 38536000,
 					"id": "fuso",
-					"UnitName": "Fuso",
+					"UnitName": "IJN Fuso",
 					"UnitDamagecontrol": [
 						{
 							"Repairrate": 3,
@@ -922,7 +922,7 @@
 					],
 					"Unitmass": 12781000,
 					"id": "takao",
-					"UnitName": "Takao",
+					"UnitName": "IJN Takao",
 					"UnitDamagecontrol": [
 						{
 							"Repairrate": 3,
@@ -952,7 +952,7 @@
 				},
 				{
 					"id": "fusoUSA",
-					"UnitName": "FusoUSA",
+					"UnitName": "USN Fuso",
 					"Isavariant": true,
 					"UnitVariantReference": [
 						{
@@ -966,7 +966,7 @@
 				},
 				{
 					"id": "takaoUSA",
-					"UnitName": "TakaoUSA",
+					"UnitName": "USN Takao",
 					"Isavariant": true,
 					"UnitVariantReference": [
 						{
@@ -977,6 +977,128 @@
 					"UnitModel": "",
 					"UnitNation": "usa",
 					"index": 3
+				},
+				{
+					"id": "TrainingCarrier",
+					"Isavariant": false,
+					"UnitName": "IJN Training Carrier",
+					"UnitPath": "Prefabs/Units/Ship",
+					"UnitModel": "AircraftCarrierTest",
+					"index": 4,
+					"UnitCategory": "Carrier",
+					"UnitNation": "japan",
+					"UnitScore": [
+						{
+							"Commandpoints": 500,
+							"Victorypoints": 500
+						}
+					],
+					"UnitCameraParameters": [
+						{
+							"Distance": 120,
+							"Height": 25,
+							"Lateraloffset": 0
+						}
+					],
+					"UnitHealth": 7000,
+					"UnitDamagecontrol": [
+						{
+							"Repairrate": 2,
+							"Repaircrew": 2
+						}
+					],
+					"Buoyancy": [
+						{
+							"Center_of_mass": [
+								{
+									"X": 0,
+									"Y": 0,
+									"Z": 0
+								}
+							],
+							"Force_points": [
+								{
+									"X": 10,
+									"Y": 0,
+									"Z": 80
+								},
+								{
+									"X": -10,
+									"Y": 0,
+									"Z": 80
+								},
+								{
+									"X": 10,
+									"Y": 0,
+									"Z": -80
+								},
+								{
+									"X": -10,
+									"Y": 0,
+									"Z": -80
+								}
+							],
+							"Model_width": 24,
+							"Vertical_drag": 3,
+							"Engine_power": 27.5,
+							"Rotation_time": 130
+						}
+					],
+					"Unitmass": 33161000
+				},
+				{
+					"id": "TrainingCarrierUSA",
+					"Isavariant": true,
+					"UnitName": "USN Training Carrier",
+					"UnitPath": "",
+					"UnitModel": "",
+					"index": 5,
+					"UnitVariantReference": [
+						{
+							"UnitVariantRef": "TrainingCarrier"
+						}
+					],
+					"UnitNation": "usa"
+				},
+				{
+					"id": "ShipyardJapan",
+					"Isavariant": false,
+					"UnitName": "Japanese Shipyard",
+					"UnitPath": "Prefabs/Units/Building",
+					"UnitModel": "Shipyard",
+					"index": 6,
+					"UnitCategory": "Shipyard",
+					"UnitNation": "japan",
+					"UnitScore": [
+						{
+							"Commandpoints": 10000,
+							"Victorypoints": 1000
+						}
+					],
+					"UnitCameraParameters": [
+						{
+							"Distance": 200,
+							"Height": 20,
+							"Lateraloffset": 0
+						}
+					],
+					"UnitHealth": 30000,
+					"Unitmass": 100000000
+				},
+				{
+					"id": "ShipyardUSA",
+					"Isavariant": true,
+					"UnitName": "American Shipyard",
+					"UnitPath": "",
+					"UnitModel": "",
+					"index": 7,
+					"UnitNation": "usa",
+					"UnitVariantReference": [
+						{
+							"UnitVariantRef": "ShipyardJapan"
+						}
+					],
+					"UnitCategory": "Shipyard"
 				}
 			],
 			"separators": [],

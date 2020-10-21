@@ -14,10 +14,10 @@ public class WorldSingleUnit {
 
     // Same as in UnitMasterController !!
     private string UnitName;
-    private string UnitCategory;
-    private string UnitSubCategory;
-    private string Nation;
-    private string Team;
+    private CompiledTypes.Units_categories.RowValues UnitCategory;
+    private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
+    private CompiledTypes.Countries.RowValues Nation;
+    private CompiledTypes.Teams.RowValues Team;
     private int UnitCommandPointsCost;
     private int UnitVictoryPointsValue;
 
@@ -58,20 +58,54 @@ public class WorldSingleUnit {
 
         // CATEGORY && SUBCATEGORY
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
-                UnitCategory = masterUnitReference.UnitCategory.Category.id;
-                UnitSubCategory = masterUnitReference.UnitCategory.id;
+                foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
+                    if (row.ToString() == masterUnitReference.UnitCategory.Category.id) {
+                        UnitCategory = row;
+                    }
+                }
+                foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
+                    if (row.ToString() == masterUnitReference.UnitCategory.id) {
+                        UnitSubCategory = row;
+                    }
+                }
             } else if (!String.IsNullOrEmpty(unit.UnitCategory.id)) {
-                UnitCategory = unit.UnitCategory.Category.id;
-                UnitSubCategory = unit.UnitCategory.id;
+                foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
+                    if (row.ToString() == unit.UnitCategory.Category.id) {
+                        UnitCategory = row;
+                    }
+                }
+                foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
+                    if (row.ToString() == unit.UnitCategory.id) {
+                        UnitSubCategory = row;
+                    }
+                }
+                // UnitCategory = unit.UnitCategory.Category.id;
+                // UnitSubCategory = unit.UnitCategory.id;
             }
 
         // NATION
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitNation.id)) {
-                Nation = masterUnitReference.UnitNation.id;
-                Team = masterUnitReference.UnitNation.Team.id;
+                foreach (CompiledTypes.Countries.RowValues row in Enum.GetValues(typeof(CompiledTypes.Countries.RowValues))) {
+                    if (row.ToString() == masterUnitReference.UnitNation.id) {
+                        Nation = row;
+                    }
+                }
+                foreach (CompiledTypes.Teams.RowValues row in Enum.GetValues(typeof(CompiledTypes.Teams.RowValues))) {
+                    if (row.ToString() == masterUnitReference.UnitNation.Team.id) {
+                        Team = row;
+                    }
+                }
             } else if (!String.IsNullOrEmpty(unit.UnitNation.id)) {
-                Nation = unit.UnitNation.id;
-                Team = unit.UnitNation.Team.id;
+                foreach (CompiledTypes.Countries.RowValues row in Enum.GetValues(typeof(CompiledTypes.Countries.RowValues))) {
+                    if (row.ToString() == unit.UnitNation.id) {
+                        Nation = row;
+                    }
+                }
+                foreach (CompiledTypes.Teams.RowValues row in Enum.GetValues(typeof(CompiledTypes.Teams.RowValues))) {
+                    if (row.ToString() == unit.UnitNation.Team.id) {
+                        Team = row;
+                    }
+                }
             }
 
         // SCORES
@@ -109,10 +143,10 @@ public class WorldSingleUnit {
     public GameObject GetUnitModel(){ return UnitPrefab; }
     public CompiledTypes.Global_Units GetUnitReference_DB(){ return UnitReference_DB; }
     public string GetUnitName(){ return UnitName; }
-    public string GetUnitCategory(){ return UnitCategory; }
-    public string GetUnitSubCategory(){ return UnitSubCategory; }
-    public string GetUnitTeam(){ return Team; }
-    public string GetUnitNation(){ return Nation; }
+    public CompiledTypes.Units_categories.RowValues GetUnitCategory(){ return UnitCategory; }
+    public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
+    public CompiledTypes.Countries.RowValues GetUnitNation(){ return Nation; }
+    public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
     public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
     public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
     public float GetUnitCameraDistance(){ return CameraDistance; }

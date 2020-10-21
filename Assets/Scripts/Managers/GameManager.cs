@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam) {
+        // Debug.Log ("UnitSpawned : "+unitTeam);
         WorldUnitsManager.CreateNewUnitMapModel(unitGameObject, unitTeam);  // Ultimately, this should disappear.
 
         foreach (var playerManager in PlayersManager) {
