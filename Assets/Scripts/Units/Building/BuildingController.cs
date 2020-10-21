@@ -3,16 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BuildingController : UnitMasterController {
-    [Header("Building units elements : ")]
-    private BuildingHealth Health;
+    // [Header("Building units elements : ")]
 
     protected void Awake() {
         base.SpawnUnit();
-        Health = GetComponent<BuildingHealth>();
-        float HP = Health.GetStartingHealth();
-
-        UnitUI.SetStartingHealth(HP);
-        UnitUI.SetCurrentHealth(HP);
     }
 
     public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
@@ -44,8 +38,6 @@ public class BuildingController : UnitMasterController {
     //     yield return new WaitForSeconds(3f);
     //     ActionPaused2= true;
     // }
-
-    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     
 
     // ALL OVERRIDES METHODS
@@ -70,12 +62,6 @@ public class BuildingController : UnitMasterController {
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
 
     // Damage control
-    public override void ApplyDamage(float damage) {
-        Health.ApplyDamage(damage);
-        float currentHealth = Health.GetCurrentHealth();
-        UnitUI.SetCurrentHealth(currentHealth);
-        base.ApplyDamage(damage);
-    }
     public override void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ ElementType);
         // Status : 0 : fixed and running / 1 : damaged / 2 : dead

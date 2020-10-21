@@ -76,9 +76,9 @@ public class ShellStat : MonoBehaviour
         }
         if (ShellType == TurretFireManager.TurretRole.Torpedo) {
             Destroy (gameObject, m_MaxLifeTime);                                        // Torpedoes auto die after their lifetime is expended
-            StartCoroutine(PreventPrematureExplosion(2f));                               // Prevent torpedoes from exploding in their tubes at creation
+            StartCoroutine(PreventPrematureExplosion(1f));                               // Prevent torpedoes from exploding in their tubes at creation
         } else {
-            StartCoroutine(PreventPrematureExplosion(0.5f));                             // Prevent any shell from exploding at creation (happens when firing at high speed)
+            StartCoroutine(PreventPrematureExplosion(0.1f));                             // Prevent any shell from exploding at creation (happens when firing at high speed)
         }
 
     }

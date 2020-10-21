@@ -1065,7 +1065,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4699689828683719271}
   - component: {fileID: 3921178953239837573}
-  - component: {fileID: 9072288217827135263}
   - component: {fileID: 8119844244652148746}
   - component: {fileID: 225537522}
   - component: {fileID: 5875044249289738296}
@@ -1118,20 +1117,6 @@ MonoBehaviour:
   m_GroundSpawnPosition: {fileID: 2234937143242066959}
   SpawnableUnitsList: []
   TeamedSpawnableUnitsList: []
---- !u!114 &9072288217827135263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4036194036648923335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a3cc88ef042461438ada2d8000de95d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StartingHealth: 1000
-  m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
 --- !u!114 &8119844244652148746
 MonoBehaviour:
   m_ObjectHideFlags: 0

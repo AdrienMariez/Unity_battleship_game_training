@@ -10,18 +10,19 @@ namespace CompiledTypes
     {
         static CastleDBParser parsedDB;
         public Global_UnitsType Global_Units;
-public Units_categoriesType Units_categories;
 public Units_sub_categoriesType Units_sub_categories;
+public Units_categoriesType Units_categories;
 public TeamsType Teams;
 public CountriesType Countries;
 public WeaponsType Weapons;
 public Weapons_rolesType Weapons_roles;
 public AmmosType Ammos;
+public FX_StorageType FX_Storage;
 
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Global_Units = new Global_UnitsType();Units_categories = new Units_categoriesType();Units_sub_categories = new Units_sub_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();
+            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();
         }
         public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
@@ -45,27 +46,9 @@ private Global_Units Get(CompiledTypes.Global_Units.RowValues line) { return new
                     return returnList;
                 }
  } //END OF Global_Units 
-public class Units_categoriesType 
- {public Units_categories ship { get { return Get(CompiledTypes.Units_categories.RowValues.ship); } } 
-public Units_categories submarine { get { return Get(CompiledTypes.Units_categories.RowValues.submarine); } } 
-public Units_categories aircraft { get { return Get(CompiledTypes.Units_categories.RowValues.aircraft); } } 
-public Units_categories ground { get { return Get(CompiledTypes.Units_categories.RowValues.ground); } } 
-public Units_categories building { get { return Get(CompiledTypes.Units_categories.RowValues.building); } } 
-private Units_categories Get(CompiledTypes.Units_categories.RowValues line) { return new Units_categories(parsedDB.Root, line); }
-
-                public Units_categories[] GetAll() 
-                {
-                    var values = (CompiledTypes.Units_categories.RowValues[])Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues));
-                    Units_categories[] returnList = new Units_categories[values.Length];
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        returnList[i] = Get(values[i]);
-                    }
-                    return returnList;
-                }
- } //END OF Units_categories 
 public class Units_sub_categoriesType 
- {public Units_sub_categories Battleship { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Battleship); } } 
+ {public Units_sub_categories Empty { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Empty); } } 
+public Units_sub_categories Battleship { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Battleship); } } 
 public Units_sub_categories Carrier { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Carrier); } } 
 public Units_sub_categories Heavy_Cruiser { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Heavy_Cruiser); } } 
 public Units_sub_categories Light_Cruiser { get { return Get(CompiledTypes.Units_sub_categories.RowValues.Light_Cruiser); } } 
@@ -91,6 +74,25 @@ private Units_sub_categories Get(CompiledTypes.Units_sub_categories.RowValues li
                     return returnList;
                 }
  } //END OF Units_sub_categories 
+public class Units_categoriesType 
+ {public Units_categories ship { get { return Get(CompiledTypes.Units_categories.RowValues.ship); } } 
+public Units_categories submarine { get { return Get(CompiledTypes.Units_categories.RowValues.submarine); } } 
+public Units_categories aircraft { get { return Get(CompiledTypes.Units_categories.RowValues.aircraft); } } 
+public Units_categories ground { get { return Get(CompiledTypes.Units_categories.RowValues.ground); } } 
+public Units_categories building { get { return Get(CompiledTypes.Units_categories.RowValues.building); } } 
+private Units_categories Get(CompiledTypes.Units_categories.RowValues line) { return new Units_categories(parsedDB.Root, line); }
+
+                public Units_categories[] GetAll() 
+                {
+                    var values = (CompiledTypes.Units_categories.RowValues[])Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues));
+                    Units_categories[] returnList = new Units_categories[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF Units_categories 
 public class TeamsType 
  {public Teams Allies { get { return Get(CompiledTypes.Teams.RowValues.Allies); } } 
 public Teams Axis { get { return Get(CompiledTypes.Teams.RowValues.Axis); } } 
@@ -191,6 +193,33 @@ private Ammos Get(CompiledTypes.Ammos.RowValues line) { return new Ammos(parsedD
                     return returnList;
                 }
  } //END OF Ammos 
+public class FX_StorageType 
+ {public FX_Storage DamageExplosionLargePlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.DamageExplosionLargePlaceholder); } } 
+public FX_Storage DamageSmokeEmitterLarge { get { return Get(CompiledTypes.FX_Storage.RowValues.DamageSmokeEmitterLarge); } } 
+public FX_Storage DamageSmokeEmitterMedium { get { return Get(CompiledTypes.FX_Storage.RowValues.DamageSmokeEmitterMedium); } } 
+public FX_Storage DamageSteamEmitterLarge { get { return Get(CompiledTypes.FX_Storage.RowValues.DamageSteamEmitterLarge); } } 
+public FX_Storage ShellExplosionLargePlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellExplosionLargePlaceholder); } } 
+public FX_Storage ShellExplosionMediumPlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellExplosionMediumPlaceholder); } } 
+public FX_Storage ShellExplosionSmallPlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellExplosionSmallPlaceholder); } } 
+public FX_Storage ShellWaterHitLargePlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellWaterHitLargePlaceholder); } } 
+public FX_Storage ShellWaterHitMediumPlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellWaterHitMediumPlaceholder); } } 
+public FX_Storage ShellWaterHitSmallPlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellWaterHitSmallPlaceholder); } } 
+public FX_Storage ShellWaterHitTorpedoPlaceholder { get { return Get(CompiledTypes.FX_Storage.RowValues.ShellWaterHitTorpedoPlaceholder); } } 
+public FX_Storage StackSmokeEmitterLarge { get { return Get(CompiledTypes.FX_Storage.RowValues.StackSmokeEmitterLarge); } } 
+public FX_Storage StackSmokeEmitterMedium { get { return Get(CompiledTypes.FX_Storage.RowValues.StackSmokeEmitterMedium); } } 
+private FX_Storage Get(CompiledTypes.FX_Storage.RowValues line) { return new FX_Storage(parsedDB.Root, line); }
+
+                public FX_Storage[] GetAll() 
+                {
+                    var values = (CompiledTypes.FX_Storage.RowValues[])Enum.GetValues(typeof(CompiledTypes.FX_Storage.RowValues));
+                    FX_Storage[] returnList = new FX_Storage[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF FX_Storage 
 
     }
 }

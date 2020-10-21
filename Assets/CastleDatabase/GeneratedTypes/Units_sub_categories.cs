@@ -13,8 +13,10 @@ public string Classification;
 public string Name;
 public Units_categories Category;
 public string MapModel;
+public FX_Storage DeathExplosion;
 
         public enum RowValues { 
+Empty, 
 Battleship, 
 Carrier, 
 Heavy_Cruiser, 
@@ -37,6 +39,7 @@ Classification = node["Classification"];
 Name = node["Name"];
 Category = new CompiledTypes.Units_categories(root,CompiledTypes.Units_categories.GetRowValue(node["Category"]));
 MapModel = node["MapModel"];
+DeathExplosion = new CompiledTypes.FX_Storage(root,CompiledTypes.FX_Storage.GetRowValue(node["DeathExplosion"]));
 
         }  
         

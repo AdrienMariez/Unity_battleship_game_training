@@ -16,6 +16,8 @@ public class WorldSingleUnit {
     private string UnitName;
     private CompiledTypes.Units_categories.RowValues UnitCategory;
     private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
+    private CompiledTypes.Units_sub_categories UnitSubCategory_DB;
+    private GameObject UnitDeathFX;         // If there were multiple of those, there could be multiple death FX
     private CompiledTypes.Countries.RowValues Nation;
     private CompiledTypes.Teams.RowValues Team;
     private int UnitCommandPointsCost;
@@ -24,6 +26,8 @@ public class WorldSingleUnit {
     private float CameraDistance;
     private float CameraHeight;
     private float CameraCameraOffset;
+
+    private float UnitHealth;
 
     private bool UnitSet = false;
 
@@ -56,32 +60,71 @@ public class WorldSingleUnit {
                 UnitName = unit.UnitName;
             }
 
-        // CATEGORY && SUBCATEGORY
-            if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
-                foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
-                    if (row.ToString() == masterUnitReference.UnitCategory.Category.id) {
-                        UnitCategory = row;
+        // CATEGORY && SUBCATEGORY && SUBCATEGORY RELATED FX
+            // Debug.Log (UnitName+"?UnitCategoryEmpty? : "+String.IsNullOrEmpty(unit.UnitCategory.id)+" - ?unit.Isavariant? :  "+unit.Isavariant+" - unit.UnitCategory.id :  "+unit.UnitCategory.id);
+
+            if (unit.Isavariant && unit.UnitCategory.id.ToString() == "Empty") {
+                foreach (CompiledTypes.Units_sub_categories subCat in WorldUnitsManager.GetDB().Units_sub_categories.GetAll()) {
+                    if (subCat.id == masterUnitReference.UnitCategory.id) {
+                        // Debug.Log ("case1 found for "+UnitName);
+                        UnitSubCategory_DB = subCat;
+                        string subCatString = subCat.id.ToString();
+                        UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
+
+                        string catString = subCat.Category.id.ToString();
+                        UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
+
+                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathExplosion.FXPath+"/"+masterUnitReference.UnitCategory.DeathExplosion.FXPrefab;
+                        UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
-                foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
-                    if (row.ToString() == masterUnitReference.UnitCategory.id) {
-                        UnitSubCategory = row;
+            } else if (unit.UnitCategory.id.ToString() != "Empty") {
+                foreach (CompiledTypes.Units_sub_categories subCat in WorldUnitsManager.GetDB().Units_sub_categories.GetAll()) {
+                    if (subCat.id == unit.UnitCategory.id) {
+                        // Debug.Log ("case2 found for "+UnitName);
+                        UnitSubCategory_DB = subCat;
+                        string subCatString = subCat.id.ToString();
+                        UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
+                        
+                        string catString = subCat.Category.id.ToString();
+                        UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
+                        
+                        string FXString = "FX/"+unit.UnitCategory.DeathExplosion.FXPath+"/"+unit.UnitCategory.DeathExplosion.FXPrefab;
+                        UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
-            } else if (!String.IsNullOrEmpty(unit.UnitCategory.id)) {
-                foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
-                    if (row.ToString() == unit.UnitCategory.Category.id) {
-                        UnitCategory = row;
-                    }
-                }
-                foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
-                    if (row.ToString() == unit.UnitCategory.id) {
-                        UnitSubCategory = row;
-                    }
-                }
-                // UnitCategory = unit.UnitCategory.Category.id;
-                // UnitSubCategory = unit.UnitCategory.id;
+            } else {
+                Debug.Log ("No category found for "+UnitName);
             }
+            // SetUnitSubCategory((CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString));
+            // SetUnitCategory((CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString));
+
+            Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);
+
+
+            // if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
+            //     foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
+            //         if (row.ToString() == masterUnitReference.UnitCategory.Category.id) {
+            //             UnitCategory = row;
+            //         }
+            //     }
+            //     foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
+            //         if (row.ToString() == masterUnitReference.UnitCategory.id) {
+            //             UnitSubCategory = row;
+            //         }
+            //     }
+            // } else if (!String.IsNullOrEmpty(unit.UnitCategory.id)) {
+            //     foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
+            //         if (row.ToString() == unit.UnitCategory.Category.id) {
+            //             UnitCategory = row;
+            //         }
+            //     }
+            //     foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
+            //         if (row.ToString() == unit.UnitCategory.id) {
+            //             UnitSubCategory = row;
+            //         }
+            //     }
+            // }
 
         // NATION
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitNation.id)) {
@@ -128,6 +171,15 @@ public class WorldSingleUnit {
                 CameraCameraOffset = unit.UnitCameraParametersList[0].Lateraloffset;
             }
 
+        // HEALTH
+            if (unit.Isavariant && unit.UnitHealth == 0) {
+                UnitHealth = masterUnitReference.UnitHealth;
+            } else if (unit.UnitHealth > 0) {
+                UnitHealth = unit.UnitHealth;
+            } else {
+                Debug.Log (UnitName);
+            }
+
 
 
         // foreach (var category in WorldUnitsManager.GetDB().Units_categories.GetAll()) {
@@ -144,7 +196,11 @@ public class WorldSingleUnit {
     public CompiledTypes.Global_Units GetUnitReference_DB(){ return UnitReference_DB; }
     public string GetUnitName(){ return UnitName; }
     public CompiledTypes.Units_categories.RowValues GetUnitCategory(){ return UnitCategory; }
+    public void SetUnitCategory(CompiledTypes.Units_categories.RowValues unitCategory){ UnitCategory = unitCategory; }
+    public void SetUnitSubCategory(CompiledTypes.Units_sub_categories.RowValues unitSubCategory){ UnitSubCategory = unitSubCategory; }
     public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
+    public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB(){ return UnitSubCategory_DB; }
+    public GameObject GetUnitDeathFX(){ return UnitDeathFX; }
     public CompiledTypes.Countries.RowValues GetUnitNation(){ return Nation; }
     public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
     public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
@@ -152,4 +208,5 @@ public class WorldSingleUnit {
     public float GetUnitCameraDistance(){ return CameraDistance; }
     public float GetUnitCameraHeight(){ return CameraHeight; }
     public float GetUnitCameraCameraOffset(){ return CameraCameraOffset; }
+    public float GetUnitHealth(){ return UnitHealth; }
 }

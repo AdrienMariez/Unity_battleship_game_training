@@ -19,46 +19,6 @@ public class WorldUnitsManager : MonoBehaviour {
     
     public static CastleDB GetDB(){ return DB; }
 
-
-    // public enum SimpleTeams {
-    //     Allies,
-    //     Axis,
-    //     NeutralAI
-    // }
-    // public enum Teams {
-    //     Allies,
-    //     AlliesAI,
-    //     Axis,
-    //     AxisAI,
-    //     NeutralAI
-    // }
-    // public enum Nations {
-    //     US,
-    //     Japan,
-    //     GB,
-    //     Germany,
-    //     USSR,
-    //     China,
-    //     France
-    // }
-    // Australia,China,France,GreatBritain,Germany,Italy,Japan,NewZealand,USA,USSR
-    // public enum UnitCategories {
-    //     ship,
-    //     submarine,
-    //     plane,
-    //     ground,
-    //     building
-    // }
-    // See https://en.wikipedia.org/wiki/Hull_classification_symbol
-    // public enum UnitSubCategories {
-    //     ShipBattleship,ShipCarrier,ShipCruiser,ShipDestroyer,
-    //     SubmarineSubmarine,
-    //     PlaneFighter,PlaneLightBomber,PlaneBomber,
-    //     GroundTank,
-    //     BuildingLandBase,BuildingShipyard,BuildingAirfield
-    // }
-
-    // Carrier,Battleship,Cruiser,Destroyer,Submarine,Fighter,LightBomber,Bomber,Tank,LandBase,Shipyard,Airfield
     private static bool FirstLoad = true;
     private void Start() {
         if (FirstLoad){
@@ -101,7 +61,7 @@ public class WorldUnitsManager : MonoBehaviour {
         foreach (CompiledTypes.Units_sub_categories subCategory in SubCategoriesDB) {
             List<WorldSingleUnit> categoryObjects = new List<WorldSingleUnit>();
             foreach (CompiledTypes.Global_Units unit in DB.Global_Units.GetAll()) {
-                if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
+                if (unit.Isavariant && unit.UnitCategory.id.ToString() == "Empty") {
                     CompiledTypes.Global_Units masterUnitReference = unit.UnitVariantReferenceList[0].UnitVariantRef;
                     if (masterUnitReference.UnitCategory.id == subCategory.id) {
                         WorldSingleUnit newUnit = new WorldSingleUnit();
@@ -118,31 +78,6 @@ public class WorldUnitsManager : MonoBehaviour {
             // Debug.Log ("loop in WUM");
         }
 
-
-
-
-
-        // Old system using m_WorldSingleUnit
-        /*foreach(UnitSubCategories category in Enum.GetValues(typeof(UnitSubCategories))) {
-            SubCategories.Add(category);
-        }
-
-        foreach (UnitSubCategories category in SubCategories) {
-            List<WorldSingleUnit> categoryObjects = new List<WorldSingleUnit>();
-            foreach (WorldSingleUnit unit in m_WorldSingleUnit) {
-                if (unit.m_UnitPrefab.GetComponent<UnitMasterController>()) {
-                    if (unit.m_UnitPrefab.GetComponent<UnitMasterController>().m_UnitSubCategory == category) {
-                        unit.SetUnit();
-                        categoryObjects.Add(unit);
-                        // Debug.Log (category +" - "+ unit.m_UnitPrefab);
-                    }
-                } else {
-                    Debug.Log (" A unit without a UnitMasterController was found ! It will not be used in the listings ! Error situated in : "+ unit.m_UnitPrefab);
-                }
-            }
-            UnitsBySubcategory.Add(categoryObjects);
-        }*/
-
         // This is to view each element and its category.
         // foreach (List<WorldSingleUnit> category in UnitsBySubcategory) {
         //     foreach (WorldSingleUnit unit in category) {
@@ -156,11 +91,6 @@ public class WorldUnitsManager : MonoBehaviour {
     }
     public static bool GetFirstLoad() {
         return FirstLoad;
-    }
-    public static void SetUnitList() {
-        // This is set once in the whole game session !
-        // WorldSetMapInstances();
-        // Debug.Log ("Test");
     }*/
 
     protected void Update() { }
@@ -173,15 +103,34 @@ public class WorldUnitsManager : MonoBehaviour {
         // SCRIPTS
             // UI
                 UnitUI UnitUI = spawnedUnitInstance.AddComponent<UnitUI>();
-            // MANAGER
-                string UnitControllerScript = unit.GetUnitReference_DB().UnitCategory.Category.FileName +"Controller";
-                // Debug.Log("script Name for "+ unit.GetUnitName()+ " which is a " + unit.GetUnitReference_DB().UnitCategory.Category.id +"  is :"+ UnitControllerScript);
+            // HEALTH
+                UnitHealth UnitHealth = spawnedUnitInstance.AddComponent<UnitHealth>();
+                
+            // CUSTOM SCRIPTS
+            if (unit.GetUnitSubCategory_DB().Category.ScriptsList.Count > 0) {
+                List<CompiledTypes.Scripts> sortedScriptList = new List<CompiledTypes.Scripts>(); 
+                foreach (CompiledTypes.Scripts script in unit.GetUnitSubCategory_DB().Category.ScriptsList) {
+                    sortedScriptList.Add(script);
+                }
+                sortedScriptList.Sort((IComparer<CompiledTypes.Scripts>)new sort());
+
+                foreach (CompiledTypes.Scripts script in sortedScriptList) {
+                    // spawnedUnitInstance.AddComponent<script.ScriptName>();
+                }
+            }
+
+            // UNITCONTROLLER
+                string UnitControllerScript = unit.GetUnitSubCategory_DB().Category.FileName;
                 UnitMasterController UnitController = spawnedUnitInstance.AddComponent(Type.GetType(UnitControllerScript)) as UnitMasterController;
+                // Debug.Log("script Name for "+ unit.GetUnitName()+ " which is a " + unit.GetUnitReference_DB().UnitCategory.Category.id +"  is :"+ UnitControllerScript);
+
 
             // CAMERA
                 TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
 
-
+        // HEALTH
+            UnitHealth.SetCurrentHealth(unit.GetUnitHealth());
+            UnitHealth.SetDeathFX(unit.GetUnitDeathFX());
         // CAMERA
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());
@@ -193,8 +142,16 @@ public class WorldUnitsManager : MonoBehaviour {
 
 
 
-        // WorldUnitsManager.CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam());        // Commented for now, as
+        // WorldUnitsManager.CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam());        // Commented for now
         return spawnedUnitInstance;
+    }
+
+    private class sort : IComparer<CompiledTypes.Scripts>{
+        int IComparer<CompiledTypes.Scripts>.Compare(CompiledTypes.Scripts _scriptA, CompiledTypes.Scripts _scriptB) {
+            int t1 = _scriptA.LoadOrder;
+            int t2 = _scriptB.LoadOrder;
+            return t1.CompareTo(t2);
+        }
     }
 
     public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {

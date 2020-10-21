@@ -23,11 +23,12 @@
 				{
 					"typeStr": "1",
 					"name": "UnitPath",
-					"display": null
+					"opt": true
 				},
 				{
 					"typeStr": "1",
-					"name": "UnitModel"
+					"name": "UnitModel",
+					"opt": true
 				},
 				{
 					"typeStr": "6:Units_sub_categories",
@@ -50,7 +51,7 @@
 					"opt": true
 				},
 				{
-					"typeStr": "3",
+					"typeStr": "4",
 					"name": "UnitHealth",
 					"opt": true
 				},
@@ -959,8 +960,6 @@
 							"UnitVariantRef": "fuso"
 						}
 					],
-					"UnitPath": "",
-					"UnitModel": "",
 					"UnitNation": "usa",
 					"index": 2
 				},
@@ -973,8 +972,6 @@
 							"UnitVariantRef": "takao"
 						}
 					],
-					"UnitPath": "",
-					"UnitModel": "",
 					"UnitNation": "usa",
 					"index": 3
 				},
@@ -1050,8 +1047,6 @@
 					"id": "TrainingCarrierUSA",
 					"Isavariant": true,
 					"UnitName": "USN Training Carrier",
-					"UnitPath": "",
-					"UnitModel": "",
 					"index": 5,
 					"UnitVariantReference": [
 						{
@@ -1089,16 +1084,13 @@
 					"id": "ShipyardUSA",
 					"Isavariant": true,
 					"UnitName": "American Shipyard",
-					"UnitPath": "",
-					"UnitModel": "",
 					"index": 7,
 					"UnitNation": "usa",
 					"UnitVariantReference": [
 						{
 							"UnitVariantRef": "ShipyardJapan"
 						}
-					],
-					"UnitCategory": "Shipyard"
+					]
 				}
 			],
 			"separators": [],
@@ -1168,71 +1160,6 @@
 			]
 		},
 		{
-			"name": "Units_categories",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id"
-				},
-				{
-					"typeStr": "1",
-					"name": "Name"
-				},
-				{
-					"typeStr": "1",
-					"name": "ScriptPaths",
-					"display": null
-				},
-				{
-					"typeStr": "1",
-					"name": "FileName",
-					"display": null
-				}
-			],
-			"lines": [
-				{
-					"Name": "Ship",
-					"index": 0,
-					"id": "ship",
-					"ScriptPaths": "Scripts/Units/Ship",
-					"FileName": "Ship"
-				},
-				{
-					"Name": "Submarine",
-					"index": 1,
-					"id": "submarine",
-					"ScriptPaths": "",
-					"FileName": ""
-				},
-				{
-					"Name": "Aircraft",
-					"index": 2,
-					"id": "aircraft",
-					"ScriptPaths": "",
-					"FileName": ""
-				},
-				{
-					"Name": "Ground",
-					"index": 3,
-					"id": "ground",
-					"ScriptPaths": "",
-					"FileName": ""
-				},
-				{
-					"Name": "Building",
-					"index": 4,
-					"id": "building",
-					"ScriptPaths": "Scripts/Units/Building",
-					"FileName": "Building"
-				}
-			],
-			"separators": [],
-			"props": {
-				"hasIndex": true,
-				"displayColumn": "Name"
-			}
-		},
-		{
 			"name": "Units_sub_categories",
 			"columns": [
 				{
@@ -1257,123 +1184,224 @@
 					"typeStr": "13",
 					"name": "MapModel",
 					"display": null
+				},
+				{
+					"typeStr": "6:FX_Storage",
+					"name": "DeathExplosion",
+					"display": null
 				}
 			],
 			"lines": [
 				{
+					"id": "Empty",
+					"Classification": "Do not edit",
+					"Name": "",
+					"Category": "ship",
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder",
+					"index": 0
+				},
+				{
 					"Name": "Battleship",
 					"Category": "ship",
-					"index": 0,
+					"index": 1,
 					"Classification": "BB",
 					"id": "Battleship",
-					"MapModel": "../Prefabs/Map/Battleship.prefab"
+					"MapModel": "../Prefabs/Map/Battleship.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Carrier",
 					"Category": "ship",
-					"index": 1,
+					"index": 2,
 					"Classification": "CV",
 					"id": "Carrier",
-					"MapModel": "../Prefabs/Map/Carrier.prefab"
+					"MapModel": "../Prefabs/Map/Carrier.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Heavy_Cruiser",
 					"Category": "ship",
-					"index": 2,
+					"index": 3,
 					"Classification": "CA",
 					"id": "Heavy_Cruiser",
-					"MapModel": "../Prefabs/Map/Cruiser.prefab"
+					"MapModel": "../Prefabs/Map/Cruiser.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Light_Cruiser",
 					"Category": "ship",
-					"index": 3,
+					"index": 4,
 					"Classification": "CL",
 					"id": "Light_Cruiser",
-					"MapModel": "../Prefabs/Map/Cruiser.prefab"
+					"MapModel": "../Prefabs/Map/Cruiser.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Destroyer",
 					"Category": "ship",
-					"index": 4,
+					"index": 5,
 					"Classification": "DD",
 					"id": "Destroyer",
-					"MapModel": "../Prefabs/Map/Destroyer.prefab"
+					"MapModel": "../Prefabs/Map/Destroyer.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Attack_Submarine",
 					"Category": "ship",
-					"index": 5,
+					"index": 6,
 					"Classification": "SS",
 					"id": "Attack_Submarine",
-					"MapModel": "../Prefabs/Map/Shipyard.prefab"
+					"MapModel": "../Prefabs/Map/Shipyard.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Fighter",
 					"Category": "aircraft",
-					"index": 6,
+					"index": 7,
 					"Classification": "AF",
 					"id": "Fighter",
-					"MapModel": "../Prefabs/Units/IJN_Battleship_Fuso.prefab"
+					"MapModel": "../Prefabs/Units/IJN_Battleship_Fuso.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Light_Bomber",
 					"Category": "aircraft",
-					"index": 7,
+					"index": 8,
 					"Classification": "ALB",
 					"id": "Light_Bomber",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Heavy_Bomber",
 					"Category": "aircraft",
-					"index": 8,
+					"index": 9,
 					"Classification": "AHB",
 					"id": "Heavy_Bomber",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Tank",
 					"Category": "ground",
-					"index": 9,
+					"index": 10,
 					"Classification": "GBT",
 					"id": "Tank",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Airfield",
 					"Category": "building",
-					"index": 10,
+					"index": 11,
 					"Classification": "BAF",
 					"id": "Airfield",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Shipyard",
 					"Category": "building",
-					"index": 11,
+					"index": 12,
 					"Classification": "BSY",
 					"id": "Shipyard",
-					"MapModel": "../Prefabs/Map/Shipyard.prefab"
+					"MapModel": "../Prefabs/Map/Shipyard.prefab",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "LandBase",
 					"Category": "building",
-					"index": 12,
+					"index": 13,
 					"Classification": "BLB",
 					"id": "LandBase",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathExplosion": "DamageExplosionLargePlaceholder"
 				}
 			],
 			"separators": [
-				5,
 				6,
-				9,
-				10
+				7,
+				10,
+				11
 			],
 			"props": {
 				"hasIndex": true,
 				"hasGroup": true,
+				"displayColumn": "Name"
+			}
+		},
+		{
+			"name": "Units_categories",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "1",
+					"name": "ScriptPaths",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "Scripts"
+				},
+				{
+					"typeStr": "1",
+					"name": "FileName",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"Name": "Ship",
+					"index": 0,
+					"id": "ship",
+					"ScriptPaths": "Scripts/Units/Ship",
+					"FileName": "ShipController",
+					"Scripts": []
+				},
+				{
+					"Name": "Submarine",
+					"index": 1,
+					"id": "submarine",
+					"ScriptPaths": "",
+					"FileName": "",
+					"Scripts": []
+				},
+				{
+					"Name": "Aircraft",
+					"index": 2,
+					"id": "aircraft",
+					"ScriptPaths": "",
+					"FileName": "",
+					"Scripts": []
+				},
+				{
+					"Name": "Ground",
+					"index": 3,
+					"id": "ground",
+					"ScriptPaths": "",
+					"FileName": "",
+					"Scripts": []
+				},
+				{
+					"Name": "Building",
+					"index": 4,
+					"id": "building",
+					"ScriptPaths": "Scripts/Units/Building",
+					"FileName": "BuildingController",
+					"Scripts": []
+				}
+			],
+			"separators": [],
+			"props": {
+				"hasIndex": true,
 				"displayColumn": "Name"
 			}
 		},
@@ -2187,8 +2215,117 @@
 					"name": "UnitVariantRef"
 				}
 			]
+		},
+		{
+			"name": "Units_categories@Scripts",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "LoadOrder",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "ScriptName",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "FX_Storage",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "FXPath"
+				},
+				{
+					"typeStr": "1",
+					"name": "FXPrefab",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "DamageExplosionLargePlaceholder",
+					"FXPath": "ExplosionFX",
+					"FXPrefab": "DamageExplosionLargePlaceholder"
+				},
+				{
+					"id": "DamageSmokeEmitterLarge",
+					"FXPath": "DamageFX",
+					"FXPrefab": "DamageSmokeEmitterLarge"
+				},
+				{
+					"id": "DamageSmokeEmitterMedium",
+					"FXPath": "DamageFX",
+					"FXPrefab": "DamageSmokeEmitterMedium"
+				},
+				{
+					"id": "DamageSteamEmitterLarge",
+					"FXPath": "DamageFX",
+					"FXPrefab": "DamageSteamEmitterLarge"
+				},
+				{
+					"id": "ShellExplosionLargePlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellExplosionLargePlaceholder"
+				},
+				{
+					"id": "ShellExplosionMediumPlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellExplosionMediumPlaceholder"
+				},
+				{
+					"id": "ShellExplosionSmallPlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellExplosionSmallPlaceholder"
+				},
+				{
+					"id": "ShellWaterHitLargePlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellWaterHitLargePlaceholder"
+				},
+				{
+					"id": "ShellWaterHitMediumPlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellWaterHitMediumPlaceholder"
+				},
+				{
+					"id": "ShellWaterHitSmallPlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellWaterHitSmallPlaceholder"
+				},
+				{
+					"id": "ShellWaterHitTorpedoPlaceholder",
+					"FXPath": "ShellFX",
+					"FXPrefab": "ShellWaterHitTorpedoPlaceholder"
+				},
+				{
+					"id": "StackSmokeEmitterLarge",
+					"FXPath": "",
+					"FXPrefab": "StackSmokeEmitterLarge"
+				},
+				{
+					"id": "StackSmokeEmitterMedium",
+					"FXPath": "",
+					"FXPrefab": "StackSmokeEmitterMedium"
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayColumn": "FXPrefab"
+			}
 		}
 	],
 	"customTypes": [],
-	"compress": true
+	"compress": false
 }

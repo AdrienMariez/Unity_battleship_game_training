@@ -7,7 +7,6 @@ public class ShipController : UnitMasterController {
     [Header("Ship units elements : ")]
     private ShipBuoyancy Buoyancy;
     private ShipMovement Movement;
-    private ShipHealth Health;
     private ShipDamageControl DamageControl;
 
     // Water damage parameters
@@ -35,12 +34,6 @@ public class ShipController : UnitMasterController {
         Buoyancy = GetComponent<ShipBuoyancy>();
         Movement = GetComponent<ShipMovement>();
         Movement.BeginOperations(this);
-        Health = GetComponent<ShipHealth>();
-        Health.BeginOperations(this);
-        float HP = Health.GetStartingHealth();
-
-        UnitUI.SetStartingHealth(HP);
-        UnitUI.SetCurrentHealth(HP);
 
 
         if (GetComponent<ShipDamageControl>()) {
@@ -220,7 +213,6 @@ public class ShipController : UnitMasterController {
         if (Active && !Dead)
             PlayerManager.ChangeSpeedStep(currentSpeedStep);
     }
-    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
     public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
     public void SetAITurnInputValue(float turnInputValue){ UnitAI.SetAITurnInputValue(turnInputValue); }
@@ -269,12 +261,6 @@ public class ShipController : UnitMasterController {
     public override int GetCurrentSpeedStep() { return(Movement.GetCurrentSpeedStep()); }
 
     // Damage control
-    public override void ApplyDamage(float damage) {
-        Health.ApplyDamage(damage);
-        float currentHealth = Health.GetCurrentHealth();
-        UnitUI.SetCurrentHealth(currentHealth);
-        base.ApplyDamage(damage);
-    }
     public override void ModuleDestroyed(ElementType elementType) {
         // Debug.Log("ElementType :"+ elementType);
         // Status : 0 : fixed and running / 1 : damaged / 2 : dead

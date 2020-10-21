@@ -25,6 +25,7 @@ public class UnitMasterController : MonoBehaviour {
 
     protected UnitAIController UnitAI;
     protected UnitUI UnitUI;
+    protected UnitHealth Health;
     private GameObject EnemyTargetUnit;
 
     public enum ElementType {
@@ -77,8 +78,11 @@ public class UnitMasterController : MonoBehaviour {
 
     // Damage control
     public virtual void ApplyDamage(float damage) { 
-        
+        Health.ApplyDamage(damage);
+        float currentHealth = Health.GetCurrentHealth();
+        UnitUI.SetCurrentHealth(currentHealth);
     }
+    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public virtual void ModuleDestroyed(ElementType elementType) { }
     public virtual void ModuleRepaired(ElementType elementType) { }
     public virtual void BuoyancyCompromised(ElementType ElementType, float damage) { }
@@ -144,30 +148,36 @@ public class UnitMasterController : MonoBehaviour {
         UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
     }
     public void SpawnUnit() {
+
+        // Set Health
+            Health = GetComponent<UnitHealth>();
+            Health.BeginOperations(this);
+            float HP = Health.GetStartingHealth();
+
         // Set UI
-        UnitUI = GetComponent<UnitUI>();
-
+            UnitUI = GetComponent<UnitUI>();
+            UnitUI.SetStartingHealth(HP);
+            UnitUI.SetCurrentHealth(HP);
         // Set turrets
-        if (GetComponent<TurretManager>())
-            Turrets = GetComponent<TurretManager>();
+            if (GetComponent<TurretManager>())
+                Turrets = GetComponent<TurretManager>();
         // Set AI
-        UnitAI = GetComponent<UnitAIController>();
-        UnitAI.BeginOperations();
-
-        if (GetComponent<TurretManager>())
-            UnitAI.SetTurretManager(Turrets);
+            UnitAI = GetComponent<UnitAIController>();
+            UnitAI.BeginOperations();
+            if (GetComponent<TurretManager>())
+                UnitAI.SetTurretManager(Turrets);
 
         // Find and set components
-        Transform componentsParents = this.gameObject.transform.Find("Model").Find("Colliders");
-        // Debug.Log(componentsParents+" . "+UnitName);
+            Transform componentsParents = this.gameObject.transform.Find("Model").Find("Colliders");
+            // Debug.Log(componentsParents+" . "+UnitName);
 
-        foreach (Transform component in componentsParents) {
-            if (component.GetComponent<HitboxComponent>()) {
-                UnitComponents.Add(component.GetComponent<HitboxComponent>());
-                component.GetComponent<HitboxComponent>().SetUnitController(this);
-                // Debug.Log(component.GetComponent<HitboxComponent>().m_ElementType);
+            foreach (Transform component in componentsParents) {
+                if (component.GetComponent<HitboxComponent>()) {
+                    UnitComponents.Add(component.GetComponent<HitboxComponent>());
+                    component.GetComponent<HitboxComponent>().SetUnitController(this);
+                    // Debug.Log(component.GetComponent<HitboxComponent>().m_ElementType);
+                }
             }
-        }
     }
     public virtual void SetActive(bool activate) {
         Active = activate;
