@@ -11,8 +11,8 @@ namespace Crest
     /// <summary>
     /// Boat physics by sampling at multiple probe points.
     /// </summary>
-    // public class BoatProbes : FloatingObjectBase {
     public class ShipBuoyancy : FloatingObjectBase {
+
         private bool Dead;
 
         [Header("Forces")]

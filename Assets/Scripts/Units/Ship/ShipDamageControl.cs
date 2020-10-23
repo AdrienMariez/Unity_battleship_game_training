@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShipDamageControl : MonoBehaviour {
+public class ShipDamageControl : UnitParameter {
     private bool Active = false;
     private bool Pause = false;
     private bool ShipDead = false;

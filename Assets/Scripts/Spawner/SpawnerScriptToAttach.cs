@@ -187,6 +187,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     Vector3 SpawnPosition;
     public bool TrySpawnUnit (WorldSingleUnit unit) {
+        if (GameManager == null) {
+            return false;
+        }
 
         bool trySpawn1 = false;
         bool trySpawn2 = false;

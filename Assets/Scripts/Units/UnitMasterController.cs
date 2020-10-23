@@ -5,10 +5,16 @@ using UnityEngine;
 public class UnitMasterController : MonoBehaviour {
     [Header("Global units elements : ")]
     // Same as WorldSingleUnit !
+
+    protected WorldSingleUnit UnitWorldSingleUnit;
+    protected CompiledTypes.Global_Units UnitReference_DB;
+
     protected string UnitName;
     protected CompiledTypes.Units_categories.RowValues UnitCategory;
     protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
-    protected CompiledTypes.Countries.RowValues Nation;
+    protected CompiledTypes.Units_sub_categories UnitSubCategory_DB;
+    protected CompiledTypes.Countries Nation;
+    protected CompiledTypes.Teams.RowValues Team;
     protected int UnitCommandPointsCost;
     protected int UnitVictoryPointsValue;
 
@@ -17,7 +23,6 @@ public class UnitMasterController : MonoBehaviour {
 
     protected bool Active = false;
     protected bool Dead = false;
-    protected CompiledTypes.Teams.RowValues Team;
     protected TurretManager Turrets;
     private SpawnerScriptToAttach Spawner;
     protected GameManager GameManager;
@@ -131,23 +136,22 @@ public class UnitMasterController : MonoBehaviour {
     // Main Gameplay
     public virtual void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
         // Sets the basic unit info from WorldUnitsManager and the corresponding WorldSingleUnit info.
-        // Debug.Log ("SetPlayerManager" +UnitName);
+        // Debug.Log ("SetPlayerManager" +unit);
 
-        UnitName = unit.GetUnitName();
-            gameObject.name = UnitName;
-            UnitAI.SetName(UnitName);
-        UnitCategory = unit.GetUnitCategory();
-        UnitSubCategory = unit.GetUnitSubCategory();
-        Nation = unit.GetUnitNation();
-        Team = unit.GetUnitTeam();
-            gameObject.tag = Team.ToString();
-            UnitAI.SetUnitTeam(Team);
-            UnitUI.SetUnitTeam(Team);
+        // Set all common parameters
+            UnitName = unit.GetUnitName();
+                gameObject.name = UnitName;
+            UnitCategory = unit.GetUnitCategory();
+            UnitSubCategory = unit.GetUnitSubCategory();
+            UnitSubCategory_DB = unit.GetUnitSubCategory_DB();
+            Nation = unit.GetUnitNation();
+            Team = unit.GetUnitTeam();
+                gameObject.tag = Team.ToString();
+            UnitCommandPointsCost = unit.GetUnitCommandPointsCost();
+            UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
 
-        UnitCommandPointsCost = unit.GetUnitCommandPointsCost();
-        UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
-    }
-    public void SpawnUnit() {
+        UnitWorldSingleUnit = unit;
+        UnitReference_DB = unit.GetUnitReference_DB();
 
         // Set Health
             Health = GetComponent<UnitHealth>();
@@ -158,26 +162,32 @@ public class UnitMasterController : MonoBehaviour {
             UnitUI = GetComponent<UnitUI>();
             UnitUI.SetStartingHealth(HP);
             UnitUI.SetCurrentHealth(HP);
+            UnitUI.SetUnitTeam(Team);
         // Set turrets
             if (GetComponent<TurretManager>())
                 Turrets = GetComponent<TurretManager>();
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
             UnitAI.BeginOperations();
+            UnitAI.SetUnitTeam(Team);
+            UnitAI.SetName(UnitName);
             if (GetComponent<TurretManager>())
                 UnitAI.SetTurretManager(Turrets);
 
         // Find and set components
-            Transform componentsParents = this.gameObject.transform.Find("Model").Find("Colliders");
-            // Debug.Log(componentsParents+" . "+UnitName);
+            if (this.gameObject.transform.childCount > 0){
+                Transform componentsParents = this.gameObject.transform.Find("Model").Find("Colliders");
+                // Debug.Log(componentsParents+" . "+UnitName);
 
-            foreach (Transform component in componentsParents) {
-                if (component.GetComponent<HitboxComponent>()) {
-                    UnitComponents.Add(component.GetComponent<HitboxComponent>());
-                    component.GetComponent<HitboxComponent>().SetUnitController(this);
-                    // Debug.Log(component.GetComponent<HitboxComponent>().m_ElementType);
+                foreach (Transform component in componentsParents) {
+                    if (component.GetComponent<HitboxComponent>()) {
+                        UnitComponents.Add(component.GetComponent<HitboxComponent>());
+                        component.GetComponent<HitboxComponent>().SetUnitController(this);
+                        // Debug.Log(component.GetComponent<HitboxComponent>().m_ElementType);
+                    }
                 }
             }
+
     }
     public virtual void SetActive(bool activate) {
         Active = activate;
@@ -200,19 +210,25 @@ public class UnitMasterController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetPlayerManager(PlayerManager);
         if (GetComponent<SpawnerScriptToAttach>()){
-            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
             // GetComponent<SpawnerScriptToAttach>().SetUnitController(this);
         }
     }
     public void SetGameManager(GameManager gameManager){
+        // Debug.Log ("SetGameManager" +UnitName);
         GameManager = gameManager;
+        if (GetComponent<SpawnerScriptToAttach>()){
+            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+        }
     }
     public CompiledTypes.Units_categories.RowValues GetUnitCategory() {
         return UnitCategory;
     }
     public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() {
         return UnitSubCategory;
+    }
+    public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB() {
+        return UnitSubCategory_DB;
     }
     public int GetUnitCommandPointsCost() {
         return UnitCommandPointsCost;

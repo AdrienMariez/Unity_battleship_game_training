@@ -99,6 +99,11 @@ public class WorldUnitsManager : MonoBehaviour {
         // MODEL
             GameObject spawnedUnitInstance =
                 Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
+        // RIGIDBODY
+            if (!spawnedUnitInstance.GetComponent<Rigidbody>()) {
+                Rigidbody RigidBody = spawnedUnitInstance.AddComponent<Rigidbody>();
+                RigidBody.mass = unit.GetUnitMass();
+            }
 
         // SCRIPTS
             // UI
@@ -115,29 +120,32 @@ public class WorldUnitsManager : MonoBehaviour {
                 sortedScriptList.Sort((IComparer<CompiledTypes.Scripts>)new sort());
 
                 foreach (CompiledTypes.Scripts script in sortedScriptList) {
+                    UnitParameter unitParameter = spawnedUnitInstance.AddComponent(Type.GetType(script.ScriptName)) as UnitParameter;
                     // spawnedUnitInstance.AddComponent<script.ScriptName>();
                 }
             }
 
             // UNITCONTROLLER
-                string UnitControllerScript = unit.GetUnitSubCategory_DB().Category.FileName;
-                UnitMasterController UnitController = spawnedUnitInstance.AddComponent(Type.GetType(UnitControllerScript)) as UnitMasterController;
+                string unitControllerScript = unit.GetUnitSubCategory_DB().Category.FileName;
+                UnitMasterController unitController = spawnedUnitInstance.AddComponent(Type.GetType(unitControllerScript)) as UnitMasterController;
                 // Debug.Log("script Name for "+ unit.GetUnitName()+ " which is a " + unit.GetUnitReference_DB().UnitCategory.Category.id +"  is :"+ UnitControllerScript);
 
 
             // CAMERA
                 TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
 
+        // COMMON DATA
+            unitController.SetUnitFromWorldUnitsManager(unit);
+
         // HEALTH
             UnitHealth.SetCurrentHealth(unit.GetUnitHealth());
+            UnitHealth.SetStartingHealth(unit.GetUnitHealth());
             UnitHealth.SetDeathFX(unit.GetUnitDeathFX());
         // CAMERA
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());
             TCP.SetCameraLateralOffset(unit.GetUnitCameraCameraOffset());
         
-        // COMMON DATA
-            UnitController.SetUnitFromWorldUnitsManager(unit);
 
 
 
@@ -156,7 +164,7 @@ public class WorldUnitsManager : MonoBehaviour {
 
     public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {
         //Create the map element corresponding to the unit
-        GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory()), unitGameObject.transform);
+        GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory_DB()), unitGameObject.transform);
         var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
     }

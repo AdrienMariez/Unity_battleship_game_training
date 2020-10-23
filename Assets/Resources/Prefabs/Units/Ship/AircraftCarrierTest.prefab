@@ -1067,7 +1067,6 @@ GameObject:
   - component: {fileID: 3921178953239837573}
   - component: {fileID: 8119844244652148746}
   - component: {fileID: 225537522}
-  - component: {fileID: 5875044249289738296}
   - component: {fileID: 4877774010700237345}
   - component: {fileID: 8380954490411808174}
   - component: {fileID: 4820114647795486464}
@@ -1164,22 +1163,6 @@ MonoBehaviour:
   _dragVertical: 1
   _enginePower: 28
   _rotationTime: 120
---- !u!114 &5875044249289738296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4036194036648923335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2e2d05e7c905e044bf8c77187cefd5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitCanMove: 1
-  UnitCanShoot: 1
-  UnitCanSpawn: 1
-  ShipAISpawnState: 0
 --- !u!114 &4877774010700237345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2388,15 +2371,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fef9f34d5019ef408c07f4508ce57a8, type: 3}
---- !u!4 &8677980535261432990 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
-    type: 3}
-  m_PrefabInstance: {fileID: 8935051545107534734}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8999221112671638939 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 512295342537803285, guid: 6fef9f34d5019ef408c07f4508ce57a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8935051545107534734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8677980535261432990 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 257214647645740816, guid: 6fef9f34d5019ef408c07f4508ce57a8,
     type: 3}
   m_PrefabInstance: {fileID: 8935051545107534734}
   m_PrefabAsset: {fileID: 0}

@@ -6,7 +6,7 @@ public class BuildingController : UnitMasterController {
     // [Header("Building units elements : ")]
 
     protected void Awake() {
-        base.SpawnUnit();
+        // base.SpawnUnit();
     }
 
     public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {

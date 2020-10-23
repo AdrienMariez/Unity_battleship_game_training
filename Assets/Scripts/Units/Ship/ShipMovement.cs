@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Crest;
 
-public class ShipMovement : MonoBehaviour
+public class ShipMovement : UnitParameter
 {
     private bool Active = false; 
     private bool Dead = false; 

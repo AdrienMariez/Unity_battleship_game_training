@@ -442,7 +442,6 @@ GameObject:
   - component: {fileID: 2661556145241615459}
   - component: {fileID: 8237782044557327271}
   - component: {fileID: 6341268151872624709}
-  - component: {fileID: 6951975475739686028}
   - component: {fileID: 6883374081042125866}
   m_Layer: 0
   m_Name: Shipyard
@@ -580,21 +579,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6951975475739686028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661556145241615456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140b9820ea559c2489aef6c9461f91d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitCanMove: 1
-  UnitCanShoot: 1
-  UnitCanSpawn: 1
 --- !u!114 &6883374081042125866
 MonoBehaviour:
   m_ObjectHideFlags: 0

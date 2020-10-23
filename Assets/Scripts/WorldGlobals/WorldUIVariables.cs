@@ -26,9 +26,8 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Damage Control UI")]
         public GameObject m_ShipDamageControlUI;
         public GameObject m_ShipDamageControlAlertUI;
-    [Header("Map Models")]
-        public MapModelsList[] m_MapModels;
-        public GameObject m_MapErrorModel;
+    [Header("Error Models")]
+        public GameObject m_ErrorModel;
 
 /////////////////////////////////////////////////////////
 
@@ -56,9 +55,8 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Static Damage Control UI")]
         private static GameObject ShipDamageControlUI;
         private static GameObject ShipDamageControlAlertUI;
-    [Header("Static Map Models")]
-        private static MapModelsList[] MapModels;
-        private static GameObject MapErrorModel;
+    [Header("Error Models")]
+        private static GameObject ErrorModel;
 
     private static bool FirstLoad = true;
     private void Start() {
@@ -92,8 +90,7 @@ public class WorldUIVariables : MonoBehaviour {
         ShipDamageControlUI = m_ShipDamageControlUI;
         ShipDamageControlAlertUI = m_ShipDamageControlAlertUI;
 
-        MapModels = m_MapModels;
-        MapErrorModel = m_MapErrorModel;
+        ErrorModel = m_ErrorModel;
     }
     public static GameObject GetTankUI() { return TankUI; }
     public static GameObject GetPlaneUI() { return PlaneUI; }
@@ -119,21 +116,24 @@ public class WorldUIVariables : MonoBehaviour {
     public static GameObject GetUnitUI() { return UnitUI; }
     public static GameObject GetUnitMapUI() { return UnitMapUI; }
 
-    public static GameObject BuildMapModel(CompiledTypes.Units_sub_categories.RowValues unitCategory) {
-        string unitCat = unitCategory.ToString();
-        foreach (var mapModel in MapModels) {
-            if (mapModel.m_Name == unitCat) {
-                return mapModel.m_MapModel;
-            }
+    public static GameObject GetErrorModel() { return ErrorModel; }
+
+    public static GameObject BuildMapModel(CompiledTypes.Units_sub_categories unitCategory) {
+        GameObject mapModel = (Resources.Load("Prefabs/MapModels/"+unitCategory.MapModel, typeof(GameObject))) as GameObject;
+        if (mapModel != null) {
+            // Debug.Log ("BuildMapModel Worked !");
+            return mapModel;
+        } else {
+            // Debug.Log (" WUIV BuildMapModel NOT FOUND  "+unitCategory.id +" - "+ unitCategory.MapModel);
+            return ErrorModel;
         }
-        return MapErrorModel;
     }
 
-    [Serializable]
-    public class MapModelsList {
-        public string m_Name;
+    // [Serializable]
+    // public class MapModelsList {
+    //     public string m_Name;
 
-        public GameObject m_MapModel;
-    }
+    //     public GameObject m_MapModel;
+    // }
 
 }

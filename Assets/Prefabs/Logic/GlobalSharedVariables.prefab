@@ -67,41 +67,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96e5e131f5c8ab4a93afdf3c912853f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WorldSingleUnit:
-  - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
-      type: 3}
-  - m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
-      type: 3}
-  - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 4036194036648923335, guid: 044a66c466047d145806beca8315b549,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 8974371313272689227, guid: 45d624a180faeca4fb0b6d7c176920df,
-      type: 3}
-  - m_UnitPrefab: {fileID: 2661556145241615456, guid: fe69ceb381a24ed4e97853975133f61b,
-      type: 3}
-  m_WorldSingleTurret: []
-  m_WorldSingleShell: []
   CastleDBAsset: {fileID: 1042094116111776886, guid: c26edfb4d6471ae42ad77881eef5f271,
     type: 3}
 --- !u!114 &282135415314082085
@@ -162,21 +127,5 @@ MonoBehaviour:
     type: 3}
   m_ShipDamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
     type: 3}
-  m_MapModels:
-  - m_Name: ShipBattleship
-    m_MapModel: {fileID: 2062165973900458927, guid: f7f6b205918e1c440bbdfa434bcc25a6,
-      type: 3}
-  - m_Name: ShipCarrier
-    m_MapModel: {fileID: 8912150454309072610, guid: fa1b7acc59d7ae143aa05ffaf4e96f6f,
-      type: 3}
-  - m_Name: ShipCruiser
-    m_MapModel: {fileID: 7871896421843162103, guid: 49bd85a06bf0ed8439d7418e468412c6,
-      type: 3}
-  - m_Name: ShipDestroyer
-    m_MapModel: {fileID: 3288714511833522810, guid: c4e6a259930a68d48800580b3d7edf69,
-      type: 3}
-  - m_Name: BuildingShipyard
-    m_MapModel: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
-      type: 3}
-  m_MapErrorModel: {fileID: 3288714511833522810, guid: 2e88299e8ef03e642a5c72aa4f9216a7,
+  m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
     type: 3}

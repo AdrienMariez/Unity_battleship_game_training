@@ -18,8 +18,9 @@ public class WorldSingleUnit {
     private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
     private CompiledTypes.Units_sub_categories UnitSubCategory_DB;
     private GameObject UnitDeathFX;         // If there were multiple of those, there could be multiple death FX
-    private CompiledTypes.Countries.RowValues Nation;
+    private CompiledTypes.Countries Nation;
     private CompiledTypes.Teams.RowValues Team;
+    private CompiledTypes.Teams Team_DB;
     private int UnitCommandPointsCost;
     private int UnitVictoryPointsValue;
 
@@ -28,6 +29,8 @@ public class WorldSingleUnit {
     private float CameraCameraOffset;
 
     private float UnitHealth;
+
+    private float UnitMass;
 
     private bool UnitSet = false;
 
@@ -51,7 +54,11 @@ public class WorldSingleUnit {
                 UnitPrefab = (Resources.Load(masterUnitReference.UnitPath+"/"+masterUnitReference.UnitModel, typeof(GameObject))) as GameObject;
             } else if (!String.IsNullOrEmpty(unit.UnitPath)) {
                 UnitPrefab = (Resources.Load(unit.UnitPath+"/"+unit.UnitModel, typeof(GameObject))) as GameObject;
-            } else { Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id); }
+            }
+            if (UnitPrefab == null) {
+                Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
+                UnitPrefab = WorldUIVariables.GetErrorModel();
+            }
 
         // NAME
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitName)) {
@@ -96,60 +103,24 @@ public class WorldSingleUnit {
             } else {
                 Debug.Log ("No category found for "+UnitName);
             }
-            // SetUnitSubCategory((CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString));
-            // SetUnitCategory((CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString));
-
-            Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);
-
-
-            // if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitCategory.id)) {
-            //     foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
-            //         if (row.ToString() == masterUnitReference.UnitCategory.Category.id) {
-            //             UnitCategory = row;
-            //         }
-            //     }
-            //     foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
-            //         if (row.ToString() == masterUnitReference.UnitCategory.id) {
-            //             UnitSubCategory = row;
-            //         }
-            //     }
-            // } else if (!String.IsNullOrEmpty(unit.UnitCategory.id)) {
-            //     foreach (CompiledTypes.Units_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_categories.RowValues))) {
-            //         if (row.ToString() == unit.UnitCategory.Category.id) {
-            //             UnitCategory = row;
-            //         }
-            //     }
-            //     foreach (CompiledTypes.Units_sub_categories.RowValues row in Enum.GetValues(typeof(CompiledTypes.Units_sub_categories.RowValues))) {
-            //         if (row.ToString() == unit.UnitCategory.id) {
-            //             UnitSubCategory = row;
-            //         }
-            //     }
-            // }
+            // Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);
+        // END CATEGORY
 
         // NATION
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitNation.id)) {
-                foreach (CompiledTypes.Countries.RowValues row in Enum.GetValues(typeof(CompiledTypes.Countries.RowValues))) {
-                    if (row.ToString() == masterUnitReference.UnitNation.id) {
-                        Nation = row;
-                    }
-                }
-                foreach (CompiledTypes.Teams.RowValues row in Enum.GetValues(typeof(CompiledTypes.Teams.RowValues))) {
-                    if (row.ToString() == masterUnitReference.UnitNation.Team.id) {
-                        Team = row;
-                    }
-                }
+                Nation = masterUnitReference.UnitNation;
+                Team_DB = masterUnitReference.UnitNation.Team;
             } else if (!String.IsNullOrEmpty(unit.UnitNation.id)) {
-                foreach (CompiledTypes.Countries.RowValues row in Enum.GetValues(typeof(CompiledTypes.Countries.RowValues))) {
-                    if (row.ToString() == unit.UnitNation.id) {
-                        Nation = row;
-                    }
-                }
-                foreach (CompiledTypes.Teams.RowValues row in Enum.GetValues(typeof(CompiledTypes.Teams.RowValues))) {
-                    if (row.ToString() == unit.UnitNation.Team.id) {
-                        Team = row;
-                    }
+                Nation = unit.UnitNation;
+                Team_DB = unit.UnitNation.Team;
+            }
+            foreach (CompiledTypes.Teams.RowValues team in Enum.GetValues(typeof(CompiledTypes.Teams.RowValues))) {
+                if (team.ToString() == Team_DB.id) {
+                    Team = team;
                 }
             }
+            // Debug.Log (UnitName+" WSU Team : "+Team);
+        // END NATION
 
         // SCORES
             if (unit.Isavariant && unit.UnitScoreList.Count == 0) {
@@ -180,6 +151,17 @@ public class WorldSingleUnit {
                 Debug.Log (UnitName);
             }
 
+        // DAMAGE CONTROL
+
+
+        // RIGID BODY
+            if (unit.Isavariant && unit.UnitMass == 0) {
+                UnitMass = masterUnitReference.UnitMass;
+            } else if (unit.UnitMass > 0) {
+                UnitMass = unit.UnitMass;
+            } else {
+                Debug.Log (UnitName);
+            }
 
 
         // foreach (var category in WorldUnitsManager.GetDB().Units_categories.GetAll()) {
@@ -201,7 +183,7 @@ public class WorldSingleUnit {
     public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
     public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB(){ return UnitSubCategory_DB; }
     public GameObject GetUnitDeathFX(){ return UnitDeathFX; }
-    public CompiledTypes.Countries.RowValues GetUnitNation(){ return Nation; }
+    public CompiledTypes.Countries GetUnitNation(){ return Nation; }
     public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
     public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
     public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
@@ -209,4 +191,6 @@ public class WorldSingleUnit {
     public float GetUnitCameraHeight(){ return CameraHeight; }
     public float GetUnitCameraCameraOffset(){ return CameraCameraOffset; }
     public float GetUnitHealth(){ return UnitHealth; }
+
+    public float GetUnitMass(){ return UnitMass; }
 }

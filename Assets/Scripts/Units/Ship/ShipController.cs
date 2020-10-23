@@ -30,12 +30,25 @@ public class ShipController : UnitMasterController {
         private float TurretsRepairCrew;
 
     protected void Awake() {
-        base.SpawnUnit();
-        Buoyancy = GetComponent<ShipBuoyancy>();
-        Movement = GetComponent<ShipMovement>();
-        Movement.BeginOperations(this);
+        // base.SpawnUnit();
+    }
 
+    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+        base.SetUnitFromWorldUnitsManager(unit);
+        // Set Buoyancy
+            if (GetComponent<ShipBuoyancy>()) {
+                Buoyancy = GetComponent<ShipBuoyancy>(); 
+            }
+            // Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;       // This to uncomment after info from db is caught for ShipBuoyancy
+            if (GetComponent<ShipMovement>()) {
+                Movement = GetComponent<ShipMovement>();
+                Movement.BeginOperations(this);
+            }
 
+        // Set DamageControl
+            // if (true) {
+            //     unit.GetUnitReference_DB.UnitDama        // WOrk in progress
+            // }
         if (GetComponent<ShipDamageControl>()) {
             DamageControl = GetComponent<ShipDamageControl>();
             DamageControl.BeginOperations(this);
@@ -45,16 +58,15 @@ public class ShipController : UnitMasterController {
         if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);
 
-        ShipModel = this.gameObject.transform.GetChild(0);
+        if (this.gameObject.transform.childCount > 0){
+            ShipModel = this.gameObject.transform.GetChild(0);
+        }
+
 
         foreach (HitboxComponent component in UnitComponents) {
             component.SetDamageControlEngine(EngineRepairCrew);
             component.SetDamageControlFire(FireRepairCrew);
         }
-    }
-
-    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
-        base.SetUnitFromWorldUnitsManager(unit);
     }
 
     // private bool ActionPaused = false;
@@ -205,7 +217,8 @@ public class ShipController : UnitMasterController {
     public void SetDamageControlUnset(int setCrew){ if (Health != null) { Health.SetDamageControlUnset(setCrew); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){
-        Buoyancy.SetRotationInput(rotation);
+        if (GetComponent<ShipBuoyancy>())
+            Buoyancy.SetRotationInput(rotation);
         if (Active && !Dead)
             PlayerManager.SetRotationInput(rotation);
     }
@@ -213,8 +226,14 @@ public class ShipController : UnitMasterController {
         if (Active && !Dead)
             PlayerManager.ChangeSpeedStep(currentSpeedStep);
     }
-    public void SetAISpeed(int speedStep){ Movement.SetAISpeed(speedStep); }
-    public void SetAIturn(float turn){ Movement.SetAIturn(turn); }
+    public void SetAISpeed(int speedStep){ 
+        if (GetComponent<ShipMovement>())
+            Movement.SetAISpeed(speedStep);
+    }
+    public void SetAIturn(float turn){
+        if (GetComponent<ShipMovement>())
+            Movement.SetAIturn(turn);
+    }
     public void SetAITurnInputValue(float turnInputValue){ UnitAI.SetAITurnInputValue(turnInputValue); }
     
 
@@ -222,7 +241,8 @@ public class ShipController : UnitMasterController {
     // ALL OVERRIDES METHODS
     public override void SetActive(bool activate) {
         base.SetActive(activate);
-        Movement.SetActive(Active);
+        if (GetComponent<ShipMovement>())
+            Movement.SetActive(Active);
         // Damage Control can be shown if active
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetActive(Active);
@@ -230,10 +250,10 @@ public class ShipController : UnitMasterController {
     public override void SetMap(bool map) {
         if (GetComponent<TurretManager>())
             Turrets.SetMap(map);
-        if (GetComponent<ShipDamageControl>()) {
+        if (GetComponent<ShipDamageControl>())
             DamageControl.SetMap(map);
-        }
-        Movement.SetMap(map);
+        if (GetComponent<ShipMovement>())
+            Movement.SetMap(map);
     }
     public override void SetPause(bool pause){
         base.SetPause(pause);
@@ -258,7 +278,13 @@ public class ShipController : UnitMasterController {
     // UI
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
-    public override int GetCurrentSpeedStep() { return(Movement.GetCurrentSpeedStep()); }
+    public override int GetCurrentSpeedStep() {
+        if (GetComponent<ShipMovement>()) {
+            return(Movement.GetCurrentSpeedStep());
+        } else {
+            return 0;
+        }
+    }
 
     // Damage control
     public override void ModuleDestroyed(ElementType elementType) {

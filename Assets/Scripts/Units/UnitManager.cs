@@ -68,9 +68,10 @@ public class UnitManager {
 
     public void SetGameManager(GameManager gameManager) { 
         // Debug.Log (gameManager+"-"+Instance);
-        Instance.GetComponent<UnitMasterController>().SetGameManager(gameManager);
+        // Instance.GetComponent<UnitMasterController>().SetGameManager(gameManager);
     }
     public void SetPlayerManager(PlayerManager playerManager) {
-        Instance.GetComponent<UnitMasterController>().SetPlayerManager(playerManager);
+        // Debug.Log (playerManager+"-"+Instance);
+        // Instance.GetComponent<UnitMasterController>().SetPlayerManager(playerManager);
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UnitAIController : MonoBehaviour {
+public class UnitAIController : UnitParameter {
     protected bool AIActive = true;
     protected CompiledTypes.Teams.RowValues Team;
     protected string Name;                // For debug purposes
@@ -50,7 +50,6 @@ public class UnitAIController : MonoBehaviour {
         CheckSpawnAbility();
 
         StartCoroutine(AIOrdersLoop());
-        StartCoroutine(TrySpawnLoop());
     }
     public virtual void SetAIFromUnitManager(bool unitCanMove, bool unitCanShoot, bool unitCanSpawn) {      // Start from a spawn point
         UnitCanMove = unitCanMove;
@@ -78,6 +77,8 @@ public class UnitAIController : MonoBehaviour {
         if (!GetComponent<SpawnerScriptToAttach>()) {
             // Debug.Log("Unit : "+ Name +"can't spawn");
             UnitCanSpawn = false;
+        } else {
+            StartCoroutine(TrySpawnLoop());
         }
     }
 

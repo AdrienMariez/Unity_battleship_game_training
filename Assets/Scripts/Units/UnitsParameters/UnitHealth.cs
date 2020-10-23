@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UnitHealth : MonoBehaviour {
+public class UnitHealth : UnitParameter {
     protected float StartingHealth = 100f;                  // The amount of health each tank starts with.
     protected GameObject ExplosionPrefab;                    // Search "object pooling" to see how to set complex particles.
 

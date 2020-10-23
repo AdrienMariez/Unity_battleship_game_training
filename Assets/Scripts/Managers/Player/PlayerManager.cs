@@ -150,6 +150,7 @@ public class PlayerManager : MonoBehaviour
         if (team == PlayerTeam) {
             PlayerUnits.Add(unitGameObject);
             unitGameObject.GetComponent<UnitMasterController>().SetPlayerManager(this);
+            unitGameObject.GetComponent<UnitMasterController>().SetGameManager(GameManager);
         }
         UnitsUIManager.SpawnUnit(unitGameObject, team);
         // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnits.Count);

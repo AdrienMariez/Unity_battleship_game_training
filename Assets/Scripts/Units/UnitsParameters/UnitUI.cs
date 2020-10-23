@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UnitUI : MonoBehaviour {
+public class UnitUI : UnitParameter {
     private bool Dead = false;
     private string Name;
     private CompiledTypes.Teams.RowValues Team;
