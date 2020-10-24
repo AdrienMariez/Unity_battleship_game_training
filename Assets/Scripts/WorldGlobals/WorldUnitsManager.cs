@@ -100,9 +100,20 @@ public class WorldUnitsManager : MonoBehaviour {
             GameObject spawnedUnitInstance =
                 Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
         // RIGIDBODY
-            if (!spawnedUnitInstance.GetComponent<Rigidbody>()) {
-                Rigidbody RigidBody = spawnedUnitInstance.AddComponent<Rigidbody>();
-                RigidBody.mass = unit.GetUnitMass();
+            Rigidbody RigidBody = spawnedUnitInstance.GetComponent<Rigidbody>();
+            RigidBody.mass = unit.GetRigidBodyMass();
+            RigidBody.drag = unit.GetRigidBodyDrag();
+            RigidBody.angularDrag = unit.GetRigidBodyAngularDrag();
+            RigidBody.useGravity = unit.GetRigidBodyUseGravity();
+            RigidBody.isKinematic = unit.GetRigidBodyIsKinematic();
+            RigidBody.interpolation = RigidbodyInterpolation.None;                                  // Player controlled units should be in .Interpolate (less costly) or .Extrapolate (more accurate)
+            RigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;                   // gameplay models should be in Continuous, bullets should be in .ContinuousDynamic for better results, by Unity documentation.
+            if (unit.GetRigidBodyFreezePosition() && unit.GetRigidBodyFreezeRotation()) {
+                RigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            } else if (unit.GetRigidBodyFreezePosition()) {
+                RigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+            } else if (unit.GetRigidBodyFreezeRotation()) {
+                RigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
             }
 
         // SCRIPTS

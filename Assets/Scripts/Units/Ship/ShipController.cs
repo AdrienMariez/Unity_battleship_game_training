@@ -36,24 +36,24 @@ public class ShipController : UnitMasterController {
     public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
         base.SetUnitFromWorldUnitsManager(unit);
         // Set Buoyancy
-            if (GetComponent<ShipBuoyancy>()) {
-                Buoyancy = GetComponent<ShipBuoyancy>(); 
-            }
-            // Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;       // This to uncomment after info from db is caught for ShipBuoyancy
+            Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;
+            Buoyancy = GetComponent<ShipBuoyancy>();
+            Buoyancy.BeginOperations(unit);
+
+        // Set Movement
             if (GetComponent<ShipMovement>()) {
                 Movement = GetComponent<ShipMovement>();
                 Movement.BeginOperations(this);
             }
 
         // Set DamageControl
-            // if (true) {
-            //     unit.GetUnitReference_DB.UnitDama        // WOrk in progress
-            // }
-        if (GetComponent<ShipDamageControl>()) {
-            DamageControl = GetComponent<ShipDamageControl>();
-            DamageControl.BeginOperations(this);
-            RepairRate = DamageControl.GetRepairRate();
-        }
+            if (unit.GetDamageControlExists()) {
+                DamageControl = this.gameObject.AddComponent<ShipDamageControl>() as ShipDamageControl;
+                DamageControl.SetRepairRate(unit.GetDamageControlRepairRate());
+                DamageControl.SetRepairCrew(unit.GetDamageControlRepairCrew());
+                DamageControl.BeginOperations(this);
+                RepairRate = DamageControl.GetRepairRate();
+            }
 
         if (GetComponent<TurretManager>())
             Turrets.SetRepairRate(RepairRate);

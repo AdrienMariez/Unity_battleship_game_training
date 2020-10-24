@@ -13,6 +13,7 @@ public string Name;
 public string ScriptPaths;
 public List<Scripts> ScriptsList = new List<Scripts>();
 public string FileName;
+public List<RigidBodyData> RigidBodyDataList = new List<RigidBodyData>();
 
         public enum RowValues { 
 ship, 
@@ -29,6 +30,7 @@ Name = node["Name"];
 ScriptPaths = node["ScriptPaths"];
 foreach(var item in node["Scripts"]) { ScriptsList.Add(new Scripts(root, item));}
 FileName = node["FileName"];
+foreach(var item in node["RigidBodyData"]) { RigidBodyDataList.Add(new RigidBodyData(root, item));}
 
         }  
         

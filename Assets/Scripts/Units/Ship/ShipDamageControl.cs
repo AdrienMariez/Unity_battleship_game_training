@@ -9,8 +9,9 @@ public class ShipDamageControl : UnitParameter {
     private GameObject DamageControlInstance;
 
     private GameObject DamageControlAlertInstance;
-    public float RepairRate = 3;
-    public int RepairCrew = 3;
+    public float RepairRate = 3;    public float GetRepairRate() { return RepairRate; }     public void SetRepairRate(float repairRate) { RepairRate = repairRate; }
+
+    public int RepairCrew = 3;    public void SetRepairCrew(int repairCrew) { RepairCrew = repairCrew; }
 
     private ShipController ShipController;
 
@@ -360,9 +361,7 @@ public class ShipDamageControl : UnitParameter {
         if (MapActive)
             SetOpenDmgCtrl(false);
     }
-    public void SetPause(){
-        Pause = !Pause;
-    }
+    public void SetPause(){ Pause = !Pause; }
     public void SetName(string name) { UnitName = name; }
     public void SetDamagedEngine(int status){
         EngineStatus = status;
@@ -469,8 +468,6 @@ public class ShipDamageControl : UnitParameter {
         if (DmgCtrlOpen)
             SetShellDisplay();
     }
-
-    public float GetRepairRate() { return RepairRate; }
 
     public void Destroy() {
         if (DamageControlAlertInstance)

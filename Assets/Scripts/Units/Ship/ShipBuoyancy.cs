@@ -5,6 +5,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Crest
 {
@@ -85,7 +87,7 @@ namespace Crest
         private float SinkingZ;
 
 
-        private void Awake() {
+        /*private void Awake() {
             _rb = GetComponent<Rigidbody>();
             _rb.centerOfMass = _centerOfMass;
 
@@ -109,13 +111,61 @@ namespace Crest
             RandomSinkingRatioPoints = UnityEngine.Random.Range(0.001f, 0.00001f);
 
             _rotationTimeConverted = (1/_rotationTime)*6.25f;
-        }
+        }*/
 
         void CalcTotalWeight() {
             _totalWeight = 0f;
             foreach (var pt in _forcePoints) {
                 _totalWeight += pt._weight;
             }
+        }
+
+        public void BeginOperations(WorldSingleUnit unit) {
+            _rb = GetComponent<Rigidbody>();
+            _buoyancyMultiplier = _rb.mass / 10000;
+
+            _centerOfMass = unit.GetBuoyancyUnitCenterOfMass();
+            _rb.centerOfMass = _centerOfMass;
+
+            List<FloaterForcePoints> floaterForcePointsList = new List<FloaterForcePoints>();
+            // Debug.Log (unit.GetBuoyancyForcePointsList().Count+" / "+_forcePoints.Length);
+            foreach (Vector3 point in unit.GetBuoyancyForcePointsList()) {
+                FloaterForcePoints _floaterForcePoints = new FloaterForcePoints { };
+                _floaterForcePoints._offsetPosition = point;
+                floaterForcePointsList.Add(_floaterForcePoints);
+            }
+            _forcePoints = floaterForcePointsList.ToArray();
+
+            _objectWidth = unit.GetBuoyancyModelWidth();
+            _dragVertical = unit.GetBuoyancyVerticalDrag();
+            _enginePower = unit.GetBuoyancyEnginePower();
+            _rotationTime = unit.GetBuoyancyRotationTime();
+
+
+
+
+
+
+
+
+            if (OceanRenderer.Instance == null) {
+                enabled = false;
+                return;
+            }
+
+            _localSamplingAABB = ComputeLocalSamplingAABB();
+
+            CalcTotalWeight();
+
+            _queryPoints = new Vector3[_forcePoints.Length + 1];
+            _queryResultDisps = new Vector3[_forcePoints.Length + 1];
+            _queryResultVels = new Vector3[_forcePoints.Length + 1];
+
+            SinkingFactor = 0f;
+            RandomSinkingRatio = UnityEngine.Random.Range(0.1f, 0.001f);
+            RandomSinkingRatioPoints = UnityEngine.Random.Range(0.001f, 0.00001f);
+
+            _rotationTimeConverted = (1/_rotationTime)*6.25f;
         }
 
         private void FixedUpdate() {

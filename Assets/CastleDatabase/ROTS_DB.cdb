@@ -56,6 +56,11 @@
 					"opt": true
 				},
 				{
+					"typeStr": "4",
+					"name": "UnitMass",
+					"opt": true
+				},
+				{
 					"typeStr": "8",
 					"name": "UnitDamagecontrol",
 					"opt": true
@@ -63,11 +68,6 @@
 				{
 					"typeStr": "8",
 					"name": "Buoyancy",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "UnitMass",
 					"opt": true
 				},
 				{
@@ -539,29 +539,9 @@
 									"Z": 80
 								},
 								{
-									"X": -10,
-									"Y": 0,
-									"Z": 80
-								},
-								{
 									"X": 15,
 									"Y": 0,
 									"Z": 0
-								},
-								{
-									"X": -15,
-									"Y": 0,
-									"Z": 0
-								},
-								{
-									"X": 10,
-									"Y": 0,
-									"Z": -80
-								},
-								{
-									"X": -10,
-									"Y": 0,
-									"Z": -80
 								}
 							],
 							"Model_width": 24,
@@ -617,29 +597,9 @@
 									"Z": 70
 								},
 								{
-									"X": -8,
-									"Y": 0,
-									"Z": 70
-								},
-								{
-									"X": 10,
-									"Y": 0,
-									"Z": 0
-								},
-								{
 									"X": -10,
 									"Y": 0,
 									"Z": 0
-								},
-								{
-									"X": 8,
-									"Y": 0,
-									"Z": -70
-								},
-								{
-									"X": -8,
-									"Y": 0,
-									"Z": -70
 								}
 							],
 							"Model_width": 10,
@@ -1017,21 +977,6 @@
 									"X": 10,
 									"Y": 0,
 									"Z": 80
-								},
-								{
-									"X": -10,
-									"Y": 0,
-									"Z": 80
-								},
-								{
-									"X": 10,
-									"Y": 0,
-									"Z": -80
-								},
-								{
-									"X": -10,
-									"Y": 0,
-									"Z": -80
 								}
 							],
 							"Model_width": 24,
@@ -1354,6 +1299,10 @@
 					"typeStr": "1",
 					"name": "FileName",
 					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "RigidBodyData"
 				}
 			],
 			"lines": [
@@ -1368,6 +1317,16 @@
 							"LoadOrder": 0,
 							"ScriptName": "ShipAI"
 						}
+					],
+					"RigidBodyData": [
+						{
+							"CategoryDrag": 0.2,
+							"CategoryAngularDrag": 2,
+							"CatUseGravity": true,
+							"CatIsKinematic": false,
+							"CatFreezePosition": false,
+							"CatFreezeRotation": false
+						}
 					]
 				},
 				{
@@ -1376,7 +1335,17 @@
 					"id": "submarine",
 					"ScriptPaths": "",
 					"FileName": "",
-					"Scripts": []
+					"Scripts": [],
+					"RigidBodyData": [
+						{
+							"CategoryDrag": 0.2,
+							"CategoryAngularDrag": 2,
+							"CatUseGravity": true,
+							"CatIsKinematic": false,
+							"CatFreezePosition": false,
+							"CatFreezeRotation": false
+						}
+					]
 				},
 				{
 					"Name": "Aircraft",
@@ -1384,7 +1353,17 @@
 					"id": "aircraft",
 					"ScriptPaths": "",
 					"FileName": "",
-					"Scripts": []
+					"Scripts": [],
+					"RigidBodyData": [
+						{
+							"CategoryDrag": 0.2,
+							"CategoryAngularDrag": 2,
+							"CatUseGravity": true,
+							"CatIsKinematic": false,
+							"CatFreezePosition": false,
+							"CatFreezeRotation": false
+						}
+					]
 				},
 				{
 					"Name": "Ground",
@@ -1392,7 +1371,17 @@
 					"id": "ground",
 					"ScriptPaths": "",
 					"FileName": "",
-					"Scripts": []
+					"Scripts": [],
+					"RigidBodyData": [
+						{
+							"CategoryDrag": 0.2,
+							"CategoryAngularDrag": 1,
+							"CatUseGravity": true,
+							"CatIsKinematic": false,
+							"CatFreezePosition": false,
+							"CatFreezeRotation": false
+						}
+					]
 				},
 				{
 					"Name": "Building",
@@ -1404,6 +1393,16 @@
 						{
 							"LoadOrder": 0,
 							"ScriptName": "BuildingAI"
+						}
+					],
+					"RigidBodyData": [
+						{
+							"CategoryDrag": 0.001,
+							"CategoryAngularDrag": 1,
+							"CatUseGravity": false,
+							"CatIsKinematic": false,
+							"CatFreezePosition": true,
+							"CatFreezeRotation": true
 						}
 					]
 				}
@@ -2333,6 +2332,43 @@
 			"props": {
 				"displayColumn": "FXPrefab"
 			}
+		},
+		{
+			"name": "Units_categories@RigidBodyData",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "CategoryDrag",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "CategoryAngularDrag",
+					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "CatUseGravity"
+				},
+				{
+					"typeStr": "2",
+					"name": "CatIsKinematic",
+					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "CatFreezePosition"
+				},
+				{
+					"typeStr": "2",
+					"name": "CatFreezeRotation"
+				}
+			]
 		}
 	],
 	"customTypes": [],

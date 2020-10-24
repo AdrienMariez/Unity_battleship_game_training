@@ -7,30 +7,27 @@ using System.Collections.Generic;
 [Serializable]
 public class WorldSingleUnit {
     // Each parameter is built at the first loading of the game from each prefab added in WorldUnitsManager.
-    // Those 
-    // public GameObject m_UnitPrefab;
-    private GameObject UnitPrefab;
-    private CompiledTypes.Global_Units UnitReference_DB;
+    private GameObject UnitPrefab; public GameObject GetUnitModel(){ return UnitPrefab; }
+    private CompiledTypes.Global_Units UnitReference_DB; public CompiledTypes.Global_Units GetUnitReference_DB(){ return UnitReference_DB; }
 
-    // Same as in UnitMasterController !!
-    private string UnitName;
-    private CompiledTypes.Units_categories.RowValues UnitCategory;
-    private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
-    private CompiledTypes.Units_sub_categories UnitSubCategory_DB;
-    private GameObject UnitDeathFX;         // If there were multiple of those, there could be multiple death FX
-    private CompiledTypes.Countries Nation;
-    private CompiledTypes.Teams.RowValues Team;
+    private string UnitName; public string GetUnitName(){ return UnitName; }
+    // CATEGORIES
+        private CompiledTypes.Units_categories.RowValues UnitCategory; public CompiledTypes.Units_categories.RowValues GetUnitCategory(){ return UnitCategory; }
+        private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory; public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
+        private CompiledTypes.Units_sub_categories UnitSubCategory_DB; public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB(){ return UnitSubCategory_DB; }
+        private GameObject UnitDeathFX; public GameObject GetUnitDeathFX(){ return UnitDeathFX; }         // If there were multiple of those, there could be multiple death FX
+    private CompiledTypes.Countries Nation; public CompiledTypes.Countries GetUnitNation(){ return Nation; }
+    private CompiledTypes.Teams.RowValues Team; public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
     private CompiledTypes.Teams Team_DB;
-    private int UnitCommandPointsCost;
-    private int UnitVictoryPointsValue;
+    // SCORES
+        private int UnitCommandPointsCost; public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
+        private int UnitVictoryPointsValue; public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
 
-    private float CameraDistance;
-    private float CameraHeight;
-    private float CameraCameraOffset;
-
-    private float UnitHealth;
-
-    private float UnitMass;
+    // CAMERA
+        private float CameraDistance, CameraHeight, CameraCameraOffset;
+        public float GetUnitCameraDistance(){ return CameraDistance; } public float GetUnitCameraHeight(){ return CameraHeight; }public float GetUnitCameraCameraOffset(){ return CameraCameraOffset; }
+    // HEALTH
+        private float UnitHealth; public float GetUnitHealth(){ return UnitHealth; }
 
     private bool UnitSet = false;
 
@@ -152,17 +149,31 @@ public class WorldSingleUnit {
             }
 
         // DAMAGE CONTROL
-
+            if (unit.Isavariant && unit.UnitDamagecontrolList.Count == 0) {
+                if (masterUnitReference.BuoyancyList.Count > 0) {
+                    SetBuoyancy(masterUnitReference);
+                }
+            } else if (unit.BuoyancyList.Count > 0) {
+                SetBuoyancy(unit);
+            }
 
         // RIGID BODY
             if (unit.Isavariant && unit.UnitMass == 0) {
-                UnitMass = masterUnitReference.UnitMass;
+                SetRigidBody(masterUnitReference);
             } else if (unit.UnitMass > 0) {
-                UnitMass = unit.UnitMass;
+                SetRigidBody(unit);
             } else {
-                Debug.Log (UnitName);
+                Debug.Log (UnitName+ " No rigid body set ?");
             }
 
+        // SHIP BUOYANCY
+            if (unit.Isavariant && unit.BuoyancyList.Count == 0) {
+                if (masterUnitReference.BuoyancyList.Count > 0) {
+                    SetDamageControl(masterUnitReference);
+                }
+            } else if (unit.BuoyancyList.Count > 0) {
+                SetDamageControl(unit);
+            }
 
         // foreach (var category in WorldUnitsManager.GetDB().Units_categories.GetAll()) {
         //     if (category.id == UnitCategory) {   
@@ -174,23 +185,74 @@ public class WorldSingleUnit {
 
         // Debug.Log (CameraHeight+" / "+CameraDistance);
     }
-    public GameObject GetUnitModel(){ return UnitPrefab; }
-    public CompiledTypes.Global_Units GetUnitReference_DB(){ return UnitReference_DB; }
-    public string GetUnitName(){ return UnitName; }
-    public CompiledTypes.Units_categories.RowValues GetUnitCategory(){ return UnitCategory; }
-    public void SetUnitCategory(CompiledTypes.Units_categories.RowValues unitCategory){ UnitCategory = unitCategory; }
-    public void SetUnitSubCategory(CompiledTypes.Units_sub_categories.RowValues unitSubCategory){ UnitSubCategory = unitSubCategory; }
-    public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
-    public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB(){ return UnitSubCategory_DB; }
-    public GameObject GetUnitDeathFX(){ return UnitDeathFX; }
-    public CompiledTypes.Countries GetUnitNation(){ return Nation; }
-    public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
-    public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
-    public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
-    public float GetUnitCameraDistance(){ return CameraDistance; }
-    public float GetUnitCameraHeight(){ return CameraHeight; }
-    public float GetUnitCameraCameraOffset(){ return CameraCameraOffset; }
-    public float GetUnitHealth(){ return UnitHealth; }
 
-    public float GetUnitMass(){ return UnitMass; }
+    // RIGID BODY
+    private float RigidBodyUnitMass; public float GetRigidBodyMass(){ return RigidBodyUnitMass; }
+    private float RigidBodyCategoryDrag; public float GetRigidBodyDrag(){ return RigidBodyCategoryDrag; }
+    private float RigidBodyCategoryAngularDrag; public float GetRigidBodyAngularDrag(){ return RigidBodyCategoryAngularDrag; }
+    private bool RigidBodyCategoryUseGravity; public bool GetRigidBodyUseGravity(){ return RigidBodyCategoryUseGravity; }
+    private bool RigidBodyCategoryIsKinematic; public bool GetRigidBodyIsKinematic(){ return RigidBodyCategoryIsKinematic; }
+    private bool RigidBodyCategoryFreezePosition; public bool GetRigidBodyFreezePosition(){ return RigidBodyCategoryFreezePosition; }
+    private bool RigidBodyCategoryFreezeRotation; public bool GetRigidBodyFreezeRotation(){ return RigidBodyCategoryFreezeRotation; }
+    private void SetRigidBody(CompiledTypes.Global_Units unit) {
+        // If there is no rigidbody to the prefab, adding one now
+        if (!UnitPrefab.GetComponent<Rigidbody>()) { UnitPrefab.AddComponent<Rigidbody>(); }
+
+        RigidBodyUnitMass = unit.UnitMass;
+        RigidBodyCategoryDrag = UnitSubCategory_DB.Category.RigidBodyDataList[0].CategoryDrag;
+        RigidBodyCategoryAngularDrag = UnitSubCategory_DB.Category.RigidBodyDataList[0].CategoryAngularDrag;
+        RigidBodyCategoryUseGravity = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatUseGravity;
+        RigidBodyCategoryIsKinematic = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatIsKinematic;
+        RigidBodyCategoryFreezePosition = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatFreezePosition;
+        RigidBodyCategoryFreezeRotation = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatFreezeRotation;
+    }
+    
+    // DAMAGE CONTROL
+    private bool DamageControlExists = false; public bool GetDamageControlExists(){ return DamageControlExists; }
+    private float DamageControlRepairRate; public float GetDamageControlRepairRate(){ return DamageControlRepairRate; }
+    private int DamageControlRepairCrew; public int GetDamageControlRepairCrew(){ return DamageControlRepairCrew; }
+    private void SetDamageControl(CompiledTypes.Global_Units unit) {
+        DamageControlExists = true;
+        DamageControlRepairRate = unit.UnitDamagecontrolList[0].Repairrate;
+        DamageControlRepairCrew = unit.UnitDamagecontrolList[0].Repaircrew;
+    }
+    
+    // SHIP BUOYANCY
+    private Vector3 BuoyancyUnitCenterOfMass; public Vector3 GetBuoyancyUnitCenterOfMass(){ return BuoyancyUnitCenterOfMass; }
+    private List<Vector3> BuoyancyForcePointsList = new List<Vector3>();public List<Vector3> GetBuoyancyForcePointsList(){ return BuoyancyForcePointsList; }
+    private float BuoyancyModelWidth; public float GetBuoyancyModelWidth(){ return BuoyancyModelWidth; }
+    private float BuoyancyVerticalDrag; public float GetBuoyancyVerticalDrag(){ return BuoyancyVerticalDrag; }
+    private float BuoyancyEnginePower; public float GetBuoyancyEnginePower(){ return BuoyancyEnginePower; }
+    private float BuoyancyRotationTime; public float GetBuoyancyRotationTime(){ return BuoyancyRotationTime; }
+    private void SetBuoyancy(CompiledTypes.Global_Units unit) {
+        BuoyancyUnitCenterOfMass = new Vector3(unit.BuoyancyList[0].Center_of_massList[0].X, unit.BuoyancyList[0].Center_of_massList[0].Y, unit.BuoyancyList[0].Center_of_massList[0].Z);
+
+        foreach (CompiledTypes.Force_points point in unit.BuoyancyList[0].Force_pointsList) {
+            // Instead of having to painstakingly add each point to the DB, we put will only enter one point and clone it on the X & Z axis when needed.
+            Vector3 _point = new Vector3(point.X, point.Y, point.Z);
+            BuoyancyForcePointsList.Add(_point);
+            if (point.X != 0 && point.Z != 0) {
+                Vector3 _point1 = new Vector3(-point.X, point.Y, point.Z);
+                BuoyancyForcePointsList.Add(_point1);
+                Vector3 _point2 = new Vector3(point.X, point.Y, -point.Z);
+                BuoyancyForcePointsList.Add(_point2);
+                Vector3 _point3 = new Vector3(-point.X, point.Y, -point.Z);
+                BuoyancyForcePointsList.Add(_point3);
+            } else if (point.X != 0) {
+                Vector3 _point1 = new Vector3(-point.X, point.Y, point.Z);
+                BuoyancyForcePointsList.Add(_point1);
+            } else if ( point.Z != 0 ) {
+                Vector3 _point1 = new Vector3(point.X, point.Y, -point.Z);
+                BuoyancyForcePointsList.Add(_point1);
+            }
+        }
+
+        BuoyancyModelWidth = unit.BuoyancyList[0].Model_width;
+
+        BuoyancyVerticalDrag = unit.BuoyancyList[0].Vertical_drag;
+
+        BuoyancyEnginePower = unit.BuoyancyList[0].Engine_power;
+
+        BuoyancyRotationTime = unit.BuoyancyList[0].Rotation_time;
+    }
 }
