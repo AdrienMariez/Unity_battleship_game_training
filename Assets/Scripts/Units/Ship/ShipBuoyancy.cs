@@ -130,7 +130,7 @@ namespace Crest
             List<FloaterForcePoints> floaterForcePointsList = new List<FloaterForcePoints>();
             // Debug.Log (unit.GetBuoyancyForcePointsList().Count+" / "+_forcePoints.Length);
             foreach (Vector3 point in unit.GetBuoyancyForcePointsList()) {
-                FloaterForcePoints _floaterForcePoints = new FloaterForcePoints { };
+                FloaterForcePoints _floaterForcePoints = new FloaterForcePoints{};
                 _floaterForcePoints._offsetPosition = point;
                 floaterForcePointsList.Add(_floaterForcePoints);
             }

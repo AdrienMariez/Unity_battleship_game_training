@@ -7,8 +7,8 @@ public class TurretRotation : MonoBehaviour
     private bool Dead;
 
     [Header("Elements")]
-        [Tooltip ("Point to which the cannon will point when in idle position")]
-            public Transform m_IdlePointer;
+        // [Tooltip ("Point to which the cannon will point when in idle position")]
+        //     public Transform m_IdlePointer;
         [Tooltip ("Audio played when the turret is rotating.")]
             public AudioClip m_TurretRotationAudio;
         [Tooltip ("Axis of rotation for horizontal rotation of the turret.")]

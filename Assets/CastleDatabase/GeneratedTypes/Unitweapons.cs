@@ -8,7 +8,7 @@ namespace CompiledTypes
 { 
     public class Unitweapons
     {
-        public Weapons Type;
+        public Weapons WeaponRef;
 public List<Position> PositionList = new List<Position>();
 public bool Mirror;
 public float Left_traverse_limitation;
@@ -19,7 +19,7 @@ public List<Elevation_zones> Elevation_zonesList = new List<Elevation_zones>();
          
         public Unitweapons (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
         {
-            Type = new CompiledTypes.Weapons(root,CompiledTypes.Weapons.GetRowValue(node["Type"]));
+            WeaponRef = new CompiledTypes.Weapons(root,CompiledTypes.Weapons.GetRowValue(node["WeaponRef"]));
 foreach(var item in node["Position"]) { PositionList.Add(new Position(root, item));}
 Mirror = node["Mirror"].AsBool;
 Left_traverse_limitation = node["Left_traverse_limitation"].AsFloat;

@@ -81,7 +81,6 @@
 					"index": 0,
 					"Unitweapons": [
 						{
-							"Type": "JapanBB356mmA",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -96,10 +95,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmA"
 						},
 						{
-							"Type": "JapanBB356mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -114,10 +113,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmB"
 						},
 						{
-							"Type": "JapanBB356mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -137,10 +136,10 @@
 								}
 							],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmB"
 						},
 						{
-							"Type": "JapanBB356mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -160,10 +159,10 @@
 								}
 							],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmB"
 						},
 						{
-							"Type": "JapanBB356mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -178,10 +177,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmB"
 						},
 						{
-							"Type": "JapanBB356mmA",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -196,10 +195,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanBB356mmA"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 9.87,
@@ -214,10 +213,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 130
+							"Left_traverse_limitation": 130,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -9.87,
@@ -232,10 +231,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 130,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 10.95,
@@ -250,10 +249,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 110
+							"Left_traverse_limitation": 110,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -10.95,
@@ -268,10 +267,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 110,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 11.89,
@@ -286,10 +285,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120
+							"Left_traverse_limitation": 120,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -11.89,
@@ -304,10 +303,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 12.12,
@@ -322,10 +321,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -12.12,
@@ -340,10 +339,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120
+							"Left_traverse_limitation": 120,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 12.08,
@@ -358,10 +357,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -12.08,
@@ -376,10 +375,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120
+							"Left_traverse_limitation": 120,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 11.93,
@@ -394,10 +393,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 150,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -11.93,
@@ -412,10 +411,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 150
+							"Left_traverse_limitation": 150,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": 9.7,
@@ -430,10 +429,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 125,
-							"Left_traverse_limitation": 0
+							"Left_traverse_limitation": 0,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "JapanBBCasemate120mm",
 							"Position": [
 								{
 									"Pos_x": -9.7,
@@ -448,10 +447,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 125
+							"Left_traverse_limitation": 125,
+							"WeaponRef": "JapanBBCasemate120mm"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": 6.96,
@@ -466,10 +465,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 90,
-							"Left_traverse_limitation": 80
+							"Left_traverse_limitation": 80,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": -6.96,
@@ -484,10 +483,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 80,
-							"Left_traverse_limitation": 90
+							"Left_traverse_limitation": 90,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": -3.18,
@@ -502,10 +501,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 130,
-							"Left_traverse_limitation": 60
+							"Left_traverse_limitation": 60,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": 3.18,
@@ -520,7 +519,8 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 130
+							"Left_traverse_limitation": 130,
+							"WeaponRef": "Japan120mmType10AATwin"
 						}
 					],
 					"Buoyancy": [
@@ -610,7 +610,6 @@
 					],
 					"Unitweapons": [
 						{
-							"Type": "JapanCA200mmA",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -625,10 +624,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 145,
-							"Left_traverse_limitation": 145
+							"Left_traverse_limitation": 145,
+							"WeaponRef": "JapanCA200mmA"
 						},
 						{
-							"Type": "JapanCA200mmB",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -648,10 +647,10 @@
 								}
 							],
 							"Right_traverse_limitation": 155,
-							"Left_traverse_limitation": 155
+							"Left_traverse_limitation": 155,
+							"WeaponRef": "JapanCA200mmB"
 						},
 						{
-							"Type": "JapanCA200mmA",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -678,10 +677,10 @@
 								}
 							],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanCA200mmA"
 						},
 						{
-							"Type": "JapanCA200mmY",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -696,10 +695,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140
+							"Left_traverse_limitation": 140,
+							"WeaponRef": "JapanCA200mmY"
 						},
 						{
-							"Type": "JapanCA200mmA",
 							"Position": [
 								{
 									"Pos_x": 0,
@@ -714,10 +713,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 145,
-							"Left_traverse_limitation": 145
+							"Left_traverse_limitation": 145,
+							"WeaponRef": "JapanCA200mmA"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": -7.47,
@@ -732,10 +731,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60
+							"Left_traverse_limitation": 60,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": 7.47,
@@ -750,10 +749,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60
+							"Left_traverse_limitation": 60,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": -7.47,
@@ -768,10 +767,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60
+							"Left_traverse_limitation": 60,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "Japan120mmType10AATwin",
 							"Position": [
 								{
 									"Pos_x": 7.47,
@@ -786,10 +785,10 @@
 							"Elevation_zones": [],
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60
+							"Left_traverse_limitation": 60,
+							"WeaponRef": "Japan120mmType10AATwin"
 						},
 						{
-							"Type": "JapanTorpedo4CA",
 							"Position": [
 								{
 									"Pos_x": -7.96,
@@ -809,10 +808,10 @@
 								}
 							],
 							"Right_traverse_limitation": 100,
-							"Left_traverse_limitation": 5
+							"Left_traverse_limitation": 5,
+							"WeaponRef": "JapanTorpedo4CA"
 						},
 						{
-							"Type": "JapanTorpedo4CA",
 							"Position": [
 								{
 									"Pos_x": 7.96,
@@ -832,10 +831,10 @@
 								}
 							],
 							"Right_traverse_limitation": 5,
-							"Left_traverse_limitation": 100
+							"Left_traverse_limitation": 100,
+							"WeaponRef": "JapanTorpedo4CA"
 						},
 						{
-							"Type": "JapanTorpedo4CA",
 							"Position": [
 								{
 									"Pos_x": -8.66,
@@ -855,10 +854,10 @@
 								}
 							],
 							"Right_traverse_limitation": 5,
-							"Left_traverse_limitation": 100
+							"Left_traverse_limitation": 100,
+							"WeaponRef": "JapanTorpedo4CA"
 						},
 						{
-							"Type": "JapanTorpedo4CA",
 							"Position": [
 								{
 									"Pos_x": 8.66,
@@ -878,7 +877,8 @@
 								}
 							],
 							"Right_traverse_limitation": 100,
-							"Left_traverse_limitation": 5
+							"Left_traverse_limitation": 5,
+							"WeaponRef": "JapanTorpedo4CA"
 						}
 					],
 					"id": "takao",
@@ -1979,8 +1979,7 @@
 			"columns": [
 				{
 					"typeStr": "6:Weapons",
-					"name": "Type",
-					"display": null
+					"name": "WeaponRef"
 				},
 				{
 					"typeStr": "8",

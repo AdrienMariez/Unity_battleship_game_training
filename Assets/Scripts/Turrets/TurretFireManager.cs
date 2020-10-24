@@ -28,7 +28,8 @@ public class TurretFireManager : MonoBehaviour
     public float m_ReloadTime = 5f;
     [Tooltip("Dispersion of shells for this turret. 100 is the best precision.")] [Range(0, 100)]
     public float m_Precision = 50;
-    [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")] private float Precision = 0.01f; 
+    // [Tooltip("Dispersion of shells for this turret. 0.01 : the most precise / 2 : lots of dispersion")]
+    private float Precision = 0.01f; 
 
     [Header("FX")]
     public GameObject m_FireFx;

@@ -165,6 +165,15 @@ public class WorldSingleUnit {
             } else {
                 Debug.Log (UnitName+ " No rigid body set ?");
             }
+        
+        // WEAPONS
+            if (unit.Isavariant && unit.UnitweaponsList.Count == 0) {
+                if (masterUnitReference.UnitweaponsList.Count > 0) {
+                    SetWeapons(masterUnitReference);
+                }
+            } else if (unit.UnitweaponsList.Count > 0) {
+                SetWeapons(unit);
+            }
 
         // SHIP BUOYANCY
             if (unit.Isavariant && unit.BuoyancyList.Count == 0) {
@@ -186,7 +195,7 @@ public class WorldSingleUnit {
         // Debug.Log (CameraHeight+" / "+CameraDistance);
     }
 
-    // RIGID BODY
+// RIGID BODY
     private float RigidBodyUnitMass; public float GetRigidBodyMass(){ return RigidBodyUnitMass; }
     private float RigidBodyCategoryDrag; public float GetRigidBodyDrag(){ return RigidBodyCategoryDrag; }
     private float RigidBodyCategoryAngularDrag; public float GetRigidBodyAngularDrag(){ return RigidBodyCategoryAngularDrag; }
@@ -206,8 +215,84 @@ public class WorldSingleUnit {
         RigidBodyCategoryFreezePosition = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatFreezePosition;
         RigidBodyCategoryFreezeRotation = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatFreezeRotation;
     }
+
+// WEAPONS
+    private List<TurretWeapon> TurretWeaponList = new List<TurretWeapon>(); public List<TurretWeapon> GetTurretWeaponList(){ return TurretWeaponList; }
+    private void SetWeapons(CompiledTypes.Global_Units unit) {
+        foreach (CompiledTypes.Unitweapons weapon in unit.UnitweaponsList) {
+            TurretWeapon _weapon = new TurretWeapon{};
+            /*// TurretManager
+                _weapon._turretPrefab = (Resources.Load(unit.UnitPath+"/"+weapon.WeaponRef.Model, typeof(GameObject))) as GameObject;
+                if (_weapon._turretPrefab == null) {
+                    Debug.Log (" A turret was implemented without a model ! turret id :"+ weapon.WeaponRef.id);
+                    _weapon._turretPrefab = WorldUIVariables.GetErrorModel();
+                }
+            // TurretHealth
+                _weapon._healthTurretHealth = weapon.WeaponRef.Health;
+                _weapon._healthTurretArmor = weapon.WeaponRef.Armor;
+            // TurretFireManager
+                _weapon._fireManagerAmmo;
+                // Transform[] _weapon._fireManagerFireMuzzles;
+                _weapon._fireManageFireFx;
+                _weapon._fireManagerShootingAudio;
+                _weapon._fireManagerFireClip;
+                _weapon._fireManagerMaxRange;
+                _weapon._fireManagerMinRange;
+                _weapon._fireManagerMuzzleVelocity;
+                _weapon._fireManagerReloadTime;
+                _weapon._fireManagerPrecision;
+            // TurretRotation
+                _weapon._rotationAudio;
+                _weapon._rotationHorizAxis;
+                _weapon._rotationElevationAxis;
+                _weapon._rotationParent;
+                _weapon._rotationSpeed;
+                _weapon._rotationLimitTraverse;
+                _weapon._rotationLeftTraverse;
+                _weapon._rotationRightTraverse;
+                // public FireZonesManager[] _weapon._rotationNoFireZones;
+                _weapon._rotationElevationSpeed;
+                _weapon._rotationUpTraverse;
+                _weapon._rotationDownTraverse;
+                // public ElevationZonesManager[] _weapon._rotationElevationZones;*/
+        }
+    }
+
+    public class TurretWeapon {
+        // TurretManager
+            public GameObject _turretPrefab;
+        // TurretHealth
+            public float _healthTurretHealth;
+            public float _healthTurretArmor;
+        // TurretFireManager
+            public GameObject _fireManagerAmmo;
+            public Transform[] _fireManagerFireMuzzles;
+            public GameObject _fireManageFireFx;
+            public AudioSource _fireManagerShootingAudio;
+            public AudioClip _fireManagerFireClip;
+            public float _fireManagerMaxRange;
+            public float _fireManagerMinRange;
+            public float _fireManagerMuzzleVelocity;
+            public float _fireManagerReloadTime;
+            public float _fireManagerPrecision;
+        // TurretRotation
+            public AudioClip _rotationAudio;
+            public Rigidbody _rotationHorizAxis;
+            public Rigidbody _rotationElevationAxis;
+            public Rigidbody _rotationParent;
+            public float _rotationSpeed;
+            public bool _rotationLimitTraverse;
+            public float _rotationLeftTraverse;
+            public float _rotationRightTraverse;
+            public FireZonesManager[] _rotationNoFireZones;
+            public float _rotationElevationSpeed;
+            public float _rotationUpTraverse;
+            public float _rotationDownTraverse;
+            public ElevationZonesManager[] _rotationElevationZones;
+        
+    }
     
-    // DAMAGE CONTROL
+// DAMAGE CONTROL
     private bool DamageControlExists = false; public bool GetDamageControlExists(){ return DamageControlExists; }
     private float DamageControlRepairRate; public float GetDamageControlRepairRate(){ return DamageControlRepairRate; }
     private int DamageControlRepairCrew; public int GetDamageControlRepairCrew(){ return DamageControlRepairCrew; }
@@ -217,7 +302,7 @@ public class WorldSingleUnit {
         DamageControlRepairCrew = unit.UnitDamagecontrolList[0].Repaircrew;
     }
     
-    // SHIP BUOYANCY
+// SHIP BUOYANCY
     private Vector3 BuoyancyUnitCenterOfMass; public Vector3 GetBuoyancyUnitCenterOfMass(){ return BuoyancyUnitCenterOfMass; }
     private List<Vector3> BuoyancyForcePointsList = new List<Vector3>();public List<Vector3> GetBuoyancyForcePointsList(){ return BuoyancyForcePointsList; }
     private float BuoyancyModelWidth; public float GetBuoyancyModelWidth(){ return BuoyancyModelWidth; }
