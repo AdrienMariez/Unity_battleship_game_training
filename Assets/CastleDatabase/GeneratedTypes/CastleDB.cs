@@ -14,6 +14,7 @@ public Units_sub_categoriesType Units_sub_categories;
 public Units_categoriesType Units_categories;
 public TeamsType Teams;
 public CountriesType Countries;
+public HardPointsType HardPoints;
 public WeaponsType Weapons;
 public Weapons_rolesType Weapons_roles;
 public AmmosType Ammos;
@@ -23,7 +24,7 @@ public AudioFX_StorageType AudioFX_Storage;
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
+            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();HardPoints = new HardPointsType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
         }
         public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
@@ -135,6 +136,24 @@ private Countries Get(CompiledTypes.Countries.RowValues line) { return new Count
                     return returnList;
                 }
  } //END OF Countries 
+public class HardPointsType 
+ {public HardPoints Weapon { get { return Get(CompiledTypes.HardPoints.RowValues.Weapon); } } 
+public HardPoints ShipFunnel { get { return Get(CompiledTypes.HardPoints.RowValues.ShipFunnel); } } 
+public HardPoints ShipPropeller { get { return Get(CompiledTypes.HardPoints.RowValues.ShipPropeller); } } 
+public HardPoints PlanePropeller { get { return Get(CompiledTypes.HardPoints.RowValues.PlanePropeller); } } 
+private HardPoints Get(CompiledTypes.HardPoints.RowValues line) { return new HardPoints(parsedDB.Root, line); }
+
+                public HardPoints[] GetAll() 
+                {
+                    var values = (CompiledTypes.HardPoints.RowValues[])Enum.GetValues(typeof(CompiledTypes.HardPoints.RowValues));
+                    HardPoints[] returnList = new HardPoints[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF HardPoints 
 public class WeaponsType 
  {public Weapons JapanBB356mmA { get { return Get(CompiledTypes.Weapons.RowValues.JapanBB356mmA); } } 
 public Weapons JapanBB356mmB { get { return Get(CompiledTypes.Weapons.RowValues.JapanBB356mmB); } } 

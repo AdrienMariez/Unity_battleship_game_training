@@ -48,9 +48,9 @@ public class WorldSingleUnit {
 
         // MODEL
             if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitPath)) {
-                UnitPrefab = (Resources.Load(masterUnitReference.UnitPath+"/"+masterUnitReference.UnitModel, typeof(GameObject))) as GameObject;
+                UnitPrefab = (Resources.Load("Prefabs/Units/"+masterUnitReference.UnitPath+"/"+masterUnitReference.UnitModel, typeof(GameObject))) as GameObject;
             } else if (!String.IsNullOrEmpty(unit.UnitPath)) {
-                UnitPrefab = (Resources.Load(unit.UnitPath+"/"+unit.UnitModel, typeof(GameObject))) as GameObject;
+                UnitPrefab = (Resources.Load("Prefabs/Units/"+unit.UnitPath+"/"+unit.UnitModel, typeof(GameObject))) as GameObject;
             }
             if (UnitPrefab == null) {
                 Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
@@ -170,15 +170,27 @@ public class WorldSingleUnit {
             } else {
                 Debug.Log (UnitName+ " No rigid body set ?");
             }
+
+        // HARDPOINTS
+            if (unit.Isavariant && unit.UnitHardPointsList.Count == 0) {
+                if (masterUnitReference.UnitweaponsList.Count > 0) {
+                    SetHardPoints(masterUnitReference, false);
+                }
+            } else if (unit.Isavariant && unit.UnitweaponsList.Count > 0) {
+                SetHardPoints(masterUnitReference, true);
+                SetHardPoints(unit, false);
+            }else if (unit.UnitweaponsList.Count > 0) {
+                SetHardPoints(unit, false);
+            }
         
         // WEAPONS
-            if (unit.Isavariant && unit.UnitweaponsList.Count == 0) {
-                if (masterUnitReference.UnitweaponsList.Count > 0) {
-                    SetWeapons(masterUnitReference);
-                }
-            } else if (unit.UnitweaponsList.Count > 0) {
-                SetWeapons(unit);
-            }
+            // if (unit.Isavariant && unit.UnitweaponsList.Count == 0) {
+            //     if (masterUnitReference.UnitweaponsList.Count > 0) {
+            //         SetWeapons(masterUnitReference);
+            //     }
+            // } else if (unit.UnitweaponsList.Count > 0) {
+            //     SetWeapons(unit);
+            // }
 
         // SHIP BUOYANCY
             if (unit.Isavariant && unit.BuoyancyList.Count == 0) {
@@ -221,6 +233,40 @@ public class WorldSingleUnit {
         RigidBodyCategoryFreezeRotation = UnitSubCategory_DB.Category.RigidBodyDataList[0].CatFreezeRotation;
     }
 
+// HARDPOINTS
+    private List<UnitHardPoint> UnitHardPointList = new List<UnitHardPoint>(); public List<UnitHardPoint> GetUnitHardPointList(){ return UnitHardPointList; }
+    private bool WeaponExists = false; public bool GetWeaponExists(){ return WeaponExists; }
+    private void SetHardPoints(CompiledTypes.Global_Units unit, bool isAParent) {
+        foreach (CompiledTypes.UnitHardPoints hardpoint in unit.UnitHardPointsList) {
+            if (isAParent && !hardpoint.IsTransferedToVariants) { return; }
+
+            UnitHardPoint _hardpoint = new UnitHardPoint{};
+
+            _hardpoint.SetHardPointID(hardpoint.HardPointId);
+            string hardPointTypeString = hardpoint.HardPointType.id.ToString();
+            CompiledTypes.HardPoints.RowValues hardPointType = (CompiledTypes.HardPoints.RowValues)System.Enum.Parse( typeof(CompiledTypes.HardPoints.RowValues), hardPointTypeString);
+            if (hardPointType == CompiledTypes.HardPoints.RowValues.Weapon) {
+                WeaponExists = true;
+            }
+            _hardpoint.SetHardpointType(hardPointType);
+            _hardpoint.SetIsMirrored(hardpoint.IsMirrored);
+            _hardpoint.SetWeaponType(hardpoint.WeaponType);
+
+            if (UnitPrefab.transform.Find("HardPoints").transform.Find(hardpoint.HardPointId.ToString()).GetComponent<HardPointComponent>()) {             // If the hardpoint exists in the model, set in table
+                UnitHardPointList.Add(_hardpoint);
+            } else {
+                Debug.Log (" No such hardpoint.  hardpoint id :"+ hardpoint.HardPointId + " in " + unit.id);
+            }
+
+        }
+    }
+    public class UnitHardPoint {
+        private int _hardPointID;  public int GetHardPointID(){ return _hardPointID; } public void SetHardPointID(int _hpID){ _hardPointID = _hpID; }
+        private CompiledTypes.HardPoints.RowValues _hardpointType;  public CompiledTypes.HardPoints.RowValues GetHardpointType(){ return _hardpointType; } public void SetHardpointType(CompiledTypes.HardPoints.RowValues _hpType){ _hardpointType = _hpType; }
+        private bool _isMirrored;  public bool GetIsMirrored(){ return _isMirrored; } public void SetIsMirrored(bool _hpMirror){ _isMirrored = _hpMirror; }
+        CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeapon){ _weaponType = _hpWeapon; }
+    }
+
 // WEAPONS
     private List<TurretWeapon> TurretWeaponList = new List<TurretWeapon>(); public List<TurretWeapon> GetTurretWeaponList(){ return TurretWeaponList; }
     private void SetWeapons(CompiledTypes.Global_Units unit) {
@@ -236,12 +282,12 @@ public class WorldSingleUnit {
 
             // TurretManager
 
-                if (weaponReference.Isavariant && weaponReference.ModelPathList.Count == 0) {
-                    if (masterWeaponReference.ModelPathList.Count > 0) {
-                        _weapon._turretPrefab = (Resources.Load(masterWeaponReference.ModelPathList[0].AmmoPath+"/"+masterWeaponReference.ModelPathList[0].AmmoPath, typeof(GameObject))) as GameObject;
+                if (weaponReference.Isavariant && weaponReference.WeaponModelPathList.Count == 0) {
+                    if (masterWeaponReference.WeaponModelPathList.Count > 0) {
+                        _weapon._turretPrefab = (Resources.Load(masterWeaponReference.WeaponModelPathList[0].TurretPath+"/"+masterWeaponReference.WeaponModelPathList[0].TurretModel, typeof(GameObject))) as GameObject;
                     }
-                } else if (weaponReference.ModelPathList.Count > 0) {
-                    _weapon._turretPrefab = (Resources.Load(weaponReference.ModelPathList[0].AmmoPath+"/"+weaponReference.ModelPathList[0].AmmoPath, typeof(GameObject))) as GameObject;
+                } else if (weaponReference.WeaponModelPathList.Count > 0) {
+                    _weapon._turretPrefab = (Resources.Load(weaponReference.WeaponModelPathList[0].TurretPath+"/"+weaponReference.WeaponModelPathList[0].TurretModel, typeof(GameObject))) as GameObject;
                 }
 
                 if (_weapon._turretPrefab == null) {

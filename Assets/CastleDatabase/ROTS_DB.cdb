@@ -74,6 +74,11 @@
 					"typeStr": "8",
 					"name": "Unitweapons",
 					"opt": true
+				},
+				{
+					"typeStr": "8",
+					"name": "UnitHardPoints",
+					"display": null
 				}
 			],
 			"lines": [
@@ -96,7 +101,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmA"
+							"WeaponRef": "JapanBB356mmA",
+							"HardPoint": 1
 						},
 						{
 							"Position": [
@@ -114,7 +120,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB"
+							"WeaponRef": "JapanBB356mmB",
+							"HardPoint": 2
 						},
 						{
 							"Position": [
@@ -137,7 +144,8 @@
 							],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB"
+							"WeaponRef": "JapanBB356mmB",
+							"HardPoint": 3
 						},
 						{
 							"Position": [
@@ -160,7 +168,8 @@
 							],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB"
+							"WeaponRef": "JapanBB356mmB",
+							"HardPoint": 4
 						},
 						{
 							"Position": [
@@ -178,7 +187,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB"
+							"WeaponRef": "JapanBB356mmB",
+							"HardPoint": 5
 						},
 						{
 							"Position": [
@@ -196,7 +206,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmA"
+							"WeaponRef": "JapanBB356mmA",
+							"HardPoint": 6
 						},
 						{
 							"Position": [
@@ -214,7 +225,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 130,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 7
 						},
 						{
 							"Position": [
@@ -232,7 +244,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 130,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 8
 						},
 						{
 							"Position": [
@@ -250,7 +263,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 110,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 9
 						},
 						{
 							"Position": [
@@ -268,7 +282,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 110,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 0
 						},
 						{
 							"Position": [
@@ -286,7 +301,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 11
 						},
 						{
 							"Position": [
@@ -304,7 +320,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 12
 						},
 						{
 							"Position": [
@@ -322,7 +339,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 13
 						},
 						{
 							"Position": [
@@ -340,7 +358,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 14
 						},
 						{
 							"Position": [
@@ -358,7 +377,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 120,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 15
 						},
 						{
 							"Position": [
@@ -376,7 +396,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 16
 						},
 						{
 							"Position": [
@@ -394,7 +415,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 150,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 17
 						},
 						{
 							"Position": [
@@ -412,7 +434,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 150,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 18
 						},
 						{
 							"Position": [
@@ -430,7 +453,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 125,
 							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 19
 						},
 						{
 							"Position": [
@@ -448,7 +472,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 0,
 							"Left_traverse_limitation": 125,
-							"WeaponRef": "JapanBBCasemate120mm"
+							"WeaponRef": "JapanBBCasemate120mm",
+							"HardPoint": 20
 						},
 						{
 							"Position": [
@@ -466,7 +491,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 90,
 							"Left_traverse_limitation": 80,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 21
 						},
 						{
 							"Position": [
@@ -484,7 +510,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 80,
 							"Left_traverse_limitation": 90,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 22
 						},
 						{
 							"Position": [
@@ -502,7 +529,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 130,
 							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 23
 						},
 						{
 							"Position": [
@@ -520,7 +548,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
 							"Left_traverse_limitation": 130,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 24
 						}
 					],
 					"Buoyancy": [
@@ -573,11 +602,124 @@
 						}
 					],
 					"UnitNation": "japan",
-					"UnitPath": "Prefabs/Units/Ship",
+					"UnitPath": "Ship",
 					"UnitModel": "IJN_Battleship_Fuso",
 					"Isavariant": false,
 					"UnitCategory": "Battleship",
-					"UnitMass": 38536000
+					"UnitMass": 38536000,
+					"UnitHardPoints": [
+						{
+							"HardPointId": 0,
+							"HardPointType": "ShipFunnel",
+							"IsMirrored": false,
+							"IsTransferedToVariants": true
+						},
+						{
+							"HardPointId": 1,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": 2,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": 3,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": 4,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": 5,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": 6,
+							"HardPointType": "Weapon",
+							"IsMirrored": false,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": 7,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 8,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 9,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 10,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 11,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 12,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 13,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": 14,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": 15,
+							"HardPointType": "Weapon",
+							"IsMirrored": true,
+							"IsTransferedToVariants": false,
+							"WeaponType": "Japan120mmType10AATwin"
+						}
+					]
 				},
 				{
 					"index": 1,
@@ -625,7 +767,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 145,
 							"Left_traverse_limitation": 145,
-							"WeaponRef": "JapanCA200mmA"
+							"WeaponRef": "JapanCA200mmA",
+							"HardPoint": 0
 						},
 						{
 							"Position": [
@@ -648,7 +791,8 @@
 							],
 							"Right_traverse_limitation": 155,
 							"Left_traverse_limitation": 155,
-							"WeaponRef": "JapanCA200mmB"
+							"WeaponRef": "JapanCA200mmB",
+							"HardPoint": 1
 						},
 						{
 							"Position": [
@@ -678,7 +822,8 @@
 							],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanCA200mmA"
+							"WeaponRef": "JapanCA200mmA",
+							"HardPoint": 2
 						},
 						{
 							"Position": [
@@ -696,7 +841,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 140,
 							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanCA200mmY"
+							"WeaponRef": "JapanCA200mmY",
+							"HardPoint": 3
 						},
 						{
 							"Position": [
@@ -714,7 +860,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 145,
 							"Left_traverse_limitation": 145,
-							"WeaponRef": "JapanCA200mmA"
+							"WeaponRef": "JapanCA200mmA",
+							"HardPoint": 4
 						},
 						{
 							"Position": [
@@ -732,7 +879,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
 							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 5
 						},
 						{
 							"Position": [
@@ -750,7 +898,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
 							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 6
 						},
 						{
 							"Position": [
@@ -768,7 +917,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
 							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 7
 						},
 						{
 							"Position": [
@@ -786,7 +936,8 @@
 							"No_fire_zones": [],
 							"Right_traverse_limitation": 60,
 							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin"
+							"WeaponRef": "Japan120mmType10AATwin",
+							"HardPoint": 8
 						},
 						{
 							"Position": [
@@ -809,7 +960,8 @@
 							],
 							"Right_traverse_limitation": 100,
 							"Left_traverse_limitation": 5,
-							"WeaponRef": "JapanTorpedo4CA"
+							"WeaponRef": "JapanTorpedo4CA",
+							"HardPoint": 9
 						},
 						{
 							"Position": [
@@ -832,7 +984,8 @@
 							],
 							"Right_traverse_limitation": 5,
 							"Left_traverse_limitation": 100,
-							"WeaponRef": "JapanTorpedo4CA"
+							"WeaponRef": "JapanTorpedo4CA",
+							"HardPoint": 10
 						},
 						{
 							"Position": [
@@ -855,7 +1008,8 @@
 							],
 							"Right_traverse_limitation": 5,
 							"Left_traverse_limitation": 100,
-							"WeaponRef": "JapanTorpedo4CA"
+							"WeaponRef": "JapanTorpedo4CA",
+							"HardPoint": 11
 						},
 						{
 							"Position": [
@@ -878,7 +1032,8 @@
 							],
 							"Right_traverse_limitation": 100,
 							"Left_traverse_limitation": 5,
-							"WeaponRef": "JapanTorpedo4CA"
+							"WeaponRef": "JapanTorpedo4CA",
+							"HardPoint": 12
 						}
 					],
 					"id": "takao",
@@ -906,10 +1061,11 @@
 					],
 					"UnitNation": "japan",
 					"UnitCategory": "Heavy_Cruiser",
-					"UnitPath": "Prefabs/Units/Ship",
+					"UnitPath": "Ship",
 					"UnitModel": "IJN_Cruiser_Takao",
 					"Isavariant": false,
-					"UnitMass": 12781000
+					"UnitMass": 12781000,
+					"UnitHardPoints": []
 				},
 				{
 					"id": "fusoUSA",
@@ -921,7 +1077,8 @@
 						}
 					],
 					"UnitNation": "usa",
-					"index": 2
+					"index": 2,
+					"UnitHardPoints": []
 				},
 				{
 					"id": "takaoUSA",
@@ -933,13 +1090,14 @@
 						}
 					],
 					"UnitNation": "usa",
-					"index": 3
+					"index": 3,
+					"UnitHardPoints": []
 				},
 				{
 					"id": "TrainingCarrier",
 					"Isavariant": false,
 					"UnitName": "IJN Training Carrier",
-					"UnitPath": "Prefabs/Units/Ship",
+					"UnitPath": "Ship",
 					"index": 4,
 					"UnitCategory": "Carrier",
 					"UnitNation": "japan",
@@ -986,7 +1144,8 @@
 						}
 					],
 					"UnitMass": 33161000,
-					"UnitModel": "AircraftCarrierTest"
+					"UnitModel": "AircraftCarrierTest",
+					"UnitHardPoints": []
 				},
 				{
 					"id": "TrainingCarrierUSA",
@@ -998,13 +1157,14 @@
 							"UnitVariantRef": "TrainingCarrier"
 						}
 					],
-					"UnitNation": "usa"
+					"UnitNation": "usa",
+					"UnitHardPoints": []
 				},
 				{
 					"id": "ShipyardJapan",
 					"Isavariant": false,
 					"UnitName": "Japanese Shipyard",
-					"UnitPath": "Prefabs/Units/Building",
+					"UnitPath": "Building",
 					"UnitModel": "Shipyard",
 					"index": 6,
 					"UnitCategory": "Shipyard",
@@ -1023,7 +1183,8 @@
 						}
 					],
 					"UnitHealth": 30000,
-					"UnitMass": 100000000
+					"UnitMass": 100000000,
+					"UnitHardPoints": []
 				},
 				{
 					"id": "ShipyardUSA",
@@ -1035,7 +1196,8 @@
 						{
 							"UnitVariantRef": "ShipyardJapan"
 						}
-					]
+					],
+					"UnitHardPoints": []
 				}
 			],
 			"separators": [],
@@ -1571,6 +1733,32 @@
 			}
 		},
 		{
+			"name": "HardPoints",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "Weapon"
+				},
+				{
+					"id": "ShipFunnel"
+				},
+				{
+					"id": "ShipPropeller"
+				},
+				{
+					"id": "PlanePropeller"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
 			"name": "Weapons",
 			"columns": [
 				{
@@ -1592,8 +1780,7 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "ModelPath",
-					"display": null
+					"name": "WeaponModelPath"
 				},
 				{
 					"typeStr": "8",
@@ -1699,10 +1886,10 @@
 							"ShootingSound": "ShotFiring"
 						}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Fuso_Main_A"
+							"TurretModel": "JbBB356mmA"
 						}
 					]
 				},
@@ -1718,10 +1905,10 @@
 					"FX": [
 						{}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Fuso_Main_B"
+							"TurretModel": "JpBB356mmB"
 						}
 					]
 				},
@@ -1756,10 +1943,10 @@
 							"ShootingSound": "ShotFiring"
 						}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Takao_Main_A"
+							"TurretModel": "JpCA200mmA"
 						}
 					]
 				},
@@ -1775,10 +1962,10 @@
 					"FX": [
 						{}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Takao_Main_B"
+							"TurretModel": "JpCA200mmB"
 						}
 					]
 				},
@@ -1792,10 +1979,10 @@
 						}
 					],
 					"FX": [],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Takao_Main_Y"
+							"TurretModel": "JpCA200mmY"
 						}
 					]
 				},
@@ -1803,7 +1990,7 @@
 					"Name": "Jp120Type10AAx2",
 					"Health": 100,
 					"Armor": 12,
-					"Ammo": "ShellJapan152mm",
+					"Ammo": "ShellJapan120mm",
 					"Precision": 60,
 					"Isavariant": false,
 					"Max_range": 16000,
@@ -1830,10 +2017,10 @@
 							"ShootingSound": "ShotFiring"
 						}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "AATurrets",
-							"TurretModel": "TurretJapan120mmType10AATwin"
+							"TurretModel": "Jp120mmType10AATwin"
 						}
 					]
 				},
@@ -1841,7 +2028,7 @@
 					"Name": "JpBBCasemate120",
 					"Health": 100,
 					"Armor": 100,
-					"Ammo": "ShellJapan120mm",
+					"Ammo": "ShellJapan152mm",
 					"Precision": 80,
 					"Isavariant": false,
 					"Max_range": 19000,
@@ -1868,10 +2055,10 @@
 							"ShootingSound": "ShotFiring"
 						}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
-							"TurretModel": "Turret_Fuso_Casemate"
+							"TurretModel": "JpBB152mmCasemate"
 						}
 					]
 				},
@@ -1903,10 +2090,10 @@
 							"ShootingSound": "ShotFiring"
 						}
 					],
-					"ModelPath": [
+					"WeaponModelPath": [
 						{
 							"TurretPath": "TorpedoLauncher",
-							"TurretModel": "TorpedoLauncherJapanQuadTakao"
+							"TurretModel": "JpQuadTorp"
 						}
 					]
 				}
@@ -1964,8 +2151,7 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "ModelPath",
-					"display": null
+					"name": "AmmoModelPath"
 				},
 				{
 					"typeStr": "4",
@@ -2008,7 +2194,7 @@
 					"DamageMax": 150,
 					"DamageMin": 10,
 					"id": "ShellJapan356mm",
-					"ModelPath": [
+					"AmmoModelPath": [
 						{
 							"AmmoPath": "ArtilleryShells",
 							"AmmoModel": "ShellJapan356mm"
@@ -2024,7 +2210,7 @@
 					"DamageMax": 100,
 					"DamageMin": 10,
 					"id": "ShellJapan200mm",
-					"ModelPath": [
+					"AmmoModelPath": [
 						{
 							"AmmoPath": "ArtilleryShells",
 							"AmmoModel": "ShellJapan200mm"
@@ -2040,7 +2226,7 @@
 					"DamageMax": 20,
 					"DamageMin": 10,
 					"id": "ShellJapan152mm",
-					"ModelPath": [
+					"AmmoModelPath": [
 						{
 							"AmmoPath": "ArtilleryShells",
 							"AmmoModel": "ShellJapan152mm"
@@ -2056,7 +2242,7 @@
 					"ExplosionRadius": 10,
 					"MaxLifeTime": 3,
 					"id": "ShellJapan120mm",
-					"ModelPath": [
+					"AmmoModelPath": [
 						{
 							"AmmoPath": "ArtilleryShells",
 							"AmmoModel": "ShellJapan120mm"
@@ -2072,7 +2258,7 @@
 					"ExplosionRadius": 40,
 					"MaxLifeTime": 300,
 					"id": "TorpedoJapan610mm",
-					"ModelPath": [
+					"AmmoModelPath": [
 						{
 							"AmmoPath": "Torpedoes",
 							"AmmoModel": "TorpedoJapan610mmLongLance"
@@ -2096,6 +2282,10 @@
 				{
 					"typeStr": "6:Weapons",
 					"name": "WeaponRef"
+				},
+				{
+					"typeStr": "3",
+					"name": "HardPoint"
 				},
 				{
 					"typeStr": "8",
@@ -2556,7 +2746,7 @@
 			}
 		},
 		{
-			"name": "Weapons@ModelPath",
+			"name": "Weapons@WeaponModelPath",
 			"props": {
 				"hide": true
 			},
@@ -2575,7 +2765,7 @@
 			]
 		},
 		{
-			"name": "Ammos@ModelPath",
+			"name": "Ammos@AmmoModelPath",
 			"props": {
 				"hide": true
 			},
@@ -2591,6 +2781,40 @@
 					"typeStr": "1",
 					"name": "AmmoModel",
 					"display": null
+				}
+			]
+		},
+		{
+			"name": "Global_Units@UnitHardPoints",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "HardPointId",
+					"display": null
+				},
+				{
+					"typeStr": "6:HardPoints",
+					"name": "HardPointType",
+					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "IsTransferedToVariants"
+				},
+				{
+					"typeStr": "2",
+					"name": "IsMirrored",
+					"display": null
+				},
+				{
+					"typeStr": "6:Weapons",
+					"name": "WeaponType",
+					"opt": true
 				}
 			]
 		}

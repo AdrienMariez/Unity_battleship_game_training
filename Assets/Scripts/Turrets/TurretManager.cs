@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class TurretManager : MonoBehaviour {
     public GameObject[] m_Turrets;
+    private List <GameObject> AllTurrets = new List<GameObject>();
     private bool Active = false;
     private bool Dead = false;
     private bool Pause = false;
@@ -48,11 +49,15 @@ public class TurretManager : MonoBehaviour {
     private Vector3 AITargetPosition;
     private float AITargetRange;
 
-    private void Start() {
-        UnitMasterController = GetComponent<UnitMasterController>();
+    public void AddNewWeapon(GameObject weapon) {
+        AllTurrets.Add(weapon);
+    }
+
+    public void BeginOperations(UnitMasterController unitController){
+        UnitMasterController = unitController;
         float MaxR;
         float MinR;
-        foreach (GameObject turret in m_Turrets) {
+        foreach (GameObject turret in AllTurrets) {
             TotalTurrets++;
             MaxR = turret.GetComponent<TurretFireManager>().GetMaxRange();
             MinR = turret.GetComponent<TurretFireManager>().GetMinRange();
@@ -63,7 +68,6 @@ public class TurretManager : MonoBehaviour {
             turret.GetComponent<TurretHealth>().SetTurretManager(this);
             turret.GetComponent<TurretFireManager>().SetTurretManager(this);
             turret.GetComponent<TurretRotation>().SetTurretFireManager(turret.GetComponent<TurretFireManager>());
-            // m_Turrets[i].GetComponent<TurretFireManager>().SetTurretNumber(i);
             TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles(); 
             
             foreach (TurretFireManager.TurretRole role in availableRoles) {
@@ -105,7 +109,7 @@ public class TurretManager : MonoBehaviour {
             }
             // Debug.Log(ElevationRatio + " : ElevationRatio");
 
-            foreach (GameObject turret in m_Turrets) {
+            foreach (GameObject turret in AllTurrets) {
                 turret.GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
                 turret.GetComponent<TurretFireManager>().SetTargetPosition(TargetPosition);
                 turret.GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
@@ -119,7 +123,7 @@ public class TurretManager : MonoBehaviour {
             TargetRange = AITargetRange;                                                        // So the UI Knows the current AI range ?
             // Debug.Log("ElevationRatio = "+ ElevationRatio);
 
-            foreach (GameObject turret in m_Turrets) {
+            foreach (GameObject turret in AllTurrets) {
                 turret.GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
                 turret.GetComponent<TurretFireManager>().SetTargetPosition(AITargetPosition);
                 turret.GetComponent<TurretRotation>().SetElevationRatio(ElevationRatio);
@@ -193,13 +197,13 @@ public class TurretManager : MonoBehaviour {
         // Debug.Log("PlayerControl : "+ PlayerControl);
         // Debug.Log("AIControl : "+ AIControl);
         int number = 0;
-        foreach (GameObject turret in m_Turrets){
+        foreach (GameObject turret in AllTurrets){
             TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles();
             bool matchFound = false;
             foreach (TurretFireManager.TurretRole role in availableRoles) {
                 if (role == CurrentControlledTurretRole) {
                     matchFound = true;                              // Try to find a single match for what we look for.
-                    // return;                                      // No return here or it stops the m_Turrets loop (why ?)
+                    // return;                                      // No return here or it stops the AllTurrets loop (why ?)
                 }
             }
 
@@ -223,8 +227,8 @@ public class TurretManager : MonoBehaviour {
 
     public void SetActive(bool activate) {
         Active = activate;
-        for (int i = 0; i < m_Turrets.Length; i++){
-            m_Turrets[i].GetComponent<TurretFireManager>().SetActive(activate);
+        foreach (GameObject turret in AllTurrets) {
+            turret.GetComponent<TurretFireManager>().SetActive(activate);
         }
         SetPlayerControl();
         if (Active)
@@ -251,13 +255,13 @@ public class TurretManager : MonoBehaviour {
         SetPlayerControl();
     }
     public void SetRepairRate(float Rate) {
-        for (int i = 0; i < m_Turrets.Length; i++){
-            m_Turrets[i].GetComponent<TurretHealth>().SetRepairRate(Rate);
+        foreach (GameObject turret in AllTurrets) {
+            turret.GetComponent<TurretHealth>().SetRepairRate(Rate);
         }
     }
     public void SetTurretRepairRate(float Rate) {
-        for (int i = 0; i < m_Turrets.Length; i++){
-            m_Turrets[i].GetComponent<TurretHealth>().SetTurretRepairRate(Rate);
+        foreach (GameObject turret in AllTurrets) {
+            turret.GetComponent<TurretHealth>().SetTurretRepairRate(Rate);
         }
     }
     public void SetSingleTurretDeath(bool isTurretDead){
@@ -270,10 +274,10 @@ public class TurretManager : MonoBehaviour {
     }
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
-        for (int i = 0; i < m_Turrets.Length; i++){
-            m_Turrets[i].GetComponent<TurretHealth>().SetShipDeath(IsShipDead);
-            m_Turrets[i].GetComponent<TurretRotation>().SetTurretDeath(IsShipDead);
-            m_Turrets[i].GetComponent<TurretFireManager>().SetTurretDeath(IsShipDead);
+        foreach (GameObject turret in AllTurrets) {
+            turret.GetComponent<TurretHealth>().SetShipDeath(IsShipDead);
+            turret.GetComponent<TurretRotation>().SetTurretDeath(IsShipDead);
+            turret.GetComponent<TurretFireManager>().SetTurretDeath(IsShipDead);
         }
     }
 
@@ -290,11 +294,8 @@ public class TurretManager : MonoBehaviour {
             UnitMasterController.SendPlayerShellToUI(shellInstance);
     }
 
-    public GameObject[] GetTurrets() {
-        return m_Turrets;
-    }
     public bool GetIsEmpty() {
-        if (m_Turrets.Length > 0) {
+        if (AllTurrets.Count > 0) {
             return false;
         } else {
             return true;
@@ -308,7 +309,7 @@ public class TurretManager : MonoBehaviour {
     
     public List <TurretStatusType> GetTurretsStatus() {
         TurretStatus.Clear();
-        foreach (var turret in m_Turrets) {
+        foreach (GameObject turret in AllTurrets) {
             TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles();
             bool canLoop = true;                                                                   // If turret found once don't add it twice ! (in case of turret having twice the same available role in the DB)
             foreach (TurretFireManager.TurretRole role in availableRoles) {

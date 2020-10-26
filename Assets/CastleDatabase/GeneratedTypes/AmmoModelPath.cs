@@ -6,13 +6,13 @@ using SimpleJSON;
 using CastleDBImporter;
 namespace CompiledTypes
 { 
-    public class ModelPath
+    public class AmmoModelPath
     {
         public string AmmoPath;
 public string AmmoModel;
 
          
-        public ModelPath (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
+        public AmmoModelPath (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
         {
             AmmoPath = node["AmmoPath"];
 AmmoModel = node["AmmoModel"];

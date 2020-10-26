@@ -34,17 +34,19 @@ public class ShipController : UnitMasterController {
     }
 
     public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
-        base.SetUnitFromWorldUnitsManager(unit);
-        // Set Buoyancy
-            Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;
-            Buoyancy = GetComponent<ShipBuoyancy>();
-            Buoyancy.BeginOperations(unit);
-
         // Set Movement
             if (GetComponent<ShipMovement>()) {
                 Movement = GetComponent<ShipMovement>();
                 Movement.BeginOperations(this);
             }
+
+        base.SetUnitFromWorldUnitsManager(unit);
+        
+        // Set Buoyancy
+            Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;
+            Buoyancy = GetComponent<ShipBuoyancy>();
+            Buoyancy.BeginOperations(unit);
+
 
         // Set DamageControl
             if (unit.GetDamageControlExists()) {

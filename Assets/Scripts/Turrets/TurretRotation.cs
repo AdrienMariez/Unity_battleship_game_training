@@ -7,16 +7,10 @@ public class TurretRotation : MonoBehaviour
     private bool Dead;
 
     [Header("Elements")]
-        // [Tooltip ("Point to which the cannon will point when in idle position")]
-        //     public Transform m_IdlePointer;
         [Tooltip ("Audio played when the turret is rotating.")]
             public AudioClip m_TurretRotationAudio;
-        [Tooltip ("Axis of rotation for horizontal rotation of the turret.")]
-            public Rigidbody m_TurretTurret;
         [Tooltip ("Axis of rotation for the elevation of the cannon.")]
             public Rigidbody m_TurretCannon;
-        [Tooltip ("Direct parent of this turret, place the unit rigidbody here by default, but you can put a turret on top of another by placing the parent turret here. ")]
-            public Rigidbody m_Parent;
 
         [Header("Horizontal rotation")]
         [Tooltip ("Rotation Speed. (°/s)")]
@@ -65,9 +59,18 @@ public class TurretRotation : MonoBehaviour
     private bool ActionPaused = false;
     private bool TurretSleep = true;
 
-    private void Awake(){
-        ParentEulerAngles = m_Parent.transform.rotation.eulerAngles;
-        TurretEulerAngle = m_TurretTurret.transform.localRotation.eulerAngles.y;
+    private Transform ParentTransform;
+    private Transform Transform;
+    private Vector3 PositionSafeguard;
+
+    public void BeginOperations(Transform parentTransform){
+        ParentTransform = parentTransform.parent;
+        Transform = parentTransform;
+        PositionSafeguard = parentTransform.position;
+
+
+        ParentEulerAngles = parentTransform.rotation.eulerAngles;
+        TurretEulerAngle = Transform.localRotation.eulerAngles.y;
         TurretEulerElevAngle = 90;
         LocalLeftTraverse = m_LeftTraverse + TurretEulerAngle;
         if (LocalLeftTraverse > 360)
@@ -77,9 +80,11 @@ public class TurretRotation : MonoBehaviour
             LocalRightTraverse -= 360;
 
 
-        CurrentAng = m_TurretTurret.transform.localRotation.eulerAngles.y;                  // Gets start angle horizontal
+        CurrentAng = Transform.localRotation.eulerAngles.y;                  // Gets start angle horizontal
 
         CurrentAngElev = m_TurretCannon.transform.localRotation.eulerAngles.x;              // Gets start angle vertical
+
+        StartCoroutine(PositionSafeguardLoop());
         
         // if (debug) {
         //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
@@ -154,14 +159,16 @@ public class TurretRotation : MonoBehaviour
             // }
         
         // Reassign the new parent angle for future TurretRotate()
-        ParentEulerAngles = m_Parent.transform.rotation.eulerAngles;
+        ParentEulerAngles = ParentTransform.rotation.eulerAngles;
 
-        // Reposition the turret as it can be moved out of position
-        if (!ActionPaused) {
-            m_TurretTurret.transform.localPosition = new Vector3 (0.0f, 0.0f, 0.0f);
-        }
         if (!ActionPaused) {
             StartCoroutine(PauseAction());
+        }
+    }
+    IEnumerator PositionSafeguardLoop(){
+        while (true) {
+            yield return new WaitForSeconds(2f);
+            Transform.localPosition = PositionSafeguard;
         }
     }
 
@@ -172,14 +179,14 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void TurretRotate() {
-        // float parentRotationAng = m_Parent.transform.rotation.eulerAngles.y-ParentEulerAngles.y;     // Get parent current rotation rate
+        // float parentRotationAng = ParentTransform.rotation.eulerAngles.y-ParentEulerAngles.y;     // Get parent current rotation rate
         // if (parentRotationAng<-360)                                                                  // Works but apparently useless
         //     parentRotationAng += 360;
         // else if (parentRotationAng>360)
         //     parentRotationAng -= 360;
 
 
-        float targetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - m_TurretTurret.transform.position).eulerAngles.y;
+        float targetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - Transform.position).eulerAngles.y;
 
         TargetAng = targetAngleWorld - ParentEulerAngles.y;
 
@@ -193,7 +200,7 @@ public class TurretRotation : MonoBehaviour
             TargetAng -= 360;
 
 
-        // currentAng = m_TurretTurret.transform.localRotation.eulerAngles.y;
+        // currentAng = Transform.localRotation.eulerAngles.y;
 
         // if (debug) { Debug.Log("TurretSleep = "+ TurretSleep); }
 
@@ -229,9 +236,9 @@ public class TurretRotation : MonoBehaviour
         // if (debug) { Debug.Log("CurrentAng = "+ CurrentAng+"TargetAng = "+ TargetAng);}
 
         // Update the turret angle
-        m_TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
+        Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
 
-        // Debug.DrawLine(m_TurretTurret.transform.position, TargetPosition, Color.green);
+        // Debug.DrawLine(Transform.position, TargetPosition, Color.green);
     }
 
     private float BuildRotation(float currentAngle, float targetAngle){
@@ -322,9 +329,9 @@ public class TurretRotation : MonoBehaviour
     private void CannonElevation() {
         CurrentAngElev = m_TurretCannon.transform.localRotation.eulerAngles.x;
 
-        float parentRotationAng = m_Parent.transform.rotation.eulerAngles.x - ParentEulerAngles.x;      // Get parent current rotation rate
+        float parentRotationAng = ParentTransform.rotation.eulerAngles.x - ParentEulerAngles.x;      // Get parent current rotation rate
 
-        float targetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - m_TurretTurret.transform.position).eulerAngles.x;      // Gets the x angle between parent and target.
+        float targetAngleWorld = Quaternion.FromToRotation(Vector3.forward, TargetPosition - Transform.position).eulerAngles.x;      // Gets the x angle between parent and target.
 
         if (targetAngleWorld > 180)                                                                     // Transform the world angle variable into the same axis than the limitations
             targetAngleWorld -= 360;
@@ -526,7 +533,7 @@ public class TurretRotation : MonoBehaviour
 
     private void TurretStatic() {
         // Update the turret angle
-        m_TurretTurret.transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
+        Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
     }
 
     public void SetTurretFireManager(TurretFireManager turretFireManager){ TurretFireManager = turretFireManager; }

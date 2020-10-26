@@ -12,7 +12,7 @@ namespace CompiledTypes
 public string Name;
 public bool Isavariant;
 public List<WeaponVariantReference> WeaponVariantReferenceList = new List<WeaponVariantReference>();
-public List<ModelPath> ModelPathList = new List<ModelPath>();
+public List<WeaponModelPath> WeaponModelPathList = new List<WeaponModelPath>();
 public List<FX> FXList = new List<FX>();
 public float Health;
 public float Armor;
@@ -45,7 +45,7 @@ id = node["id"];
 Name = node["Name"];
 Isavariant = node["Isavariant"].AsBool;
 foreach(var item in node["WeaponVariantReference"]) { WeaponVariantReferenceList.Add(new WeaponVariantReference(root, item));}
-foreach(var item in node["ModelPath"]) { ModelPathList.Add(new ModelPath(root, item));}
+foreach(var item in node["WeaponModelPath"]) { WeaponModelPathList.Add(new WeaponModelPath(root, item));}
 foreach(var item in node["FX"]) { FXList.Add(new FX(root, item));}
 Health = node["Health"].AsFloat;
 Armor = node["Armor"].AsFloat;

@@ -10,7 +10,7 @@ namespace CompiledTypes
     {
         public string id;
 public string Name;
-public List<ModelPath> ModelPathList = new List<ModelPath>();
+public List<AmmoModelPath> AmmoModelPathList = new List<AmmoModelPath>();
 public float Weight;
 public float DamageMax;
 public float DamageMin;
@@ -30,7 +30,7 @@ TorpedoJapan610mm
             SimpleJSON.JSONNode node = root.GetSheetWithName("Ammos").Rows[(int)line];
 id = node["id"];
 Name = node["Name"];
-foreach(var item in node["ModelPath"]) { ModelPathList.Add(new ModelPath(root, item));}
+foreach(var item in node["AmmoModelPath"]) { AmmoModelPathList.Add(new AmmoModelPath(root, item));}
 Weight = node["Weight"].AsFloat;
 DamageMax = node["DamageMax"].AsFloat;
 DamageMin = node["DamageMin"].AsFloat;

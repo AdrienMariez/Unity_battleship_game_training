@@ -23,7 +23,6 @@ public class UnitMasterController : MonoBehaviour {
 
     protected bool Active = false;
     protected bool Dead = false;
-    protected TurretManager Turrets;
     private SpawnerScriptToAttach Spawner;
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
@@ -31,6 +30,7 @@ public class UnitMasterController : MonoBehaviour {
     protected UnitAIController UnitAI;
     protected UnitUI UnitUI;
     protected UnitHealth Health;
+    protected TurretManager Turrets;
     private GameObject EnemyTargetUnit;
 
     public enum ElementType {
@@ -163,16 +163,31 @@ public class UnitMasterController : MonoBehaviour {
             UnitUI.SetStartingHealth(HP);
             UnitUI.SetCurrentHealth(HP);
             UnitUI.SetUnitTeam(Team);
-        // Set turrets
-            if (GetComponent<TurretManager>())
-                Turrets = GetComponent<TurretManager>();
+
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
             UnitAI.BeginOperations();
             UnitAI.SetUnitTeam(Team);
             UnitAI.SetName(UnitName);
-            if (GetComponent<TurretManager>())
+
+        // Set turrets
+            if (unit.GetWeaponExists()) {
+                this.gameObject.AddComponent<TurretManager>();
+                Turrets = GetComponent<TurretManager>();
                 UnitAI.SetTurretManager(Turrets);
+            }
+
+        // Set HardPoints
+            foreach (WorldSingleUnit.UnitHardPoint hardPointElement in unit.GetUnitHardPointList()) {
+                // this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID().ToString()).GetComponent<HardPointComponent>().SetUpHardPointComponent(hardPointElement);
+                Transform hardPointTransform = this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID().ToString()).transform;
+                HardPointComponent hardPointComponent = hardPointTransform.GetComponent<HardPointComponent>();
+
+                if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
+                    HardPointComponent.SetUpWeaponHardPoint(hardPointElement, hardPointComponent, hardPointTransform, Turrets);
+                }
+                HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
+            }
 
         // Find and set components
             if (this.gameObject.transform.childCount > 0){
@@ -188,7 +203,13 @@ public class UnitMasterController : MonoBehaviour {
                 }
             }
 
+        // Set turrets
+            if (GetComponent<TurretManager>()) {
+                // Debug.Log("yes"+ Turrets);
+                Turrets.BeginOperations(this);
+            }
     }
+
     public virtual void SetActive(bool activate) {
         Active = activate;
         UnitAI.SetAIActive(!Active);
