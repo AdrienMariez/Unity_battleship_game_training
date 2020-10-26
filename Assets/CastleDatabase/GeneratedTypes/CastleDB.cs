@@ -18,11 +18,12 @@ public WeaponsType Weapons;
 public Weapons_rolesType Weapons_roles;
 public AmmosType Ammos;
 public FX_StorageType FX_Storage;
+public AudioFX_StorageType AudioFX_Storage;
 
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();
+            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
         }
         public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
@@ -220,6 +221,25 @@ private FX_Storage Get(CompiledTypes.FX_Storage.RowValues line) { return new FX_
                     return returnList;
                 }
  } //END OF FX_Storage 
+public class AudioFX_StorageType 
+ {public AudioFX_Storage musicA_calm { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.musicA_calm); } } 
+public AudioFX_Storage musicA_stress { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.musicA_stress); } } 
+public AudioFX_Storage ShellExplosion { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.ShellExplosion); } } 
+public AudioFX_Storage ShotFiring { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.ShotFiring); } } 
+public AudioFX_Storage TankExplosion { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.TankExplosion); } } 
+private AudioFX_Storage Get(CompiledTypes.AudioFX_Storage.RowValues line) { return new AudioFX_Storage(parsedDB.Root, line); }
+
+                public AudioFX_Storage[] GetAll() 
+                {
+                    var values = (CompiledTypes.AudioFX_Storage.RowValues[])Enum.GetValues(typeof(CompiledTypes.AudioFX_Storage.RowValues));
+                    AudioFX_Storage[] returnList = new AudioFX_Storage[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF AudioFX_Storage 
 
     }
 }

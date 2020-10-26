@@ -78,7 +78,7 @@ public class WorldSingleUnit {
                         string catString = subCat.Category.id.ToString();
                         UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
 
-                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathExplosion.FXPath+"/"+masterUnitReference.UnitCategory.DeathExplosion.FXPrefab;
+                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathFX.FXPath+"/"+masterUnitReference.UnitCategory.DeathFX.FXPrefab;
                         UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
@@ -93,12 +93,17 @@ public class WorldSingleUnit {
                         string catString = subCat.Category.id.ToString();
                         UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
                         
-                        string FXString = "FX/"+unit.UnitCategory.DeathExplosion.FXPath+"/"+unit.UnitCategory.DeathExplosion.FXPrefab;
+                        string FXString = "FX/"+unit.UnitCategory.DeathFX.FXPath+"/"+unit.UnitCategory.DeathFX.FXPrefab;
                         UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
             } else {
                 Debug.Log ("No category found for "+UnitName);
+            }
+
+            if (UnitDeathFX == null) {
+                Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
+                UnitDeathFX = WorldUIVariables.GetErrorModel();
             }
             // Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);
         // END CATEGORY
@@ -221,40 +226,79 @@ public class WorldSingleUnit {
     private void SetWeapons(CompiledTypes.Global_Units unit) {
         foreach (CompiledTypes.Unitweapons weapon in unit.UnitweaponsList) {
             TurretWeapon _weapon = new TurretWeapon{};
-            /*// TurretManager
-                _weapon._turretPrefab = (Resources.Load(unit.UnitPath+"/"+weapon.WeaponRef.Model, typeof(GameObject))) as GameObject;
+
+            // Find & set variant master
+                CompiledTypes.Weapons weaponReference = weapon.WeaponRef;
+                CompiledTypes.Weapons masterWeaponReference = weaponReference;
+                if (weapon.WeaponRef.WeaponVariantReferenceList.Count > 0) {
+                    masterWeaponReference = weapon.WeaponRef.WeaponVariantReferenceList[0].WeaponVariantRef;
+                }
+
+            // TurretManager
+
+                if (weaponReference.Isavariant && weaponReference.ModelPathList.Count == 0) {
+                    if (masterWeaponReference.ModelPathList.Count > 0) {
+                        _weapon._turretPrefab = (Resources.Load(masterWeaponReference.ModelPathList[0].AmmoPath+"/"+masterWeaponReference.ModelPathList[0].AmmoPath, typeof(GameObject))) as GameObject;
+                    }
+                } else if (weaponReference.ModelPathList.Count > 0) {
+                    _weapon._turretPrefab = (Resources.Load(weaponReference.ModelPathList[0].AmmoPath+"/"+weaponReference.ModelPathList[0].AmmoPath, typeof(GameObject))) as GameObject;
+                }
+
                 if (_weapon._turretPrefab == null) {
                     Debug.Log (" A turret was implemented without a model ! turret id :"+ weapon.WeaponRef.id);
                     _weapon._turretPrefab = WorldUIVariables.GetErrorModel();
                 }
+
             // TurretHealth
-                _weapon._healthTurretHealth = weapon.WeaponRef.Health;
-                _weapon._healthTurretArmor = weapon.WeaponRef.Armor;
+                if (weaponReference.Isavariant && weaponReference.Health != masterWeaponReference.Health) {
+                    _weapon._healthTurretHealth = masterWeaponReference.Health;
+                } else {
+                    _weapon._healthTurretHealth = weaponReference.Health;
+                }
+                if (weaponReference.Isavariant && weaponReference.Armor != masterWeaponReference.Armor) {
+                    _weapon._healthTurretArmor = masterWeaponReference.Armor;
+                } else {
+                    _weapon._healthTurretArmor = weaponReference.Armor;
+                }
             // TurretFireManager
-                _weapon._fireManagerAmmo;
+                if (weaponReference.Isavariant && weaponReference.WeaponRolesList != masterWeaponReference.WeaponRolesList) {
+                    foreach (CompiledTypes.WeaponRoles role in masterWeaponReference.WeaponRolesList) {
+                        _weapon._fireAvailableWeaponRoles.Add(role);
+                    }
+                } else {
+                    foreach (CompiledTypes.WeaponRoles role in weaponReference.WeaponRolesList) {
+                        _weapon._fireAvailableWeaponRoles.Add(role);
+                    }
+                }
+                
+                if (weaponReference.Isavariant && weaponReference.Ammo != masterWeaponReference.Ammo) {
+                    _weapon._fireManagerAmmo = masterWeaponReference.Ammo;
+                } else {
+                    _weapon._fireManagerAmmo = weaponReference.Ammo;
+                }
                 // Transform[] _weapon._fireManagerFireMuzzles;
-                _weapon._fireManageFireFx;
-                _weapon._fireManagerShootingAudio;
-                _weapon._fireManagerFireClip;
-                _weapon._fireManagerMaxRange;
-                _weapon._fireManagerMinRange;
-                _weapon._fireManagerMuzzleVelocity;
-                _weapon._fireManagerReloadTime;
-                _weapon._fireManagerPrecision;
-            // TurretRotation
-                _weapon._rotationAudio;
-                _weapon._rotationHorizAxis;
-                _weapon._rotationElevationAxis;
-                _weapon._rotationParent;
-                _weapon._rotationSpeed;
-                _weapon._rotationLimitTraverse;
-                _weapon._rotationLeftTraverse;
-                _weapon._rotationRightTraverse;
-                // public FireZonesManager[] _weapon._rotationNoFireZones;
-                _weapon._rotationElevationSpeed;
-                _weapon._rotationUpTraverse;
-                _weapon._rotationDownTraverse;
-                // public ElevationZonesManager[] _weapon._rotationElevationZones;*/
+            //     _weapon._fireManageFireFx;
+            //     _weapon._fireManagerShootingAudio;
+            //     _weapon._fireManagerFireClip;
+            //     _weapon._fireManagerMaxRange;
+            //     _weapon._fireManagerMinRange;
+            //     _weapon._fireManagerMuzzleVelocity;
+            //     _weapon._fireManagerReloadTime;
+            //     _weapon._fireManagerPrecision;
+            // // TurretRotation
+            //     _weapon._rotationAudio;
+            //     _weapon._rotationHorizAxis;
+            //     _weapon._rotationElevationAxis;
+            //     _weapon._rotationParent;
+            //     _weapon._rotationSpeed;
+            //     _weapon._rotationLimitTraverse;
+            //     _weapon._rotationLeftTraverse;
+            //     _weapon._rotationRightTraverse;
+            //     // public FireZonesManager[] _weapon._rotationNoFireZones;
+            //     _weapon._rotationElevationSpeed;
+            //     _weapon._rotationUpTraverse;
+                // _weapon._rotationDownTraverse;
+                // public ElevationZonesManager[] _weapon._rotationElevationZones;
         }
     }
 
@@ -265,7 +309,8 @@ public class WorldSingleUnit {
             public float _healthTurretHealth;
             public float _healthTurretArmor;
         // TurretFireManager
-            public GameObject _fireManagerAmmo;
+            public List<CompiledTypes.WeaponRoles> _fireAvailableWeaponRoles = new List<CompiledTypes.WeaponRoles>();
+            public CompiledTypes.Ammos _fireManagerAmmo;
             public Transform[] _fireManagerFireMuzzles;
             public GameObject _fireManageFireFx;
             public AudioSource _fireManagerShootingAudio;

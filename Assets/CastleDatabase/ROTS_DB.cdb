@@ -1131,8 +1131,7 @@
 				},
 				{
 					"typeStr": "6:FX_Storage",
-					"name": "DeathExplosion",
-					"display": null
+					"name": "DeathFX"
 				}
 			],
 			"lines": [
@@ -1141,9 +1140,9 @@
 					"Classification": "Do not edit",
 					"Name": "",
 					"Category": "ship",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
 					"index": 0,
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Battleship",
@@ -1151,8 +1150,8 @@
 					"index": 1,
 					"Classification": "BB",
 					"id": "Battleship",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Battleship"
+					"MapModel": "Battleship",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Carrier",
@@ -1160,8 +1159,8 @@
 					"index": 2,
 					"Classification": "CV",
 					"id": "Carrier",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Carrier"
+					"MapModel": "Carrier",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Heavy_Cruiser",
@@ -1169,8 +1168,8 @@
 					"index": 3,
 					"Classification": "CA",
 					"id": "Heavy_Cruiser",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Cruiser"
+					"MapModel": "Cruiser",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Light_Cruiser",
@@ -1178,8 +1177,8 @@
 					"index": 4,
 					"Classification": "CL",
 					"id": "Light_Cruiser",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Cruiser"
+					"MapModel": "Cruiser",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Destroyer",
@@ -1187,8 +1186,8 @@
 					"index": 5,
 					"Classification": "DD",
 					"id": "Destroyer",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Destroyer"
+					"MapModel": "Destroyer",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Attack_Submarine",
@@ -1196,8 +1195,8 @@
 					"index": 6,
 					"Classification": "SS",
 					"id": "Attack_Submarine",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Fighter",
@@ -1205,8 +1204,8 @@
 					"index": 7,
 					"Classification": "AF",
 					"id": "Fighter",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Light_Bomber",
@@ -1214,8 +1213,8 @@
 					"index": 8,
 					"Classification": "ALB",
 					"id": "Light_Bomber",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Heavy_Bomber",
@@ -1223,8 +1222,8 @@
 					"index": 9,
 					"Classification": "AHB",
 					"id": "Heavy_Bomber",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Tank",
@@ -1232,8 +1231,8 @@
 					"index": 10,
 					"Classification": "GBT",
 					"id": "Tank",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": ""
+					"MapModel": "",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Airfield",
@@ -1241,8 +1240,8 @@
 					"index": 11,
 					"Classification": "BAF",
 					"id": "Airfield",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Shipyard"
+					"MapModel": "Shipyard",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "Shipyard",
@@ -1250,8 +1249,8 @@
 					"index": 12,
 					"Classification": "BSY",
 					"id": "Shipyard",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Shipyard"
+					"MapModel": "Shipyard",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"Name": "LandBase",
@@ -1259,8 +1258,8 @@
 					"index": 13,
 					"Classification": "BLB",
 					"id": "LandBase",
-					"DeathExplosion": "DamageExplosionLargePlaceholder",
-					"MapModel": "Shipyard"
+					"MapModel": "Shipyard",
+					"DeathFX": "DamageExplosionLargePlaceholder"
 				}
 			],
 			"separators": [
@@ -1592,8 +1591,13 @@
 					"name": "WeaponVariantReference"
 				},
 				{
-					"typeStr": "13",
-					"name": "Model",
+					"typeStr": "8",
+					"name": "ModelPath",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "FX",
 					"display": null
 				},
 				{
@@ -1669,7 +1673,6 @@
 					"Armor": 279,
 					"Name": "JpBB356A",
 					"Precision": 75,
-					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_A.prefab",
 					"Ammo": "ShellJapan356mm",
 					"Isavariant": false,
 					"Max_range": 35450,
@@ -1689,16 +1692,36 @@
 							"Weaponrole": "navalartillery"
 						}
 					],
-					"WeaponVariantReference": []
+					"WeaponVariantReference": [],
+					"FX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Fuso_Main_A"
+						}
+					]
 				},
 				{
 					"Name": "JpBB356B",
-					"Model": "../Prefabs/Weapons/Turret_Fuso_Main_B.prefab",
 					"Isavariant": true,
 					"id": "JapanBB356mmB",
 					"WeaponVariantReference": [
 						{
 							"WeaponVariantRef": "JapanBB356mmA"
+						}
+					],
+					"FX": [
+						{}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Fuso_Main_B"
 						}
 					]
 				},
@@ -1708,7 +1731,6 @@
 					"Armor": 25,
 					"Ammo": "ShellJapan200mm",
 					"Precision": 75,
-					"Model": "../Prefabs/Weapons/Turret_Takao_Main_A.prefab",
 					"Isavariant": false,
 					"Max_range": 29000,
 					"Min_range": 300,
@@ -1727,27 +1749,53 @@
 							"Weaponrole": "artillery"
 						}
 					],
-					"WeaponVariantReference": []
+					"WeaponVariantReference": [],
+					"FX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Takao_Main_A"
+						}
+					]
 				},
 				{
 					"Name": "JpCA200B",
-					"Model": "../Prefabs/Weapons/Turret_Takao_Main_B.prefab",
 					"Isavariant": true,
 					"id": "JapanCA200mmB",
 					"WeaponVariantReference": [
 						{
 							"WeaponVariantRef": "JapanCA200mmA"
 						}
+					],
+					"FX": [
+						{}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Takao_Main_B"
+						}
 					]
 				},
 				{
 					"Name": "JpCA200Y",
-					"Model": "../Prefabs/Weapons/Turret_Takao_Main_Y.prefab",
 					"Isavariant": true,
 					"id": "JapanCA200mmY",
 					"WeaponVariantReference": [
 						{
 							"WeaponVariantRef": "JapanCA200mmA"
+						}
+					],
+					"FX": [],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Takao_Main_Y"
 						}
 					]
 				},
@@ -1757,7 +1805,6 @@
 					"Armor": 12,
 					"Ammo": "ShellJapan152mm",
 					"Precision": 60,
-					"Model": "../Prefabs/Weapons/TurretJapan120mmType10AATwin.prefab",
 					"Isavariant": false,
 					"Max_range": 16000,
 					"Min_range": 200,
@@ -1776,7 +1823,19 @@
 							"Weaponrole": "artillery"
 						}
 					],
-					"WeaponVariantReference": []
+					"WeaponVariantReference": [],
+					"FX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "AATurrets",
+							"TurretModel": "TurretJapan120mmType10AATwin"
+						}
+					]
 				},
 				{
 					"Name": "JpBBCasemate120",
@@ -1784,7 +1843,6 @@
 					"Armor": 100,
 					"Ammo": "ShellJapan120mm",
 					"Precision": 80,
-					"Model": "../Prefabs/Weapons/Turret_Fuso_Casemate.prefab",
 					"Isavariant": false,
 					"Max_range": 19000,
 					"Min_range": 5,
@@ -1803,13 +1861,24 @@
 							"Weaponrole": "artillery"
 						}
 					],
-					"WeaponVariantReference": []
+					"WeaponVariantReference": [],
+					"FX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "ArtilleryTurrets",
+							"TurretModel": "Turret_Fuso_Casemate"
+						}
+					]
 				},
 				{
 					"Name": "JpTorp4CA",
 					"Health": 100,
 					"Armor": 12,
-					"Model": "../Prefabs/Weapons/TorpedoLauncherJapanQuadTakao.prefab",
 					"Ammo": "TorpedoJapan610mm",
 					"Precision": 77,
 					"Isavariant": false,
@@ -1827,7 +1896,19 @@
 							"Weaponrole": "torpedoes"
 						}
 					],
-					"WeaponVariantReference": []
+					"WeaponVariantReference": [],
+					"FX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"ModelPath": [
+						{
+							"TurretPath": "TorpedoLauncher",
+							"TurretModel": "TorpedoLauncherJapanQuadTakao"
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -1882,6 +1963,11 @@
 					"name": "Name"
 				},
 				{
+					"typeStr": "8",
+					"name": "ModelPath",
+					"display": null
+				},
+				{
 					"typeStr": "4",
 					"name": "Weight",
 					"display": null
@@ -1921,7 +2007,13 @@
 					"MaxLifeTime": 3,
 					"DamageMax": 150,
 					"DamageMin": 10,
-					"id": "ShellJapan356mm"
+					"id": "ShellJapan356mm",
+					"ModelPath": [
+						{
+							"AmmoPath": "ArtilleryShells",
+							"AmmoModel": "ShellJapan356mm"
+						}
+					]
 				},
 				{
 					"Name": "ShellJapan200mm",
@@ -1931,7 +2023,13 @@
 					"MaxLifeTime": 3,
 					"DamageMax": 100,
 					"DamageMin": 10,
-					"id": "ShellJapan200mm"
+					"id": "ShellJapan200mm",
+					"ModelPath": [
+						{
+							"AmmoPath": "ArtilleryShells",
+							"AmmoModel": "ShellJapan200mm"
+						}
+					]
 				},
 				{
 					"Name": "ShellJapan152mm",
@@ -1941,7 +2039,13 @@
 					"MaxLifeTime": 3,
 					"DamageMax": 20,
 					"DamageMin": 10,
-					"id": "ShellJapan152mm"
+					"id": "ShellJapan152mm",
+					"ModelPath": [
+						{
+							"AmmoPath": "ArtilleryShells",
+							"AmmoModel": "ShellJapan152mm"
+						}
+					]
 				},
 				{
 					"Name": "ShellJapan120mm",
@@ -1951,7 +2055,13 @@
 					"ArmorPenetration": 30,
 					"ExplosionRadius": 10,
 					"MaxLifeTime": 3,
-					"id": "ShellJapan120mm"
+					"id": "ShellJapan120mm",
+					"ModelPath": [
+						{
+							"AmmoPath": "ArtilleryShells",
+							"AmmoModel": "ShellJapan120mm"
+						}
+					]
 				},
 				{
 					"Name": "TorpedoJapan610mm",
@@ -1961,7 +2071,13 @@
 					"ArmorPenetration": 200,
 					"ExplosionRadius": 40,
 					"MaxLifeTime": 300,
-					"id": "TorpedoJapan610mm"
+					"id": "TorpedoJapan610mm",
+					"ModelPath": [
+						{
+							"AmmoPath": "Torpedoes",
+							"AmmoModel": "TorpedoJapan610mmLongLance"
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -2366,6 +2482,115 @@
 				{
 					"typeStr": "2",
 					"name": "CatFreezeRotation"
+				}
+			]
+		},
+		{
+			"name": "Weapons@FX",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:FX_Storage",
+					"name": "FXShooting",
+					"opt": true
+				},
+				{
+					"typeStr": "6:AudioFX_Storage",
+					"name": "ShootingSound",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "AudioFX_Storage",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "SoundFXPath"
+				},
+				{
+					"typeStr": "1",
+					"name": "SoundFXPrefab",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "musicA_calm",
+					"SoundFXPath": "Music",
+					"SoundFXPrefab": "music_calm.mp3"
+				},
+				{
+					"id": "musicA_stress",
+					"SoundFXPath": "Music",
+					"SoundFXPrefab": "music_stress.mp3"
+				},
+				{
+					"id": "ShellExplosion",
+					"SoundFXPath": "",
+					"SoundFXPrefab": "ShellExplosion.wav"
+				},
+				{
+					"id": "ShotFiring",
+					"SoundFXPath": "",
+					"SoundFXPrefab": "ShotFiring.wav"
+				},
+				{
+					"id": "TankExplosion",
+					"SoundFXPath": "",
+					"SoundFXPrefab": "TankExplosion.wav"
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayColumn": "SoundFXPrefab"
+			}
+		},
+		{
+			"name": "Weapons@ModelPath",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "TurretPath"
+				},
+				{
+					"typeStr": "1",
+					"name": "TurretModel",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Ammos@ModelPath",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "AmmoPath",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "AmmoModel",
+					"display": null
 				}
 			]
 		}
