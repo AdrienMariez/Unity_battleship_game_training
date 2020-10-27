@@ -246,6 +246,8 @@ public AudioFX_Storage musicA_stress { get { return Get(CompiledTypes.AudioFX_St
 public AudioFX_Storage ShellExplosion { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.ShellExplosion); } } 
 public AudioFX_Storage ShotFiring { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.ShotFiring); } } 
 public AudioFX_Storage TankExplosion { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.TankExplosion); } } 
+public AudioFX_Storage ShotCharging { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.ShotCharging); } } 
+public AudioFX_Storage turretRotation { get { return Get(CompiledTypes.AudioFX_Storage.RowValues.turretRotation); } } 
 private AudioFX_Storage Get(CompiledTypes.AudioFX_Storage.RowValues line) { return new AudioFX_Storage(parsedDB.Root, line); }
 
                 public AudioFX_Storage[] GetAll() 

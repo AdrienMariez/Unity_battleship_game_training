@@ -9,11 +9,9 @@ public class HardPointComponent : MonoBehaviour {
         [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
             [Range(0.0f, 180.0f)]
             public float m_LeftTraverse = 60.0f;
-            private float LocalLeftTraverse;
         [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
             [Range(0.0f, 180.0f)]
             public float m_RightTraverse = 60.0f; 
-            private float LocalRightTraverse;
         public FireZonesManager[] m_NoFireZones;
 
     [Header("Turrets vertical rotation limitations")]
@@ -40,11 +38,8 @@ public class HardPointComponent : MonoBehaviour {
             CompiledTypes.Weapons masterWeaponReference = weaponReference;
             if (weaponReference.Isavariant && weaponReference.WeaponVariantReferenceList.Count > 0) {
                 masterWeaponReference = weaponReference.WeaponVariantReferenceList[0].WeaponVariantRef;
-                // Debug.Log (weaponReference.id+" / "+masterWeaponReference.id);
             }
             // else { Debug.Log (weaponReference.id); }
-
-            // Debug.Log (weaponReference.WeaponModelPathList[0].TurretPath+"/"+weaponReference.WeaponModelPathList[0].TurretModel);
 
 
         // Set Prefab
@@ -67,8 +62,73 @@ public class HardPointComponent : MonoBehaviour {
 
             turretManager.AddNewWeapon(turretInstance);
 
+        // Add sound
+            GameObject audioPrefab = (Resources.Load("Prefabs/Objects/TurretAudioSource", typeof(GameObject))) as GameObject;
+            GameObject turretSoundInstance =
+                Instantiate (audioPrefab, turretInstance.transform);
+
+        // Build/find each script
+            TurretRotation turretRotation = turretInstance.GetComponent<TurretRotation>();
+            TurretFireManager turretFireManager = turretInstance.GetComponent<TurretFireManager>();
+            TurretHealth turretHealth = turretInstance.GetComponent<TurretHealth>();
+
         // Turret Rotation
-            turretInstance.GetComponent<TurretRotation>().BeginOperations(hardPointTransform);
+            if (weaponReference.Isavariant && weaponReference.Rotation_speed == 0) {
+                turretRotation.SetRotationSpeed(masterWeaponReference.Rotation_speed);
+            } else {
+                turretRotation.SetRotationSpeed(weaponReference.Rotation_speed);
+            }
+            turretRotation.SetLimitTraverse(hardPointComponent.m_LimitTraverse);
+            turretRotation.SetLeftTraverse(hardPointComponent.m_LeftTraverse);
+            turretRotation.SetRightTraverse(hardPointComponent.m_RightTraverse);
+            turretRotation.SetElevationZones(hardPointComponent.m_ElevationZones);
+            turretRotation.SetNoFireZones(hardPointComponent.m_NoFireZones);
+            if (weaponReference.Isavariant && weaponReference.Elevation_speed == 0) {
+                turretRotation.SetElevationSpeed(masterWeaponReference.Elevation_speed);
+            } else {
+                turretRotation.SetElevationSpeed(weaponReference.Elevation_speed);
+            }
+            if (weaponReference.Isavariant && weaponReference.Max_vertical_traverse == 0) {
+                turretRotation.SetElevationMax(masterWeaponReference.Max_vertical_traverse);
+            } else {
+                turretRotation.SetElevationMax(weaponReference.Max_vertical_traverse);
+            }
+            if (weaponReference.Isavariant && weaponReference.Min_vertical_traverse == 0) {
+                turretRotation.SetElevationMin(masterWeaponReference.Min_vertical_traverse);
+            } else {
+                turretRotation.SetElevationMin(weaponReference.Min_vertical_traverse);
+            }
+        // Set all FX
+            if (weaponReference.Isavariant && weaponReference.WeaponFXList.Count == 0) {
+                if (masterWeaponReference.WeaponFXList.Count > 0) {
+                    turretRotation.SetTurretRotationAudio((AudioClip) Resources.Load("Sounds/"+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPath+""+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPrefab));
+                }
+            } else if (weaponReference.WeaponFXList.Count > 0) {
+                turretRotation.SetTurretRotationAudio((AudioClip) Resources.Load("Sounds/"+weaponReference.WeaponFXList[0].RotationSound.SoundFXPath+""+weaponReference.WeaponFXList[0].RotationSound.SoundFXPrefab));
+            }
+            if (turretRotation.GetTurretRotationAudio() == null) {
+                // Debug.Log (" No TurretRotationAudio found. For"+ weaponReference.id);
+                Debug.Log (" No TurretRotationAudio found.");
+                // UnitDeathFX = WorldUIVariables.GetErrorModel();
+                turretRotation.SetTurretRotationAudio(WorldUIVariables.GetErrorSound());
+            }
+            
+            turretRotation.BeginOperations(hardPointTransform, hardPointComponent, hardPointElement, turretSoundInstance);
+
+        // Health
+            if (weaponReference.Isavariant && weaponReference.Armor == 0) {
+                turretHealth.SetElementArmor(masterWeaponReference.Armor);
+            } else {
+                turretHealth.SetElementArmor(weaponReference.Armor);
+            }
+            if (weaponReference.Isavariant && weaponReference.Health == 0) {
+                turretHealth.SetStartingHealth(masterWeaponReference.Health);
+            } else {
+                turretHealth.SetStartingHealth(weaponReference.Health);
+            }
+            turretHealth.BeginOperations(turretManager, turretRotation, turretFireManager);
+
+
     }
 
     public static void SetUpShipFunnel(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform){

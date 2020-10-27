@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4311736457062942074}
   - component: {fileID: 3239157982545820913}
   m_Layer: 15
-  m_Name: CannonAxis
+  m_Name: VerticalAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -716,7 +716,7 @@ GameObject:
   - component: {fileID: 3016212582425994996}
   - component: {fileID: 7965561413147565690}
   m_Layer: 15
-  m_Name: Turret356mmB
+  m_Name: JpBB356mmB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -872,9 +872,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa93e27c3a41a534384ab345bc0c9ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ElementHealth: 200
-  m_ElementArmor: 279
-  debug: 0
 --- !u!114 &8977394049090617044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,19 +912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  m_TurretTurret: {fileID: 6576253131220600516}
   m_TurretCannon: {fileID: 3239157982545820913}
-  m_Parent: {fileID: 0}
-  m_RotationSpeed: 15
-  m_LimitTraverse: 0
-  m_LeftTraverse: 60
-  m_RightTraverse: 60
-  m_NoFireZones: []
-  m_ElevationSpeed: 15
-  m_UpTraverse: 124
-  m_DownTraverse: 80
-  m_ElevationZones: []
-  debug: 0
 --- !u!65 &3016212582425994996
 BoxCollider:
   m_ObjectHideFlags: 0

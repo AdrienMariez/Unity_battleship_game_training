@@ -28,6 +28,7 @@ public class WorldUIVariables : MonoBehaviour {
         public GameObject m_ShipDamageControlAlertUI;
     [Header("Error Models")]
         public GameObject m_ErrorModel;
+        public AudioClip m_ErrorSound;
 
 /////////////////////////////////////////////////////////
 
@@ -55,8 +56,9 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Static Damage Control UI")]
         private static GameObject ShipDamageControlUI;
         private static GameObject ShipDamageControlAlertUI;
-    [Header("Error Models")]
+    [Header("Errors")]
         private static GameObject ErrorModel;
+        private static AudioClip ErrorSound;
 
     private static bool FirstLoad = true;
     private void Start() {
@@ -91,6 +93,7 @@ public class WorldUIVariables : MonoBehaviour {
         ShipDamageControlAlertUI = m_ShipDamageControlAlertUI;
 
         ErrorModel = m_ErrorModel;
+        ErrorSound = m_ErrorSound;
     }
     public static GameObject GetTankUI() { return TankUI; }
     public static GameObject GetPlaneUI() { return PlaneUI; }
@@ -117,6 +120,7 @@ public class WorldUIVariables : MonoBehaviour {
     public static GameObject GetUnitMapUI() { return UnitMapUI; }
 
     public static GameObject GetErrorModel() { return ErrorModel; }
+    public static AudioClip GetErrorSound() { return ErrorSound; }
 
     public static GameObject BuildMapModel(CompiledTypes.Units_sub_categories unitCategory) {
         GameObject mapModel = (Resources.Load("Prefabs/MapModels/"+unitCategory.MapModel, typeof(GameObject))) as GameObject;

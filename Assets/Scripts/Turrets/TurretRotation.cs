@@ -11,42 +11,41 @@ public class TurretRotation : MonoBehaviour
             public AudioClip m_TurretRotationAudio;
         [Tooltip ("Axis of rotation for the elevation of the cannon.")]
             public Rigidbody m_TurretCannon;
+            
 
-        [Header("Horizontal rotation")]
-        [Tooltip ("Rotation Speed. (°/s)")]
-            public float m_RotationSpeed = 15.0f;
 
-        [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
-            public bool m_LimitTraverse = false;
-        [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
-            [Range(0.0f, 180.0f)]
-            public float m_LeftTraverse = 60.0f;
-            private float LocalLeftTraverse;
-        [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
-            [Range(0.0f, 180.0f)]
-            public float m_RightTraverse = 60.0f; 
-            private float LocalRightTraverse;
-        public FireZonesManager[] m_NoFireZones;
+    private float RotationSpeed = 15.0f; public void SetRotationSpeed(float rotationSpeed){ RotationSpeed = rotationSpeed; }
+    private bool LimitTraverse = false; public void SetLimitTraverse(bool limitTraverse){ LimitTraverse = limitTraverse; }
+    private float LeftTraverse = 60.0f; public void SetLeftTraverse(float leftTraverse){ LeftTraverse = leftTraverse; }
+    private float RightTraverse = 60.0f; public void SetRightTraverse(float rightTraverse){ RightTraverse = rightTraverse; }
+    private float LocalLeftTraverse, LocalRightTraverse;
 
-    [Header("Vertical elevation")]
-        [Tooltip ("Maximum elevation Speed. (Degree per Second)")] public float m_ElevationSpeed = 15.0f;
+    private float ElevationSpeed = 15.0f; public void SetElevationSpeed(float elevationSpeed){ ElevationSpeed = elevationSpeed; }
+    private float ElevationMax = 110.0f; public void SetElevationMax(float elevationMax){ ElevationMax = elevationMax; }
+    private float ElevationMin = 80.0f; public void SetElevationMin(float elevationMin){ ElevationMin = elevationMin; }
 
-        [Tooltip("Maximum elevation (degrees) of the turret. 90° is horizontal.")]
-        [Range(0.0f, 180.0f)]
-        public float m_UpTraverse = 110.0f;
-        [Tooltip("Depression (degrees) of the turret.  90° is horizontal.")]
-        [Range(0.0f, 180.0f)]
-        public float m_DownTraverse = 80.0f;
-        public ElevationZonesManager[] m_ElevationZones;
+    private FireZonesManager[] NoFireZones; public void SetNoFireZones(FireZonesManager[] noFireZones){ NoFireZones = noFireZones; }
+    private ElevationZonesManager[] ElevationZones; public void SetElevationZones(ElevationZonesManager[] elevationZones){ ElevationZones = elevationZones; }
 
-    [Header("Debug")]
-        public bool debug = false;
 
-    [Tooltip ("Position/rotation of the direct parent")] private Vector3 ParentEulerAngles;
-    [Tooltip ("initial rotation of the turret")] private float TurretEulerAngle;
-    [Tooltip ("initial elevation of the turret")] private float TurretEulerElevAngle;
+    private AudioSource _AudioSource;
+    private AudioClip TurretRotationAudio; public void SetTurretRotationAudio(AudioClip turretRotationAudio){ TurretRotationAudio = turretRotationAudio; }
+    public AudioClip GetTurretRotationAudio(){ return TurretRotationAudio; }
+    private float PitchRange = 0.2f, OriginalPitch;
+    private bool PlayRotationAudio = false;
+    public void SetPlayRotationAudio(bool a){
+        // Debug.Log("SetPlayRotationAudio"+ a);
+        PlayRotationAudio = a; }
+    private bool RotationAudioIsPlaying = false;
+    public void SetRotationAudioIsPlaying(bool a){
+        // Debug.Log("SetRotationAudioIsPlaying"+ a);
+        RotationAudioIsPlaying = a; }
+
+    private Vector3 ParentEulerAngles;     // Position/rotation of the direct parent
+    private float TurretEulerAngle;                // Initial rotation of the turret
+    private float TurretEulerElevAngle;           // initial elevation of the turret
     private float TargetAng;
-    private float CurrentAng;
+    private float CurrentAng, CurrentAngSave;
     private float TargetAngElev;
     private float CurrentAngElev;
     private Vector3 TargetPosition;
@@ -59,81 +58,86 @@ public class TurretRotation : MonoBehaviour
     private bool ActionPaused = false;
     private bool TurretSleep = true;
 
-    private Transform ParentTransform;
-    private Transform Transform;
+    private Transform ParentTransform;      // Position/rotation of the parent (usually the hardpoint)
+    private Transform Transform;            // Position/rotation of the turret itself, (the horizontal rotation axis)
     private Vector3 PositionSafeguard;
+    private Transform ElevationTransform;   // Position/rotation of the guns, (Vertical elevation) IS ALWAYS AN OBJECT NAMED "VerticalAxis"
 
-    public void BeginOperations(Transform parentTransform){
-        ParentTransform = parentTransform.parent;
-        Transform = parentTransform;
-        PositionSafeguard = parentTransform.position;
+    public void BeginOperations(Transform parentTransform, HardPointComponent hardPointComponent, WorldSingleUnit.UnitHardPoint hardPointElement, GameObject turretSoundInstance){
+        // Rotation transforms
+            ParentTransform = parentTransform.parent;
+            Transform = parentTransform;
+            PositionSafeguard = parentTransform.position;
+            ElevationTransform = this.transform.Find("VerticalAxis").transform;
 
+        // Sound
+            _AudioSource = turretSoundInstance.GetComponent<AudioSource>();
+            OriginalPitch = _AudioSource.pitch;
+            _AudioSource.pitch = Random.Range (OriginalPitch - PitchRange, OriginalPitch + PitchRange);
+            
 
         ParentEulerAngles = parentTransform.rotation.eulerAngles;
         TurretEulerAngle = Transform.localRotation.eulerAngles.y;
         TurretEulerElevAngle = 90;
-        LocalLeftTraverse = m_LeftTraverse + TurretEulerAngle;
+        LocalLeftTraverse = LeftTraverse + TurretEulerAngle;
         if (LocalLeftTraverse > 360)
             LocalLeftTraverse -= 360;
-        LocalRightTraverse = 360 - m_RightTraverse + TurretEulerAngle;
+        LocalRightTraverse = 360 - RightTraverse + TurretEulerAngle;
         if (LocalRightTraverse > 360)
             LocalRightTraverse -= 360;
 
 
-        CurrentAng = Transform.localRotation.eulerAngles.y;                  // Gets start angle horizontal
-
-        CurrentAngElev = m_TurretCannon.transform.localRotation.eulerAngles.x;              // Gets start angle vertical
+        CurrentAng = Transform.localRotation.eulerAngles.y;                  // Get initial angle horizontal
+        CurrentAngElev = ElevationTransform.localRotation.eulerAngles.x;     // Get initial angle vertical
 
         StartCoroutine(PositionSafeguardLoop());
-        
-        // if (debug) {
-        //     Debug.Log("TurretEulerAngle: " + TurretEulerAngle);
-        //     Debug.Log("m_LeftTraverse: " + m_LeftTraverse);
-        //     Debug.Log("m_RightTraverse: " + m_RightTraverse);
-        //     Debug.Log("LocalLeftTraverse: " + LocalLeftTraverse);
-        //     Debug.Log("localRightTraverse: " + localRightTraverse);
-            // Debug.Log("m_IdlePosition: " + m_IdlePosition);
-        // }
     }
 
-    private void TurretAudio() {
-        // TODO play turret rotation audio if the turret axis is moving
-        /*
-
-        //Abs (x) means that if x=-3, Abs(x)=3
-        //if not moving or rotating
-        if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f)
-        {
-            //if moving audio currently playing
-             if (m_MovementAudio.clip == m_EngineDriving)
-             {
-                //switch playing clip
-                m_MovementAudio.clip = m_EngineIdling;
-                //randomize pitch
-                m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-                //play the new audio
-                m_MovementAudio.Play ();
-             }
+    private void CheckAudio() {
+        if (PlayRotationAudio && !RotationAudioIsPlaying && _AudioSource.clip != TurretRotationAudio) {
+            // Debug.Log("_AudioSource.clip: " + _AudioSource.clip);
+            PlayTurretAudio();
+        } else if (!PlayRotationAudio && RotationAudioIsPlaying && _AudioSource.clip == TurretRotationAudio) {
+            // Does not work as mentioned in documentation. .isPlaying returns true when audio source is stopped/ paused.
+            // Debug.Log("_AudioSource.clip: " + _AudioSource.clip);
+            StopTurretAudio();
         }
-        else
-        {
-            //if idling audio currently playing
-            if (m_MovementAudio.clip == m_EngineIdling){
-                //switch playing clip
-                m_MovementAudio.clip = m_EngineDriving;
-                //randomize pitch
-                m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-                //play the new audio
-                m_MovementAudio.Play ();
-            }
+    }
+    private void PlayTurretAudio() {
+        // Debug.Log("PlayTurretAudio");
+        _AudioSource.clip = TurretRotationAudio;
+        _AudioSource.loop = true;
+        _AudioSource.Play();
+    }
+    private void StopTurretAudio() {
+        // Debug.Log("StopTurretAudio");
+        _AudioSource.Stop();
+        _AudioSource.clip = null;
+        _AudioSource.loop = false;
+    }
+    public void SetPause(bool pause) {      // Pause music if game is paused
+        if (pause && _AudioSource.clip == TurretRotationAudio) {
+            _AudioSource.Pause();
+        } else if (!pause && _AudioSource.clip == TurretRotationAudio) {
+            _AudioSource.Play();
         }
-        */
     }
 
     private void FixedUpdate(){
 
+        SetPlayRotationAudio(false);
+        if (_AudioSource.clip == TurretRotationAudio) {
+            // Debug.Log("_AudioSource.clip : " + _AudioSource.clip);
+            SetRotationAudioIsPlaying(true);
+        } else {
+            SetRotationAudioIsPlaying(false);
+        }
+
+
+        CurrentAngSave = CurrentAng;
+
         if (!Dead) {
-            // Debug.DrawRay(m_TurretCannon.transform.position, TargetPosition - m_TurretCannon.transform.position , Color.yellow);
+            // Debug.DrawRay(ElevationTransform.position, TargetPosition - ElevationTransform.position , Color.yellow);
             // if (debug) { Debug.Log("TargetPosition: " + TargetPosition); }
             TurretRotate();
 
@@ -148,6 +152,10 @@ public class TurretRotation : MonoBehaviour
         } else{
             TurretFireManager.SetPreventFire(false);
         }
+
+        // Debug.Log("PlayRotationAudio : " + PlayRotationAudio+" RotationAudioIsPlaying : " + RotationAudioIsPlaying);
+        CheckAudio();
+
 
         // if (debug) {
         //     Debug.Log("PreventFireHoriz: " + PreventFireHoriz+"PreventFireVert: " + PreventFireVert);
@@ -212,8 +220,19 @@ public class TurretRotation : MonoBehaviour
         CurrentAng = BuildRotation(CurrentAng, TargetAng);
 
         // Check if the turret is hitting a limitation
-        if (m_LimitTraverse) {
+        if (LimitTraverse) {
             CurrentAng = CheckLimitTraverse(CurrentAng);
+        }
+
+        // Debug.Log("CurrentAng = "+ CurrentAng+"TargetAng = "+ TargetAng);
+
+        // if (TargetAng > CurrentAng && (TargetAng-3) > CurrentAng || TargetAng < CurrentAng && (TargetAng+3) < CurrentAng) {
+        //     SetPlayRotationAudio(true);                   // For sounds, the turrets is currently rotating
+        // }
+        if (TargetAng > CurrentAng && (TargetAng-3) > CurrentAng || TargetAng < CurrentAng && (TargetAng+3) < CurrentAng) {
+            if (CurrentAngSave > CurrentAng && (CurrentAngSave-(RotationSpeed * Time.fixedDeltaTime)) > CurrentAng || CurrentAngSave < CurrentAng && (CurrentAngSave+(RotationSpeed * Time.fixedDeltaTime)) < CurrentAng) {
+                SetPlayRotationAudio(true);                   // For sounds, the turrets is currently rotating
+            }
         }
 
         if (CurrentAng<0)
@@ -228,41 +247,48 @@ public class TurretRotation : MonoBehaviour
         if (TurretSleep && TargetAng > 359.5 && CurrentAng < 0.5 || TurretSleep && TargetAng < 0.5 && CurrentAng > 359.5) {
             return;
         }
-        if (TargetAng >= CurrentAng && TargetAng <= (CurrentAng+0.1)  || TargetAng <= CurrentAng && TargetAng >= (CurrentAng-0.1)) {
-            // if (debug) { Debug.Log("Vertical Close");}
+        if (TargetAng >= CurrentAng && TargetAng <= (CurrentAng+0.2)  || TargetAng <= CurrentAng && TargetAng >= (CurrentAng-0.2)) {
+            // if (debug) { Debug.Log("Horizontal Close");}
             return;
         }
 
+        // if (TargetAng > 359.5 && CurrentAng < 0.5 || TargetAng < 0.5 && CurrentAng > 359.5 || TargetAng >= CurrentAng && TargetAng <= (CurrentAng+0.2) || TargetAng >= (CurrentAng+0.5)) {
+        //     PlayRotationAudio = true;                   // For sounds, the turrets is currently rotating
+        // } else {
+        //     PlayRotationAudio = false;
+        // }
+
         // if (debug) { Debug.Log("CurrentAng = "+ CurrentAng+"TargetAng = "+ TargetAng);}
 
-        // Update the turret angle
-        Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
+        // Debug.Log("CurrentAng = "+ CurrentAng+"TargetAng = "+ TargetAng);
+
+        Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));              // Update the turret angle
 
         // Debug.DrawLine(Transform.position, TargetPosition, Color.green);
     }
 
     private float BuildRotation(float currentAngle, float targetAngle){
-        if (!m_LimitTraverse) {
+        if (!LimitTraverse) {
             if (currentAngle < targetAngle && currentAngle+180 > TargetAng || currentAngle > targetAngle && currentAngle > targetAngle+180) {
-                currentAngle += m_RotationSpeed * Time.fixedDeltaTime;
+                currentAngle += RotationSpeed * Time.fixedDeltaTime;
             } else {
-                currentAngle -= m_RotationSpeed * Time.fixedDeltaTime;
+                currentAngle -= RotationSpeed * Time.fixedDeltaTime;
             }
         } else {
             float Median;
             if (LocalLeftTraverse > LocalRightTraverse) {
                 Median = ((LocalRightTraverse + LocalLeftTraverse)/2) - 180;
                 if (currentAngle < targetAngle && targetAngle > Median || currentAngle > targetAngle && targetAngle < Median) {
-                    currentAngle += m_RotationSpeed * Time.fixedDeltaTime;
+                    currentAngle += RotationSpeed * Time.fixedDeltaTime;
                 } else {
-                    currentAngle -= m_RotationSpeed * Time.fixedDeltaTime;
+                    currentAngle -= RotationSpeed * Time.fixedDeltaTime;
                 }
             } else {
                 Median = (LocalRightTraverse + LocalLeftTraverse)/2;
                 if (currentAngle < targetAngle && targetAngle < Median || currentAngle < targetAngle && currentAngle > Median || currentAngle > targetAngle && currentAngle >= Median && targetAngle < Median) {
-                    currentAngle += m_RotationSpeed * Time.fixedDeltaTime;
+                    currentAngle += RotationSpeed * Time.fixedDeltaTime;
                 } else {
-                    currentAngle -= m_RotationSpeed * Time.fixedDeltaTime;
+                    currentAngle -= RotationSpeed * Time.fixedDeltaTime;
                 }
             }
         }
@@ -294,8 +320,8 @@ public class TurretRotation : MonoBehaviour
         bool PreventFire = false;
 
         // Check first if any no fire zones are implemented, and if the turret is in it
-        if (m_NoFireZones.Length > 0) {
-            foreach (FireZonesManager fireZone in m_NoFireZones) {
+        if (NoFireZones.Length > 0) {
+            foreach (FireZonesManager fireZone in NoFireZones) {
                 if (fireZone.ZoneBegin > fireZone.ZoneEnd) {
                     if (CurrentAngle > fireZone.ZoneBegin || CurrentAngle < fireZone.ZoneEnd) {
                         PreventFire = true;
@@ -327,7 +353,7 @@ public class TurretRotation : MonoBehaviour
     }
 
     private void CannonElevation() {
-        CurrentAngElev = m_TurretCannon.transform.localRotation.eulerAngles.x;
+        CurrentAngElev = ElevationTransform.localRotation.eulerAngles.x;
 
         float parentRotationAng = ParentTransform.rotation.eulerAngles.x - ParentEulerAngles.x;      // Get parent current rotation rate
 
@@ -344,7 +370,7 @@ public class TurretRotation : MonoBehaviour
         else
             ElevationRatio += 20;
 
-        TargetAngElev = (ElevationRatio * (m_UpTraverse - m_DownTraverse) / 100) + m_DownTraverse;      // Build traverse with the range required
+        TargetAngElev = (ElevationRatio * (ElevationMax - ElevationMin) / 100) + ElevationMin;      // Build traverse with the range required
 
         // if (debug) { Debug.Log("targetAngleWorld --- = "+ targetAngleWorld); }
 
@@ -368,7 +394,7 @@ public class TurretRotation : MonoBehaviour
         // if (debug) { Debug.Log("targetAngElev --- = "+ targetAngElev); }
         // if (debug) { Debug.Log("currentAngElev = "+ currentAngElev); }
 
-        float speed = m_ElevationSpeed * Time.fixedDeltaTime;
+        float speed = ElevationSpeed * Time.fixedDeltaTime;
         if (CurrentAngElev < TargetAngElev && CurrentAngElev + speed < TargetAngElev) {
             CurrentAngElev += speed;
         } else if (CurrentAngElev > TargetAngElev && CurrentAngElev - speed > TargetAngElev) {
@@ -382,9 +408,9 @@ public class TurretRotation : MonoBehaviour
         
 
         // Create a vector between the current position and the target
-        //     Vector3 targetDir = TargetPosition - m_TurretCannon.transform.position;
+        //     Vector3 targetDir = TargetPosition - ElevationTransform.position;
         // // Get the angle between the facing of the current position and the new vector
-        //     float signedAngle = Vector3.SignedAngle(targetDir, m_TurretCannon.transform.forward, Vector3.forward);
+        //     float signedAngle = Vector3.SignedAngle(targetDir, ElevationTransform.forward, Vector3.forward);
         // if (debug) { Debug.Log("signedAngle = "+ signedAngle); }   
         
         CurrentAngElev += 90;                                                                           // Transform back the elevation variable into the same axis than the limitations
@@ -405,13 +431,13 @@ public class TurretRotation : MonoBehaviour
 
         // if (debug) { Debug.Log("TargetAngElev = "+TargetAngElev+"CurrentAngElev = "+CurrentAngElev); }
 
-        m_TurretCannon.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentAngElev, 0.0f, 0.0f));   // Set correct current angle to the cannons axis
+        ElevationTransform.localRotation = Quaternion.Euler (new Vector3 (CurrentAngElev, 0.0f, 0.0f));   // Set correct current angle to the cannons axis
 
-        // Debug.DrawRay(m_TurretCannon.transform.position, m_TurretCannon.transform.TransformDirection(Vector3.forward) * 1000, Color.red);
+        // Debug.DrawRay(ElevationTransform.position, ElevationTransform.TransformDirection(Vector3.forward) * 1000, Color.red);
     }
     private float CheckLimitElevation(float currentElevation){
-        float localUpTraverse = m_UpTraverse;
-        float localDownTraverse = m_DownTraverse;
+        float localUpTraverse = ElevationMax;
+        float localDownTraverse = ElevationMin;
 
         // Transform the elevation variable into the same axis than the limitations
         if (currentElevation > 180)
@@ -421,37 +447,37 @@ public class TurretRotation : MonoBehaviour
         currentElevation -= 90;
 
         // Check the elevations zones, and update the limit values if needed
-        if (m_ElevationZones.Length > 0){
-            for (int i = 0; i < m_ElevationZones.Length; i++) {
-                if (m_ElevationZones[i].ZoneBegin > m_ElevationZones[i].ZoneEnd) {
-                    if (CurrentAng > m_ElevationZones[i].ZoneBegin || CurrentAng < m_ElevationZones[i].ZoneEnd) {
-                        if (m_ElevationZones[i].OverrideMaxElev){
-                            localUpTraverse = m_ElevationZones[i].UpTraverse;
+        if (ElevationZones.Length > 0){
+            foreach (ElevationZonesManager elevationZone in ElevationZones) {
+                if (elevationZone.ZoneBegin > elevationZone.ZoneEnd) {
+                    if (CurrentAng > elevationZone.ZoneBegin || CurrentAng < elevationZone.ZoneEnd) {
+                        if (elevationZone.OverrideMaxElev){
+                            localUpTraverse = elevationZone.UpTraverse;
                         }
-                        if (m_ElevationZones[i].OverrideMinElev) {
-                            localDownTraverse = m_ElevationZones[i].DownTraverse;
+                        if (elevationZone.OverrideMinElev) {
+                            localDownTraverse = elevationZone.DownTraverse;
                         }
                     }
-                } else if (CurrentAng > m_ElevationZones[i].ZoneBegin && CurrentAng < m_ElevationZones[i].ZoneEnd ) {
-                    if (m_ElevationZones[i].OverrideMaxElev){
-                            localUpTraverse = m_ElevationZones[i].UpTraverse;
-                        }
-                        if (m_ElevationZones[i].OverrideMinElev) {
-                            localDownTraverse = m_ElevationZones[i].DownTraverse;
-                        }
+                } else if (CurrentAng > elevationZone.ZoneBegin && CurrentAng < elevationZone.ZoneEnd ) {
+                    if (elevationZone.OverrideMaxElev){
+                        localUpTraverse = elevationZone.UpTraverse;
+                    }
+                    if (elevationZone.OverrideMinElev) {
+                        localDownTraverse = elevationZone.DownTraverse;
+                    }
                 }
             }
         }
 
         // Implement limitations, clamp if the limitation is close
         if (currentElevation > (localUpTraverse+1)){
-            currentElevation -= 2 * m_ElevationSpeed * Time.fixedDeltaTime;
+            currentElevation -= 2 * ElevationSpeed * Time.fixedDeltaTime;
         }
         else if (currentElevation >= localUpTraverse){
             currentElevation = localUpTraverse;
         }
         else if (currentElevation < (localDownTraverse-1)){
-            currentElevation += 2 * m_ElevationSpeed * Time.fixedDeltaTime;
+            currentElevation += 2 * ElevationSpeed * Time.fixedDeltaTime;
         }
         else if (currentElevation <= localDownTraverse){
             currentElevation = localDownTraverse;

@@ -47,10 +47,10 @@ public class WorldSingleUnit {
             UnitReference_DB = unit;
 
         // MODEL
-            if (unit.Isavariant && String.IsNullOrEmpty(unit.UnitPath)) {
-                UnitPrefab = (Resources.Load("Prefabs/Units/"+masterUnitReference.UnitPath+"/"+masterUnitReference.UnitModel, typeof(GameObject))) as GameObject;
-            } else if (!String.IsNullOrEmpty(unit.UnitPath)) {
-                UnitPrefab = (Resources.Load("Prefabs/Units/"+unit.UnitPath+"/"+unit.UnitModel, typeof(GameObject))) as GameObject;
+            if (unit.Isavariant && unit.UnitModelPathList.Count == 0) {
+                UnitPrefab = (Resources.Load("Prefabs/Units/"+masterUnitReference.UnitModelPathList[0].UnitPath+""+masterUnitReference.UnitModelPathList[0].UnitModel, typeof(GameObject))) as GameObject;
+            } else if (unit.UnitCameraParametersList.Count > 0) {
+                UnitPrefab = (Resources.Load("Prefabs/Units/"+unit.UnitModelPathList[0].UnitPath+""+unit.UnitModelPathList[0].UnitModel, typeof(GameObject))) as GameObject;
             }
             if (UnitPrefab == null) {
                 Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
@@ -78,7 +78,7 @@ public class WorldSingleUnit {
                         string catString = subCat.Category.id.ToString();
                         UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
 
-                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathFX.FXPath+"/"+masterUnitReference.UnitCategory.DeathFX.FXPrefab;
+                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathFX.FXPath+""+masterUnitReference.UnitCategory.DeathFX.FXPrefab;
                         UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
@@ -93,7 +93,7 @@ public class WorldSingleUnit {
                         string catString = subCat.Category.id.ToString();
                         UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
                         
-                        string FXString = "FX/"+unit.UnitCategory.DeathFX.FXPath+"/"+unit.UnitCategory.DeathFX.FXPrefab;
+                        string FXString = "FX/"+unit.UnitCategory.DeathFX.FXPath+""+unit.UnitCategory.DeathFX.FXPrefab;
                         UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
                     }
                 }
@@ -102,7 +102,7 @@ public class WorldSingleUnit {
             }
 
             if (UnitDeathFX == null) {
-                Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
+                Debug.Log (" No UnitDeathFX found. Unit id :"+ unit.id);
                 UnitDeathFX = WorldUIVariables.GetErrorModel();
             }
             // Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);

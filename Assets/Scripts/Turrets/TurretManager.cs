@@ -65,7 +65,6 @@ public class TurretManager : MonoBehaviour {
                 MaxRange = MaxR;
             if (MinR < MinRange)
                 MinRange = MinR;
-            turret.GetComponent<TurretHealth>().SetTurretManager(this);
             turret.GetComponent<TurretFireManager>().SetTurretManager(this);
             turret.GetComponent<TurretRotation>().SetTurretFireManager(turret.GetComponent<TurretFireManager>());
             TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles(); 
@@ -241,6 +240,9 @@ public class TurretManager : MonoBehaviour {
     public void SetPause() {
         Pause = !Pause;
         SetPlayerControl();
+        foreach (GameObject turret in AllTurrets) {
+            turret.GetComponent<TurretRotation>().SetPause(Pause);
+        }
     }
     public void SetDamageControl(bool damageControl) {
         DamageControl = damageControl;

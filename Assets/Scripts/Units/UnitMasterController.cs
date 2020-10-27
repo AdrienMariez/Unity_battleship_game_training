@@ -185,8 +185,33 @@ public class UnitMasterController : MonoBehaviour {
 
                 if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
                     HardPointComponent.SetUpWeaponHardPoint(hardPointElement, hardPointComponent, hardPointTransform, Turrets);
+                } else {
+                    HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
                 }
-                HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
+                
+                if (hardPointElement.GetIsMirrored()) {
+                    GameObject hardPointCopy = new GameObject();
+                    Transform hardPointTransformCopy = hardPointCopy.transform;
+                    hardPointTransformCopy.parent = this.transform.Find("HardPoints");
+                    hardPointTransformCopy.localPosition = new Vector3 (-hardPointTransform.localPosition.x, hardPointTransform.localPosition.y, hardPointTransform.localPosition.z);
+                    hardPointTransformCopy.localRotation = Quaternion.Euler (new Vector3 (hardPointTransform.localRotation.x, -hardPointTransform.localRotation.y, hardPointTransform.localRotation.z));
+
+
+                    HardPointComponent hardPointComponentCopy = hardPointCopy.AddComponent<HardPointComponent>();
+                    hardPointComponentCopy.m_LimitTraverse = hardPointComponent.m_LimitTraverse;
+                    hardPointComponentCopy.m_LeftTraverse = hardPointComponent.m_RightTraverse;
+                    hardPointComponentCopy.m_RightTraverse = hardPointComponent.m_LeftTraverse;
+                    hardPointComponentCopy.m_NoFireZones = hardPointComponent.m_NoFireZones;
+                    hardPointComponentCopy.m_ElevationZones = hardPointComponent.m_ElevationZones;
+
+                    hardPointComponentCopy.m_Prefab = hardPointComponent.m_Prefab;
+
+                    if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
+                        HardPointComponent.SetUpWeaponHardPoint(hardPointElement, hardPointComponentCopy, hardPointTransformCopy, Turrets);
+                    } else {
+                        HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy);
+                    }
+                }
             }
 
         // Find and set components

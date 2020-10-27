@@ -12,8 +12,7 @@ namespace CompiledTypes
 public bool Isavariant;
 public List<UnitVariantReference> UnitVariantReferenceList = new List<UnitVariantReference>();
 public string UnitName;
-public string UnitPath;
-public string UnitModel;
+public List<UnitModelPath> UnitModelPathList = new List<UnitModelPath>();
 public Units_sub_categories UnitCategory;
 public Countries UnitNation;
 public List<UnitScore> UnitScoreList = new List<UnitScore>();
@@ -42,8 +41,7 @@ id = node["id"];
 Isavariant = node["Isavariant"].AsBool;
 foreach(var item in node["UnitVariantReference"]) { UnitVariantReferenceList.Add(new UnitVariantReference(root, item));}
 UnitName = node["UnitName"];
-UnitPath = node["UnitPath"];
-UnitModel = node["UnitModel"];
+foreach(var item in node["UnitModelPath"]) { UnitModelPathList.Add(new UnitModelPath(root, item));}
 UnitCategory = new CompiledTypes.Units_sub_categories(root,CompiledTypes.Units_sub_categories.GetRowValue(node["UnitCategory"]));
 UnitNation = new CompiledTypes.Countries(root,CompiledTypes.Countries.GetRowValue(node["UnitNation"]));
 foreach(var item in node["UnitScore"]) { UnitScoreList.Add(new UnitScore(root, item));}

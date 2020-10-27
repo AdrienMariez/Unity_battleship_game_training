@@ -21,13 +21,8 @@
 					"name": "UnitName"
 				},
 				{
-					"typeStr": "1",
-					"name": "UnitPath",
-					"opt": true
-				},
-				{
-					"typeStr": "1",
-					"name": "UnitModel",
+					"typeStr": "8",
+					"name": "UnitModelPath",
 					"opt": true
 				},
 				{
@@ -590,7 +585,7 @@
 					"UnitHealth": 10000,
 					"UnitCameraParameters": [
 						{
-							"Distance": 120,
+							"Distance": 12,
 							"Height": 25,
 							"Lateraloffset": 0
 						}
@@ -602,8 +597,6 @@
 						}
 					],
 					"UnitNation": "japan",
-					"UnitPath": "Ship",
-					"UnitModel": "IJN_Battleship_Fuso",
 					"Isavariant": false,
 					"UnitCategory": "Battleship",
 					"UnitMass": 38536000,
@@ -718,6 +711,12 @@
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "Japan120mmType10AATwin"
+						}
+					],
+					"UnitModelPath": [
+						{
+							"UnitPath": "Ship/",
+							"UnitModel": "IJN_Battleship_Fuso"
 						}
 					]
 				},
@@ -1061,11 +1060,15 @@
 					],
 					"UnitNation": "japan",
 					"UnitCategory": "Heavy_Cruiser",
-					"UnitPath": "Ship",
-					"UnitModel": "IJN_Cruiser_Takao",
 					"Isavariant": false,
 					"UnitMass": 12781000,
-					"UnitHardPoints": []
+					"UnitHardPoints": [],
+					"UnitModelPath": [
+						{
+							"UnitPath": "Ship/",
+							"UnitModel": "AircraftCarrierTest"
+						}
+					]
 				},
 				{
 					"id": "fusoUSA",
@@ -1097,7 +1100,6 @@
 					"id": "TrainingCarrier",
 					"Isavariant": false,
 					"UnitName": "IJN Training Carrier",
-					"UnitPath": "Ship",
 					"index": 4,
 					"UnitCategory": "Carrier",
 					"UnitNation": "japan",
@@ -1144,8 +1146,13 @@
 						}
 					],
 					"UnitMass": 33161000,
-					"UnitModel": "AircraftCarrierTest",
-					"UnitHardPoints": []
+					"UnitHardPoints": [],
+					"UnitModelPath": [
+						{
+							"UnitPath": "Ship/",
+							"UnitModel": "AircraftCarrierTest"
+						}
+					]
 				},
 				{
 					"id": "TrainingCarrierUSA",
@@ -1164,8 +1171,6 @@
 					"id": "ShipyardJapan",
 					"Isavariant": false,
 					"UnitName": "Japanese Shipyard",
-					"UnitPath": "Building",
-					"UnitModel": "Shipyard",
 					"index": 6,
 					"UnitCategory": "Shipyard",
 					"UnitNation": "japan",
@@ -1184,7 +1189,13 @@
 					],
 					"UnitHealth": 30000,
 					"UnitMass": 100000000,
-					"UnitHardPoints": []
+					"UnitHardPoints": [],
+					"UnitModelPath": [
+						{
+							"UnitPath": "Building/",
+							"UnitModel": "Shipyard"
+						}
+					]
 				},
 				{
 					"id": "ShipyardUSA",
@@ -1784,8 +1795,7 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "FX",
-					"display": null
+					"name": "WeaponFX"
 				},
 				{
 					"typeStr": "4",
@@ -1880,16 +1890,17 @@
 						}
 					],
 					"WeaponVariantReference": [],
-					"FX": [
-						{
-							"FXShooting": "ShellExplosionMediumPlaceholder",
-							"ShootingSound": "ShotFiring"
-						}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JbBB356mmA"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring",
+							"RotationSound": "turretRotation"
 						}
 					]
 				},
@@ -1902,15 +1913,13 @@
 							"WeaponVariantRef": "JapanBB356mmA"
 						}
 					],
-					"FX": [
-						{}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JpBB356mmB"
 						}
-					]
+					],
+					"WeaponFX": []
 				},
 				{
 					"Name": "JpCA200A",
@@ -1937,16 +1946,17 @@
 						}
 					],
 					"WeaponVariantReference": [],
-					"FX": [
-						{
-							"FXShooting": "ShellExplosionMediumPlaceholder",
-							"ShootingSound": "ShotFiring"
-						}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JpCA200mmA"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring",
+							"RotationSound": "turretRotation"
 						}
 					]
 				},
@@ -1959,15 +1969,13 @@
 							"WeaponVariantRef": "JapanCA200mmA"
 						}
 					],
-					"FX": [
-						{}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JpCA200mmB"
 						}
-					]
+					],
+					"WeaponFX": []
 				},
 				{
 					"Name": "JpCA200Y",
@@ -1978,13 +1986,13 @@
 							"WeaponVariantRef": "JapanCA200mmA"
 						}
 					],
-					"FX": [],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JpCA200mmY"
 						}
-					]
+					],
+					"WeaponFX": []
 				},
 				{
 					"Name": "Jp120Type10AAx2",
@@ -2011,16 +2019,17 @@
 						}
 					],
 					"WeaponVariantReference": [],
-					"FX": [
-						{
-							"FXShooting": "ShellExplosionMediumPlaceholder",
-							"ShootingSound": "ShotFiring"
-						}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "AATurrets",
 							"TurretModel": "Jp120mmType10AATwin"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring",
+							"RotationSound": "turretRotation"
 						}
 					]
 				},
@@ -2049,16 +2058,17 @@
 						}
 					],
 					"WeaponVariantReference": [],
-					"FX": [
-						{
-							"FXShooting": "ShellExplosionMediumPlaceholder",
-							"ShootingSound": "ShotFiring"
-						}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "ArtilleryTurrets",
 							"TurretModel": "JpBB152mmCasemate"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring",
+							"RotationSound": "turretRotation"
 						}
 					]
 				},
@@ -2084,16 +2094,17 @@
 						}
 					],
 					"WeaponVariantReference": [],
-					"FX": [
-						{
-							"FXShooting": "ShellExplosionMediumPlaceholder",
-							"ShootingSound": "ShotFiring"
-						}
-					],
 					"WeaponModelPath": [
 						{
 							"TurretPath": "TorpedoLauncher",
 							"TurretModel": "JpQuadTorp"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionMediumPlaceholder",
+							"ShootingSound": "ShotFiring",
+							"RotationSound": "turretRotation"
 						}
 					]
 				}
@@ -2569,57 +2580,57 @@
 			"lines": [
 				{
 					"id": "DamageExplosionLargePlaceholder",
-					"FXPath": "ExplosionFX",
+					"FXPath": "ExplosionFX/",
 					"FXPrefab": "DamageExplosionLargePlaceholder"
 				},
 				{
 					"id": "DamageSmokeEmitterLarge",
-					"FXPath": "DamageFX",
+					"FXPath": "DamageFX/",
 					"FXPrefab": "DamageSmokeEmitterLarge"
 				},
 				{
 					"id": "DamageSmokeEmitterMedium",
-					"FXPath": "DamageFX",
+					"FXPath": "DamageFX/",
 					"FXPrefab": "DamageSmokeEmitterMedium"
 				},
 				{
 					"id": "DamageSteamEmitterLarge",
-					"FXPath": "DamageFX",
+					"FXPath": "DamageFX/",
 					"FXPrefab": "DamageSteamEmitterLarge"
 				},
 				{
 					"id": "ShellExplosionLargePlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellExplosionLargePlaceholder"
 				},
 				{
 					"id": "ShellExplosionMediumPlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellExplosionMediumPlaceholder"
 				},
 				{
 					"id": "ShellExplosionSmallPlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellExplosionSmallPlaceholder"
 				},
 				{
 					"id": "ShellWaterHitLargePlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellWaterHitLargePlaceholder"
 				},
 				{
 					"id": "ShellWaterHitMediumPlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellWaterHitMediumPlaceholder"
 				},
 				{
 					"id": "ShellWaterHitSmallPlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellWaterHitSmallPlaceholder"
 				},
 				{
 					"id": "ShellWaterHitTorpedoPlaceholder",
-					"FXPath": "ShellFX",
+					"FXPath": "ShellFX/",
 					"FXPrefab": "ShellWaterHitTorpedoPlaceholder"
 				},
 				{
@@ -2676,7 +2687,7 @@
 			]
 		},
 		{
-			"name": "Weapons@FX",
+			"name": "Weapons@WeaponFX",
 			"props": {
 				"hide": true
 			},
@@ -2691,6 +2702,11 @@
 				{
 					"typeStr": "6:AudioFX_Storage",
 					"name": "ShootingSound",
+					"opt": true
+				},
+				{
+					"typeStr": "6:AudioFX_Storage",
+					"name": "RotationSound",
 					"opt": true
 				}
 			]
@@ -2716,28 +2732,38 @@
 			"lines": [
 				{
 					"id": "musicA_calm",
-					"SoundFXPath": "Music",
-					"SoundFXPrefab": "music_calm.mp3"
+					"SoundFXPath": "Music/",
+					"SoundFXPrefab": "music_calm"
 				},
 				{
 					"id": "musicA_stress",
-					"SoundFXPath": "Music",
-					"SoundFXPrefab": "music_stress.mp3"
+					"SoundFXPath": "Music/",
+					"SoundFXPrefab": "music_stress"
 				},
 				{
 					"id": "ShellExplosion",
 					"SoundFXPath": "",
-					"SoundFXPrefab": "ShellExplosion.wav"
+					"SoundFXPrefab": "ShellExplosion"
 				},
 				{
 					"id": "ShotFiring",
 					"SoundFXPath": "",
-					"SoundFXPrefab": "ShotFiring.wav"
+					"SoundFXPrefab": "ShotFiring"
 				},
 				{
 					"id": "TankExplosion",
 					"SoundFXPath": "",
-					"SoundFXPrefab": "TankExplosion.wav"
+					"SoundFXPrefab": "TankExplosion"
+				},
+				{
+					"id": "ShotCharging",
+					"SoundFXPath": "",
+					"SoundFXPrefab": "ShotCharging"
+				},
+				{
+					"id": "turretRotation",
+					"SoundFXPath": "SoundEffects/",
+					"SoundFXPrefab": "turretRotation"
 				}
 			],
 			"separators": [],
@@ -2815,6 +2841,26 @@
 					"typeStr": "6:Weapons",
 					"name": "WeaponType",
 					"opt": true
+				}
+			]
+		},
+		{
+			"name": "Global_Units@UnitModelPath",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "UnitPath",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "UnitModel",
+					"display": null
 				}
 			]
 		}

@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 4514579440656074346}
   - component: {fileID: 2991114076152889313}
   m_Layer: 15
-  m_Name: CannonAxis
+  m_Name: VerticalAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 3218633642180896228}
   - component: {fileID: 7780536273600044394}
   m_Layer: 15
-  m_Name: TurretCruiser
+  m_Name: JpCA200mmA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -526,9 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa93e27c3a41a534384ab345bc0c9ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ElementHealth: 200
-  m_ElementArmor: 25
-  debug: 0
 --- !u!114 &8784063474431999428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,19 +566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  m_TurretTurret: {fileID: 6787720698584663508}
   m_TurretCannon: {fileID: 2991114076152889313}
-  m_Parent: {fileID: 0}
-  m_RotationSpeed: 15
-  m_LimitTraverse: 0
-  m_LeftTraverse: 60
-  m_RightTraverse: 60
-  m_NoFireZones: []
-  m_ElevationSpeed: 15
-  m_UpTraverse: 124
-  m_DownTraverse: 80
-  m_ElevationZones: []
-  debug: 0
 --- !u!65 &3218633642180896228
 BoxCollider:
   m_ObjectHideFlags: 0

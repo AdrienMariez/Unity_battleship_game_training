@@ -1,13 +1,7 @@
 ﻿using UnityEngine;
 public class TurretHealth : MonoBehaviour {
-
-    [Tooltip("Initial HP of the turret")]
-    public float m_ElementHealth = 100.0f;
-    [Tooltip("Armor of the turret (equivalent in rolled steel mm)")]
-    public float m_ElementArmor = 100.0f;
-
-    [Header("Debug")]
-        public bool debug = false;
+    private float ElementArmor; public void SetElementArmor(float elementArmor){ ElementArmor = elementArmor; } public float GetElementArmor(){ return ElementArmor; }
+    private float ElementStartingHealth;  public void SetStartingHealth(float startingHealth){ ElementStartingHealth = startingHealth; } public float GetStartingHealth(){ return ElementStartingHealth; }
     private float CurrentHealth;
     private float RepairRate;
     private float TurretsRepairCrew;
@@ -17,11 +11,12 @@ public class TurretHealth : MonoBehaviour {
     private bool ShipDead = false;
     private TurretManager TurretManager;
 
+    public void BeginOperations(TurretManager turretManager, TurretRotation turretRotation, TurretFireManager turretFireManager){
+        TurretManager = turretManager;
+        TurretRotation = turretRotation;
+        TurretFireManager = turretFireManager;
 
-    private void Start () {
-        CurrentHealth = m_ElementHealth;
-        TurretFireManager = GetComponent<TurretFireManager>();
-        TurretRotation = GetComponent<TurretRotation>();
+        CurrentHealth = ElementStartingHealth;
     }
 
     private void FixedUpdate(){
@@ -60,7 +55,7 @@ public class TurretHealth : MonoBehaviour {
         CurrentHealth += ModuleRepairRate;
 
         // Stop repair and reactivate the module when full health is back
-        if (CurrentHealth >= m_ElementHealth) {
+        if (CurrentHealth >= ElementStartingHealth) {
             TurretRepaired();
         }
         // if (debug){
@@ -69,7 +64,7 @@ public class TurretHealth : MonoBehaviour {
     }
 
     private void TurretRepaired(){
-        CurrentHealth = m_ElementHealth;
+        CurrentHealth = ElementStartingHealth;
         Dead = false;
         TurretFireManager.SetTurretDeath(false);
         TurretRotation.SetTurretDeath(false);
@@ -89,9 +84,7 @@ public class TurretHealth : MonoBehaviour {
             SetRepairRate(0f);
             SetTurretRepairRate(0f);
         } else {
-            CurrentHealth = m_ElementHealth;
+            CurrentHealth = ElementStartingHealth;
         }
     }
-    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
-    public float GetElementArmor(){ return m_ElementArmor; }
 }

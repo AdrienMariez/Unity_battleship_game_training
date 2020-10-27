@@ -13,7 +13,7 @@ public string Name;
 public bool Isavariant;
 public List<WeaponVariantReference> WeaponVariantReferenceList = new List<WeaponVariantReference>();
 public List<WeaponModelPath> WeaponModelPathList = new List<WeaponModelPath>();
-public List<FX> FXList = new List<FX>();
+public List<WeaponFX> WeaponFXList = new List<WeaponFX>();
 public float Health;
 public float Armor;
 public List<WeaponRoles> WeaponRolesList = new List<WeaponRoles>();
@@ -46,7 +46,7 @@ Name = node["Name"];
 Isavariant = node["Isavariant"].AsBool;
 foreach(var item in node["WeaponVariantReference"]) { WeaponVariantReferenceList.Add(new WeaponVariantReference(root, item));}
 foreach(var item in node["WeaponModelPath"]) { WeaponModelPathList.Add(new WeaponModelPath(root, item));}
-foreach(var item in node["FX"]) { FXList.Add(new FX(root, item));}
+foreach(var item in node["WeaponFX"]) { WeaponFXList.Add(new WeaponFX(root, item));}
 Health = node["Health"].AsFloat;
 Armor = node["Armor"].AsFloat;
 foreach(var item in node["WeaponRoles"]) { WeaponRolesList.Add(new WeaponRoles(root, item));}

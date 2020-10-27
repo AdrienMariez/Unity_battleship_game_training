@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6085218106881398963}
   - component: {fileID: 1379208808216682557}
   m_Layer: 15
-  m_Name: TorpedoBayBase
+  m_Name: JpQuadTorp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,9 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa93e27c3a41a534384ab345bc0c9ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ElementHealth: 100
-  m_ElementArmor: 12
-  debug: 0
 --- !u!114 &89694510675656851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,19 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TurretRotationAudio: {fileID: 8300000, guid: c17f124fcdc0f5446a72f793898bd74b,
     type: 3}
-  m_TurretTurret: {fileID: 2804405137325701251}
   m_TurretCannon: {fileID: 5862413452838159030}
-  m_Parent: {fileID: 0}
-  m_RotationSpeed: 35
-  m_LimitTraverse: 1
-  m_LeftTraverse: 60
-  m_RightTraverse: 60
-  m_NoFireZones: []
-  m_ElevationSpeed: 1
-  m_UpTraverse: 90
-  m_DownTraverse: 90
-  m_ElevationZones: []
-  debug: 0
 --- !u!65 &6085218106881398963
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -285,7 +270,7 @@ GameObject:
   - component: {fileID: 5079754212925438781}
   - component: {fileID: 5862413452838159030}
   m_Layer: 15
-  m_Name: CannonAxis
+  m_Name: VerticalAxis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

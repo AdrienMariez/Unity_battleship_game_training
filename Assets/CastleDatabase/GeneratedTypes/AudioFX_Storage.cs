@@ -17,7 +17,9 @@ musicA_calm,
 musicA_stress, 
 ShellExplosion, 
 ShotFiring, 
-TankExplosion
+TankExplosion, 
+ShotCharging, 
+turretRotation
  } 
         public AudioFX_Storage (CastleDBParser.RootNode root, RowValues line) 
         {
