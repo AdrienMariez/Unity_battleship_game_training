@@ -180,7 +180,7 @@ public class UnitMasterController : MonoBehaviour {
         // Set HardPoints
             foreach (WorldSingleUnit.UnitHardPoint hardPointElement in unit.GetUnitHardPointList()) {
                 // this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID().ToString()).GetComponent<HardPointComponent>().SetUpHardPointComponent(hardPointElement);
-                Transform hardPointTransform = this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID().ToString()).transform;
+                Transform hardPointTransform = this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID()).transform;
                 HardPointComponent hardPointComponent = hardPointTransform.GetComponent<HardPointComponent>();
 
                 if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
@@ -192,9 +192,9 @@ public class UnitMasterController : MonoBehaviour {
                 if (hardPointElement.GetIsMirrored()) {
                     GameObject hardPointCopy = new GameObject();
                     Transform hardPointTransformCopy = hardPointCopy.transform;
-                    hardPointTransformCopy.parent = this.transform.Find("HardPoints");
+                    hardPointTransformCopy.parent = hardPointTransform.parent;
                     hardPointTransformCopy.localPosition = new Vector3 (-hardPointTransform.localPosition.x, hardPointTransform.localPosition.y, hardPointTransform.localPosition.z);
-                    hardPointTransformCopy.localRotation = Quaternion.Euler (new Vector3 (hardPointTransform.localRotation.x, -hardPointTransform.localRotation.y, hardPointTransform.localRotation.z));
+                    hardPointTransformCopy.localRotation = Quaternion.Euler (new Vector3 (hardPointTransform.localEulerAngles.x, -hardPointTransform.localEulerAngles.y, hardPointTransform.localEulerAngles.z));
 
 
                     HardPointComponent hardPointComponentCopy = hardPointCopy.AddComponent<HardPointComponent>();

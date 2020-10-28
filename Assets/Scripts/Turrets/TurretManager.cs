@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TurretManager : MonoBehaviour {
-    public GameObject[] m_Turrets;
     private List <GameObject> AllTurrets = new List<GameObject>();
     private bool Active = false;
     private bool Dead = false;
@@ -66,7 +65,6 @@ public class TurretManager : MonoBehaviour {
             if (MinR < MinRange)
                 MinRange = MinR;
             turret.GetComponent<TurretFireManager>().SetTurretManager(this);
-            turret.GetComponent<TurretRotation>().SetTurretFireManager(turret.GetComponent<TurretFireManager>());
             TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles(); 
             
             foreach (TurretFireManager.TurretRole role in availableRoles) {

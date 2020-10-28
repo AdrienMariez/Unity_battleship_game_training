@@ -33,6 +33,7 @@ public class HardPointComponent : MonoBehaviour {
         // Debug.Log ("Hardpoint set.  hardpoint id :"+ hardPointElement.GetHardPointID());
     }
     public static void SetUpWeaponHardPoint(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform, TurretManager turretManager){
+        // Debug.Log("SetUpWeaponHardPoint");
         // Find & set variant master
             CompiledTypes.Weapons weaponReference = hardPointElement.GetWeaponType();
             CompiledTypes.Weapons masterWeaponReference = weaponReference;
@@ -64,13 +65,42 @@ public class HardPointComponent : MonoBehaviour {
 
         // Add sound
             GameObject audioPrefab = (Resources.Load("Prefabs/Objects/TurretAudioSource", typeof(GameObject))) as GameObject;
-            GameObject turretSoundInstance =
+            GameObject turretRotationSoundInstance =
+                Instantiate (audioPrefab, turretInstance.transform);
+            GameObject turretFireSoundInstance =
                 Instantiate (audioPrefab, turretInstance.transform);
 
         // Build/find each script
-            TurretRotation turretRotation = turretInstance.GetComponent<TurretRotation>();
+            TurretRotation turretRotation = turretInstance.AddComponent<TurretRotation>();
             TurretFireManager turretFireManager = turretInstance.GetComponent<TurretFireManager>();
-            TurretHealth turretHealth = turretInstance.GetComponent<TurretHealth>();
+            TurretHealth turretHealth = turretInstance.AddComponent<TurretHealth>();
+
+        // Turret Fire Manager
+            if (weaponReference.Isavariant && weaponReference.Max_range == 0) {
+                turretFireManager.SetMaxRange(masterWeaponReference.Max_range);
+            } else {
+                turretFireManager.SetMaxRange(weaponReference.Max_range);
+            }
+            if (weaponReference.Isavariant && weaponReference.Min_range == 0) {
+                turretFireManager.SetMinRange(masterWeaponReference.Min_range);
+            } else {
+                turretFireManager.SetMinRange(weaponReference.Min_range);
+            }
+            if (weaponReference.Isavariant && weaponReference.Muzzle_velocity == 0) {
+                turretFireManager.SetMuzzleVelocity(masterWeaponReference.Muzzle_velocity);
+            } else {
+                turretFireManager.SetMuzzleVelocity(weaponReference.Muzzle_velocity);
+            }
+            if (weaponReference.Isavariant && weaponReference.Reload_time == 0) {
+                turretFireManager.SetReloadTime(masterWeaponReference.Reload_time);
+            } else {
+                turretFireManager.SetReloadTime(weaponReference.Reload_time);
+            }
+            if (weaponReference.Isavariant && weaponReference.Precision == 0) {
+                turretFireManager.SetPrecision(masterWeaponReference.Reload_time);
+            } else {
+                turretFireManager.SetPrecision(weaponReference.Precision);
+            }
 
         // Turret Rotation
             if (weaponReference.Isavariant && weaponReference.Rotation_speed == 0) {
@@ -98,22 +128,33 @@ public class HardPointComponent : MonoBehaviour {
             } else {
                 turretRotation.SetElevationMin(weaponReference.Min_vertical_traverse);
             }
+
         // Set all FX
             if (weaponReference.Isavariant && weaponReference.WeaponFXList.Count == 0) {
                 if (masterWeaponReference.WeaponFXList.Count > 0) {
                     turretRotation.SetTurretRotationAudio((AudioClip) Resources.Load("Sounds/"+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPath+""+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPrefab));
+                    turretFireManager.SetFireAudio((AudioClip) Resources.Load("Sounds/"+masterWeaponReference.WeaponFXList[0].ShootingSound.SoundFXPath+""+masterWeaponReference.WeaponFXList[0].ShootingSound.SoundFXPrefab));
+                    turretFireManager.SetFireFx((GameObject) Resources.Load("FX/"+masterWeaponReference.WeaponFXList[0].FXShooting.FXPath+""+masterWeaponReference.WeaponFXList[0].FXShooting.FXPrefab));
                 }
             } else if (weaponReference.WeaponFXList.Count > 0) {
                 turretRotation.SetTurretRotationAudio((AudioClip) Resources.Load("Sounds/"+weaponReference.WeaponFXList[0].RotationSound.SoundFXPath+""+weaponReference.WeaponFXList[0].RotationSound.SoundFXPrefab));
+                turretFireManager.SetFireAudio((AudioClip) Resources.Load("Sounds/"+weaponReference.WeaponFXList[0].ShootingSound.SoundFXPath+""+weaponReference.WeaponFXList[0].ShootingSound.SoundFXPrefab));
+                turretFireManager.SetFireFx((GameObject) Resources.Load("FX/"+weaponReference.WeaponFXList[0].FXShooting.FXPath+""+weaponReference.WeaponFXList[0].FXShooting.FXPrefab));
             }
             if (turretRotation.GetTurretRotationAudio() == null) {
-                // Debug.Log (" No TurretRotationAudio found. For"+ weaponReference.id);
-                Debug.Log (" No TurretRotationAudio found.");
-                // UnitDeathFX = WorldUIVariables.GetErrorModel();
+                Debug.Log (" No TurretRotationAudio found  or"+ weaponReference.id);
                 turretRotation.SetTurretRotationAudio(WorldUIVariables.GetErrorSound());
             }
+            if (turretFireManager.GetFireAudio() == null) {
+                Debug.Log (" No FireAudio found  or"+ weaponReference.id);
+                turretFireManager.SetFireAudio(WorldUIVariables.GetErrorSound());
+            }
+            // else {
+            //     Debug.Log (turretFireManager.GetFireAudio());
+            // }
             
-            turretRotation.BeginOperations(hardPointTransform, hardPointComponent, hardPointElement, turretSoundInstance);
+            turretRotation.BeginOperations(hardPointTransform, turretRotationSoundInstance, turretFireManager);
+            turretFireManager.BeginOperations(turretRotation, turretFireSoundInstance);
 
         // Health
             if (weaponReference.Isavariant && weaponReference.Armor == 0) {

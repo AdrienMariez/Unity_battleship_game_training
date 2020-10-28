@@ -6,14 +6,7 @@ public class TurretRotation : MonoBehaviour
     private bool PlayerControl = false;
     private bool Dead;
 
-    [Header("Elements")]
-        [Tooltip ("Audio played when the turret is rotating.")]
-            public AudioClip m_TurretRotationAudio;
-        [Tooltip ("Axis of rotation for the elevation of the cannon.")]
-            public Rigidbody m_TurretCannon;
-            
-
-
+    // Imported variables
     private float RotationSpeed = 15.0f; public void SetRotationSpeed(float rotationSpeed){ RotationSpeed = rotationSpeed; }
     private bool LimitTraverse = false; public void SetLimitTraverse(bool limitTraverse){ LimitTraverse = limitTraverse; }
     private float LeftTraverse = 60.0f; public void SetLeftTraverse(float leftTraverse){ LeftTraverse = leftTraverse; }
@@ -27,19 +20,14 @@ public class TurretRotation : MonoBehaviour
     private FireZonesManager[] NoFireZones; public void SetNoFireZones(FireZonesManager[] noFireZones){ NoFireZones = noFireZones; }
     private ElevationZonesManager[] ElevationZones; public void SetElevationZones(ElevationZonesManager[] elevationZones){ ElevationZones = elevationZones; }
 
-
+    // Audio
     private AudioSource _AudioSource;
     private AudioClip TurretRotationAudio; public void SetTurretRotationAudio(AudioClip turretRotationAudio){ TurretRotationAudio = turretRotationAudio; }
     public AudioClip GetTurretRotationAudio(){ return TurretRotationAudio; }
     private float PitchRange = 0.2f, OriginalPitch;
-    private bool PlayRotationAudio = false;
-    public void SetPlayRotationAudio(bool a){
-        // Debug.Log("SetPlayRotationAudio"+ a);
-        PlayRotationAudio = a; }
-    private bool RotationAudioIsPlaying = false;
-    public void SetRotationAudioIsPlaying(bool a){
-        // Debug.Log("SetRotationAudioIsPlaying"+ a);
-        RotationAudioIsPlaying = a; }
+    private bool PlayRotationAudio = false; public void SetPlayRotationAudio(bool a){ PlayRotationAudio = a; }
+    private bool RotationAudioIsPlaying = false; public void SetRotationAudioIsPlaying(bool a){ RotationAudioIsPlaying = a; }
+
 
     private Vector3 ParentEulerAngles;     // Position/rotation of the direct parent
     private float TurretEulerAngle;                // Initial rotation of the turret
@@ -63,7 +51,7 @@ public class TurretRotation : MonoBehaviour
     private Vector3 PositionSafeguard;
     private Transform ElevationTransform;   // Position/rotation of the guns, (Vertical elevation) IS ALWAYS AN OBJECT NAMED "VerticalAxis"
 
-    public void BeginOperations(Transform parentTransform, HardPointComponent hardPointComponent, WorldSingleUnit.UnitHardPoint hardPointElement, GameObject turretSoundInstance){
+    public void BeginOperations(Transform parentTransform, GameObject turretSoundInstance, TurretFireManager turretFireManager){
         // Rotation transforms
             ParentTransform = parentTransform.parent;
             Transform = parentTransform;
@@ -74,6 +62,10 @@ public class TurretRotation : MonoBehaviour
             _AudioSource = turretSoundInstance.GetComponent<AudioSource>();
             OriginalPitch = _AudioSource.pitch;
             _AudioSource.pitch = Random.Range (OriginalPitch - PitchRange, OriginalPitch + PitchRange);
+
+        TurretFireManager = turretFireManager;
+
+        // Debug.Log("TurretRotationAudio = "+ TurretRotationAudio);
             
 
         ParentEulerAngles = parentTransform.rotation.eulerAngles;
@@ -105,14 +97,14 @@ public class TurretRotation : MonoBehaviour
     }
     private void PlayTurretAudio() {
         // Debug.Log("PlayTurretAudio");
-        _AudioSource.clip = TurretRotationAudio;
+        // _AudioSource.clip = TurretRotationAudio;
         _AudioSource.loop = true;
         _AudioSource.Play();
     }
     private void StopTurretAudio() {
         // Debug.Log("StopTurretAudio");
         _AudioSource.Stop();
-        _AudioSource.clip = null;
+        // _AudioSource.clip = null;
         _AudioSource.loop = false;
     }
     public void SetPause(bool pause) {      // Pause music if game is paused
@@ -126,6 +118,8 @@ public class TurretRotation : MonoBehaviour
     private void FixedUpdate(){
 
         SetPlayRotationAudio(false);
+
+        // Debug.Log(_AudioSource+" / " + TurretRotationAudio);
         if (_AudioSource.clip == TurretRotationAudio) {
             // Debug.Log("_AudioSource.clip : " + _AudioSource.clip);
             SetRotationAudioIsPlaying(true);
@@ -562,7 +556,6 @@ public class TurretRotation : MonoBehaviour
         Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, CurrentAng, 0.0f));
     }
 
-    public void SetTurretFireManager(TurretFireManager turretFireManager){ TurretFireManager = turretFireManager; }
     public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; SetTurretSleep(); }
     public void SetAIControl(bool aiControl) { AIControl = aiControl; SetTurretSleep(); }
     private void SetTurretSleep() {

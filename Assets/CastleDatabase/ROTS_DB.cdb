@@ -585,7 +585,7 @@
 					"UnitHealth": 10000,
 					"UnitCameraParameters": [
 						{
-							"Distance": 12,
+							"Distance": 120,
 							"Height": 25,
 							"Lateraloffset": 0
 						}
@@ -602,111 +602,118 @@
 					"UnitMass": 38536000,
 					"UnitHardPoints": [
 						{
-							"HardPointId": 0,
+							"HardPointId": "0",
 							"HardPointType": "ShipFunnel",
 							"IsMirrored": false,
 							"IsTransferedToVariants": true
 						},
 						{
-							"HardPointId": 1,
+							"HardPointId": "1",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmA"
 						},
 						{
-							"HardPointId": 2,
+							"HardPointId": "2",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmB"
 						},
 						{
-							"HardPointId": 3,
+							"HardPointId": "2/A",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "3",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmB"
 						},
 						{
-							"HardPointId": 4,
+							"HardPointId": "4",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmB"
 						},
 						{
-							"HardPointId": 5,
+							"HardPointId": "5",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmB"
 						},
 						{
-							"HardPointId": 6,
+							"HardPointId": "6",
 							"HardPointType": "Weapon",
 							"IsMirrored": false,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBB356mmA"
 						},
 						{
-							"HardPointId": 7,
+							"HardPointId": "7",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 8,
+							"HardPointId": "8",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 9,
+							"HardPointId": "9",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 10,
+							"HardPointId": "10",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 11,
+							"HardPointId": "11",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 12,
+							"HardPointId": "12",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 13,
+							"HardPointId": "13",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "JapanBBCasemate120mm"
 						},
 						{
-							"HardPointId": 14,
+							"HardPointId": "14",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
 							"WeaponType": "Japan120mmType10AATwin"
 						},
 						{
-							"HardPointId": 15,
+							"HardPointId": "15",
 							"HardPointType": "Weapon",
 							"IsMirrored": true,
 							"IsTransferedToVariants": false,
@@ -2819,9 +2826,8 @@
 			"lines": [],
 			"columns": [
 				{
-					"typeStr": "3",
-					"name": "HardPointId",
-					"display": null
+					"typeStr": "1",
+					"name": "HardPointId"
 				},
 				{
 					"typeStr": "6:HardPoints",

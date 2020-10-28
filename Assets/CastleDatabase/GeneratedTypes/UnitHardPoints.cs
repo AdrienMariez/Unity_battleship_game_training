@@ -8,7 +8,7 @@ namespace CompiledTypes
 { 
     public class UnitHardPoints
     {
-        public int HardPointId;
+        public string HardPointId;
 public HardPoints HardPointType;
 public bool IsTransferedToVariants;
 public bool IsMirrored;
@@ -17,7 +17,7 @@ public Weapons WeaponType;
          
         public UnitHardPoints (CastleDBParser.RootNode root, SimpleJSON.JSONNode node) 
         {
-            HardPointId = node["HardPointId"].AsInt;
+            HardPointId = node["HardPointId"];
 HardPointType = new CompiledTypes.HardPoints(root,CompiledTypes.HardPoints.GetRowValue(node["HardPointType"]));
 IsTransferedToVariants = node["IsTransferedToVariants"].AsBool;
 IsMirrored = node["IsMirrored"].AsBool;

@@ -261,7 +261,7 @@ public class WorldSingleUnit {
         }
     }
     public class UnitHardPoint {
-        private int _hardPointID;  public int GetHardPointID(){ return _hardPointID; } public void SetHardPointID(int _hpID){ _hardPointID = _hpID; }
+        private string _hardPointIdentifier;  public string GetHardPointID(){ return _hardPointIdentifier; } public void SetHardPointID(string _hpID){ _hardPointIdentifier = _hpID; }
         private CompiledTypes.HardPoints.RowValues _hardpointType;  public CompiledTypes.HardPoints.RowValues GetHardpointType(){ return _hardpointType; } public void SetHardpointType(CompiledTypes.HardPoints.RowValues _hpType){ _hardpointType = _hpType; }
         private bool _isMirrored;  public bool GetIsMirrored(){ return _isMirrored; } public void SetIsMirrored(bool _hpMirror){ _isMirrored = _hpMirror; }
         CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeapon){ _weaponType = _hpWeapon; }
