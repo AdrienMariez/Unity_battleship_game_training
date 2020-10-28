@@ -68,35 +68,25 @@ public class WorldSingleUnit {
             // Debug.Log (UnitName+"?UnitCategoryEmpty? : "+String.IsNullOrEmpty(unit.UnitCategory.id)+" - ?unit.Isavariant? :  "+unit.Isavariant+" - unit.UnitCategory.id :  "+unit.UnitCategory.id);
 
             if (unit.Isavariant && unit.UnitCategory.id.ToString() == "Empty") {
-                foreach (CompiledTypes.Units_sub_categories subCat in WorldUnitsManager.GetDB().Units_sub_categories.GetAll()) {
-                    if (subCat.id == masterUnitReference.UnitCategory.id) {
-                        // Debug.Log ("case1 found for "+UnitName);
-                        UnitSubCategory_DB = subCat;
-                        string subCatString = subCat.id.ToString();
-                        UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
+                UnitSubCategory_DB = masterUnitReference.UnitCategory;
+                string subCatString = masterUnitReference.UnitCategory.id.ToString();
+                UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
 
-                        string catString = subCat.Category.id.ToString();
-                        UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
+                string catString = masterUnitReference.UnitCategory.Category.id.ToString();
+                UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
 
-                        string FXString = "FX/"+masterUnitReference.UnitCategory.DeathFX.FXPath+""+masterUnitReference.UnitCategory.DeathFX.FXPrefab;
-                        UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
-                    }
-                }
+                string FXString = "FX/"+masterUnitReference.UnitCategory.DeathFX.FXPath+""+masterUnitReference.UnitCategory.DeathFX.FXPrefab;
+                UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
             } else if (unit.UnitCategory.id.ToString() != "Empty") {
-                foreach (CompiledTypes.Units_sub_categories subCat in WorldUnitsManager.GetDB().Units_sub_categories.GetAll()) {
-                    if (subCat.id == unit.UnitCategory.id) {
-                        // Debug.Log ("case2 found for "+UnitName);
-                        UnitSubCategory_DB = subCat;
-                        string subCatString = subCat.id.ToString();
-                        UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
-                        
-                        string catString = subCat.Category.id.ToString();
-                        UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
-                        
-                        string FXString = "FX/"+unit.UnitCategory.DeathFX.FXPath+""+unit.UnitCategory.DeathFX.FXPrefab;
-                        UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
-                    }
-                }
+                UnitSubCategory_DB = unit.UnitCategory;
+                string subCatString = unit.UnitCategory.id.ToString();
+                UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
+                
+                string catString = unit.UnitCategory.Category.id.ToString();
+                UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
+                
+                string FXString = "FX/"+unit.UnitCategory.DeathFX.FXPath+""+unit.UnitCategory.DeathFX.FXPrefab;
+                UnitDeathFX = (Resources.Load(FXString, typeof(GameObject))) as GameObject;
             } else {
                 Debug.Log ("No category found for "+UnitName);
             }
@@ -250,6 +240,14 @@ public class WorldSingleUnit {
             }
             _hardpoint.SetHardpointType(hardPointType);
             _hardpoint.SetIsMirrored(hardpoint.IsMirrored);
+            if (!String.IsNullOrEmpty(hardpoint.WeaponType.id)) {
+                foreach (WorldSingleWeapon weapon in WorldUnitsManager.GetWorldWeapons()) {
+                    if (hardpoint.WeaponType.id == weapon.GetWeaponReference_DB().id) {
+                        _hardpoint.SetWeapon(weapon);
+                        break;
+                    }
+                }
+            }
             _hardpoint.SetWeaponType(hardpoint.WeaponType);
 
             if (UnitPrefab.transform.Find("HardPoints").transform.Find(hardpoint.HardPointId.ToString()).GetComponent<HardPointComponent>()) {             // If the hardpoint exists in the model, set in table
@@ -264,7 +262,9 @@ public class WorldSingleUnit {
         private string _hardPointIdentifier;  public string GetHardPointID(){ return _hardPointIdentifier; } public void SetHardPointID(string _hpID){ _hardPointIdentifier = _hpID; }
         private CompiledTypes.HardPoints.RowValues _hardpointType;  public CompiledTypes.HardPoints.RowValues GetHardpointType(){ return _hardpointType; } public void SetHardpointType(CompiledTypes.HardPoints.RowValues _hpType){ _hardpointType = _hpType; }
         private bool _isMirrored;  public bool GetIsMirrored(){ return _isMirrored; } public void SetIsMirrored(bool _hpMirror){ _isMirrored = _hpMirror; }
-        CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeapon){ _weaponType = _hpWeapon; }
+        private WorldSingleWeapon _weapon;  public WorldSingleWeapon GetWeapon(){ return _weapon; } public void SetWeapon(WorldSingleWeapon _hpWeapon){ _weapon = _hpWeapon; }
+        // To remove
+        private CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeaponT){ _weaponType = _hpWeaponT; }
     }
 
 // WEAPONS

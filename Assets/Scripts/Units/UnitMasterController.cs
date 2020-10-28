@@ -184,11 +184,12 @@ public class UnitMasterController : MonoBehaviour {
                 HardPointComponent hardPointComponent = hardPointTransform.GetComponent<HardPointComponent>();
 
                 if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
-                    HardPointComponent.SetUpWeaponHardPoint(hardPointElement, hardPointComponent, hardPointTransform, Turrets);
+                    HardPointComponent.SetUpWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, Turrets);
                 } else {
                     HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
                 }
                 
+                // Build the copy in the case the hardpoint is mirrored
                 if (hardPointElement.GetIsMirrored()) {
                     GameObject hardPointCopy = new GameObject();
                     Transform hardPointTransformCopy = hardPointCopy.transform;
@@ -207,7 +208,7 @@ public class UnitMasterController : MonoBehaviour {
                     hardPointComponentCopy.m_Prefab = hardPointComponent.m_Prefab;
 
                     if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
-                        HardPointComponent.SetUpWeaponHardPoint(hardPointElement, hardPointComponentCopy, hardPointTransformCopy, Turrets);
+                        HardPointComponent.SetUpWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponentCopy, hardPointTransformCopy, Turrets);
                     } else {
                         HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy);
                     }

@@ -2214,7 +2214,7 @@
 					"id": "ShellJapan356mm",
 					"AmmoModelPath": [
 						{
-							"AmmoPath": "ArtilleryShells",
+							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan356mm"
 						}
 					]
@@ -2230,7 +2230,7 @@
 					"id": "ShellJapan200mm",
 					"AmmoModelPath": [
 						{
-							"AmmoPath": "ArtilleryShells",
+							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan200mm"
 						}
 					]
@@ -2246,7 +2246,7 @@
 					"id": "ShellJapan152mm",
 					"AmmoModelPath": [
 						{
-							"AmmoPath": "ArtilleryShells",
+							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan152mm"
 						}
 					]
@@ -2262,7 +2262,7 @@
 					"id": "ShellJapan120mm",
 					"AmmoModelPath": [
 						{
-							"AmmoPath": "ArtilleryShells",
+							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan120mm"
 						}
 					]
@@ -2278,7 +2278,7 @@
 					"id": "TorpedoJapan610mm",
 					"AmmoModelPath": [
 						{
-							"AmmoPath": "Torpedoes",
+							"AmmoPath": "Torpedoes/",
 							"AmmoModel": "TorpedoJapan610mmLongLance"
 						}
 					]

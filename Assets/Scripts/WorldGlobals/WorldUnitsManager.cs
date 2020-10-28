@@ -33,27 +33,30 @@ public class WorldUnitsManager : MonoBehaviour {
     public static List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
 
     static List<CompiledTypes.Units_sub_categories> SubCategoriesDB = new List<CompiledTypes.Units_sub_categories>();
+
+    private static List<WorldSingleAmmo> WorldAmmos = new List<WorldSingleAmmo>(); public static List<WorldSingleAmmo> GetWorldAmmos() { return WorldAmmos; }
+    private static List<WorldSingleWeapon> WorldWeapons = new List<WorldSingleWeapon>(); public static List<WorldSingleWeapon> GetWorldWeapons() { return WorldWeapons; }
     
     private void WorldSetUnits() {
 
-        // Get one element from an asset
-        // Units_categories ship = DB.Units_categories.ship;
-        // string shipName = ship.Name;
-        // Debug.Log (shipName);
+        // BUILD ALL AMMO
+        foreach (CompiledTypes.Ammos ammo in DB.Ammos.GetAll()) {
+            WorldSingleAmmo newAmmo = new WorldSingleAmmo();
+            newAmmo.SetAmmo(ammo);
+            WorldAmmos.Add(newAmmo);
+            // Debug.Log (ammo.id +" is set");
+        }
 
-        
-        // Get all elements in a list 
-        // foreach (CompiledTypes.Teams team in DB.Teams.GetAll()) {
-        //     TeamsDB.Add(team);
-        // }
+        // BUILD ALL WEAPONS
+        foreach (CompiledTypes.Weapons weapon in DB.Weapons.GetAll()) {
+            WorldSingleWeapon newWeapon = new WorldSingleWeapon();
+            newWeapon.SetWeapon(weapon);
+            WorldWeapons.Add(newWeapon);
+            // Debug.Log (weapon.id +" is set");
+        }
 
-        // foreach (CompiledTypes.Global_Units unit in DB.Global_Units.GetAll()) {
-        //     Debug.Log (unit.id+" - "+unit.UnitName+" - "+unit.UnitNation.Team.Name);
-        //     foreach (var weapon in unit.UnitweaponsList) {
-        //         Debug.Log (" - "+weapon.Type.id);
-        //     }
-        // }
 
+        // BUILD ALL UNITS
         foreach (CompiledTypes.Units_sub_categories category in DB.Units_sub_categories.GetAll()) {
             SubCategoriesDB.Add(category);
         }

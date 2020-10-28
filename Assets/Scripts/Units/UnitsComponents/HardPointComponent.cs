@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+
 public class HardPointComponent : MonoBehaviour {
 
     [Header("Turrets parameters")]
@@ -32,19 +37,19 @@ public class HardPointComponent : MonoBehaviour {
         }
         // Debug.Log ("Hardpoint set.  hardpoint id :"+ hardPointElement.GetHardPointID());
     }
-    public static void SetUpWeaponHardPoint(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform, TurretManager turretManager){
+    public static void SetUpWeaponHardPoint(WorldSingleWeapon weapon,HardPointComponent hardPointComponent, Transform hardPointTransform, TurretManager turretManager){
         // Debug.Log("SetUpWeaponHardPoint");
         // Find & set variant master
-            CompiledTypes.Weapons weaponReference = hardPointElement.GetWeaponType();
+            /*CompiledTypes.Weapons weaponReference = hardPointElement.GetWeaponType();
             CompiledTypes.Weapons masterWeaponReference = weaponReference;
             if (weaponReference.Isavariant && weaponReference.WeaponVariantReferenceList.Count > 0) {
                 masterWeaponReference = weaponReference.WeaponVariantReferenceList[0].WeaponVariantRef;
-            }
+            }*/
             // else { Debug.Log (weaponReference.id); }
 
 
         // Set Prefab
-            GameObject weaponPrefab = null;
+            /*GameObject weaponPrefab = null;
             if (weaponReference.Isavariant && weaponReference.WeaponModelPathList.Count == 0) {
                 if (masterWeaponReference.WeaponModelPathList.Count > 0) {
                     weaponPrefab = (Resources.Load("Prefabs/Weapons/"+masterWeaponReference.WeaponModelPathList[0].TurretPath+"/"+masterWeaponReference.WeaponModelPathList[0].TurretModel, typeof(GameObject))) as GameObject;
@@ -55,11 +60,11 @@ public class HardPointComponent : MonoBehaviour {
             if (weaponPrefab == null) {
                 Debug.Log (" A turret was implemented without a model ! turret id :"+ weaponReference.id);
                 weaponPrefab = WorldUIVariables.GetErrorModel();
-            }
+            }*/
 
         // MODEL
             GameObject turretInstance =
-                Instantiate (weaponPrefab, hardPointTransform);
+                Instantiate (weapon.GetWeaponPrefab(), hardPointTransform);
 
             turretManager.AddNewWeapon(turretInstance);
 
@@ -72,10 +77,15 @@ public class HardPointComponent : MonoBehaviour {
 
         // Build/find each script
             TurretRotation turretRotation = turretInstance.AddComponent<TurretRotation>();
-            TurretFireManager turretFireManager = turretInstance.GetComponent<TurretFireManager>();
             TurretHealth turretHealth = turretInstance.AddComponent<TurretHealth>();
+            TurretFireManager turretFireManager = turretInstance.GetComponent<TurretFireManager>();
 
         // Turret Fire Manager
+            /*if (weaponReference.Isavariant && String.IsNullOrEmpty(weaponReference.Ammo.id)) {
+                turretFireManager.SetAmmoPrefab((GameObject) Resources.Load("Prefabs/Ammo/"+masterWeaponReference.Ammo.AmmoModelPathList[0].AmmoPath+""+masterWeaponReference.Ammo.AmmoModelPathList[0].AmmoModel));
+            } else if (!String.IsNullOrEmpty(weaponReference.Ammo.id)) {
+                turretFireManager.SetAmmoPrefab((GameObject) Resources.Load("Prefabs/Ammo/"+weaponReference.Ammo.AmmoModelPathList[0].AmmoPath+""+weaponReference.Ammo.AmmoModelPathList[0].AmmoModel));
+            }
             if (weaponReference.Isavariant && weaponReference.Max_range == 0) {
                 turretFireManager.SetMaxRange(masterWeaponReference.Max_range);
             } else {
@@ -97,22 +107,23 @@ public class HardPointComponent : MonoBehaviour {
                 turretFireManager.SetReloadTime(weaponReference.Reload_time);
             }
             if (weaponReference.Isavariant && weaponReference.Precision == 0) {
-                turretFireManager.SetPrecision(masterWeaponReference.Reload_time);
+                turretFireManager.SetPrecision(masterWeaponReference.Precision);
             } else {
                 turretFireManager.SetPrecision(weaponReference.Precision);
-            }
+            }*/
+            turretFireManager.SetAmmoRef(weapon.GetAmmoRef());
+            turretFireManager.SetMaxRange(weapon.GetWeaponMaxRange());
+            turretFireManager.SetMinRange(weapon.GetWeaponMinRange());
+            turretFireManager.SetMuzzleVelocity(weapon.GetWeaponMuzzleVelocity());
+            turretFireManager.SetReloadTime(weapon.GetWeaponReloadTime());
+            turretFireManager.SetPrecision(weapon.GetWeaponPrecision());
 
         // Turret Rotation
-            if (weaponReference.Isavariant && weaponReference.Rotation_speed == 0) {
+            /*if (weaponReference.Isavariant && weaponReference.Rotation_speed == 0) {
                 turretRotation.SetRotationSpeed(masterWeaponReference.Rotation_speed);
             } else {
                 turretRotation.SetRotationSpeed(weaponReference.Rotation_speed);
             }
-            turretRotation.SetLimitTraverse(hardPointComponent.m_LimitTraverse);
-            turretRotation.SetLeftTraverse(hardPointComponent.m_LeftTraverse);
-            turretRotation.SetRightTraverse(hardPointComponent.m_RightTraverse);
-            turretRotation.SetElevationZones(hardPointComponent.m_ElevationZones);
-            turretRotation.SetNoFireZones(hardPointComponent.m_NoFireZones);
             if (weaponReference.Isavariant && weaponReference.Elevation_speed == 0) {
                 turretRotation.SetElevationSpeed(masterWeaponReference.Elevation_speed);
             } else {
@@ -127,10 +138,22 @@ public class HardPointComponent : MonoBehaviour {
                 turretRotation.SetElevationMin(masterWeaponReference.Min_vertical_traverse);
             } else {
                 turretRotation.SetElevationMin(weaponReference.Min_vertical_traverse);
-            }
+            }*/
+
+
+            turretRotation.SetRotationSpeed(weapon.GetWeaponRotationSpeed());
+            turretRotation.SetElevationSpeed(weapon.GetWeaponElevationSpeed());
+            turretRotation.SetElevationMax(weapon.GetWeaponMaxVerticaltraverse());
+            turretRotation.SetElevationMin(weapon.GetWeaponMinVerticaltraverse());
+
+            turretRotation.SetLimitTraverse(hardPointComponent.m_LimitTraverse);
+            turretRotation.SetLeftTraverse(hardPointComponent.m_LeftTraverse);
+            turretRotation.SetRightTraverse(hardPointComponent.m_RightTraverse);
+            turretRotation.SetElevationZones(hardPointComponent.m_ElevationZones);
+            turretRotation.SetNoFireZones(hardPointComponent.m_NoFireZones);
 
         // Set all FX
-            if (weaponReference.Isavariant && weaponReference.WeaponFXList.Count == 0) {
+            /*if (weaponReference.Isavariant && weaponReference.WeaponFXList.Count == 0) {
                 if (masterWeaponReference.WeaponFXList.Count > 0) {
                     turretRotation.SetTurretRotationAudio((AudioClip) Resources.Load("Sounds/"+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPath+""+masterWeaponReference.WeaponFXList[0].RotationSound.SoundFXPrefab));
                     turretFireManager.SetFireAudio((AudioClip) Resources.Load("Sounds/"+masterWeaponReference.WeaponFXList[0].ShootingSound.SoundFXPath+""+masterWeaponReference.WeaponFXList[0].ShootingSound.SoundFXPrefab));
@@ -148,7 +171,7 @@ public class HardPointComponent : MonoBehaviour {
             if (turretFireManager.GetFireAudio() == null) {
                 Debug.Log (" No FireAudio found  or"+ weaponReference.id);
                 turretFireManager.SetFireAudio(WorldUIVariables.GetErrorSound());
-            }
+            }*/
             // else {
             //     Debug.Log (turretFireManager.GetFireAudio());
             // }
@@ -157,7 +180,7 @@ public class HardPointComponent : MonoBehaviour {
             turretFireManager.BeginOperations(turretRotation, turretFireSoundInstance);
 
         // Health
-            if (weaponReference.Isavariant && weaponReference.Armor == 0) {
+            /*if (weaponReference.Isavariant && weaponReference.Armor == 0) {
                 turretHealth.SetElementArmor(masterWeaponReference.Armor);
             } else {
                 turretHealth.SetElementArmor(weaponReference.Armor);
@@ -166,7 +189,7 @@ public class HardPointComponent : MonoBehaviour {
                 turretHealth.SetStartingHealth(masterWeaponReference.Health);
             } else {
                 turretHealth.SetStartingHealth(weaponReference.Health);
-            }
+            }*/
             turretHealth.BeginOperations(turretManager, turretRotation, turretFireManager);
 
 

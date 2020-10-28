@@ -12,8 +12,11 @@ public class TurretFireManager : MonoBehaviour
     [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles;
     private TurretRole TurretCurrentRole;
     [Tooltip("Ammo used")] public GameObject m_Shell;
-    [Tooltip("Points where the shells will be spawned, make as many points as there is barrels")] 
+    [Tooltip("Points where the shells will be spawned, make as many points as there are barrels")] 
     public Transform[] m_FireMuzzles;
+    private GameObject AmmoPrefab; public void SetAmmoPrefab(GameObject _g){ AmmoPrefab = _g; }
+    // Ammo Data
+    private WorldSingleAmmo AmmoRef; public void SetAmmoRef(WorldSingleAmmo _w){ AmmoRef = _w; }
     
     // Weapon datas
     private float MaxRange = 10000f; public void SetMaxRange(float range){ MaxRange = range; } public float GetMaxRange(){ return MaxRange; }   // Ranges are in meters.
@@ -134,7 +137,7 @@ public class TurretFireManager : MonoBehaviour
             // if (debug) { Debug.Log("m_FireMuzzles[i].rotation : "+ firingDirection); }
 
             GameObject shellInstance =
-                Instantiate (m_Shell, fireMuzzle.position, firingDirection);
+                Instantiate (AmmoRef.GetAmmoPrefab(), fireMuzzle.position, firingDirection);
 
             SendNeededInfoToShell(shellInstance);
 
