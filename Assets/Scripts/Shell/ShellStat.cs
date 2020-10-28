@@ -2,32 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShellStat : MonoBehaviour
-{
-    [Tooltip("What the shell can hit")]
-    public LayerMask m_HitMask;                        // Used to filter what the explosion affects.
-
-    [Header("Shells Stats")]
-    [Tooltip("Weight of the shell (kg)")]
-    public float m_Weight = 100f;
-    [Tooltip("Each time a shell explode, the maximum possible damage done will be between the max and the Min damage. Damage models far from the shell explosion will only receive a fraction of the maximum damage dealt.")]
-    public float m_MaxDamage = 100f;                    // The maximum amount of damage done if the explosion is centred on a damage model.
-    public float m_MinDamage = 10f;                    // The minimum amount of damage done if the explosion is centred on a damage model.
-    [Tooltip("Armor the shell can bypass (equivalent in rolled steel mm) If the shell's armor pen is less than the armor of the element hit, no damage will be applied.")]
-    public float m_ArmorPenetration = 100f;
-    public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion models can be and are still affected.
-    public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
-    [Header("FX")]
-    public GameObject m_Explosion;
-    private GameObject ExplosionInstance;
-    public GameObject m_ExplosionWater;
-    private GameObject ExplosionWaterInstance;
-    
-    public GameObject m_DamageEffect;
-    // [SerializeField] private GameObject m_DamageEffect;
-    private GameObject DamageEffectInstance;
-
-
+public class ShellStat : MonoBehaviour {
     private Rigidbody rb;
     private float MuzzleVelocity;
 
@@ -46,7 +21,29 @@ public class ShellStat : MonoBehaviour
     private bool WasAILaunched;                     // Was the ammo spent by an AI ?
     private bool SelfDestruct = false;
 
-    private void Start () {
+    // Data from DB
+        private float Weight = 100f;
+        private float MaxDamage = 100f;
+        private float MinDamage = 10f;
+        private float ArmorPenetration = 100f;
+        private float ExplosionRadius = 5f;
+        private float MaxLifeTime = 2f;
+        private GameObject ExplosionFX; public void SetExplosionFX(GameObject _g){ ExplosionFX = _g; }
+        private GameObject WaterHitFX; public void SetWaterHitFX(GameObject _g){ WaterHitFX = _g; }
+        private GameObject DamageHoleFX; public void SetDamageFX(GameObject _g){ DamageHoleFX = _g; }
+    // FX instances
+    private GameObject ExplosionFXInstance;
+    private GameObject WaterHitFXInstance;
+    private GameObject DamageHoleFXInstance;
+
+    public void BeginOperations(CompiledTypes.Ammos ammoDBRef) {
+        Weight = ammoDBRef.Weight;
+        MaxDamage = ammoDBRef.DamageMax;
+        MinDamage = ammoDBRef.DamageMin;
+        ArmorPenetration = ammoDBRef.ArmorPenetration;
+        ExplosionRadius = ammoDBRef.ExplosionRadius;
+        MaxLifeTime = ammoDBRef.MaxLifeTime;
+
         rb = GetComponent<Rigidbody>();
 
         float peakDistance = TargetRange/3;                                             // Used for Bézier
@@ -75,7 +72,7 @@ public class ShellStat : MonoBehaviour
             // TargetPosition = transform.position + V * TargetRange;                   // TargetRange for AA...This shouldn't be here.
         }
         if (ShellType == TurretFireManager.TurretRole.Torpedo) {
-            Destroy (gameObject, m_MaxLifeTime);                                        // Torpedoes auto die after their lifetime is expended
+            Destroy (gameObject, MaxLifeTime);                                        // Torpedoes auto die after their lifetime is expended
             StartCoroutine(PreventPrematureExplosion(1f));                               // Prevent torpedoes from exploding in their tubes at creation
         } else {
             StartCoroutine(PreventPrematureExplosion(0.1f));                             // Prevent any shell from exploding at creation (happens when firing at high speed)
@@ -131,7 +128,7 @@ public class ShellStat : MonoBehaviour
         if (CurrentRangeRatio >=1 && !SelfDestruct) {               // Engage auto destruct if the range is passed
             // Debug.Log("engage self destruct !");
             SelfDestruct = true;
-            DestroyShell(m_MaxLifeTime);
+            DestroyShell(MaxLifeTime);
 
             rb.velocity = transform.forward * MuzzleVelocity;       // Give a forward velocity to the shell for the last instants.
         }
@@ -143,11 +140,11 @@ public class ShellStat : MonoBehaviour
         if (transform.position.y <= 0f && !ArmorPenetrated) {                                                   // If water is hit
             //If there wasn't any penetration before, destroy the shell with a nice splash effect when the water is hit
             // Only if there was no penetration before or else there could be splashes inside ships and it would be silly
-            ExplosionWaterInstance = Instantiate(m_ExplosionWater, this.gameObject.transform);
-            ExplosionWaterInstance.transform.parent = null;                                                     // Unparent the particles from the shell.
-            ExplosionWaterInstance.GetComponent<ParticleSystem>().Play();                                       // Play the particle system.
-            ExplosionWaterInstance.GetComponent<AudioSource>().Play();                                          // Play the explosion sound effect.
-            Destroy (ExplosionWaterInstance.gameObject, ExplosionWaterInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
+            WaterHitFX = Instantiate(WaterHitFX, this.gameObject.transform);
+            WaterHitFX.transform.parent = null;                                                     // Unparent the particles from the shell.
+            WaterHitFX.GetComponent<ParticleSystem>().Play();                                       // Play the particle system.
+            WaterHitFX.GetComponent<AudioSource>().Play();                                          // Play the explosion sound effect.
+            Destroy (WaterHitFX.gameObject, WaterHitFX.GetComponent<ParticleSystem>().main.startLifetime.constant);
             DestroyShell(0);                                                                                    // Destroy the shell.
         }
         if (Vector3.Distance(transform.position, CurrentPositionInCurve) > 0.01f ) {                            // If the shell is stationnary (This is here to resolve glitches)
@@ -171,7 +168,7 @@ public class ShellStat : MonoBehaviour
         if (distanceToTargetRatio < 0 && !SelfDestruct) {
             // Engage auto destruct if the range is passed
             // Debug.Log("engage self destruct !");
-            // Destroy (gameObject, m_MaxLifeTime);
+            // Destroy (gameObject, MaxLifeTime);
             ShellExplosion();
             SelfDestruct = true;
         }
@@ -202,7 +199,7 @@ public class ShellStat : MonoBehaviour
             suitableTarget = true;
         }
         if (suitableTarget) {
-            if (m_ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
+            if (ArmorPenetration < CollisionArmor && !ArmorPenetrated) {
                 ShellExplosionFX();
                 if (targetHitboxComponent != null) {
                     targetHitboxComponent.SendHitInfoToDamageControl(ArmorPenetrated);
@@ -213,7 +210,7 @@ public class ShellStat : MonoBehaviour
             } else {
                 // Calculate the ratio of penetration for use in CheckForExplosion
                 // Minimum penetration ratio is 20 %
-                PenetrationRatio = Mathf.Max( 20f, (100 - ( (CollisionArmor * 100) / m_ArmorPenetration)) );
+                PenetrationRatio = Mathf.Max( 20f, (100 - ( (CollisionArmor * 100) / ArmorPenetration)) );
                 
                 ApplyDecal(colliderHit);
                 if (!ArmorPenetrated) {   
@@ -231,8 +228,8 @@ public class ShellStat : MonoBehaviour
     private bool DecalApplied = false;
     private void ApplyDecal(Collider colliderHit) {
         if (!DecalApplied) {
-            DamageEffectInstance = Instantiate(m_DamageEffect, this.gameObject.transform);
-            DamageEffectInstance.transform.parent = colliderHit.transform;
+            DamageHoleFXInstance = Instantiate(DamageHoleFX, this.gameObject.transform);
+            DamageHoleFXInstance.transform.parent = colliderHit.transform;
             DecalApplied = true;
         }
     }
@@ -252,7 +249,7 @@ public class ShellStat : MonoBehaviour
     }
     private void ShellExplosion() {
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
-        Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_HitMask);
+        Collider[] colliders = Physics.OverlapSphere (transform.position, ExplosionRadius, WorldUnitsManager.GetHitMask());
 
         bool hullDamaged = false;
 
@@ -299,11 +296,11 @@ public class ShellStat : MonoBehaviour
         }
     }
     private void ShellExplosionFXArtillery(){
-        ExplosionInstance = Instantiate(m_Explosion, this.gameObject.transform);
-        ExplosionInstance.transform.parent = null;
-        ExplosionInstance.GetComponent<ParticleSystem>().Play();
-        ExplosionInstance.GetComponent<AudioSource>().Play();
-        Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
+        ExplosionFXInstance = Instantiate(ExplosionFX, this.gameObject.transform);
+        ExplosionFXInstance.transform.parent = null;
+        ExplosionFXInstance.GetComponent<ParticleSystem>().Play();
+        ExplosionFXInstance.GetComponent<AudioSource>().Play();
+        Destroy (ExplosionFXInstance.gameObject, ExplosionFXInstance.GetComponent<ParticleSystem>().main.duration);
         DestroyShell(0);
     }
     private void ShellExplosionFXTorpedo(){
@@ -312,11 +309,11 @@ public class ShellStat : MonoBehaviour
         Quaternion updatedRotation = new Quaternion(90,-90,0,1);
 
 
-        ExplosionInstance = Instantiate(m_Explosion, position, updatedRotation);
-        // ExplosionInstance.transform.parent = null;
-        ExplosionInstance.GetComponent<ParticleSystem>().Play();
-        ExplosionInstance.GetComponent<AudioSource>().Play();
-        Destroy (ExplosionInstance.gameObject, ExplosionInstance.GetComponent<ParticleSystem>().main.duration);
+        ExplosionFXInstance = Instantiate(ExplosionFX, position, updatedRotation);
+        // ExplosionFXInstance.transform.parent = null;
+        ExplosionFXInstance.GetComponent<ParticleSystem>().Play();
+        ExplosionFXInstance.GetComponent<AudioSource>().Play();
+        Destroy (ExplosionFXInstance.gameObject, ExplosionFXInstance.GetComponent<ParticleSystem>().main.duration);
         DestroyShell(0);
     }
     
@@ -326,10 +323,10 @@ public class ShellStat : MonoBehaviour
         float distance = Vector3.Distance(closestPoint, transform.position);
         // Debug.Log("distance = "+ distance);
 
-        // Calculate the proportion of the maximum distance (m_ExplosionRadius) the target is away and calc damages.
-        float relativeDistance = (m_ExplosionRadius - distance) / m_ExplosionRadius;
+        // Calculate the proportion of the maximum distance (ExplosionRadius) the target is away and calc damages.
+        float relativeDistance = (ExplosionRadius - distance) / ExplosionRadius;
         
-        float damage = Random.Range(m_MinDamage, m_MaxDamage);
+        float damage = Random.Range(MinDamage, MaxDamage);
         damage = relativeDistance * damage;
 
         // Make sure that the minimum damage is always 0. (prevent negative)

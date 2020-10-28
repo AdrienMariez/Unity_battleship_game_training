@@ -11,6 +11,7 @@ namespace CompiledTypes
         public string id;
 public string Name;
 public List<AmmoModelPath> AmmoModelPathList = new List<AmmoModelPath>();
+public List<AmmoFX> AmmoFXList = new List<AmmoFX>();
 public float Weight;
 public float DamageMax;
 public float DamageMin;
@@ -31,6 +32,7 @@ TorpedoJapan610mm
 id = node["id"];
 Name = node["Name"];
 foreach(var item in node["AmmoModelPath"]) { AmmoModelPathList.Add(new AmmoModelPath(root, item));}
+foreach(var item in node["AmmoFX"]) { AmmoFXList.Add(new AmmoFX(root, item));}
 Weight = node["Weight"].AsFloat;
 DamageMax = node["DamageMax"].AsFloat;
 DamageMin = node["DamageMin"].AsFloat;

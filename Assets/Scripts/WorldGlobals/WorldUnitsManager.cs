@@ -15,15 +15,18 @@ public class WorldUnitsManager : MonoBehaviour {
     // public WorldSingleTurret[] m_WorldSingleTurret;
 
     public TextAsset CastleDBAsset;
-    private static CastleDB DB;
-    
-    public static CastleDB GetDB(){ return DB; }
+    private static CastleDB DB; public static CastleDB GetDB(){ return DB; }
+
+    [Tooltip("What can be hit by ammo or more generally, what is considered a game element tat can be damaged.")]
+    public LayerMask m_WeaponHitMask;
+    private static LayerMask HitMask; public static LayerMask GetHitMask(){ return HitMask; }
 
     private static bool FirstLoad = true;
     private void Start() {
         if (FirstLoad){
             FirstLoad = false;
             DB = new CastleDB(CastleDBAsset);
+            HitMask = m_WeaponHitMask;
             WorldSetUnits();
         }
     }

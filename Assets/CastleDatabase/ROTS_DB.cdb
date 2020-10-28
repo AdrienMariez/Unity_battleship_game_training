@@ -2172,6 +2172,10 @@
 					"name": "AmmoModelPath"
 				},
 				{
+					"typeStr": "8",
+					"name": "AmmoFX"
+				},
+				{
 					"typeStr": "4",
 					"name": "Weight",
 					"display": null
@@ -2217,6 +2221,12 @@
 							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan356mm"
 						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellExplosionLargePlaceholder",
+							"FXWaterHit": "ShellWaterHitLargePlaceholder"
+						}
 					]
 				},
 				{
@@ -2232,6 +2242,12 @@
 						{
 							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan200mm"
+						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellExplosionMediumPlaceholder",
+							"FXWaterHit": "ShellWaterHitMediumPlaceholder"
 						}
 					]
 				},
@@ -2249,6 +2265,12 @@
 							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan152mm"
 						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellExplosionMediumPlaceholder",
+							"FXWaterHit": "ShellWaterHitMediumPlaceholder"
+						}
 					]
 				},
 				{
@@ -2265,6 +2287,12 @@
 							"AmmoPath": "ArtilleryShells/",
 							"AmmoModel": "ShellJapan120mm"
 						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellExplosionSmallPlaceholder",
+							"FXWaterHit": "ShellWaterHitSmallPlaceholder"
+						}
 					]
 				},
 				{
@@ -2280,6 +2308,12 @@
 						{
 							"AmmoPath": "Torpedoes/",
 							"AmmoModel": "TorpedoJapan610mmLongLance"
+						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellWaterHitTorpedoPlaceholder",
+							"FXWaterHit": "ShellWaterHitTorpedoPlaceholder"
 						}
 					]
 				}
@@ -2866,6 +2900,27 @@
 				{
 					"typeStr": "1",
 					"name": "UnitModel",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Ammos@AmmoFX",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:FX_Storage",
+					"name": "FXExplosion",
+					"opt": true
+				},
+				{
+					"typeStr": "6:FX_Storage",
+					"name": "FXWaterHit",
+					"opt": true,
 					"display": null
 				}
 			]

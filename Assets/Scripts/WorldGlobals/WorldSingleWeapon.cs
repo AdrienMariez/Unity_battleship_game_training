@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 [Serializable]
 public class WorldSingleWeapon {
@@ -10,12 +12,13 @@ public class WorldSingleWeapon {
     // Health
         private float WeaponHealth; public float GetWeaponHealth(){ return WeaponHealth; }
         private float WeaponArmor; public float GetWeaponArmor(){ return WeaponArmor; }
-    private float WeaponMaxRange; public float GetWeaponMaxRange(){ return WeaponMaxRange; }
     // Fire manager
+        private float WeaponMaxRange; public float GetWeaponMaxRange(){ return WeaponMaxRange; }
         private float WeaponMinRange; public float GetWeaponMinRange(){ return WeaponMinRange; }
         private float WeaponMuzzleVelocity; public float GetWeaponMuzzleVelocity(){ return WeaponMuzzleVelocity; }
         private float WeaponReloadTime; public float GetWeaponReloadTime(){ return WeaponReloadTime; }
         private int WeaponPrecision; public int GetWeaponPrecision(){ return WeaponPrecision; }
+        private List<CompiledTypes.Weapons_roles.RowValues> WeaponRoles = new List<CompiledTypes.Weapons_roles.RowValues>(); public List<CompiledTypes.Weapons_roles.RowValues> GetWeaponRoles() { return WeaponRoles; }
         private AudioClip FireSound; public AudioClip GetFireSound(){ return FireSound; }
         private GameObject FireFXPrefab; public GameObject GetFireFXPrefab(){ return FireFXPrefab; }
     // Rotation
@@ -74,6 +77,22 @@ public class WorldSingleWeapon {
                     }
                 }
             }
+
+            
+            if (weapon.Isavariant && weapon.WeaponRolesList.Count == 0) {
+                foreach (CompiledTypes.WeaponRoles weaponRole in masterWeaponReference.WeaponRolesList) {
+                    string roleString = weaponRole.Weaponrole.id.ToString();
+                    CompiledTypes.Weapons_roles.RowValues role = (CompiledTypes.Weapons_roles.RowValues)System.Enum.Parse( typeof(CompiledTypes.Weapons_roles.RowValues), roleString);
+                    WeaponRoles.Add(role);
+                }
+            } else if (weapon.WeaponRolesList.Count > 0) {
+                foreach (CompiledTypes.WeaponRoles weaponRole in weapon.WeaponRolesList) {
+                    string roleString = weaponRole.Weaponrole.id.ToString();
+                    CompiledTypes.Weapons_roles.RowValues role = (CompiledTypes.Weapons_roles.RowValues)System.Enum.Parse( typeof(CompiledTypes.Weapons_roles.RowValues), roleString);
+                    WeaponRoles.Add(role);
+                }
+            }
+
             if (weapon.Isavariant && weapon.Max_range == 0) {
                 WeaponMaxRange = masterWeaponReference.Max_range;
             } else {
@@ -138,15 +157,15 @@ public class WorldSingleWeapon {
                 FireFXPrefab = ((GameObject) Resources.Load("FX/"+weapon.WeaponFXList[0].FXShooting.FXPath+""+weapon.WeaponFXList[0].FXShooting.FXPrefab));
             }
             if (RotationSound == null) {
-                Debug.Log (" No TurretRotationAudio found  or"+ weapon.id);
+                Debug.Log (" No TurretRotationAudio found for"+ weapon.id);
                 RotationSound = (WorldUIVariables.GetErrorSound());
             }
             if (FireSound == null) {
-                Debug.Log (" No FireAudio found  or"+ weapon.id);
+                Debug.Log (" No FireAudio found for"+ weapon.id);
                 FireSound = (WorldUIVariables.GetErrorSound());
             }
             if (FireFXPrefab == null) {
-                Debug.Log (" No FireFXPrefab found  or"+ weapon.id);
+                Debug.Log (" No FireFXPrefab found for"+ weapon.id);
                 FireFXPrefab = (WorldUIVariables.GetErrorModel());
             }
 

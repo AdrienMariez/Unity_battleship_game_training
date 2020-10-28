@@ -69,6 +69,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CastleDBAsset: {fileID: 1042094116111776886, guid: c26edfb4d6471ae42ad77881eef5f271,
     type: 3}
+  m_WeaponHitMask:
+    serializedVersion: 2
+    m_Bits: 40448
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

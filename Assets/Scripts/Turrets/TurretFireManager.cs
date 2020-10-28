@@ -11,7 +11,6 @@ public class TurretFireManager : MonoBehaviour
     // [Tooltip("Type of turret")] public TurretRole m_TurretRole;
     [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles;
     private TurretRole TurretCurrentRole;
-    [Tooltip("Ammo used")] public GameObject m_Shell;
     [Tooltip("Points where the shells will be spawned, make as many points as there are barrels")] 
     public Transform[] m_FireMuzzles;
     private GameObject AmmoPrefab; public void SetAmmoPrefab(GameObject _g){ AmmoPrefab = _g; }
@@ -19,6 +18,7 @@ public class TurretFireManager : MonoBehaviour
     private WorldSingleAmmo AmmoRef; public void SetAmmoRef(WorldSingleAmmo _w){ AmmoRef = _w; }
     
     // Weapon datas
+    private List<CompiledTypes.Weapons_roles.RowValues> WeaponRoles; public void SetWeaponRoles(List<CompiledTypes.Weapons_roles.RowValues> _l){ WeaponRoles = _l; }
     private float MaxRange = 10000f; public void SetMaxRange(float range){ MaxRange = range; } public float GetMaxRange(){ return MaxRange; }   // Ranges are in meters.
     private float MinRange = 1000f; public void SetMinRange(float range){ MinRange = range; } public float GetMinRange(){ return MinRange; }
     // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm gives a ratio of *0.58
@@ -139,7 +139,7 @@ public class TurretFireManager : MonoBehaviour
             GameObject shellInstance =
                 Instantiate (AmmoRef.GetAmmoPrefab(), fireMuzzle.position, firingDirection);
 
-            SendNeededInfoToShell(shellInstance);
+            SendNeededInfoToShell(shellInstance.GetComponent<ShellStat>());
 
             TurretManager.SendPlayerShellToUI(shellInstance);
 
@@ -151,22 +151,28 @@ public class TurretFireManager : MonoBehaviour
             _AudioSource.Play ();  
         }
     }
-    private void SendNeededInfoToShell(GameObject shellInstance) {
+    private void SendNeededInfoToShell(ShellStat shellStatInstance) {
         if (TurretCurrentRole == TurretRole.Artillery || TurretCurrentRole == TurretRole.NavalArtillery) {
-            shellInstance.GetComponent<ShellStat>().SetTargetRange(TargetRange);
+            shellStatInstance.SetTargetRange(TargetRange);
             if (AIControl) {
-                shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretRole.NavalArtillery);       // Don't let the AI shoot Artillery
+                shellStatInstance.SetFiringMode(TurretRole.NavalArtillery);       // Don't let the AI shoot Artillery
             }
         } else {
-            shellInstance.GetComponent<ShellStat>().SetTargetRange(MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
-            shellInstance.GetComponent<ShellStat>().SetFiringMode(TurretCurrentRole);
+            shellStatInstance.SetTargetRange(MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
+            shellStatInstance.SetFiringMode(TurretCurrentRole);
         }
-        shellInstance.GetComponent<ShellStat>().SetTargetPosition(TargetPosition);
-        shellInstance.GetComponent<ShellStat>().SetWasAILaunched(AIControl);
+        shellStatInstance.SetTargetPosition(TargetPosition);
+        shellStatInstance.SetWasAILaunched(AIControl);
 
-        shellInstance.GetComponent<ShellStat>().SetMuzzleVelocity(MuzzleVelocity * 0.58f);
-        shellInstance.GetComponent<ShellStat>().SetPrecision(Precision);
-        shellInstance.GetComponent<ShellStat>().SetParentTurretManager(TurretManager);
+        shellStatInstance.SetMuzzleVelocity(MuzzleVelocity * 0.58f);
+        shellStatInstance.SetPrecision(Precision);
+        shellStatInstance.SetParentTurretManager(TurretManager);
+
+        shellStatInstance.SetExplosionFX(AmmoRef.GetExplosionFX());
+        shellStatInstance.SetWaterHitFX(AmmoRef.GetWaterHitFX());
+        shellStatInstance.SetDamageFX(AmmoRef.GetDamageFX());
+
+        shellStatInstance.BeginOperations(AmmoRef.GetAmmoReference_DB());
     }
 
     private void FireFX(Transform fireMuzzle) {
