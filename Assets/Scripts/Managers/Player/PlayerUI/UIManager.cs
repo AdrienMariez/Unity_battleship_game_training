@@ -55,7 +55,7 @@ namespace UI {
         private PlayerManager PlayerManager;
         private FreeLookCam FreeLookCam;
         private Vector3 AimerPosition;                              // Position of the target reticule
-        TurretFireManager.TurretRole CurrentControlledTurret;
+        CompiledTypes.Weapons_roles.RowValues CurrentControlledWeapon;
         private WorldUIVariables WorldUIVariables;
 
         private void Start() {
@@ -89,14 +89,16 @@ namespace UI {
                         DisplayTurretsTargetRange.text = string.Format(TurretsTargetRangeDisplayMeter, Mathf.Round(TurretTargetRange));
                     }
 
-                    if (CurrentControlledTurret == TurretFireManager.TurretRole.NavalArtillery) {
+                    if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {
                         DisplayTurretsArtilleryAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
-                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.Artillery) {
+                    } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.Artillery) {
                         DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
-                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.AA) {
+                    } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.AntiAir) {
                         DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
-                    } else if (CurrentControlledTurret == TurretFireManager.TurretRole.Torpedo) {
+                    } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
                         DisplayTurretsArtilleryAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
+                    } else {
+                        DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
                     }
                 }
             }
@@ -243,9 +245,9 @@ namespace UI {
                 ChangeSpeedStep(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentSpeedStep());
         }
 
-        public void SetPlayerUITurretRole(TurretFireManager.TurretRole currentControlledTurret) {
+        public void SetPlayerUITurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledTurret) {
             if (TurretUIInstance) {
-                CurrentControlledTurret = currentControlledTurret;
+                CurrentControlledWeapon = currentControlledTurret;
                 // Debug.Log ("currentControlledTurret : "+ currentControlledTurret);
                 DisplayTurretsArtilleryAimer.SetActive(false);
                 DisplayTurretsAAAimer.SetActive(false);
@@ -253,24 +255,22 @@ namespace UI {
                 DisplayTurretsCurrentAA.SetActive(false);
                 DisplayTurretsCurrentTorpedoes.SetActive(false);
                 DisplayTurretsCurrentDepthCharges.SetActive(false);
-                if (currentControlledTurret == TurretFireManager.TurretRole.NavalArtillery) {
+                if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {
                     DisplayTurretsArtilleryAimer.SetActive(true);
                     DisplayTurretsCurrentArtillery.SetActive(true);
-                }
-                if (currentControlledTurret == TurretFireManager.TurretRole.Artillery) {
+                } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.Artillery) {
                     DisplayTurretsAAAimer.SetActive(true);
                     DisplayTurretsCurrentArtillery.SetActive(true);
-                }
-                if (currentControlledTurret == TurretFireManager.TurretRole.AA) {
+                } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.AntiAir) {
                     DisplayTurretsAAAimer.SetActive(true);
                     DisplayTurretsCurrentAA.SetActive(true);
-                }
-                if (currentControlledTurret == TurretFireManager.TurretRole.Torpedo) {
+                } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
                     DisplayTurretsArtilleryAimer.SetActive(true);
                     DisplayTurretsCurrentTorpedoes.SetActive(true);
-                }
-                if (currentControlledTurret == TurretFireManager.TurretRole.DepthCharge) {
+                } else if (CurrentControlledWeapon == CompiledTypes.Weapons_roles.RowValues.DepthCharge) {
                     DisplayTurretsCurrentDepthCharges.SetActive(true);
+                } else {
+                    DisplayTurretsAAAimer.SetActive(true);
                 }
                 CreateTurretsStatusDisplay();
             }
@@ -284,9 +284,12 @@ namespace UI {
                 TurretStatus = ActiveTarget.GetComponent<TurretManager>().GetTurretsStatus();
 
                 // Loop for each position
-                for (int i = 0; i < TurretStatus.Count; i++) {
-                    // Debug.Log ("position : "+ position);
-                    GameObject turret = Instantiate(WorldUIVariables.GetTurretStatusSprites(), DisplayTurretsStatus.transform);
+                // for (int i = 0; i < TurretStatus.Count; i++) {
+                //     // Debug.Log ("position : "+ position);
+                //     GameObject turret = Instantiate(WorldUIVariables.GetTurretStatusSprites(), DisplayTurretsStatus.transform);
+                // }
+                foreach (TurretManager.TurretStatusType turret in TurretStatus) {
+                    Instantiate(WorldUIVariables.GetTurretStatusSprites(), DisplayTurretsStatus.transform);
                 }
                 StartCoroutine(PauseAction());
             }

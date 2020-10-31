@@ -1069,11 +1069,93 @@
 					"UnitCategory": "Heavy_Cruiser",
 					"Isavariant": false,
 					"UnitMass": 12781000,
-					"UnitHardPoints": [],
+					"UnitHardPoints": [
+						{
+							"HardPointId": "0",
+							"HardPointType": "ShipFunnel",
+							"IsTransferedToVariants": true,
+							"IsMirrored": false
+						},
+						{
+							"HardPointId": "1",
+							"HardPointType": "ShipFunnel",
+							"IsTransferedToVariants": true,
+							"IsMirrored": false
+						},
+						{
+							"HardPointId": "2",
+							"HardPointType": "ShipFunnel",
+							"IsTransferedToVariants": true,
+							"IsMirrored": false
+						},
+						{
+							"HardPointId": "3",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanCA200mmA"
+						},
+						{
+							"HardPointId": "4",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanCA200mmB"
+						},
+						{
+							"HardPointId": "5",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanCA200mmA"
+						},
+						{
+							"HardPointId": "6",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanCA200mmY"
+						},
+						{
+							"HardPointId": "7",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanCA200mmA"
+						},
+						{
+							"HardPointId": "8",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "9",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "10",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanTorpedo4CA"
+						},
+						{
+							"HardPointId": "11",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanTorpedo4CA"
+						}
+					],
 					"UnitModelPath": [
 						{
 							"UnitPath": "Ship/",
-							"UnitModel": "AircraftCarrierTest"
+							"UnitModel": "IJN_Cruiser_Takao"
 						}
 					]
 				},
@@ -1088,7 +1170,113 @@
 					],
 					"UnitNation": "usa",
 					"index": 2,
-					"UnitHardPoints": []
+					"UnitHardPoints": [
+						{
+							"HardPointId": "1",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": "2",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "3",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "4",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "5",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "6",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": "7",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "8",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "9",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "10",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "11",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "12",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "13",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanBBCasemate120mm"
+						},
+						{
+							"HardPointId": "14",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "15",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						}
+					]
 				},
 				{
 					"id": "takaoUSA",
@@ -1101,7 +1289,71 @@
 					],
 					"UnitNation": "usa",
 					"index": 3,
-					"UnitHardPoints": []
+					"UnitHardPoints": [
+						{
+							"HardPointId": "3",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": "4",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "5",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": "6",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmB"
+						},
+						{
+							"HardPointId": "7",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": false,
+							"WeaponType": "JapanBB356mmA"
+						},
+						{
+							"HardPointId": "8",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "9",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "Japan120mmType10AATwin"
+						},
+						{
+							"HardPointId": "10",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanTorpedo4CA"
+						},
+						{
+							"HardPointId": "11",
+							"HardPointType": "Weapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "JapanTorpedo4CA"
+						}
+					]
 				},
 				{
 					"id": "TrainingCarrier",
@@ -1890,10 +2142,10 @@
 					"id": "JapanBB356mmA",
 					"WeaponRoles": [
 						{
-							"Weaponrole": "artillery"
+							"Weaponrole": "Artillery"
 						},
 						{
-							"Weaponrole": "navalartillery"
+							"Weaponrole": "NavalArtillery"
 						}
 					],
 					"WeaponVariantReference": [],
@@ -1946,10 +2198,10 @@
 					"id": "JapanCA200mmA",
 					"WeaponRoles": [
 						{
-							"Weaponrole": "navalartillery"
+							"Weaponrole": "NavalArtillery"
 						},
 						{
-							"Weaponrole": "artillery"
+							"Weaponrole": "Artillery"
 						}
 					],
 					"WeaponVariantReference": [],
@@ -2019,10 +2271,13 @@
 					"id": "Japan120mmType10AATwin",
 					"WeaponRoles": [
 						{
-							"Weaponrole": "navalartillery"
+							"Weaponrole": "Artillery"
 						},
 						{
-							"Weaponrole": "artillery"
+							"Weaponrole": "NavalArtillery"
+						},
+						{
+							"Weaponrole": "AntiAir"
 						}
 					],
 					"WeaponVariantReference": [],
@@ -2058,10 +2313,10 @@
 					"id": "JapanBBCasemate120mm",
 					"WeaponRoles": [
 						{
-							"Weaponrole": "navalartillery"
+							"Weaponrole": "NavalArtillery"
 						},
 						{
-							"Weaponrole": "artillery"
+							"Weaponrole": "Artillery"
 						}
 					],
 					"WeaponVariantReference": [],
@@ -2097,7 +2352,7 @@
 					"id": "JapanTorpedo4CA",
 					"WeaponRoles": [
 						{
-							"Weaponrole": "torpedoes"
+							"Weaponrole": "Torpedo"
 						}
 					],
 					"WeaponVariantReference": [],
@@ -2136,19 +2391,23 @@
 			"lines": [
 				{
 					"Name": "Artillery",
-					"id": "artillery"
+					"id": "Artillery"
 				},
 				{
-					"id": "navalartillery",
+					"id": "NavalArtillery",
 					"Name": "Naval Artillery"
 				},
 				{
 					"Name": "Anti Air",
-					"id": "antiair"
+					"id": "AntiAir"
 				},
 				{
 					"Name": "Torpedoes",
-					"id": "torpedoes"
+					"id": "Torpedo"
+				},
+				{
+					"id": "DepthCharge",
+					"Name": "Depth Charge"
 				}
 			],
 			"separators": [],

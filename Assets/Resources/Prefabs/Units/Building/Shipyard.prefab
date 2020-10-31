@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpawnableCategories:
-  - m_UnitSubCategory: 0
+  - m_UnitSubCategory: 3
   - m_UnitSubCategory: 2
   - m_UnitSubCategory: 1
   m_ShipSpawnPosition: {fileID: 6119007043914030161}

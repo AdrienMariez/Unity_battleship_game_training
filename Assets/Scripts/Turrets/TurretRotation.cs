@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TurretRotation : MonoBehaviour
-{ 
+public class TurretRotation : MonoBehaviour { 
     private bool PlayerControl = false;
     private bool Dead;
 
@@ -53,9 +52,11 @@ public class TurretRotation : MonoBehaviour
 
     public void BeginOperations(Transform parentTransform, GameObject turretSoundInstance, TurretFireManager turretFireManager){
         // Rotation transforms
-            ParentTransform = parentTransform.parent;
-            Transform = parentTransform;
-            PositionSafeguard = parentTransform.position;
+            // ParentTransform = parentTransform.parent;
+            // Transform = parentTransform;
+            ParentTransform = parentTransform;
+            Transform = this.transform;
+            PositionSafeguard = Transform.localPosition;
             ElevationTransform = this.transform.Find("VerticalAxis").transform;
 
         // Sound
@@ -171,6 +172,7 @@ public class TurretRotation : MonoBehaviour
         while (true) {
             yield return new WaitForSeconds(2f);
             Transform.localPosition = PositionSafeguard;
+            // Transform.localPosition = new Vector3 (0.0f, 0.0f, 0.0f);
         }
     }
 
@@ -194,7 +196,9 @@ public class TurretRotation : MonoBehaviour
 
         if (TurretSleep) {
             TargetAng = TurretEulerAngle;
+            // TargetAng = ParentTransform.rotation.y;
         }
+        // Debug.Log(" = "+ ParentTransform.rotation.y);
         
         if (TargetAng<0)
             TargetAng += 360;
@@ -239,10 +243,12 @@ public class TurretRotation : MonoBehaviour
 
         // Last check to see if the turret is very close to the target angle, to avoid unwanted shaking
         if (TurretSleep && TargetAng > 359.5 && CurrentAng < 0.5 || TurretSleep && TargetAng < 0.5 && CurrentAng > 359.5) {
+            Transform.localRotation = Quaternion.Euler (new Vector3 (0.0f, 0.0f, 0.0f));
+            // Debug.Log("TurretSleep Horizontal Close");
             return;
         }
         if (TargetAng >= CurrentAng && TargetAng <= (CurrentAng+0.2)  || TargetAng <= CurrentAng && TargetAng >= (CurrentAng-0.2)) {
-            // if (debug) { Debug.Log("Horizontal Close");}
+            // Debug.Log("Horizontal Close");
             return;
         }
 
@@ -577,6 +583,6 @@ public class TurretRotation : MonoBehaviour
     }
     public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
 
-    private TurretFireManager.TurretRole CurrentControlledTurretRole;
-    public void SetCurrentControlledTurretRole(TurretFireManager.TurretRole currentControlledTurretRole) { CurrentControlledTurretRole = currentControlledTurretRole; }
+    // private CompiledTypes.Weapons_roles.RowValues CurrentControlledTurretRole;
+    // public void SetCurrentControlledTurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledTurretRole) { CurrentControlledTurretRole = currentControlledTurretRole; }
 }

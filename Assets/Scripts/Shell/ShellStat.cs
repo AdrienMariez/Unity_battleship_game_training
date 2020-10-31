@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class ShellStat : MonoBehaviour {
     private Rigidbody rb;
     private float MuzzleVelocity;
+        public void SetMuzzleVelocity(float velocity) { MuzzleVelocity = velocity; }
 
     private Vector3 StartPosition;                  // Start position P1
     private Vector3 BezierCurvePeak;                // Curve peak P2
     private Vector3 TargetPosition;                 // Target position P3
+        public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
     private Vector3 CurrentPositionInCurve;         // Current position of the shell in the Bézier curve
     private Vector3 CurrentPositionFlat;            // A fake shell that goes directly from emitter to target and brings CurrentPositionInCurve with him.
 
@@ -16,9 +18,12 @@ public class ShellStat : MonoBehaviour {
 
     private float CurrentRange;                     // Distance between the shell and the starting point
     private float TargetRange;                      // Distance between the target point and the starting point. The target point is always at the same
+        public void SetTargetRange(float range) { TargetRange = range; }
     private Vector3 V;
     private float ShellPrecision;
+        public void SetPrecision(float precision) { ShellPrecision = precision; }
     private bool WasAILaunched;                     // Was the ammo spent by an AI ?
+        public void SetWasAILaunched(bool wasAILaunched) { WasAILaunched = wasAILaunched; }
     private bool SelfDestruct = false;
 
     // Data from DB
@@ -35,6 +40,11 @@ public class ShellStat : MonoBehaviour {
     private GameObject ExplosionFXInstance;
     private GameObject WaterHitFXInstance;
     private GameObject DamageHoleFXInstance;
+
+    private CompiledTypes.Weapons_roles.RowValues ShellType;
+        public void SetFiringMode(CompiledTypes.Weapons_roles.RowValues shellType) { ShellType = shellType; }
+    private TurretManager TurretManager;
+        public void SetParentTurretManager(TurretManager turretManager) { TurretManager = turretManager; }
 
     public void BeginOperations(CompiledTypes.Ammos ammoDBRef) {
         Weight = ammoDBRef.Weight;
@@ -55,7 +65,7 @@ public class ShellStat : MonoBehaviour {
 
         CurrentPositionFlat = transform.position;                                       // Initialize position
 
-        if (ShellType == TurretFireManager.TurretRole.NavalArtillery && !WasAILaunched) {
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.NavalArtillery && !WasAILaunched) {
 
             V = transform.TransformDirection(Vector3.forward);                          // Make a vector in the direction of the facing of the shell
             V.y = 0;                                                                    // Flatten on the Y axis for naval artillery
@@ -65,13 +75,13 @@ public class ShellStat : MonoBehaviour {
             // Debug.Log("TargetRange = "+ TargetRange);
             // Debug.Log("ShellPrecision = "+ ShellPrecision);
         }
-        // else if (ShellType == TurretFireManager.TurretRole.NavalArtillery && WasAILaunched) {
+        // else if (ShellType == CompiledTypes.Weapons_roles.RowValues.NavalArtillery && WasAILaunched) {
         //     TargetPosition = TargetPosition;                      //
         // }
-        if (ShellType == TurretFireManager.TurretRole.AA) {
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.AntiAir) {
             // TargetPosition = transform.position + V * TargetRange;                   // TargetRange for AA...This shouldn't be here.
         }
-        if (ShellType == TurretFireManager.TurretRole.Torpedo) {
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
             Destroy (gameObject, MaxLifeTime);                                        // Torpedoes auto die after their lifetime is expended
             StartCoroutine(PreventPrematureExplosion(1f));                               // Prevent torpedoes from exploding in their tubes at creation
         } else {
@@ -87,7 +97,7 @@ public class ShellStat : MonoBehaviour {
 
 
     private void FixedUpdate () {
-        if (ShellType == TurretFireManager.TurretRole.Torpedo) {
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
             CalculateTrajectoryTorpedo();
         } else {
             CalculateTrajectoryArtillery();
@@ -289,7 +299,7 @@ public class ShellStat : MonoBehaviour {
         ShellExplosionFX();
     }
     private void ShellExplosionFX(){
-        if (ShellType == TurretFireManager.TurretRole.Torpedo && !PreventExplosion) {
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.Torpedo && !PreventExplosion) {
             ShellExplosionFXTorpedo();
         } else {
             ShellExplosionFXArtillery();
@@ -343,15 +353,7 @@ public class ShellStat : MonoBehaviour {
         Destroy (gameObject, time);
     }
 
-    public void SetTargetRange(float range) { TargetRange = range; }
-    public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
-    public void SetMuzzleVelocity(float velocity) { MuzzleVelocity = velocity; }
-    public void SetPrecision(float precision) { ShellPrecision = precision; }
-    public void SetWasAILaunched(bool wasAILaunched) { WasAILaunched = wasAILaunched; }
-    private TurretFireManager.TurretRole ShellType;
-    public void SetFiringMode(TurretFireManager.TurretRole shellType) { ShellType = shellType; }
-    private TurretManager TurretManager;
-    public void SetParentTurretManager(TurretManager turretManager) { TurretManager = turretManager; }
+    // Camera following shell
     private bool FollowedByCamera = false;
     private PlayerManager PlayerManager;
     private GameObject ShellCamera;
@@ -362,5 +364,4 @@ public class ShellStat : MonoBehaviour {
         ShellCamera = shellCamera;
         DestroyTimer = destroyTimer;
     }
-
 }

@@ -177,10 +177,11 @@ private Weapons Get(CompiledTypes.Weapons.RowValues line) { return new Weapons(p
                 }
  } //END OF Weapons 
 public class Weapons_rolesType 
- {public Weapons_roles artillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.artillery); } } 
-public Weapons_roles navalartillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.navalartillery); } } 
-public Weapons_roles antiair { get { return Get(CompiledTypes.Weapons_roles.RowValues.antiair); } } 
-public Weapons_roles torpedoes { get { return Get(CompiledTypes.Weapons_roles.RowValues.torpedoes); } } 
+ {public Weapons_roles Artillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.Artillery); } } 
+public Weapons_roles NavalArtillery { get { return Get(CompiledTypes.Weapons_roles.RowValues.NavalArtillery); } } 
+public Weapons_roles AntiAir { get { return Get(CompiledTypes.Weapons_roles.RowValues.AntiAir); } } 
+public Weapons_roles Torpedo { get { return Get(CompiledTypes.Weapons_roles.RowValues.Torpedo); } } 
+public Weapons_roles DepthCharge { get { return Get(CompiledTypes.Weapons_roles.RowValues.DepthCharge); } } 
 private Weapons_roles Get(CompiledTypes.Weapons_roles.RowValues line) { return new Weapons_roles(parsedDB.Root, line); }
 
                 public Weapons_roles[] GetAll() 

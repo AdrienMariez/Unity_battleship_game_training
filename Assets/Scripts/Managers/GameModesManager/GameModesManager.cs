@@ -83,7 +83,7 @@ public class GameModesManager : MonoBehaviour {
         GameManager.ResetCounters();
 
         // Setup each unit
-        foreach (var unit in Units) {
+        foreach (UnitManager unit in Units) {
             // TODO if not using a spawn point...
             // if (unit.m_UseSpawnpoint) {
                 foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {

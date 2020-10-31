@@ -2,23 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class TurretFireManager : MonoBehaviour
-{
-    private bool Active = false;
-    private bool PlayerControl = false;
-    private bool UIActive = false;
-    private bool Dead;
+public class TurretFireManager : MonoBehaviour {
     // [Tooltip("Type of turret")] public TurretRole m_TurretRole;
-    [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles;
-    private TurretRole TurretCurrentRole;
+    [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles; public TurretRole[] GetTurretRoles() { return m_TurretRoles; }
+    private TurretRole TurretCurrentRole; public void SetCurrentControlledTurretRole(TurretRole currentControlledTurretRole) { TurretCurrentRole = currentControlledTurretRole; }
     [Tooltip("Points where the shells will be spawned, make as many points as there are barrels")] 
     public Transform[] m_FireMuzzles;
-    private GameObject AmmoPrefab; public void SetAmmoPrefab(GameObject _g){ AmmoPrefab = _g; }
+
+
     // Ammo Data
     private WorldSingleAmmo AmmoRef; public void SetAmmoRef(WorldSingleAmmo _w){ AmmoRef = _w; }
     
     // Weapon datas
-    private List<CompiledTypes.Weapons_roles.RowValues> WeaponRoles; public void SetWeaponRoles(List<CompiledTypes.Weapons_roles.RowValues> _l){ WeaponRoles = _l; }
+    private List<CompiledTypes.Weapons_roles.RowValues> WeaponRoles; public void SetWeaponRoles(List<CompiledTypes.Weapons_roles.RowValues> _l){ WeaponRoles = _l; } public List<CompiledTypes.Weapons_roles.RowValues> GetWeaponRoles() { return WeaponRoles; }
+    private CompiledTypes.Weapons_roles.RowValues WeaponCurrentRole; public void SetWeaponCurrentRole(CompiledTypes.Weapons_roles.RowValues _r) { WeaponCurrentRole = _r; } public CompiledTypes.Weapons_roles.RowValues GetWeaponCurrentRole(){ return WeaponCurrentRole; }
     private float MaxRange = 10000f; public void SetMaxRange(float range){ MaxRange = range; } public float GetMaxRange(){ return MaxRange; }   // Ranges are in meters.
     private float MinRange = 1000f; public void SetMinRange(float range){ MinRange = range; } public float GetMinRange(){ return MinRange; }
     // It appears the muzzle velocity as implemented ingame is too fast, real time based on Iowa 16"/406mm gives a ratio of *0.58
@@ -35,14 +32,26 @@ public class TurretFireManager : MonoBehaviour
 
     // FX
     private GameObject FireFx; public void SetFireFx(GameObject _g){ FireFx = _g; }
-        
-    private TurretManager TurretManager;
-    private int TurretNumber;
+
+    // Unit/turret data 
+    private bool Active = false; public void SetActive(bool activate) { Active = activate; }
+    private bool PlayerControl = false; public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
+    private bool UIActive = false; public void SetTurretUIActive(bool uiActive){ UIActive = uiActive; }
+    private bool Dead;
+    public void SetTurretDeath(bool IsShipDead) {
+        Dead = IsShipDead;
+        if (Dead)
+            CheckTurretStatus();
+    }
+    private TurretManager TurretManager; public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
     private TurretRotation TurretRotation;
+    private int TurretNumber;
+
+    
     private bool PreventFire;
     private bool OutOfRange;
-    private float TargetRange;
-    private Vector3 TargetPosition;
+    private float TargetRange; public void SetTargetRange(float range){ TargetRange = range; }
+    private Vector3 TargetPosition; public void SetTargetPosition(Vector3 position) { TargetPosition = position; }
     private TurretManager.TurretStatusType TurretStatus;
     public enum TurretRole {
         NavalArtillery,
@@ -71,7 +80,7 @@ public class TurretFireManager : MonoBehaviour
 
     private void Update () {
         // if (debug) { Debug.Log("PreventFire = "+ PreventFire); Debug.Log("ReloadingTimer = "+ ReloadingTimer); }
-        if (TargetRange > MaxRange && TurretCurrentRole == TurretRole.NavalArtillery || TargetRange > MaxRange && TurretCurrentRole == TurretRole.Artillery) {
+        if (TargetRange > MaxRange && WeaponCurrentRole == CompiledTypes.Weapons_roles.RowValues.NavalArtillery || TargetRange > MaxRange && WeaponCurrentRole == CompiledTypes.Weapons_roles.RowValues.Artillery) {
             OutOfRange = true;
             CheckTurretStatus();
         }else{
@@ -152,14 +161,14 @@ public class TurretFireManager : MonoBehaviour
         }
     }
     private void SendNeededInfoToShell(ShellStat shellStatInstance) {
-        if (TurretCurrentRole == TurretRole.Artillery || TurretCurrentRole == TurretRole.NavalArtillery) {
+        if (WeaponCurrentRole == CompiledTypes.Weapons_roles.RowValues.Artillery || WeaponCurrentRole == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {
             shellStatInstance.SetTargetRange(TargetRange);
             if (AIControl) {
-                shellStatInstance.SetFiringMode(TurretRole.NavalArtillery);       // Don't let the AI shoot Artillery
+                shellStatInstance.SetFiringMode(CompiledTypes.Weapons_roles.RowValues.NavalArtillery);       // Don't let the AI shoot Artillery
             }
         } else {
             shellStatInstance.SetTargetRange(MaxRange);       // Sends max range instead of target range to the unit. This may change in the future
-            shellStatInstance.SetFiringMode(TurretCurrentRole);
+            shellStatInstance.SetFiringMode(WeaponCurrentRole);
         }
         shellStatInstance.SetTargetPosition(TargetPosition);
         shellStatInstance.SetWasAILaunched(AIControl);
@@ -190,25 +199,15 @@ public class TurretFireManager : MonoBehaviour
         Destroy (fireFxInstance.gameObject, fireFxInstance.GetComponent<ParticleSystem>().main.startLifetime.constant);
     }
 
-    public void SetPlayerControl(bool playerControl) { PlayerControl = playerControl; }
-    public void SetActive(bool activate) {
-        Active = activate;
-    }
+    
+    
     public void SetAIControl(bool aiControl) { AIControl = aiControl; StartCoroutine(PauseFire()); }
     public void SetPreventFire(bool status){
         PreventFire = status;
         if (PreventFire)
             CheckTurretStatus();
     }
-    public void SetTargetRange(float range){ TargetRange = range; }
-    public void SetTargetPosition(Vector3 position) { 
-        TargetPosition = position;
-    }
-    public void SetTurretDeath(bool IsShipDead) {
-        Dead = IsShipDead;
-        if (Dead)
-            CheckTurretStatus();
-    }
+
 
     private void CheckTurretStatus() {
         TurretManager.TurretStatusType statusType = GetTurretStatus();
@@ -243,8 +242,4 @@ public class TurretFireManager : MonoBehaviour
     }
     IEnumerator PauseAction(){ yield return new WaitForSeconds(0.02f); ReturnActiveTurretsStatus(); }
     public void ReturnActiveTurretsStatus() { TurretManager.SetSingleTurretStatus(TurretStatus, TurretNumber); }
-    public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
-    public void SetTurretUIActive(bool uiActive){ UIActive = uiActive; }
-    public void SetCurrentControlledTurretRole(TurretRole currentControlledTurretRole) { TurretCurrentRole = currentControlledTurretRole; }
-    public TurretRole[] GetTurretRoles() { return m_TurretRoles; }
 }

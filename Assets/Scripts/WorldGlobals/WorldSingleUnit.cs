@@ -166,21 +166,12 @@ public class WorldSingleUnit {
                 if (masterUnitReference.UnitweaponsList.Count > 0) {
                     SetHardPoints(masterUnitReference, false);
                 }
-            } else if (unit.Isavariant && unit.UnitweaponsList.Count > 0) {
+            } else if (unit.Isavariant && unit.UnitHardPointsList.Count > 0) {
                 SetHardPoints(masterUnitReference, true);
                 SetHardPoints(unit, false);
-            }else if (unit.UnitweaponsList.Count > 0) {
+            }else if (unit.UnitHardPointsList.Count > 0) {
                 SetHardPoints(unit, false);
             }
-        
-        // WEAPONS
-            // if (unit.Isavariant && unit.UnitweaponsList.Count == 0) {
-            //     if (masterUnitReference.UnitweaponsList.Count > 0) {
-            //         SetWeapons(masterUnitReference);
-            //     }
-            // } else if (unit.UnitweaponsList.Count > 0) {
-            //     SetWeapons(unit);
-            // }
 
         // SHIP BUOYANCY
             if (unit.Isavariant && unit.BuoyancyList.Count == 0) {
@@ -250,11 +241,26 @@ public class WorldSingleUnit {
             }
             _hardpoint.SetWeaponType(hardpoint.WeaponType);
 
-            if (UnitPrefab.transform.Find("HardPoints").transform.Find(hardpoint.HardPointId.ToString()).GetComponent<HardPointComponent>()) {             // If the hardpoint exists in the model, set in table
-                UnitHardPointList.Add(_hardpoint);
-            } else {
+            // Test if hardpoint exists
+            Transform HP = UnitPrefab.transform.Find("HardPoints").transform.Find(hardpoint.HardPointId.ToString());
+            if (HP == null) {
                 Debug.Log (" No such hardpoint.  hardpoint id :"+ hardpoint.HardPointId + " in " + unit.id);
+                return;
             }
+            HardPointComponent HPC = HP.GetComponent<HardPointComponent>();
+            if (HPC == null) {
+                Debug.Log ("hardpoint has no component.  hardpoint id :"+ hardpoint.HardPointId + " in " + unit.id);
+                return;
+            }
+
+            UnitHardPointList.Add(_hardpoint);
+
+
+            // if (UnitPrefab.transform.Find("HardPoints").transform.Find(hardpoint.HardPointId.ToString()).GetComponent<HardPointComponent>()) {             // If the hardpoint exists in the model, set in table
+            //     UnitHardPointList.Add(_hardpoint);
+            // } else {
+            //     Debug.Log (" No such hardpoint.  hardpoint id :"+ hardpoint.HardPointId + " in " + unit.id);
+            // }
 
         }
     }
@@ -267,122 +273,6 @@ public class WorldSingleUnit {
         private CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeaponT){ _weaponType = _hpWeaponT; }
     }
 
-// WEAPONS
-    private List<TurretWeapon> TurretWeaponList = new List<TurretWeapon>(); public List<TurretWeapon> GetTurretWeaponList(){ return TurretWeaponList; }
-    private void SetWeapons(CompiledTypes.Global_Units unit) {
-        foreach (CompiledTypes.Unitweapons weapon in unit.UnitweaponsList) {
-            TurretWeapon _weapon = new TurretWeapon{};
-
-            // Find & set variant master
-                CompiledTypes.Weapons weaponReference = weapon.WeaponRef;
-                CompiledTypes.Weapons masterWeaponReference = weaponReference;
-                if (weapon.WeaponRef.WeaponVariantReferenceList.Count > 0) {
-                    masterWeaponReference = weapon.WeaponRef.WeaponVariantReferenceList[0].WeaponVariantRef;
-                }
-
-            // TurretManager
-
-                if (weaponReference.Isavariant && weaponReference.WeaponModelPathList.Count == 0) {
-                    if (masterWeaponReference.WeaponModelPathList.Count > 0) {
-                        _weapon._turretPrefab = (Resources.Load(masterWeaponReference.WeaponModelPathList[0].TurretPath+"/"+masterWeaponReference.WeaponModelPathList[0].TurretModel, typeof(GameObject))) as GameObject;
-                    }
-                } else if (weaponReference.WeaponModelPathList.Count > 0) {
-                    _weapon._turretPrefab = (Resources.Load(weaponReference.WeaponModelPathList[0].TurretPath+"/"+weaponReference.WeaponModelPathList[0].TurretModel, typeof(GameObject))) as GameObject;
-                }
-
-                if (_weapon._turretPrefab == null) {
-                    Debug.Log (" A turret was implemented without a model ! turret id :"+ weapon.WeaponRef.id);
-                    _weapon._turretPrefab = WorldUIVariables.GetErrorModel();
-                }
-
-            // TurretHealth
-                if (weaponReference.Isavariant && weaponReference.Health != masterWeaponReference.Health) {
-                    _weapon._healthTurretHealth = masterWeaponReference.Health;
-                } else {
-                    _weapon._healthTurretHealth = weaponReference.Health;
-                }
-                if (weaponReference.Isavariant && weaponReference.Armor != masterWeaponReference.Armor) {
-                    _weapon._healthTurretArmor = masterWeaponReference.Armor;
-                } else {
-                    _weapon._healthTurretArmor = weaponReference.Armor;
-                }
-            // TurretFireManager
-                if (weaponReference.Isavariant && weaponReference.WeaponRolesList != masterWeaponReference.WeaponRolesList) {
-                    foreach (CompiledTypes.WeaponRoles role in masterWeaponReference.WeaponRolesList) {
-                        _weapon._fireAvailableWeaponRoles.Add(role);
-                    }
-                } else {
-                    foreach (CompiledTypes.WeaponRoles role in weaponReference.WeaponRolesList) {
-                        _weapon._fireAvailableWeaponRoles.Add(role);
-                    }
-                }
-                
-                if (weaponReference.Isavariant && weaponReference.Ammo != masterWeaponReference.Ammo) {
-                    _weapon._fireManagerAmmo = masterWeaponReference.Ammo;
-                } else {
-                    _weapon._fireManagerAmmo = weaponReference.Ammo;
-                }
-                // Transform[] _weapon._fireManagerFireMuzzles;
-            //     _weapon._fireManageFireFx;
-            //     _weapon._fireManagerShootingAudio;
-            //     _weapon._fireManagerFireClip;
-            //     _weapon._fireManagerMaxRange;
-            //     _weapon._fireManagerMinRange;
-            //     _weapon._fireManagerMuzzleVelocity;
-            //     _weapon._fireManagerReloadTime;
-            //     _weapon._fireManagerPrecision;
-            // // TurretRotation
-            //     _weapon._rotationAudio;
-            //     _weapon._rotationHorizAxis;
-            //     _weapon._rotationElevationAxis;
-            //     _weapon._rotationParent;
-            //     _weapon._rotationSpeed;
-            //     _weapon._rotationLimitTraverse;
-            //     _weapon._rotationLeftTraverse;
-            //     _weapon._rotationRightTraverse;
-            //     // public FireZonesManager[] _weapon._rotationNoFireZones;
-            //     _weapon._rotationElevationSpeed;
-            //     _weapon._rotationUpTraverse;
-                // _weapon._rotationDownTraverse;
-                // public ElevationZonesManager[] _weapon._rotationElevationZones;
-        }
-    }
-
-    public class TurretWeapon {
-        // TurretManager
-            public GameObject _turretPrefab;
-        // TurretHealth
-            public float _healthTurretHealth;
-            public float _healthTurretArmor;
-        // TurretFireManager
-            public List<CompiledTypes.WeaponRoles> _fireAvailableWeaponRoles = new List<CompiledTypes.WeaponRoles>();
-            public CompiledTypes.Ammos _fireManagerAmmo;
-            public Transform[] _fireManagerFireMuzzles;
-            public GameObject _fireManageFireFx;
-            public AudioSource _fireManagerShootingAudio;
-            public AudioClip _fireManagerFireClip;
-            public float _fireManagerMaxRange;
-            public float _fireManagerMinRange;
-            public float _fireManagerMuzzleVelocity;
-            public float _fireManagerReloadTime;
-            public float _fireManagerPrecision;
-        // TurretRotation
-            public AudioClip _rotationAudio;
-            public Rigidbody _rotationHorizAxis;
-            public Rigidbody _rotationElevationAxis;
-            public Rigidbody _rotationParent;
-            public float _rotationSpeed;
-            public bool _rotationLimitTraverse;
-            public float _rotationLeftTraverse;
-            public float _rotationRightTraverse;
-            public FireZonesManager[] _rotationNoFireZones;
-            public float _rotationElevationSpeed;
-            public float _rotationUpTraverse;
-            public float _rotationDownTraverse;
-            public ElevationZonesManager[] _rotationElevationZones;
-        
-    }
-    
 // DAMAGE CONTROL
     private bool DamageControlExists = false; public bool GetDamageControlExists(){ return DamageControlExists; }
     private float DamageControlRepairRate; public float GetDamageControlRepairRate(){ return DamageControlRepairRate; }

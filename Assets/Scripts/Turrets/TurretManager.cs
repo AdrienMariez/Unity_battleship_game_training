@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TurretManager : MonoBehaviour {
-    private List <GameObject> AllTurrets = new List<GameObject>();
     private bool Active = false;
     private bool Dead = false;
     private bool Pause = false;
@@ -16,7 +15,9 @@ public class TurretManager : MonoBehaviour {
     private PlayerManager PlayerManager;
     private FreeLookCam FreeLookCam;
     private UnitMasterController UnitMasterController;
-    private TurretFireManager.TurretRole CurrentControlledTurretRole;
+    private CompiledTypes.Weapons_roles.RowValues CurrentControlledWeaponRole; public CompiledTypes.Weapons_roles.RowValues GetCurrentTurretRole() { return CurrentControlledWeaponRole; }
+    private List<CompiledTypes.Weapons_roles.RowValues> UnitWeaponRoleList = new List<CompiledTypes.Weapons_roles.RowValues>(); public List<CompiledTypes.Weapons_roles.RowValues> GetUnitWeaponRoleList(){ return UnitWeaponRoleList; }
+
     [Header("Artillery")]
         // private List <GameObject> ArtilleryTurrets;
         private List <GameObject> NavalArtilleryTurrets = new List<GameObject>();
@@ -48,36 +49,42 @@ public class TurretManager : MonoBehaviour {
     private Vector3 AITargetPosition;
     private float AITargetRange;
 
+    private List <TurretListItem> TurretList = new List<TurretListItem>();
+    public class TurretListItem {
+        private GameObject _weaponGameObject;  public GameObject GetWeaponGameObject(){ return _weaponGameObject; } public void SetWeaponGameObject(GameObject _g){ _weaponGameObject = _g; }
+        private TurretRotation _weaponTurretRotation;  public TurretRotation GetTurretRotation(){ return _weaponTurretRotation; } public void SetTurretRotation(TurretRotation _s){ _weaponTurretRotation = _s; }
+        private TurretFireManager _weaponTurretFireManager;  public TurretFireManager GetTurretFireManager(){ return _weaponTurretFireManager; } public void SetTurretFireManager(TurretFireManager _s){ _weaponTurretFireManager = _s; }
+        private TurretHealth _weaponTurretHealth;  public TurretHealth GetTurretHealth(){ return _weaponTurretHealth; } public void SetTurretHealth(TurretHealth _s){ _weaponTurretHealth = _s; }
+
+        // private int _weaponCount;  public int GetWeaponCount(){ return _weaponCount; } public void AddWeaponCount(){ _weaponCount += 1; }public void SetWeaponCount(int _i){ _weaponCount = _i; }
+    }
+
     public void AddNewWeapon(GameObject weapon) {
-        AllTurrets.Add(weapon);
+        TurretListItem _turret = new TurretListItem{};
+        _turret.SetWeaponGameObject(weapon);
+        _turret.SetTurretRotation(weapon.GetComponent<TurretRotation>());
+        _turret.SetTurretFireManager(weapon.GetComponent<TurretFireManager>());
+        _turret.SetTurretHealth(weapon.GetComponent<TurretHealth>());
+        TurretList.Add(_turret);
     }
 
     public void BeginOperations(UnitMasterController unitController){
         UnitMasterController = unitController;
         float MaxR;
         float MinR;
-        foreach (GameObject turret in AllTurrets) {
+        foreach (TurretListItem turret in TurretList) {
             TotalTurrets++;
-            MaxR = turret.GetComponent<TurretFireManager>().GetMaxRange();
-            MinR = turret.GetComponent<TurretFireManager>().GetMinRange();
+            MaxR = turret.GetTurretFireManager().GetMaxRange();
+            MinR = turret.GetTurretFireManager().GetMinRange();
             if (MaxR > MaxRange)
                 MaxRange = MaxR;
             if (MinR < MinRange)
                 MinRange = MinR;
-            turret.GetComponent<TurretFireManager>().SetTurretManager(this);
-            TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles(); 
+            turret.GetTurretFireManager().SetTurretManager(this);
             
-            foreach (TurretFireManager.TurretRole role in availableRoles) {
-                if (role == TurretFireManager.TurretRole.NavalArtillery) {
-                    NavalArtilleryTurrets.Add(turret);
-                } else if (role == TurretFireManager.TurretRole.Artillery) {
-                    ArtilleryTurrets.Add(turret);
-                } else if (role == TurretFireManager.TurretRole.AA) {
-                    AATurrets.Add(turret);
-                } else if (role == TurretFireManager.TurretRole.Torpedo) {
-                    TorpedoTurrets.Add(turret);
-                } else if (role == TurretFireManager.TurretRole.DepthCharge) {
-                    DepthChargeTurrets.Add(turret);
+            foreach (CompiledTypes.Weapons_roles.RowValues role in turret.GetTurretFireManager().GetWeaponRoles()) {
+                if (!UnitWeaponRoleList.Contains(role)) {
+                    UnitWeaponRoleList.Add(role);
                 }
             }
         }
@@ -95,7 +102,7 @@ public class TurretManager : MonoBehaviour {
         if (PlayerControl) {
             // Debug.Log("if (PlayerControl) {");
             CheckForTurretSwitch();
-            if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
+            if (CurrentControlledWeaponRole == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {
                 ElevationRatio = FreeLookCam.GetTiltPercentage();                                               // Get the angle of the camera here
                 TargetRange = ((MaxRange - MinRange) / 100 * ElevationRatio) + MinRange;
                 TargetPosition = FreeLookCam.GetRaycastAbstractTargetPosition();                                // Long range raycast
@@ -106,11 +113,11 @@ public class TurretManager : MonoBehaviour {
             }
             // Debug.Log(ElevationRatio + " : ElevationRatio");
 
-            foreach (GameObject turret in AllTurrets) {
-                turret.GetComponent<TurretFireManager>().SetTargetRange(TargetRange);
-                turret.GetComponent<TurretFireManager>().SetTargetPosition(TargetPosition);
-                turret.GetComponent<TurretRotation>().SetTargetPosition(TargetPosition);
-                turret.GetComponent<TurretRotation>().SetElevationRatio(ElevationRatio);
+            foreach (TurretListItem turret in TurretList) {
+                turret.GetTurretFireManager().SetTargetRange(TargetRange);
+                turret.GetTurretFireManager().SetTargetPosition(TargetPosition);
+                turret.GetTurretRotation().SetTargetPosition(TargetPosition);
+                turret.GetTurretRotation().SetElevationRatio(ElevationRatio);
             }
         }
         if (!PlayerControl && AIControl) {
@@ -119,12 +126,11 @@ public class TurretManager : MonoBehaviour {
             // ElevationRatio = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
             TargetRange = AITargetRange;                                                        // So the UI Knows the current AI range ?
             // Debug.Log("ElevationRatio = "+ ElevationRatio);
-
-            foreach (GameObject turret in AllTurrets) {
-                turret.GetComponent<TurretFireManager>().SetTargetRange(AITargetRange);
-                turret.GetComponent<TurretFireManager>().SetTargetPosition(AITargetPosition);
-                turret.GetComponent<TurretRotation>().SetElevationRatio(ElevationRatio);
-                turret.GetComponent<TurretRotation>().SetTargetPosition(AITargetPosition);
+            foreach (TurretListItem turret in TurretList) {
+                turret.GetTurretFireManager().SetTargetRange(AITargetRange);
+                turret.GetTurretFireManager().SetTargetPosition(AITargetPosition);
+                turret.GetTurretRotation().SetElevationRatio(ElevationRatio);
+                turret.GetTurretRotation().SetTargetPosition(AITargetPosition);
             }
         }
         
@@ -132,50 +138,40 @@ public class TurretManager : MonoBehaviour {
     }
 
     private void CheckForTurretSwitch() {
-        if (Input.GetButtonDown ("SetWeaponNavalArtillery") && CurrentControlledTurretRole != TurretFireManager.TurretRole.NavalArtillery && NavalArtilleryTurrets.Count > 0){
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.NavalArtillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
+        if (Input.GetButtonDown ("SetWeaponNavalArtillery") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.NavalArtillery && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.NavalArtillery)){
+            CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.NavalArtillery;
+            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
-            // Debug.Log ("CurrentControlledTurretRole : "+ CurrentControlledTurretRole);
+            // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
-        if (Input.GetButtonDown ("SetWeaponArtillery") && CurrentControlledTurretRole != TurretFireManager.TurretRole.Artillery && ArtilleryTurrets.Count > 0){
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.Artillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
+        if (Input.GetButtonDown ("SetWeaponArtillery") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.Artillery && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.Artillery)){
+            CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.Artillery;
+            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
-            // Debug.Log ("CurrentControlledTurretRole : "+ CurrentControlledTurretRole);
+            // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
-        if (Input.GetButtonDown ("SetWeaponAA") && CurrentControlledTurretRole != TurretFireManager.TurretRole.AA && AATurrets.Count > 0){
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.AA;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
+        if (Input.GetButtonDown ("SetWeaponAA") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.AntiAir && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.AntiAir)){
+            CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.AntiAir;
+            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
-            // Debug.Log ("CurrentControlledTurretRole : "+ CurrentControlledTurretRole);
+            // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
-        if (Input.GetButtonDown ("SetWeaponTorpedoes") && CurrentControlledTurretRole != TurretFireManager.TurretRole.Torpedo && TorpedoTurrets.Count > 0){
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.Torpedo;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
+        if (Input.GetButtonDown ("SetWeaponTorpedoes") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.Torpedo && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.Torpedo)){
+            CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.Torpedo;
+            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
         }
     }
     private void ReinitializeCurrentWeaponSelected() {
-        if (NavalArtilleryTurrets.Count > 0) {
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.NavalArtillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
-        } else if (ArtilleryTurrets.Count > 0) {
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.Artillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
-        } else if (AATurrets.Count > 0) {
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.AA;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
-        } else if (TorpedoTurrets.Count > 0) {
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.Torpedo;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
-        } else if (DepthChargeTurrets.Count > 0) {
-            CurrentControlledTurretRole = TurretFireManager.TurretRole.DepthCharge;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledTurretRole);
-        } else {
-            PlayerManager.SetPlayerTurretRole(TurretFireManager.TurretRole.None);
+        foreach (CompiledTypes.Weapons_roles.RowValues role in UnitWeaponRoleList) {
+            // When a unit is put active, one role is selected.
+            // The first role is always selected. The order of the roles is set in DB by the order of UnitHardPoint in Global_Units AND in WeaponRoles in Weapons.
+            // In the DB The first role in a weapon will be prioritized. The first weapon of a unit will be prioritized. Watch as these orders have consequences on gameplay.
+            CurrentControlledWeaponRole = role;
+            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            break;
         }
-        // Debug.Log ("CurrentControlledTurretRole : "+ CurrentControlledTurretRole);
+        // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
     }
 
 
@@ -194,38 +190,38 @@ public class TurretManager : MonoBehaviour {
         // Debug.Log("PlayerControl : "+ PlayerControl);
         // Debug.Log("AIControl : "+ AIControl);
         int number = 0;
-        foreach (GameObject turret in AllTurrets){
-            TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles();
+        foreach (TurretListItem turret in TurretList) {
+            List<CompiledTypes.Weapons_roles.RowValues> availableWeaponRoles = turret.GetTurretFireManager().GetWeaponRoles();
             bool matchFound = false;
-            foreach (TurretFireManager.TurretRole role in availableRoles) {
-                if (role == CurrentControlledTurretRole) {
+            foreach (CompiledTypes.Weapons_roles.RowValues role in availableWeaponRoles) {
+                if (role == CurrentControlledWeaponRole) {
                     matchFound = true;                              // Try to find a single match for what we look for.
-                    // return;                                      // No return here or it stops the AllTurrets loop (why ?)
+                    // return;                                      // No return here or it stops the TurretList loop (why ?)
                 }
             }
 
             if (matchFound) {                               // If this was in the availableRoles loop, it would be ignored by further roles. Better do it once, it's cleaner.
-                turret.GetComponent<TurretRotation>().SetCurrentControlledTurretRole(CurrentControlledTurretRole);
-                turret.GetComponent<TurretRotation>().SetPlayerControl(PlayerControl);
-                turret.GetComponent<TurretFireManager>().SetCurrentControlledTurretRole(CurrentControlledTurretRole);
-                turret.GetComponent<TurretFireManager>().SetPlayerControl(PlayerControl);
-                turret.GetComponent<TurretFireManager>().SetTurretUIActive(true);
-                turret.GetComponent<TurretFireManager>().SetTurretNumber(number);
+                // turret.GetComponent<TurretRotation>().SetCurrentControlledWeaponRole(CurrentControlledWeaponRole);
+                turret.GetTurretRotation().SetPlayerControl(PlayerControl);
+                turret.GetTurretFireManager().SetWeaponCurrentRole(CurrentControlledWeaponRole);
+                turret.GetTurretFireManager().SetPlayerControl(PlayerControl);
+                turret.GetTurretFireManager().SetTurretUIActive(true);
+                turret.GetTurretFireManager().SetTurretNumber(number);
                 number++;
             } else {
-                turret.GetComponent<TurretRotation>().SetPlayerControl(false);
-                turret.GetComponent<TurretFireManager>().SetPlayerControl(false);
-                turret.GetComponent<TurretFireManager>().SetTurretUIActive(false);
+                turret.GetTurretRotation().SetPlayerControl(false);
+                turret.GetTurretFireManager().SetPlayerControl(false);
+                turret.GetTurretFireManager().SetTurretUIActive(false);
             }
-            turret.GetComponent<TurretRotation>().SetAIControl(AIControl);
-            turret.GetComponent<TurretFireManager>().SetAIControl(AIControl);
+            turret.GetTurretRotation().SetAIControl(AIControl);
+            turret.GetTurretFireManager().SetAIControl(AIControl);
         }
     }
 
     public void SetActive(bool activate) {
         Active = activate;
-        foreach (GameObject turret in AllTurrets) {
-            turret.GetComponent<TurretFireManager>().SetActive(activate);
+        foreach (TurretListItem turret in TurretList) {
+            turret.GetTurretFireManager().SetActive(activate);
         }
         SetPlayerControl();
         if (Active)
@@ -238,8 +234,8 @@ public class TurretManager : MonoBehaviour {
     public void SetPause() {
         Pause = !Pause;
         SetPlayerControl();
-        foreach (GameObject turret in AllTurrets) {
-            turret.GetComponent<TurretRotation>().SetPause(Pause);
+        foreach (TurretListItem turret in TurretList) {
+            turret.GetTurretRotation().SetPause(Pause);
         }
     }
     public void SetDamageControl(bool damageControl) {
@@ -255,13 +251,13 @@ public class TurretManager : MonoBehaviour {
         SetPlayerControl();
     }
     public void SetRepairRate(float Rate) {
-        foreach (GameObject turret in AllTurrets) {
-            turret.GetComponent<TurretHealth>().SetRepairRate(Rate);
+        foreach (TurretListItem turret in TurretList) {
+            turret.GetTurretHealth().SetRepairRate(Rate);
         }
     }
     public void SetTurretRepairRate(float Rate) {
-        foreach (GameObject turret in AllTurrets) {
-            turret.GetComponent<TurretHealth>().SetTurretRepairRate(Rate);
+        foreach (TurretListItem turret in TurretList) {
+            turret.GetTurretHealth().SetTurretRepairRate(Rate);
         }
     }
     public void SetSingleTurretDeath(bool isTurretDead){
@@ -274,10 +270,10 @@ public class TurretManager : MonoBehaviour {
     }
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
-        foreach (GameObject turret in AllTurrets) {
-            turret.GetComponent<TurretHealth>().SetShipDeath(IsShipDead);
-            turret.GetComponent<TurretRotation>().SetTurretDeath(IsShipDead);
-            turret.GetComponent<TurretFireManager>().SetTurretDeath(IsShipDead);
+        foreach (TurretListItem turret in TurretList) {
+            turret.GetTurretHealth().SetShipDeath(IsShipDead);
+            turret.GetTurretRotation().SetTurretDeath(IsShipDead);
+            turret.GetTurretFireManager().SetTurretDeath(IsShipDead);
         }
     }
 
@@ -295,27 +291,24 @@ public class TurretManager : MonoBehaviour {
     }
 
     public bool GetIsEmpty() {
-        if (AllTurrets.Count > 0) {
+        if (TurretList.Count > 0) {
             return false;
         } else {
             return true;
         }
     }
-    
-    public TurretFireManager.TurretRole GetCurrentTurretRole() { return CurrentControlledTurretRole; }
     public void FeedbackShellHit(bool armorPenetrated) {
         UnitMasterController.FeedbackShellHit(armorPenetrated);
     }
     
     public List <TurretStatusType> GetTurretsStatus() {
         TurretStatus.Clear();
-        foreach (GameObject turret in AllTurrets) {
-            TurretFireManager.TurretRole[] availableRoles = turret.GetComponent<TurretFireManager>().GetTurretRoles();
-            bool canLoop = true;                                                                   // If turret found once don't add it twice ! (in case of turret having twice the same available role in the DB)
-            foreach (TurretFireManager.TurretRole role in availableRoles) {
-                if (role == CurrentControlledTurretRole && canLoop) {
-                    TurretStatus.Add(turret.GetComponent<TurretFireManager>().GetTurretStatus());
-                    canLoop = false;
+        foreach (TurretListItem turret in TurretList) {
+            List<CompiledTypes.Weapons_roles.RowValues> availableWeaponRoles = turret.GetTurretFireManager().GetWeaponRoles();                                                                 
+            foreach (CompiledTypes.Weapons_roles.RowValues role in availableWeaponRoles) {
+                if (role == CurrentControlledWeaponRole) {
+                    TurretStatus.Add(turret.GetTurretFireManager().GetTurretStatus());
+                    break;  // If turret found once don't add it twice ! (in case of turret having twice the same available role in the DB)
                 }
             }
         }
@@ -338,21 +331,4 @@ public class TurretManager : MonoBehaviour {
         // Debug.Log ("AITargetRange : "+ AITargetRange);
     }
     public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
-
-    [Serializable] public class singleTurret {      // All variable elements for each turret
-        public GameObject m_TurretModel;
-        [Tooltip("When true, turret rotates according to left/right traverse limits. When false, turret can rotate freely.")]
-            public bool m_LimitTraverse = false;
-        [Tooltip("When traverse is limited, how many degrees to the left the turret can turn.")]
-            [Range(0.0f, 180.0f)]
-            public float m_LeftTraverse = 60.0f;
-            private float LocalLeftTraverse;
-        [Tooltip("When traverse is limited, how many degrees to the right the turret can turn.")]
-            [Range(0.0f, 180.0f)]
-            public float m_RightTraverse = 60.0f; 
-            private float LocalRightTraverse;
-        public FireZonesManager[] m_NoFireZones;
-        [Header("Vertical elevation")]
-            public ElevationZonesManager[] m_ElevationZones;
-    }
 }

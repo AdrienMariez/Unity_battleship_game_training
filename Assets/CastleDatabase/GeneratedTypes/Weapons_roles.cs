@@ -12,10 +12,11 @@ namespace CompiledTypes
 public string Name;
 
         public enum RowValues { 
-artillery, 
-navalartillery, 
-antiair, 
-torpedoes
+Artillery, 
+NavalArtillery, 
+AntiAir, 
+Torpedo, 
+DepthCharge
  } 
         public Weapons_roles (CastleDBParser.RootNode root, RowValues line) 
         {

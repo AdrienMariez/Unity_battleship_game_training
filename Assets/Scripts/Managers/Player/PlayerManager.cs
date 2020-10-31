@@ -331,7 +331,7 @@ public class PlayerManager : MonoBehaviour
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
     public void SendPlayerShellToUI(GameObject shellInstance){ UIManager.SendPlayerShellToUI(shellInstance); }
-    public void SetPlayerTurretRole(TurretFireManager.TurretRole currentControlledTurret) {
+    public void SetPlayerTurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledTurret) {
         UIManager.SetPlayerUITurretRole(currentControlledTurret);       // Send the current turret control to the AI
         m_FreeLookCamera.SetCurrentTurretRole(currentControlledTurret);
     }

@@ -35,7 +35,7 @@ namespace FreeLookCamera {
 
         private float LookAngle;                    // The rig's y axis rotation.
         private float TiltAngle;                    // The pivot's x axis rotation.
-        private float CameraTiltPercentage;
+        private float CameraTiltPercentage; public float GetTiltPercentage() { return CameraTiltPercentage; }
 		private Vector3 AxisEulers;
 		private Quaternion AxisTargetRot;
 		private Quaternion TransformTargetRot;
@@ -51,7 +51,7 @@ namespace FreeLookCamera {
         private GameObject ActivePlayerUnit;                                    // Current controlled unit
         private Transform ActivePlayerUnitTransform;                                    // Current controlled unit transform
         private CompiledTypes.Units_categories.RowValues ActivePlayerUnitCategory;
-        private TurretFireManager.TurretRole CurrentControlledTurretRole;
+        private CompiledTypes.Weapons_roles.RowValues CurrentControlledWeaponRole; public void SetCurrentTurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledWeapon) { CurrentControlledWeaponRole = currentControlledWeapon; }
 
         protected virtual void Start() {
 			AxisEulers = Axis.rotation.eulerAngles;
@@ -96,7 +96,7 @@ namespace FreeLookCamera {
 
                 TargetRangeRayCast();
 
-                if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {
+                if (CurrentControlledWeaponRole == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {
                     TargetRangeCameraTilt();
                 }
                 
@@ -240,11 +240,9 @@ namespace FreeLookCamera {
             Pivot.localPosition = new Vector3(m_CameraLateralOffset, m_CameraHeight, -m_CameraDistance);
         }
 
-        public void SetCurrentTurretRole(TurretFireManager.TurretRole currentControlledTurret) {
-            CurrentControlledTurretRole = currentControlledTurret;
-        }
+        
         public Vector3 GetRaycastScreenPosition() {
-            if (CurrentControlledTurretRole == TurretFireManager.TurretRole.NavalArtillery) {       // If naval artillery is used, keep the pointer at horizon level far away
+            if (CurrentControlledWeaponRole == CompiledTypes.Weapons_roles.RowValues.NavalArtillery) {       // If naval artillery is used, keep the pointer at horizon level far away
                 return Cam.WorldToScreenPoint(RaycastAbstractTargetPosition);
             } else{
                 return Cam.WorldToScreenPoint(RaycastTargetPosition);                               // Else give the raycast hit point
@@ -260,9 +258,6 @@ namespace FreeLookCamera {
             return RaycastRange;
         }
 
-        public float GetTiltPercentage() {
-            return CameraTiltPercentage;
-        }
         // public float GetTargetPointRange() {
         //     float Range = Vector3.Distance(ActivePlayerUnitTransform.position, TargetPosition);
         //     return Range;

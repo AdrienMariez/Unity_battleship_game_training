@@ -214,6 +214,7 @@ public class UnitMasterController : MonoBehaviour {
                     }
                 }
             }
+            // Debug.Log("HardPoints set "+UnitName);
 
         // Find and set components
             if (this.gameObject.transform.childCount > 0){
