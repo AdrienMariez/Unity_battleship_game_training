@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
     private int TeamOppositionUnits;  // The use of Opposition instead of Axis is to prevent confusion between TeamAlliesUnits and TeamAxisUnits
 
     private void Start() {
+        // Creation of the full unit list, this may move if other files are made for the process !
+        // WorldUnitsManager.BuildFirstLoad();
         // Debug.Log (GlobalStart.GlobalUnitList[0]);
         // Set each PlayerManager
         foreach (PlayerManagerList player in m_Players) {
@@ -176,7 +178,9 @@ public class GameManager : MonoBehaviour {
     
 
     public void EndGame() {
-        string sceneName = "MainMenuScene3d";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // string sceneName = "MainMenuScene3d";
+        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        LoadingData.sceneToLoad = "MainMenuScene3d";
+        SceneManager.LoadScene("Loading");
     }
 }

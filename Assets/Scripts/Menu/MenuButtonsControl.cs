@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine.SceneManagement;
 
@@ -13,21 +14,45 @@ public class MenuButtonsControl : MonoBehaviour {
     private GameObject CreditsUIInstance;
     private bool DisplayHelpImage = false;
 
+    public GameObject[] m_ShipSpawnPoints;
+    [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
     void Start() {
-        if (WorldStart.WorldGetFirstLoad()) {
-            // Creation of the full unit list, this may move if other files are made for the process !
-            WorldStart.WorldSetUnits();
-            WorldStart.WorldSetFirstLoad(false);
-        }
-
         OpenMainMenu();
+        LoadMenuUnits();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 1.0f;
     }
 
-    protected void Update() {
+    protected void LoadMenuUnits() {
+        
+        foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
+            for (int i=0; i < subCategory.Count; i++) {
+                // Debug.Log(subCategory[0].GetUnitName());
+                if (subCategory[0] != null) {                                                       // Check the first element of each category, if it is good !
+                    if (subCategory[i].GetUnitCategory() == CompiledTypes.Units_categories.RowValues.ship) {
+                        SpawnableUnitsList.Add(subCategory[i]);
+                    }
+                } else {
+                    break;                                                                          // If nothing is in the list (as intended, stop checking)
+                }
+            }
+        }
+
+        // foreach (WorldSingleUnit unit in SpawnableUnitsList) {
+        //     Debug.Log (unit.GetUnitSubCategory()+" / "+unit.GetUnitName()+" / "+unit.GetUnitTeam());
+        // }
+
+        foreach (GameObject spawnPoint in m_ShipSpawnPoints) {
+            int randomUnitId = Random.Range(0, SpawnableUnitsList.Count);
+            // Debug.Log (randomUnitId+" / "+SpawnableUnitsList.Count);
+            // Debug.Log (" Spawning "+SpawnableUnitsList[randomUnitId].GetUnitName());
+            GameObject Instance = WorldUnitsManager.BuildUnit(SpawnableUnitsList[randomUnitId], spawnPoint.transform.position, spawnPoint.transform.rotation);
+            if (Instance.GetComponent<UnitAIController>()) {
+                Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(false, false, false);
+            }
+        }
     }
 
     protected void OpenMainMenu() {
@@ -53,23 +78,35 @@ public class MenuButtonsControl : MonoBehaviour {
     }
     void ButtonScenarioTrainingOnClick(){
         // Debug.Log ("Button Scenario Training Clicked !");
-        string sceneName = "ROTS_scenario_training";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // string sceneName = "ROTS_scenario_training";
+        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        LoadingData.sceneToLoad = "ROTS_scenario_training";
+        SceneManager.LoadScene("Loading");
     }
     void ButtonScenario1OnClick(){
         // Debug.Log ("Button Scenario 1 Clicked !");
-        string sceneName = "ROTS_scenario_1";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // string sceneName = "ROTS_scenario_1";
+        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        LoadingData.sceneToLoad = "ROTS_scenario_1";
+        SceneManager.LoadScene("Loading");
     }
     void ButtonScenario2OnClick(){
         // Debug.Log ("Button Scenario 2 Clicked !");
-        string sceneName = "ROTS_scenario_2";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // string sceneName = "ROTS_scenario_2";
+        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        LoadingData.sceneToLoad = "ROTS_scenario_2";
+        SceneManager.LoadScene("Loading");
     }
     void ButtonScenario3OnClick(){
         // Debug.Log ("Button Scenario 3 Clicked !");
-        string sceneName = "ROTS_scenario_3";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        // string sceneName = "ROTS_scenario_3";
+        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        LoadingData.sceneToLoad = "ROTS_scenario_3";
+        SceneManager.LoadScene("Loading");
     }
     void ButtonExitOnClick(){
         // Debug.Log ("Exit Options Clicked !");

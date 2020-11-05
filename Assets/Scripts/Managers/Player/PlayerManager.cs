@@ -326,11 +326,9 @@ public class PlayerManager : MonoBehaviour
     }
     private void CheckCameraRotation(){
         if (MapActive || DamageControl || Pause || SpawnerMenu) {
-            Debug.Log ("case 1");
             m_FreeLookCamera.SetRotation(false);
             m_FreeLookCamera.SetMouse(true);
         } else {
-            Debug.Log ("case 2");
             m_FreeLookCamera.SetRotation(true);
             m_FreeLookCamera.SetMouse(false);
         }

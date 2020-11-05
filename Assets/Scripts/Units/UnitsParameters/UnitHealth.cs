@@ -9,7 +9,6 @@ public class UnitHealth : UnitParameter {
 
     protected bool Dead = false;
 
-
     protected AudioSource ExplosionAudio;                 // The audio source to play when the unit dies.
     protected ParticleSystem ExplosionParticles;          // The particle system the will play when the tank is destroyed.
 
@@ -18,17 +17,20 @@ public class UnitHealth : UnitParameter {
     protected int Fires = 0;
     protected float FireDamage;
     protected int UnsetCrew; public void SetDamageControlUnset(int setCrew){ UnsetCrew = setCrew; }
+    protected float RepairRate;
     protected bool AutorepairPaused = false;
+    protected int AutorepairTicks = 0;
 
-    public void BeginOperations(UnitMasterController unitController) {
+    public void BeginOperations(UnitMasterController unitController, float repairRate) {
         CurrentHealth = StartingHealth;
         UnitController = unitController;
+        RepairRate = repairRate;
     }
 
     private void FixedUpdate(){
         if (Fires > 0) {
             Burning();
-        } else if (!AutorepairPaused && CurrentHealth < StartingHealth && !Dead) {
+        } else if (!AutorepairPaused && CurrentHealth < StartingHealth && !Dead && RepairRate > 0) {
             AutoRepair();
         }
     }
@@ -49,12 +51,17 @@ public class UnitHealth : UnitParameter {
     }
 
     private void AutoRepair () {
-        CurrentHealth += (UnsetCrew + 1 )* Time.deltaTime;
+        CurrentHealth += RepairRate * (UnsetCrew + 1 )* Time.deltaTime;
         // if (CurrentHealth > 0){
             // Debug.Log("damage = "+ damage);
             // Debug.Log("CurrentHealth = "+ CurrentHealth);
         // }
-        UnitController.SetCurrentHealth(CurrentHealth);
+        AutorepairTicks ++;
+        if (AutorepairTicks > 120) {        // Send repaired info only each 120 frames.
+            UnitController.SetCurrentHealth(CurrentHealth);
+            Debug.Log("CurrentHealth = "+ CurrentHealth);
+            AutorepairTicks = 0;
+        }
     }
 
     private void CheckDeath () {

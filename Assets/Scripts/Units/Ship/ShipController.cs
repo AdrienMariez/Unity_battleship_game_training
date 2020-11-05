@@ -51,7 +51,7 @@ public class ShipController : UnitMasterController {
         // Set DamageControl
             if (unit.GetDamageControlExists()) {
                 DamageControl = this.gameObject.AddComponent<ShipDamageControl>() as ShipDamageControl;
-                DamageControl.SetRepairRate(unit.GetDamageControlRepairRate());
+                DamageControl.SetRepairRate(RepairRate);
                 DamageControl.SetRepairCrew(unit.GetDamageControlRepairCrew());
                 DamageControl.BeginOperations(this);
                 RepairRate = DamageControl.GetRepairRate();
@@ -182,7 +182,7 @@ public class ShipController : UnitMasterController {
 
         // Check death by taking in too much water
         if (CurrentpositionY < -2 && !Dead) {
-            Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY);
+            Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY + " / -2");
             CallDeath();
         }
     }
@@ -209,7 +209,7 @@ public class ShipController : UnitMasterController {
 
         // Check death by taking in too much water
         if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead) {
-            Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " - or Z being : " + CurrentRotationZ);
+            Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " / 3 - or Z being : " + CurrentRotationZ + " / 15");
             CallDeath();
         }
     }

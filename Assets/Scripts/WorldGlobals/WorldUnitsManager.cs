@@ -21,7 +21,7 @@ public class WorldUnitsManager : MonoBehaviour {
     public LayerMask m_WeaponHitMask;
     private static LayerMask HitMask; public static LayerMask GetHitMask(){ return HitMask; }
 
-    private static bool FirstLoad = true;
+    private static bool FirstLoad = true; public static bool GetFirstLoad(){ return FirstLoad; }
     private void Start() {
         if (FirstLoad){
             FirstLoad = false;
@@ -30,6 +30,14 @@ public class WorldUnitsManager : MonoBehaviour {
             WorldSetUnits();
         }
     }
+    // public static void BuildFirstLoad() {
+    //     if (FirstLoad){
+    //         FirstLoad = false;
+    //         DB = new CastleDB(CastleDBAsset);
+    //         HitMask = m_WeaponHitMask;
+    //         WorldSetUnits();
+    //     }
+    // }
     
     // static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
     private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
@@ -83,6 +91,7 @@ public class WorldUnitsManager : MonoBehaviour {
             UnitsBySubcategory.Add(categoryObjects);
             // Debug.Log ("loop in WUM");
         }
+        // Debug.Log ("WorldSingleUnit built");
 
         // This is to view each element and its category.
         // foreach (List<WorldSingleUnit> category in UnitsBySubcategory) {
@@ -91,15 +100,6 @@ public class WorldUnitsManager : MonoBehaviour {
         //     }
         // }
     }
-
-    /*public static void SetFirstLoad(bool firstLoad) {
-        FirstLoad = firstLoad;
-    }
-    public static bool GetFirstLoad() {
-        return FirstLoad;
-    }*/
-
-    protected void Update() { }
 
     public static GameObject BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation) {
         // MODEL

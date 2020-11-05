@@ -19,7 +19,7 @@ public class UnitMasterController : MonoBehaviour {
     protected int UnitVictoryPointsValue;
 
     protected List<HitboxComponent> UnitComponents = new List<HitboxComponent>();
-    protected float RepairRate;
+    protected float RepairRate = 0;  public float GetRepairRate(){ return RepairRate; }
 
     protected bool Active = false;
     protected bool Dead = false;
@@ -85,15 +85,16 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void ApplyDamage(float damage) { 
         // Debug.Log(UnitName+ "damage = "+ damage);
         Health.ApplyDamage(damage);
+    }
+    public void SetCurrentHealth(float health){
+        if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health);
         UnitUI.SetCurrentHealth(Health.GetCurrentHealth());
     }
-    public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public virtual void ModuleDestroyed(ElementType elementType) { }
     public virtual void ModuleRepaired(ElementType elementType) { }
     public virtual void BuoyancyCompromised(ElementType ElementType, float damage) { }
     public virtual void SendHitInfoToDamageControl (bool armorPenetrated) { }
     public virtual void SetDamageControlEngineCount(){ }
-    public float GetRepairRate(){ return RepairRate; }
     public virtual void SetDamageControl(bool damageControl) {
         if (GetComponent<TurretManager>())
             Turrets.SetDamageControl(damageControl);
@@ -150,13 +151,14 @@ public class UnitMasterController : MonoBehaviour {
                 gameObject.tag = Team.ToString();
             UnitCommandPointsCost = unit.GetUnitCommandPointsCost();
             UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
+            RepairRate = unit.GetDamageControlRepairRate();
 
         UnitWorldSingleUnit = unit;
         UnitReference_DB = unit.GetUnitReference_DB();
 
         // Set Health
             Health = GetComponent<UnitHealth>();
-            Health.BeginOperations(this);
+            Health.BeginOperations(this, RepairRate);
             float HP = Health.GetStartingHealth();
 
         // Set UI
