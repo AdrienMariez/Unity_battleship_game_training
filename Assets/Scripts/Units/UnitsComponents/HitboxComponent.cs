@@ -54,13 +54,6 @@ public class HitboxComponent : MonoBehaviour {
         if (m_ElementType == UnitMasterController.ElementType.engine){
             // Will be used only for mobile units...
             UnitMasterController.SetDamageControlEngineCount();
-
-            // What was the point of this ? Why destroy the module if it's a building ?
-            // if (ShipC) {
-            //     ShipController.SetDamageControlEngineCount();
-            // } else if (BuildingC) {
-            //     BuildingController.ModuleDestroyed(m_ElementType);
-            // }
         }
     }
 

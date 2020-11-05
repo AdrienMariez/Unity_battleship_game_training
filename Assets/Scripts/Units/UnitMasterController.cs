@@ -83,9 +83,9 @@ public class UnitMasterController : MonoBehaviour {
 
     // Damage control
     public virtual void ApplyDamage(float damage) { 
+        // Debug.Log(UnitName+ "damage = "+ damage);
         Health.ApplyDamage(damage);
-        float currentHealth = Health.GetCurrentHealth();
-        UnitUI.SetCurrentHealth(currentHealth);
+        UnitUI.SetCurrentHealth(Health.GetCurrentHealth());
     }
     public void SetCurrentHealth(float health){ if (Active && !Dead) PlayerManager.SetCurrentUnitHealth(health); }
     public virtual void ModuleDestroyed(ElementType elementType) { }
@@ -101,6 +101,7 @@ public class UnitMasterController : MonoBehaviour {
             PlayerManager.SetDamageControl(damageControl);
     }
     public virtual void CallDeath() {
+        Debug.Log("CallDeath");
         Dead = true;
         UnitUI.SetDead();
         if (GetComponent<TurretManager>())

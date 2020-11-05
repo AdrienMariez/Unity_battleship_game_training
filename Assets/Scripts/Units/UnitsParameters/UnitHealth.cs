@@ -3,11 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class UnitHealth : UnitParameter {
-    protected float StartingHealth = 100f;                  // The amount of health each tank starts with.
-    protected GameObject ExplosionPrefab;                    // Search "object pooling" to see how to set complex particles.
+    protected float StartingHealth = 100f;  public float GetStartingHealth(){ return StartingHealth; } public void SetStartingHealth(float startingHealth){ StartingHealth = startingHealth; }
+    protected float CurrentHealth; public float GetCurrentHealth(){ return CurrentHealth; } public void SetCurrentHealth(float currentHealth){ CurrentHealth = currentHealth; }
+    protected GameObject ExplosionPrefab; public void SetDeathFX(GameObject deathFX){ ExplosionPrefab = deathFX; }                   // Search "object pooling" to see how to set complex particles.
 
     protected bool Dead = false;
-    protected float CurrentHealth;
 
 
     protected AudioSource ExplosionAudio;                 // The audio source to play when the unit dies.
@@ -17,9 +17,8 @@ public class UnitHealth : UnitParameter {
 
     protected int Fires = 0;
     protected float FireDamage;
-    protected int UnsetCrew;
+    protected int UnsetCrew; public void SetDamageControlUnset(int setCrew){ UnsetCrew = setCrew; }
     protected bool AutorepairPaused = false;
-
 
     public void BeginOperations(UnitMasterController unitController) {
         CurrentHealth = StartingHealth;
@@ -43,6 +42,7 @@ public class UnitHealth : UnitParameter {
 
     public void ApplyDamage (float damage) {
         CurrentHealth -= damage;
+        // Debug.Log("CurrentHealth = "+ CurrentHealth);
         CheckDeath ();
         UnitController.SetCurrentHealth(CurrentHealth);
         StartCoroutine(PauseAutorepair());
@@ -60,6 +60,7 @@ public class UnitHealth : UnitParameter {
     private void CheckDeath () {
         // If the current health is at or below zero and it has not yet been registered, call OnDeath.
         if (CurrentHealth <= 0f && !Dead) {
+            Debug.Log("A unit was destroyed due to its health being reduced to  : " + CurrentHealth);
             OnDeath ();
         }
     }
@@ -107,11 +108,5 @@ public class UnitHealth : UnitParameter {
         StartCoroutine(PauseAutorepair());
     }
     private void Burning(){ ApplyDamage (FireDamage); }
-    
-    public float GetCurrentHealth(){ return CurrentHealth; }
-    public float GetStartingHealth(){ return StartingHealth; }
-    public void SetCurrentHealth(float currentHealth){ CurrentHealth = currentHealth; }
-    public void SetStartingHealth(float startingHealth){ StartingHealth = startingHealth; }
-    public void SetDeathFX(GameObject deathFX){ ExplosionPrefab = deathFX; }
-    public void SetDamageControlUnset(int setCrew){ UnsetCrew = setCrew; }
+
 }

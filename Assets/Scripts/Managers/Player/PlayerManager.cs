@@ -100,11 +100,17 @@ public class PlayerManager : MonoBehaviour
     public void SetPause() {
         Pause = !Pause;
         UIManager.SetPauseUI(Pause);
+        // if (Pause) {
+        //     Time.timeScale = Mathf.Approximately(Time.timeScale, 0.0f) ? 1.0f : 0.0f;                   
+        // } else {
+        //     Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f;
+        // }
         if (Pause) {
-            Time.timeScale = Mathf.Approximately(Time.timeScale, 0.0f) ? 1.0f : 0.0f;                   
+            Time.timeScale = 0f;               
         } else {
-            Time.timeScale = Mathf.Approximately(Time.timeScale, 1.0f) ? 0.0f : 1.0f;
+            Time.timeScale = 1f;   
         }
+        // Debug.Log ("Pause : "+ Pause);
         if (ActiveTarget != null)
             ActiveTarget.GetComponent<UnitMasterController>().SetPause(Pause);
         CheckCameraRotation();
@@ -120,7 +126,6 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Playable units - SetNextTarget : "+ PlayerUnits.Count);
         // Debug.Log ("CurrentTarget - SetNextTarget : "+ CurrentTarget);
         
-        //enable or disable user inputs for units disabled.
         if (PlayerUnits.Count > 1 || !ActiveTargetSet)
             SetEnabledUnit();
     }
@@ -209,10 +214,14 @@ public class PlayerManager : MonoBehaviour
             // Debug.Log ("Case 4");
             ActiveTargetSet = true;
         }
-        ActiveTarget = PlayerUnits[CurrentTarget];
+        if (PlayerUnits[CurrentTarget] != null) {
+            ActiveTarget = PlayerUnits[CurrentTarget];
+        } else {
+            SetNextTarget();
+        }
+        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Count);
         // Debug.Log ("ActiveTarget : "+ ActiveTarget);
         // Debug.Log ("CurrentTarget : "+ CurrentTarget);
-        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Count);
         UIManager.SetTargetType("Unknown");
 
         for (int i = 0; i < PlayerUnits.Count; i++){
@@ -317,9 +326,11 @@ public class PlayerManager : MonoBehaviour
     }
     private void CheckCameraRotation(){
         if (MapActive || DamageControl || Pause || SpawnerMenu) {
+            Debug.Log ("case 1");
             m_FreeLookCamera.SetRotation(false);
             m_FreeLookCamera.SetMouse(true);
         } else {
+            Debug.Log ("case 2");
             m_FreeLookCamera.SetRotation(true);
             m_FreeLookCamera.SetMouse(false);
         }

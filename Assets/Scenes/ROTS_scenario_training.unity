@@ -2040,11 +2040,5 @@ PrefabInstance:
       propertyPath: m_Units.Array.data[7].m_Unit
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 9066046076929511871, guid: 130cc4876dab8ae4ab24c45d459da363,
-        type: 3}
-      propertyPath: m_ShellDecal
-      value: 
-      objectReference: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}

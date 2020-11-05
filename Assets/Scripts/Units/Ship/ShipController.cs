@@ -100,42 +100,52 @@ public class ShipController : UnitMasterController {
     // }
 
     private void BuoyancyLoop() {
-        if (LeakRatio > 0) {
+        if (LeakRatio > 0 && !Dead) {
             // If the ship is taking water...
             // Transform the model to show the ship embedding into water
-            if (CurrentpositionY != TargetpositionY) {
+            if (!IsApproximately(CurrentpositionY, TargetpositionY, 0.02f)) {
                 BuoyancyCorrectY(LeakRatio);
             }
+            // if (CurrentpositionY != TargetpositionY) {
+            //     BuoyancyCorrectY(LeakRatio);
+            // }
             // Transform the model to show the ship angling in the direction of the compartments
-            if (CurrentRotationX != TargetRotationX || CurrentRotationZ != TargetRotationZ) {
+            if (!IsApproximately(CurrentRotationX, TargetRotationX, 0.02f) || !IsApproximately(CurrentRotationZ, TargetRotationZ, 0.02f)) {
                 BuoyancyCorrectXZ(LeakRatio);
             }
+            // if (CurrentRotationX != TargetRotationX || CurrentRotationZ != TargetRotationZ) {
+            //     BuoyancyCorrectXZ(LeakRatio);
+            // }
 
             // Also, repair the leak while it is still opened
-            LeakRatio -= 0.1f * RepairRate * WaterRepairCrew * Time.deltaTime;
+            LeakRatio -= 0.1f * RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
+            LeakRatio = (Mathf.Round(LeakRatio * 100)) / 100;
             // Debug.Log("LeakRatio :"+ LeakRatio);
 
-        } else {
+        } else if (!Dead) {
             //If the leak is corrected...
             if (TakingWater){
                 // Reset targets if the ship was still taking water
                 if (CurrentpositionY != TargetpositionY)
-                    TargetpositionY = CurrentpositionY;
+                    TargetpositionY = TargetpositionY;
                 if (CurrentRotationX != TargetRotationX)
-                    TargetRotationX = CurrentRotationX;
+                    TargetRotationX = TargetRotationX;
                 if (CurrentRotationZ != TargetRotationZ)
                     TargetRotationX = CurrentRotationZ;
                 TakingWater = false;
                 if (DamageControl)
                     DamageControl.SetBuoyancyCompromised(TakingWater);
             }
-            if (!Dead)
-                BuoyancyRepair();
+            BuoyancyRepair();
         }
     }
     private void BuoyancyRepair() {
-        if (CurrentpositionY < 0) {
+        if (TargetpositionY < 0) {
             TargetpositionY += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
+            TargetpositionY = (Mathf.Round(TargetpositionY * 100)) / 100;
+            // if (IsApproximately(TargetpositionY, 0f, 0.02f)) {
+            //     TargetpositionY = 0f;
+            // }
             BuoyancyCorrectY((WaterRepairCrew + 1));
         }
 
@@ -149,25 +159,30 @@ public class ShipController : UnitMasterController {
         } else if (TargetRotationZ < 0) {
             TargetRotationZ += RepairRate * (WaterRepairCrew + 1) * Time.deltaTime;
         }
+        TargetRotationX = (Mathf.Round(TargetRotationX * 100)) / 100;
+        TargetRotationZ = (Mathf.Round(TargetRotationZ * 100)) / 100;
         if (TargetRotationX != 0 || TargetRotationZ != 0 ) {
             BuoyancyCorrectXZ((WaterRepairCrew + 1));
         }
     }
     private void BuoyancyCorrectY(float ratio) {
-        // Debug.Log("CurrentpositionY :"+ CurrentpositionY);
+        // CurrentpositionY represents how much a ship has sunk vertically. Only a negative value can kill it.
         // Debug.Log("TargetpositionY :"+ TargetpositionY);
         if (CurrentpositionY > TargetpositionY) {
             // If sinking...
             CurrentpositionY -= 0.1f * ratio * Time.deltaTime;
+            // Debug.Log("CurrentY :"+ CurrentpositionY + "Target :"+ TargetpositionY);
         } else {
             // If raising...
             CurrentpositionY += 0.1f * ratio * Time.deltaTime;
+            // Debug.Log("CurrentY :"+ CurrentpositionY + "Target :"+ TargetpositionY);
         }
+        // CurrentpositionY = (Mathf.Round(CurrentpositionY * 100)) / 100;
         ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
 
         // Check death by taking in too much water
         if (CurrentpositionY < -2 && !Dead) {
-            // Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY);
+            Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY);
             CallDeath();
         }
     }
@@ -179,6 +194,7 @@ public class ShipController : UnitMasterController {
             // Apply force front
             CurrentRotationX += 0.1f * ratio * Time.deltaTime;
         }
+        // CurrentRotationX = (Mathf.Round(CurrentRotationX * 100)) / 100;
 
         if (CurrentRotationZ > TargetRotationZ) {
             // Apply force right
@@ -187,14 +203,56 @@ public class ShipController : UnitMasterController {
             // Apply force left
             CurrentRotationZ += 0.1f * ratio * Time.deltaTime;
         }
+        // CurrentRotationZ = (Mathf.Round(CurrentRotationZ * 100)) / 100;
 
         ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         // Check death by taking in too much water
         if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead) {
-            // Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " - or Z being : " + CurrentRotationZ);
+            Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " - or Z being : " + CurrentRotationZ);
             CallDeath();
         }
+    }
+
+    public override void BuoyancyCompromised(ElementType ElementType, float damage) {
+        //If a water tight compartment is hit, apply effects here
+        // Debug.Log("ElementType :"+ ElementType);
+        // Debug.Log("damage :"+ damage);
+        TargetpositionY -= damage * 0.001f;
+        TargetpositionY = (Mathf.Round(TargetpositionY * 100)) / 100;
+        if (ElementType == ElementType.underwaterFrontLeft) {
+            TargetRotationX += damage * 0.01f;
+            TargetRotationZ += damage * 0.1f;
+        } else if (ElementType == ElementType.underwaterFrontRight) {
+            TargetRotationX += damage * 0.01f;
+            TargetRotationZ += damage * -0.1f;
+        } else if (ElementType == ElementType.underwaterBackLeft) {
+            TargetRotationX += damage * -0.01f;
+            TargetRotationZ += damage * 0.1f;
+        } else if (ElementType == ElementType.underwaterBackRight) {
+            TargetRotationX += damage * -0.01f;
+            TargetRotationZ += damage * -0.1f;
+        }
+        TargetRotationX = (Mathf.Round(TargetRotationX * 100)) / 100;
+        TargetRotationZ = (Mathf.Round(TargetRotationZ * 100)) / 100;
+
+        LeakRatio += damage * 0.003f;
+        TakingWater = true;
+
+        ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
+
+        ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+
+        if (DamageControl)
+            DamageControl.SetBuoyancyCompromised(TakingWater);
+
+        // Debug.Log("ShipModel :"+ ShipModel);
+        // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
+        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);  
+    }
+
+    private bool IsApproximately(float a, float b, float tolerance) {
+        return Mathf.Abs(a - b) < tolerance;
     }
 
     public void SetDamageControlEngine(int setCrew){
@@ -334,39 +392,6 @@ public class ShipController : UnitMasterController {
             if (GetComponent<ShipDamageControl>())
                 DamageControl.SetFireBurning(false);
         }
-    }
-    public override void BuoyancyCompromised(ElementType ElementType, float damage) {
-        //If a water tight compartment is hit, apply effects here
-        // Debug.Log("ElementType :"+ ElementType);
-        // Debug.Log("damage :"+ damage);
-        TargetpositionY -= damage * 0.001f;
-        if (ElementType == ElementType.underwaterFrontLeft) {
-            TargetRotationX += damage * 0.01f;
-            TargetRotationZ += damage * 0.1f;
-        } else if (ElementType == ElementType.underwaterFrontRight) {
-            TargetRotationX += damage * 0.01f;
-            TargetRotationZ += damage * -0.1f;
-        } else if (ElementType == ElementType.underwaterBackLeft) {
-            TargetRotationX += damage * -0.01f;
-            TargetRotationZ += damage * 0.1f;
-        } else if (ElementType == ElementType.underwaterBackRight) {
-            TargetRotationX += damage * -0.01f;
-            TargetRotationZ += damage * -0.1f;
-        }
-
-        LeakRatio += damage * 0.003f;
-        TakingWater = true;
-
-        ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
-
-        ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
-
-        if (DamageControl)
-            DamageControl.SetBuoyancyCompromised(TakingWater);
-
-        // Debug.Log("ShipModel :"+ ShipModel);
-        // Debug.Log("ShipModel :"+ ShipModel.transform.localRotation);
-        // Debug.Log("ShipModel :"+ ShipModel.transform.localPosition);  
     }
     public override void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
     public override void SendHitInfoToDamageControl (bool armorPenetrated) {

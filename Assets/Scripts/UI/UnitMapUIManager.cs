@@ -19,6 +19,12 @@ public class UnitMapUIManager : MonoBehaviour {
     // private bool ShortActionPaused = false;
     private string DistanceString;
 
+    private GameObject UIName;
+    private GameObject UIDistance;
+    private GameObject UIHealth;
+        private Slider HealthBar;
+        private Image HealthBarColor;
+
     private float MaximumHealth;
     private float CurrentHealth;
     const string RangeDisplayMeter = "{0} m";
@@ -40,8 +46,19 @@ public class UnitMapUIManager : MonoBehaviour {
     public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
         MapCam = cam;
         Unit = unit;
-        MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
-        CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
+        UIName = this.transform.Find("Name").gameObject;
+        UIDistance = this.transform.Find("Distance").gameObject;
+
+        UIHealth = this.transform.Find("Health").gameObject;
+        HealthBar = UIHealth.transform.GetComponent<Slider>();
+        HealthBarColor = UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>();
+        
+        if (unit.GetComponent<UnitHealth>()) {
+            MaximumHealth = unit.GetComponent<UnitHealth>().GetStartingHealth();
+            CurrentHealth = unit.GetComponent<UnitHealth>().GetCurrentHealth();
+        }
+        HealthBar.maxValue = MaximumHealth;
+        HealthBar.value = CurrentHealth;
         UnitsUIManager = unitsUIManager;
     }
 
@@ -64,9 +81,9 @@ public class UnitMapUIManager : MonoBehaviour {
             } else {
                 DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
             }
-            this.transform.Find("Distance").GetComponent<Text>().text = DistanceString;
+            UIDistance.transform.GetComponent<Text>().text = DistanceString;
         } else {
-            this.transform.Find("Distance").GetComponent<Text>().text = "Played unit";
+            UIDistance.transform.GetComponent<Text>().text = "Played unit";
         }
     }
 
@@ -90,13 +107,13 @@ public class UnitMapUIManager : MonoBehaviour {
     }
 
     public void SetCurrentHealth(float HP, Color barColor) {
-        this.transform.Find("Health").GetComponent<Slider>().value = HP;
-        this.transform.Find("Health").Find("FillArea").Find("Fill").GetComponent<Image>().color = barColor;
+        HealthBar.value = HP;
+        HealthBarColor.color = barColor;
     }
 
     public void SetDead() {
-        this.transform.Find("Name").GetComponent<Text>().color = Color.grey;
-        this.transform.Find("Distance").GetComponent<Text>().color = Color.grey;
+        UIName.transform.GetComponent<Text>().color = Color.grey;
+        UIDistance.transform.GetComponent<Text>().color = Color.grey;
         UnitsUIManager.RemoveMapUIElement(this.gameObject);
         StartCoroutine(WaitForDestroy());
         // Destroy (this.gameObject);

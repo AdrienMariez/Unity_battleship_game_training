@@ -119,6 +119,8 @@ MonoBehaviour:
   m_SpawnerUnitSelect: {fileID: 6431504518210083437, guid: 59e992760bddd3e42a90189199ebdf5b,
     type: 3}
   m_SpawnerSpacing: 22
+  m_ShellDecal: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
+    type: 3}
   m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
     type: 3}
   m_TimeToDestroyCamera: 3

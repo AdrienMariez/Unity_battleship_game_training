@@ -24,6 +24,8 @@ public class UnitUIManager : MonoBehaviour {
     private GameObject UIName;
     private GameObject UIDistance;
     private GameObject UIHealth;
+        private Slider HealthBar;
+        private Image HealthBarColor;
     private GameObject UIPointer;
     private GameObject UIBoundingBox;
     private GameObject UIBoundingBoxTL;
@@ -47,7 +49,6 @@ public class UnitUIManager : MonoBehaviour {
 
         UIName = this.transform.Find("Name").gameObject;
         UIDistance = this.transform.Find("Distance").gameObject;
-        UIHealth = this.transform.Find("Health").gameObject;
         UIPointer = this.transform.Find("Pointer").gameObject;
 
         UIBoundingBox = this.transform.Find("BoundingBox").gameObject;
@@ -56,8 +57,17 @@ public class UnitUIManager : MonoBehaviour {
         UIBoundingBoxBL = UIBoundingBox.transform.Find("BoundingBoxBottomLeft").gameObject;
         UIBoundingBoxBR = UIBoundingBox.transform.Find("BoundingBoxBottomRight").gameObject;
 
-        MaximumHealth = this.transform.Find("Health").GetComponent<Slider>().maxValue;
-        CurrentHealth = this.transform.Find("Health").GetComponent<Slider>().value;
+        // Health
+            UIHealth = this.transform.Find("Health").gameObject;
+            HealthBar = UIHealth.transform.GetComponent<Slider>();
+            HealthBarColor = UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>();
+            if (unit.GetComponent<UnitHealth>()) {
+                MaximumHealth = unit.GetComponent<UnitHealth>().GetStartingHealth();
+                CurrentHealth = unit.GetComponent<UnitHealth>().GetCurrentHealth();
+            }
+            HealthBar.maxValue = MaximumHealth;
+            HealthBar.value = CurrentHealth;
+
         UnitsUIManager = unitsUIManager;
         StartCoroutine(PauseActionName());
     }
@@ -212,8 +222,9 @@ public class UnitUIManager : MonoBehaviour {
     }
 
     public void SetCurrentHealth(float HP, Color barColor) {
-        UIHealth.transform.GetComponent<Slider>().value = HP;
-        UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = barColor;
+        // Debug.Log (" HP : " + HP +" / "+ MaximumHealth);
+        HealthBar.value = HP;
+        HealthBarColor.color = barColor;
     }
 
     public void SetDead() {
