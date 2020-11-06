@@ -14,10 +14,24 @@ public class MenuButtonsControl : MonoBehaviour {
     private GameObject CreditsUIInstance;
     private bool DisplayHelpImage = false;
 
-    public GameObject[] m_ShipSpawnPoints;
-    [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
+    [Header("Units in the background")]
+        public GameObject[] m_ShipSpawnPoints;
+        [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
+
+    [Header("Scenario List")]
+        public GameObject m_ScenarioSelect;
+        public float m_ScenariosSpacing = 220;
+        private GameObject ScenariosListContainerInstance;
+        [HideInInspector] public List<CompiledTypes.Scenarios> ScenariosDBList = new List<CompiledTypes.Scenarios>();
 
     void Start() {
+        foreach (CompiledTypes.Scenarios scenario2 in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
+            // Debug.Log (" scenario : "+scenario.ScenarioScene);
+            foreach (CompiledTypes.Scenarios scenario in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
+                ScenariosDBList.Add(scenario);
+            }
+        }
+        
         OpenMainMenu();
         LoadMenuUnits();
         Cursor.lockState = CursorLockMode.None;
@@ -25,8 +39,7 @@ public class MenuButtonsControl : MonoBehaviour {
         Time.timeScale = 1.0f;
     }
 
-    protected void LoadMenuUnits() {
-        
+    protected void LoadMenuUnits() {    
         foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
             for (int i=0; i < subCategory.Count; i++) {
                 // Debug.Log(subCategory[0].GetUnitName());
@@ -57,6 +70,43 @@ public class MenuButtonsControl : MonoBehaviour {
 
     protected void OpenMainMenu() {
         MenuUIInstance = Instantiate(m_MenuUI);
+        Button buttonExit = MenuUIInstance.transform.Find("ButtonExit").GetComponent<Button>();
+		buttonExit.onClick.AddListener(ButtonExitOnClick);
+        Button buttonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
+		buttonOptions.onClick.AddListener(ButtonOptionsOnClick);
+        Button buttonCredits = MenuUIInstance.transform.Find("ButtonCredits").GetComponent<Button>();
+		buttonCredits.onClick.AddListener(ButtonCreditsOnClick);
+        
+        ScenariosListContainerInstance = MenuUIInstance.transform.Find("ScenarioList").transform.Find("Scroll View").transform.Find("Viewport").transform.Find("Content").gameObject;
+
+        // foreach (CompiledTypes.Scenarios scenario2 in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
+        //     // Debug.Log (" scenario : "+scenario.ScenarioScene);
+        //     foreach (CompiledTypes.Scenarios scenario in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
+        //         GameObject listElement = Instantiate(m_ScenarioSelect, ScenariosListContainerInstance.transform);
+        //         ScenariosDBList.Add(scenario);
+        //     }
+        // }
+
+        for (int i = 0; i < ScenariosDBList.Count; i++) {
+            GameObject listElement = Instantiate(m_ScenarioSelect, ScenariosListContainerInstance.transform);
+            CreateSingleUnitSpawnerListDisplay(ScenariosDBList[i], i);
+        }
+    }
+    private void CreateSingleUnitSpawnerListDisplay(CompiledTypes.Scenarios scenario, int i) {
+        string text;
+        text = ScenariosDBList[i].ScenarioScene + " "+ ScenariosDBList[i].id;
+        ScenariosListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponentInChildren<Text>().text = text;
+
+        Button spawnerButton = ScenariosListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponent<Button>();
+
+        spawnerButton.onClick.AddListener(() => { TryStartScenario(scenario); });
+    }
+    protected void TryStartScenario (CompiledTypes.Scenarios scenario) {
+        Debug.Log (" scenario : "+scenario.id);
+    }
+
+    /*protected void OpenMainMenu() {
+        MenuUIInstance = Instantiate(m_MenuUI);
         Button buttonScenarioTraining = MenuUIInstance.transform.Find("ButtonScenarioTraining").GetComponent<Button>();
 		buttonScenarioTraining.onClick.AddListener(ButtonScenarioTrainingOnClick);
         Button buttonScenario1 = MenuUIInstance.transform.Find("ButtonScenario1").GetComponent<Button>();
@@ -71,7 +121,7 @@ public class MenuButtonsControl : MonoBehaviour {
 		buttonOptions.onClick.AddListener(ButtonOptionsOnClick);
         Button buttonCredits = MenuUIInstance.transform.Find("ButtonCredits").GetComponent<Button>();
 		buttonCredits.onClick.AddListener(ButtonCreditsOnClick);
-    }
+    }*/
     protected void CloseMainMenu() {
         if (MenuUIInstance)
             Destroy (MenuUIInstance);

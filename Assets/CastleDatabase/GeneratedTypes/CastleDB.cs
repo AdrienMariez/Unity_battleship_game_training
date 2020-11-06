@@ -9,7 +9,8 @@ namespace CompiledTypes
     public class CastleDB
     {
         static CastleDBParser parsedDB;
-        public Global_UnitsType Global_Units;
+        public ScenariosType Scenarios;
+public Global_UnitsType Global_Units;
 public Units_sub_categoriesType Units_sub_categories;
 public Units_categoriesType Units_categories;
 public TeamsType Teams;
@@ -24,9 +25,28 @@ public AudioFX_StorageType AudioFX_Storage;
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();HardPoints = new HardPointsType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
+            Scenarios = new ScenariosType();Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();HardPoints = new HardPointsType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
         }
-        public class Global_UnitsType 
+        public class ScenariosType 
+ {public Scenarios A { get { return Get(CompiledTypes.Scenarios.RowValues.A); } } 
+public Scenarios B { get { return Get(CompiledTypes.Scenarios.RowValues.B); } } 
+public Scenarios C { get { return Get(CompiledTypes.Scenarios.RowValues.C); } } 
+public Scenarios D { get { return Get(CompiledTypes.Scenarios.RowValues.D); } } 
+public Scenarios E { get { return Get(CompiledTypes.Scenarios.RowValues.E); } } 
+private Scenarios Get(CompiledTypes.Scenarios.RowValues line) { return new Scenarios(parsedDB.Root, line); }
+
+                public Scenarios[] GetAll() 
+                {
+                    var values = (CompiledTypes.Scenarios.RowValues[])Enum.GetValues(typeof(CompiledTypes.Scenarios.RowValues));
+                    Scenarios[] returnList = new Scenarios[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF Scenarios 
+public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
 public Global_Units takao { get { return Get(CompiledTypes.Global_Units.RowValues.takao); } } 
 public Global_Units fusoUSA { get { return Get(CompiledTypes.Global_Units.RowValues.fusoUSA); } } 

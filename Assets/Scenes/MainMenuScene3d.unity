@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1ba7ee5504c554187e54e3e1f11ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MenuUI: {fileID: 2857608438053203770, guid: b1af4745639a2a94f84ef75b073dd205,
+  m_MenuUI: {fileID: 2857608438053203770, guid: bce6b80d75733614993a6f9b7c161e59,
     type: 3}
   m_OptionsUI: {fileID: 3840841885980440223, guid: c1867540d921550468ed3f941be4f850,
     type: 3}
@@ -705,6 +705,7 @@ MonoBehaviour:
   - {fileID: 619213908}
   - {fileID: 2042012409}
   SpawnableUnitsList: []
+  m_ScenariosSpacing: 22
 --- !u!4 &1091423344
 Transform:
   m_ObjectHideFlags: 0

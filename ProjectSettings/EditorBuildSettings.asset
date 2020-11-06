@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ROTS_scenario_3.unity
     guid: 3ce0aaad77b36b94d83dd7ee555bb2f7
+  - enabled: 1
+    path: Assets/Scenes/ROTS_scenario_A.unity
+    guid: 3c78cff4cee5d224b964912c35fd6c22
   m_configObjects: {}

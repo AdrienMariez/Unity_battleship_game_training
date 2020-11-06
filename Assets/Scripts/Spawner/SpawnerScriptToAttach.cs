@@ -116,15 +116,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         SpawnMenuInstance = Instantiate(SpawnerUI);
         SpawnListContainerInstance = SpawnMenuInstance.transform.Find("SpawnListContainer").gameObject;
-        
-        // Clean and populate the list
-        // TeamedSpawnableUnitsList = new List<WorldSingleUnit>();
-        // foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
-        //     if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
-        //         // Debug.Log (singleUnit.GetUnitName());
-        //         TeamedSpawnableUnitsList.Add(singleUnit);
-        //     }
-        // }
+
         CreateUnitSpawnerListDisplay();
     }
     private void CreateUnitSpawnerListDisplay() {

@@ -59,7 +59,7 @@ public class UnitHealth : UnitParameter {
         AutorepairTicks ++;
         if (AutorepairTicks > 120) {        // Send repaired info only each 120 frames.
             UnitController.SetCurrentHealth(CurrentHealth);
-            Debug.Log("CurrentHealth = "+ CurrentHealth);
+            // Debug.Log("CurrentHealth = "+ CurrentHealth);
             AutorepairTicks = 0;
         }
     }

@@ -1,6 +1,53 @@
 {
 	"sheets": [
 		{
+			"name": "Scenarios",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "ScenarioScene",
+					"display": null
+				},
+				{
+					"typeStr": "10:duel,points,custom",
+					"name": "GameModes"
+				}
+			],
+			"lines": [
+				{
+					"GameModes": 3,
+					"id": "A",
+					"ScenarioScene": "ROTS_scenario_A"
+				},
+				{
+					"id": "B",
+					"ScenarioScene": "ROTS_scenario_A",
+					"GameModes": 1
+				},
+				{
+					"id": "C",
+					"ScenarioScene": "ROTS_scenario_A",
+					"GameModes": 2
+				},
+				{
+					"id": "D",
+					"ScenarioScene": "ROTS_scenario_A",
+					"GameModes": 3
+				},
+				{
+					"id": "E",
+					"ScenarioScene": "ROTS_scenario_A",
+					"GameModes": 3
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
 			"name": "Global_Units",
 			"columns": [
 				{
