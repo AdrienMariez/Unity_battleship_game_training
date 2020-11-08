@@ -10,8 +10,9 @@ namespace CompiledTypes
     {
         public string id;
 public string ScenarioScene;
-public GameModesFlag GameModes;
-[FlagsAttribute] public enum GameModesFlag { duel = 1,points = 2,custom = 4 }
+public List<ScenarioGameModes> ScenarioGameModesList = new List<ScenarioGameModes>();
+public List<DuelSpawnPoints> DuelSpawnPointsList = new List<DuelSpawnPoints>();
+
         public enum RowValues { 
 A, 
 B, 
@@ -24,7 +25,8 @@ E
             SimpleJSON.JSONNode node = root.GetSheetWithName("Scenarios").Rows[(int)line];
 id = node["id"];
 ScenarioScene = node["ScenarioScene"];
-GameModes = (GameModesFlag)node["GameModes"].AsInt;
+foreach(var item in node["ScenarioGameModes"]) { ScenarioGameModesList.Add(new ScenarioGameModes(root, item));}
+foreach(var item in node["DuelSpawnPoints"]) { DuelSpawnPointsList.Add(new DuelSpawnPoints(root, item));}
 
         }  
         

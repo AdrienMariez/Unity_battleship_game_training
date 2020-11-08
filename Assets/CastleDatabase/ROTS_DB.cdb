@@ -13,35 +13,155 @@
 					"display": null
 				},
 				{
-					"typeStr": "10:duel,points,custom",
-					"name": "GameModes"
+					"typeStr": "8",
+					"name": "ScenarioGameModes"
+				},
+				{
+					"typeStr": "8",
+					"name": "DuelSpawnPoints"
 				}
 			],
 			"lines": [
 				{
-					"GameModes": 3,
 					"id": "A",
-					"ScenarioScene": "ROTS_scenario_A"
+					"ScenarioScene": "ROTS_scenario_A",
+					"ScenarioGameModes": [
+						{
+							"ScenarioGameMode": "duel"
+						}
+					],
+					"DuelSpawnPoints": [
+						{
+							"DuelSpawnPointName": "SPDuelNaval00",
+							"DuelSpawnPointCategory": "building"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval01",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval02",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval03",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval04",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval05",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval06",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval07",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval08",
+							"DuelSpawnPointCategory": "ship"
+						}
+					]
 				},
 				{
 					"id": "B",
 					"ScenarioScene": "ROTS_scenario_A",
-					"GameModes": 1
+					"ScenarioGameModes": [
+						{
+							"ScenarioGameMode": "points"
+						}
+					],
+					"DuelSpawnPoints": []
 				},
 				{
 					"id": "C",
 					"ScenarioScene": "ROTS_scenario_A",
-					"GameModes": 2
+					"ScenarioGameModes": [
+						{
+							"ScenarioGameMode": "custom"
+						}
+					],
+					"DuelSpawnPoints": []
 				},
 				{
 					"id": "D",
 					"ScenarioScene": "ROTS_scenario_A",
-					"GameModes": 3
+					"ScenarioGameModes": [
+						{
+							"ScenarioGameMode": "duel"
+						},
+						{
+							"ScenarioGameMode": "points"
+						}
+					],
+					"DuelSpawnPoints": [
+						{
+							"DuelSpawnPointName": "SPDuelNaval00",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval01",
+							"DuelSpawnPointCategory": "ship"
+						}
+					]
 				},
 				{
 					"id": "E",
 					"ScenarioScene": "ROTS_scenario_A",
-					"GameModes": 3
+					"ScenarioGameModes": [
+						{
+							"ScenarioGameMode": "duel"
+						},
+						{
+							"ScenarioGameMode": "custom"
+						}
+					],
+					"DuelSpawnPoints": [
+						{
+							"DuelSpawnPointName": "SPDuelNaval03",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval04",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval07",
+							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval08",
+							"DuelSpawnPointCategory": "ship"
+						}
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "GameModes",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				}
+			],
+			"lines": [
+				{
+					"id": "duel"
+				},
+				{
+					"id": "points"
+				},
+				{
+					"id": "custom"
 				}
 			],
 			"separators": [],
@@ -3228,6 +3348,39 @@
 					"name": "FXWaterHit",
 					"opt": true,
 					"display": null
+				}
+			]
+		},
+		{
+			"name": "Scenarios@ScenarioGameModes",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:GameModes",
+					"name": "ScenarioGameMode",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "Scenarios@DuelSpawnPoints",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "DuelSpawnPointName"
+				},
+				{
+					"typeStr": "6:Units_categories",
+					"name": "DuelSpawnPointCategory"
 				}
 			]
 		}

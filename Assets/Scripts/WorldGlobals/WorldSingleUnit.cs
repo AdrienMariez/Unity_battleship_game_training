@@ -13,6 +13,7 @@ public class WorldSingleUnit {
     private string UnitName; public string GetUnitName(){ return UnitName; }
     // CATEGORIES
         private CompiledTypes.Units_categories.RowValues UnitCategory; public CompiledTypes.Units_categories.RowValues GetUnitCategory(){ return UnitCategory; }
+        private CompiledTypes.Units_categories UnitCategory_DB; public CompiledTypes.Units_categories GetUnitCategory_DB(){ return UnitCategory_DB; }
         private CompiledTypes.Units_sub_categories.RowValues UnitSubCategory; public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory(){ return UnitSubCategory; }
         private CompiledTypes.Units_sub_categories UnitSubCategory_DB; public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB(){ return UnitSubCategory_DB; }
         private GameObject UnitDeathFX; public GameObject GetUnitDeathFX(){ return UnitDeathFX; }         // If there were multiple of those, there could be multiple death FX
@@ -71,7 +72,8 @@ public class WorldSingleUnit {
                 UnitSubCategory_DB = masterUnitReference.UnitCategory;
                 string subCatString = masterUnitReference.UnitCategory.id.ToString();
                 UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
-
+                
+                UnitCategory_DB = masterUnitReference.UnitCategory.Category;
                 string catString = masterUnitReference.UnitCategory.Category.id.ToString();
                 UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
 
@@ -82,6 +84,7 @@ public class WorldSingleUnit {
                 string subCatString = unit.UnitCategory.id.ToString();
                 UnitSubCategory = (CompiledTypes.Units_sub_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_sub_categories.RowValues), subCatString);
                 
+                UnitCategory_DB = unit.UnitCategory.Category;
                 string catString = unit.UnitCategory.Category.id.ToString();
                 UnitCategory = (CompiledTypes.Units_categories.RowValues)System.Enum.Parse( typeof(CompiledTypes.Units_categories.RowValues), catString );
                 

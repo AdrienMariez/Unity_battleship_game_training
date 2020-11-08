@@ -39,11 +39,14 @@ public class WorldUnitsManager : MonoBehaviour {
     //     }
     // }
     
-    // static List<UnitSubCategories> SubCategories = new List<UnitSubCategories>();
+    static List<CompiledTypes.Units_sub_categories> SubCategoriesDB = new List<CompiledTypes.Units_sub_categories>();
     private static List<List<WorldSingleUnit>> UnitsBySubcategory = new List<List<WorldSingleUnit>>();
     public static List<List<WorldSingleUnit>> GetUnitsBySubcategory() { return UnitsBySubcategory; }
 
-    static List<CompiledTypes.Units_sub_categories> SubCategoriesDB = new List<CompiledTypes.Units_sub_categories>();
+    static List<CompiledTypes.Units_categories> CategoriesDB = new List<CompiledTypes.Units_categories>();
+    private static List<List<WorldSingleUnit>> UnitsByCategory = new List<List<WorldSingleUnit>>();
+    public static List<List<WorldSingleUnit>> GetUnitsByCategory() { return UnitsByCategory; }
+
 
     private static List<WorldSingleAmmo> WorldAmmos = new List<WorldSingleAmmo>(); public static List<WorldSingleAmmo> GetWorldAmmos() { return WorldAmmos; }
     private static List<WorldSingleWeapon> WorldWeapons = new List<WorldSingleWeapon>(); public static List<WorldSingleWeapon> GetWorldWeapons() { return WorldWeapons; }
@@ -91,6 +94,46 @@ public class WorldUnitsManager : MonoBehaviour {
             UnitsBySubcategory.Add(categoryObjects);
             // Debug.Log ("loop in WUM");
         }
+
+        // Build UNIT LIST BY CATEGORY
+        // foreach (CompiledTypes.Units_categories category in DB.Units_categories.GetAll()) {
+        //     CategoriesDB.Add(category);
+        // }
+        // foreach (CompiledTypes.Units_categories category in CategoriesDB) {
+        //     List<CompiledTypes.Global_Units> categoryObjects = new List<CompiledTypes.Global_Units>();
+        //     foreach (CompiledTypes.Global_Units unit in DB.Global_Units.GetAll()) {
+        //         if (unit.Isavariant && unit.UnitCategory.id.ToString() == "Empty") {
+        //             CompiledTypes.Global_Units masterUnitReference = unit.UnitVariantReferenceList[0].UnitVariantRef;
+        //             if (masterUnitReference.UnitCategory.Category.id == category.id) {
+        //                 categoryObjects.Add(unit);
+        //             }
+        //         } else if (unit.UnitCategory.Category.id == category.id) {
+        //             categoryObjects.Add(unit);
+        //         }
+        //     }
+        //     UnitsDBByCategory.Add(categoryObjects);
+        // }
+
+        foreach (CompiledTypes.Units_categories category in DB.Units_categories.GetAll()) {
+            CategoriesDB.Add(category);
+        }
+
+        foreach (CompiledTypes.Units_categories category in CategoriesDB) {
+            List<WorldSingleUnit> categoryObjects = new List<WorldSingleUnit>();
+            foreach (List<WorldSingleUnit> subCategory in UnitsBySubcategory) {
+                foreach (WorldSingleUnit unit in subCategory) {
+                    // Debug.Log (" unit "+unit.GetUnitName());
+                    if (unit.GetUnitCategory_DB().id == category.id) {
+                        categoryObjects.Add(unit);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            UnitsByCategory.Add(categoryObjects);
+        }
+
+
         // Debug.Log ("WorldSingleUnit built");
 
         // This is to view each element and its category.

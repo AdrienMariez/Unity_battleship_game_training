@@ -10,6 +10,7 @@ namespace CompiledTypes
     {
         static CastleDBParser parsedDB;
         public ScenariosType Scenarios;
+public GameModesType GameModes;
 public Global_UnitsType Global_Units;
 public Units_sub_categoriesType Units_sub_categories;
 public Units_categoriesType Units_categories;
@@ -25,7 +26,7 @@ public AudioFX_StorageType AudioFX_Storage;
         public CastleDB(TextAsset castleDBAsset)
         {
             parsedDB = new CastleDBParser(castleDBAsset);
-            Scenarios = new ScenariosType();Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();HardPoints = new HardPointsType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
+            Scenarios = new ScenariosType();GameModes = new GameModesType();Global_Units = new Global_UnitsType();Units_sub_categories = new Units_sub_categoriesType();Units_categories = new Units_categoriesType();Teams = new TeamsType();Countries = new CountriesType();HardPoints = new HardPointsType();Weapons = new WeaponsType();Weapons_roles = new Weapons_rolesType();Ammos = new AmmosType();FX_Storage = new FX_StorageType();AudioFX_Storage = new AudioFX_StorageType();
         }
         public class ScenariosType 
  {public Scenarios A { get { return Get(CompiledTypes.Scenarios.RowValues.A); } } 
@@ -46,6 +47,23 @@ private Scenarios Get(CompiledTypes.Scenarios.RowValues line) { return new Scena
                     return returnList;
                 }
  } //END OF Scenarios 
+public class GameModesType 
+ {public GameModes duel { get { return Get(CompiledTypes.GameModes.RowValues.duel); } } 
+public GameModes points { get { return Get(CompiledTypes.GameModes.RowValues.points); } } 
+public GameModes custom { get { return Get(CompiledTypes.GameModes.RowValues.custom); } } 
+private GameModes Get(CompiledTypes.GameModes.RowValues line) { return new GameModes(parsedDB.Root, line); }
+
+                public GameModes[] GetAll() 
+                {
+                    var values = (CompiledTypes.GameModes.RowValues[])Enum.GetValues(typeof(CompiledTypes.GameModes.RowValues));
+                    GameModes[] returnList = new GameModes[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        returnList[i] = Get(values[i]);
+                    }
+                    return returnList;
+                }
+ } //END OF GameModes 
 public class Global_UnitsType 
  {public Global_Units fuso { get { return Get(CompiledTypes.Global_Units.RowValues.fuso); } } 
 public Global_Units takao { get { return Get(CompiledTypes.Global_Units.RowValues.takao); } } 

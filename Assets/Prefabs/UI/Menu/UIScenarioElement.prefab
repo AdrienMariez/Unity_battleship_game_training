@@ -185,19 +185,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 8c6767f931725cf4aaed41a93a4b3048, type: 3}
-    m_FontSize: 17
+    m_Font: {fileID: 12800000, guid: 9708cb307af5e4b4ebfbc156179805b8, type: 3}
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 5
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Taffe
+  m_Text: 
 --- !u!114 &965848509571464039
 MonoBehaviour:
   m_ObjectHideFlags: 0
