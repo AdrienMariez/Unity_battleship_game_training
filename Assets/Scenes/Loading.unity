@@ -325,7 +325,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 966157577}
-  - component: {fileID: 966157576}
   m_Layer: 0
   m_Name: LoadingLogic
   m_TagString: Untagged
@@ -333,18 +332,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &966157576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966157575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9376530aad6aad6488aea4c9e6f1b55c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &966157577
 Transform:
   m_ObjectHideFlags: 0

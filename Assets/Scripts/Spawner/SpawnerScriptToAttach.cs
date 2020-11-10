@@ -77,7 +77,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
             // Debug.Log(UnitController.m_UnitName +" - UnitController.GetTeam() "+ UnitController.GetTeam());
-            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
+            if (singleUnit.GetUnitTeam_DB() == UnitController.GetTeam()) {
                 // Debug.Log (singleUnit.GetUnitName());
                 TeamedSpawnableUnitsList.Add(singleUnit);                   // Populate the list
             }
@@ -98,11 +98,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     private bool TryOpenSpawnMenu(){
         // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
-        // bool success = false;
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
-            if (singleUnit.GetUnitTeam() == UnitController.GetTeam()) {
-                // success = true;
-                // break;
+            if (singleUnit.GetUnitTeam_DB() == UnitController.GetTeam()) {
                 return true;
             }
         }

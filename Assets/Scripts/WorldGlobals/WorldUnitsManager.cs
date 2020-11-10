@@ -22,6 +22,9 @@ public class WorldUnitsManager : MonoBehaviour {
     private static LayerMask HitMask; public static LayerMask GetHitMask(){ return HitMask; }
 
     private static bool FirstLoad = true; public static bool GetFirstLoad(){ return FirstLoad; }
+
+    private static GameManager GameManager; public static GameManager GetGameManager(){ return GameManager; } public static void SetGameManager(GameManager _s){ GameManager =_s; }
+
     private void Start() {
         if (FirstLoad){
             FirstLoad = false;
@@ -222,20 +225,14 @@ public class WorldUnitsManager : MonoBehaviour {
         }
     }
 
-    public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {
+    public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams team) {
         //Create the map element corresponding to the unit
         GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory_DB()), unitGameObject.transform);
         var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
     }
 
-    public static Color SetColor(CompiledTypes.Teams.RowValues team) {
-        Color color = Color.yellow;
-        foreach (CompiledTypes.Teams globalTeam in DB.Teams.GetAll()) {
-            if (team.ToString() == globalTeam.id) {
-                color = new Color(globalTeam.TeamColorRed, globalTeam.TeamColorGreen, globalTeam.TeamColorBlue, 1f);
-            }
-        }
-        return color;
+    public static Color SetColor(CompiledTypes.Teams team) {
+        return new Color(team.TeamColorRed, team.TeamColorGreen, team.TeamColorBlue, 1f);
     }
 }

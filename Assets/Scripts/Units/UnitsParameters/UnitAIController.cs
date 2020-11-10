@@ -4,17 +4,19 @@ using System.Collections.Generic;
 
 public class UnitAIController : UnitParameter {
     protected bool AIActive = true;
-    protected CompiledTypes.Teams.RowValues Team;
-    protected string Name;                // For debug purposes
+    protected CompiledTypes.Teams Team; public void SetUnitTeam(CompiledTypes.Teams team){ Team = team; }
+    protected string Name; public void SetName(string name) { Name = name; } // For debug purposes
     protected bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
     protected float TurnInputLimit = 0;
-    protected float MaxTurretsRange;
+    protected float MaxTurretsRange; public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; CheckState(); }
     protected GameObject TargetUnit;
     protected int PlayerTargetUnitIndex = 0;
     protected GameObject PlayerSetTargetUnit;
     protected UnitMasterController UnitMasterController;
     protected TurretManager TurretManager;
     protected List <GameObject> EnemyUnitsList = new List<GameObject>();
+
+    public virtual void SetAITurnInputValue(float turnInputValue){}
 
     public enum UnitsAIStates {      // This will be the State Machine used globally for all units
         Patrol,                         // Follow a waypoint until a unit is seen
@@ -126,14 +128,14 @@ public class UnitAIController : UnitParameter {
 
     protected void GetTargets(){
         Debug.Log ("GetTargets called in UnitAIController - WARNING ! This should be used with precaution !");
-        // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
+        // Debug.Log("Unit : "+ Name +" - Team = "+ Team.id);
         Stressed = false;
         TargetUnit = null;
         float range = 0f;
 
-        if (Team == CompiledTypes.Teams.RowValues.Allies) {
-            CompiledTypes.Teams.RowValues[] tagsToTarget = { CompiledTypes.Teams.RowValues.Axis };
-            foreach (CompiledTypes.Teams.RowValues tag in tagsToTarget) {
+        if (Team.id == WorldUnitsManager.GetDB().Teams.Allies.id) {
+            CompiledTypes.Teams[] tagsToTarget = { WorldUnitsManager.GetDB().Teams.Axis };
+            foreach (CompiledTypes.Teams tag in tagsToTarget) {
                 GameObject[] possibleTargetUnits = GameObject.FindGameObjectsWithTag (tag.ToString());
                 foreach (GameObject gameObj in possibleTargetUnits) {
                     float distance = (gameObject.transform.position - gameObj.transform.position).magnitude;
@@ -145,9 +147,9 @@ public class UnitAIController : UnitParameter {
                     }
                 }
             }
-        } else if (Team == CompiledTypes.Teams.RowValues.Axis) {
-            CompiledTypes.Teams.RowValues[] tagsToTarget = { CompiledTypes.Teams.RowValues.Allies };
-            foreach (CompiledTypes.Teams.RowValues tag in tagsToTarget) {
+        } else if (Team.id == WorldUnitsManager.GetDB().Teams.Axis.id) {
+            CompiledTypes.Teams[] tagsToTarget = { WorldUnitsManager.GetDB().Teams.Allies };
+            foreach (CompiledTypes.Teams tag in tagsToTarget) {
                 GameObject[] possibleTargetUnits = GameObject.FindGameObjectsWithTag (tag.ToString());
                 foreach (GameObject gameObj in possibleTargetUnits) {
                     float distance = (gameObject.transform.position - gameObj.transform.position).magnitude;
@@ -201,7 +203,7 @@ public class UnitAIController : UnitParameter {
         }
     }
     protected void SetNewTarget() {
-        // Debug.Log("Unit : "+ Name +" - Team = "+ Team);
+        // Debug.Log("Unit : "+ Name +" - Team.id = "+ Team.id);
         TargetUnit = null;
         float range = 0f;
         if (EnemyUnitsList.Count > 0) {
@@ -331,11 +333,6 @@ public class UnitAIController : UnitParameter {
 
     }
 
-    public void SetUnitTeam(CompiledTypes.Teams.RowValues team){ Team = team; }
-    public void SetName(string name) {
-        Name = name;
-        // GetTargets();
-    }
     public void SetAIActive(bool activate) {
         // Debug.Log("Unit : "+ Name +" - SetAIActive = "+ activate);
         // If player control, AI inactive
@@ -350,8 +347,6 @@ public class UnitAIController : UnitParameter {
         }
         // TurretManagerPresent = true;
     }
-    public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; CheckState(); }
-    public virtual void SetAITurnInputValue(float turnInputValue){}
 
     protected virtual bool TrySpawn() {
         if (AIActive && UnitsAICurrentState != UnitsAIStates.NoAI && UnitCanSpawn) {

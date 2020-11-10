@@ -5,19 +5,12 @@ using System.Collections.Generic;
 
 public class UnitUI : UnitParameter {
     private bool Dead = false;
-    private string Name;
-    private CompiledTypes.Teams.RowValues Team;
-    private float MaximumHealth;
+    private string Name; public void SetName(string name) { Name = name; }
+    private CompiledTypes.Teams Team; public void SetUnitTeam(CompiledTypes.Teams team){ Team = team; }
+    private float MaximumHealth; public void SetStartingHealth(float FullHP) { MaximumHealth = FullHP; CurrentHealth = FullHP; }
     private float CurrentHealth;
     private List <GameObject> UIElement = new List<GameObject>();
     private List <GameObject> UIMapElement = new List<GameObject>();
-
-    public void SetName(string name) { Name = name; }
-    public void SetUnitTeam(CompiledTypes.Teams.RowValues team){ Team = team; }
-    public void SetStartingHealth(float FullHP) {
-        MaximumHealth = FullHP;
-        CurrentHealth = FullHP;
-    }
 
     public void SetUIElement(GameObject uiElement) {
         uiElement.gameObject.name = Name;

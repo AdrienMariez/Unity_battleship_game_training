@@ -60,14 +60,14 @@ public class GameModePoints : GameModesManager {
         // Displays basic message shown on screen during the duration of a round / of gameplay for all players.
         return message;
     }*/
-    public override string GameMessageTeam(CompiledTypes.Teams.RowValues team) {
+    public override string GameMessageTeam(CompiledTypes.Teams team) {
         string message = "";
         // Displays personnalized for each team message shown on screen during the duration of a round / of gameplay
-        if (team == CompiledTypes.Teams.RowValues.Allies) {
+        if (team.id == WorldUnitsManager.GetDB().Teams.Allies.id) {
             message = "Command Points : " + GameManager.GetAlliesTeamCurrentCommandPoints() +" / "+ GameManager.GetMaxTeamCommandPoints() +"\n";
             message += "Victory Points : " + GameManager.GetAlliesTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
             message += "Enemy victory Points : " + GameManager.GetAxisTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
-        } else if (team == CompiledTypes.Teams.RowValues.Axis) {
+        } else if (team.id == WorldUnitsManager.GetDB().Teams.Axis.id) {
             message = "Command Points : " + GameManager.GetAxisTeamCurrentCommandPoints() +" / "+ GameManager.GetMaxTeamCommandPoints() +"\n";
             message += "Victory Points : " + GameManager.GetAxisTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";
             message += "Enemy Victory Points : " + GameManager.GetAlliesTeamCurrentVictoryPoints() +" / "+ GameManager.GetRequiredVictoryPointsToWin() +"\n";

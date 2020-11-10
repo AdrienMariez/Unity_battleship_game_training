@@ -9,15 +9,16 @@ public class UnitMasterController : MonoBehaviour {
     protected WorldSingleUnit UnitWorldSingleUnit;
     protected CompiledTypes.Global_Units UnitReference_DB;
 
-    protected string UnitName;
-    protected CompiledTypes.Units_categories.RowValues UnitCategory;
-    protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory;
-    protected CompiledTypes.Units_sub_categories UnitSubCategory_DB;
+    protected string UnitName; public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s;}
+    protected CompiledTypes.Units_categories.RowValues UnitCategory; public CompiledTypes.Units_categories.RowValues GetUnitCategory() { return UnitCategory; }
+    protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory; public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() { return UnitSubCategory; }
+    protected CompiledTypes.Units_sub_categories UnitSubCategory_DB; public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB() { return UnitSubCategory_DB; }
     protected CompiledTypes.Countries Nation;
-    protected CompiledTypes.Teams.RowValues Team;
-    protected int UnitCommandPointsCost;
-    protected int UnitVictoryPointsValue;
-
+    protected CompiledTypes.Teams.RowValues Team; 
+    protected CompiledTypes.Teams UnitTeam; public CompiledTypes.Teams GetTeam() { return UnitTeam; }
+    protected int UnitCommandPointsCost; public int GetUnitCommandPointsCost() { return UnitCommandPointsCost; }
+    protected int UnitVictoryPointsValue; public int GetUnitVictoryPointsValue() { return UnitVictoryPointsValue; }
+    
     protected List<HitboxComponent> UnitComponents = new List<HitboxComponent>();
     protected float RepairRate = 0;  public float GetRepairRate(){ return RepairRate; }
 
@@ -47,23 +48,22 @@ public class UnitMasterController : MonoBehaviour {
         armorPlate
     }
     // Spawn
-    private void Start() {
-        StartCoroutine(SpawnPauseLogic());
-    }
-    IEnumerator SpawnPauseLogic(){
-        yield return new WaitForSeconds(0.3f);
-        ResumeStart();
-    }
-    public void ResumeStart() {
-        if (GameManager != null) {
-            // This will get removed in time, the Team and m_Team are conflicting now for test scenarios
-            GameManager.UnitSpawned(this.gameObject, Team);
-        }
-        else if (GameObject.Find("GameManager") != null) {
-            GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            GameManager.UnitSpawned(this.gameObject, Team);
-        }
-    }
+    // private void Start() {
+    //     StartCoroutine(SpawnPauseLogic());
+    // }
+    // IEnumerator SpawnPauseLogic(){
+    //     yield return new WaitForSeconds(0.3f);
+    //     ResumeStart();
+    // }
+    // public void ResumeStart() {
+    //     if (GameManager != null) {
+    //         GameManager.UnitSpawned(this.gameObject, UnitTeam);
+    //     }
+    //     else if (GameObject.Find("GameManager") != null) {
+    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    //         GameManager.UnitSpawned(this.gameObject, UnitTeam);
+    //     }
+    // }
     // Turrets
     public virtual void SetTotalTurrets(int turrets) { }
     public virtual void SetMaxTurretRange(float maxRange) { UnitAI.SetMaxTurretRange(maxRange); }
@@ -102,13 +102,13 @@ public class UnitMasterController : MonoBehaviour {
             PlayerManager.SetDamageControl(damageControl);
     }
     public virtual void CallDeath() {
-        Debug.Log("CallDeath");
+        // Debug.Log("CallDeath");
         Dead = true;
         UnitUI.SetDead();
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
         if (GameManager)
-            GameManager.UnitDead(this.gameObject, Team, Active);
+            GameManager.UnitDead(this.gameObject, UnitTeam, Active);
         if (GetComponent<SpawnerScriptToAttach>())
             GetComponent<SpawnerScriptToAttach>().SetDeath(true);
 
@@ -119,7 +119,7 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetDeath(true);
         UnitUI.KillAllUIInstances();
         if (GameManager) {
-            GameManager.UnitDead(this.gameObject, Team, Active);
+            GameManager.UnitDead(this.gameObject, UnitTeam, Active);
         }
         Destroy(gameObject);
     }
@@ -141,14 +141,15 @@ public class UnitMasterController : MonoBehaviour {
         // Debug.Log ("SetPlayerManager" +unit);
 
         // Set all common parameters
-            UnitName = unit.GetUnitName();
-                gameObject.name = UnitName;
+            SetUnitName(unit.GetUnitName());
+            // Debug.Log ("SetUnitFromWorldUnitsManager - " +UnitName);
             UnitCategory = unit.GetUnitCategory();
             UnitSubCategory = unit.GetUnitSubCategory();
             UnitSubCategory_DB = unit.GetUnitSubCategory_DB();
             Nation = unit.GetUnitNation();
             Team = unit.GetUnitTeam();
-                gameObject.tag = Team.ToString();
+            UnitTeam = unit.GetUnitTeam_DB();
+                gameObject.tag = UnitTeam.id;
             UnitCommandPointsCost = unit.GetUnitCommandPointsCost();
             UnitVictoryPointsValue = unit.GetUnitVictoryPointsValue();
             RepairRate = unit.GetDamageControlRepairRate();
@@ -165,25 +166,24 @@ public class UnitMasterController : MonoBehaviour {
             UnitUI = GetComponent<UnitUI>();
             UnitUI.SetStartingHealth(HP);
             UnitUI.SetCurrentHealth(HP);
-            UnitUI.SetUnitTeam(Team);
+            UnitUI.SetUnitTeam(UnitTeam);
 
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
             UnitAI.BeginOperations();
-            UnitAI.SetUnitTeam(Team);
+            UnitAI.SetUnitTeam(UnitTeam);
             UnitAI.SetName(UnitName);
 
         // Set turrets
             if (unit.GetWeaponExists()) {
-                this.gameObject.AddComponent<TurretManager>();
-                Turrets = GetComponent<TurretManager>();
+                Turrets = this.gameObject.AddComponent<TurretManager>();
                 UnitAI.SetTurretManager(Turrets);
             }
 
         // Set HardPoints
+            Transform parentHardPointTransform = this.transform.Find("HardPoints").transform;
             foreach (WorldSingleUnit.UnitHardPoint hardPointElement in unit.GetUnitHardPointList()) {
-                // this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID().ToString()).GetComponent<HardPointComponent>().SetUpHardPointComponent(hardPointElement);
-                Transform hardPointTransform = this.transform.Find("HardPoints").transform.Find(hardPointElement.GetHardPointID()).transform;
+                Transform hardPointTransform = parentHardPointTransform.Find(hardPointElement.GetHardPointID()).transform;
                 HardPointComponent hardPointComponent = hardPointTransform.GetComponent<HardPointComponent>();
 
                 if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
@@ -238,6 +238,16 @@ public class UnitMasterController : MonoBehaviour {
                 // Debug.Log("yes"+ Turrets);
                 Turrets.BeginOperations(this);
             }
+
+        // Send to GameManager if any
+            if (WorldUnitsManager.GetGameManager() != null) {
+                // Debug.Log ("SetGameManager" +UnitName);
+                GameManager = WorldUnitsManager.GetGameManager();
+                GameManager.UnitSpawned(this.gameObject, UnitTeam);
+                if (GetComponent<SpawnerScriptToAttach>()){
+                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+                }
+            }
     }
 
     public virtual void SetActive(bool activate) {
@@ -253,7 +263,6 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {}
-    public CompiledTypes.Teams.RowValues GetTeam() { return Team; }
 
     public void SetPlayerManager(PlayerManager playerManager) {
         // Debug.Log ("SetPlayerManager" +UnitName);
@@ -271,20 +280,5 @@ public class UnitMasterController : MonoBehaviour {
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
         }
-    }
-    public CompiledTypes.Units_categories.RowValues GetUnitCategory() {
-        return UnitCategory;
-    }
-    public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() {
-        return UnitSubCategory;
-    }
-    public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB() {
-        return UnitSubCategory_DB;
-    }
-    public int GetUnitCommandPointsCost() {
-        return UnitCommandPointsCost;
-    }
-    public int GetUnitVictoryPointsValue() {
-        return UnitVictoryPointsValue;
     }
 }

@@ -108,6 +108,10 @@
 						{
 							"DuelSpawnPointName": "SPDuelNaval01",
 							"DuelSpawnPointCategory": "ship"
+						},
+						{
+							"DuelSpawnPointName": "SPDuelNaval02",
+							"DuelSpawnPointCategory": "ship"
 						}
 					]
 				},

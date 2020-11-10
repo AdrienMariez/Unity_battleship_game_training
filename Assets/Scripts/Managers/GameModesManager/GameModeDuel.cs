@@ -11,6 +11,7 @@ public class GameModeDuel : GameModesManager {
 
     public override void Begin() {
         base.Begin();
+
         
         // Create the delays so they only have to be made once.
         StartWait = new WaitForSeconds (m_StartDelay);
@@ -20,7 +21,29 @@ public class GameModeDuel : GameModesManager {
         NumRoundsToWin = m_NumRoundsToWin;
 
         // Send all units to the GameModesManager list.
-        Units = m_Units;
+        // public static  List<MenuButtonsControl.SpawnPointDuel> _tempSpawnPointsDuel = null;
+        if (LoadingData.SpawnPointsDuel != null){
+            foreach (MenuButtonsControl.SpawnPointDuel spawnPoint in LoadingData.SpawnPointsDuel) {
+                if ( spawnPoint.GetUnit() == null) {
+                    continue;
+                }
+                // Debug.Log (spawnPoint.GetUnit().GetUnitName());
+                UnitManager _unitManager = new UnitManager{};
+                _unitManager.SetUnit(spawnPoint.GetUnit());
+                _unitManager.SetCustomName(spawnPoint.GetUnit().GetUnitName());
+                _unitManager.SetUnitCanMove(spawnPoint.GetCanMove());
+                _unitManager.SetUnitCanShoot(spawnPoint.GetCanShoot());
+                _unitManager.SetUnitCanSpawn(spawnPoint.GetCanSpawn());
+                foreach (GameObject sp in GameManager.m_SpawnPoints) {
+                    if (spawnPoint.GetSpawnPointDB().DuelSpawnPointName == sp.name) {
+                        _unitManager.SetSpawnPoint(sp.transform);
+                    }
+                }
+                UnitList.Add(_unitManager);
+                // _unitManager.SetSpawnPoint(spawnPoint.GetSpawnPointDB().DuelSpawnPointName);
+            }
+        }
+        LoadingData.CleanData();
 
         // Once the units have been created and the camera is using them as targets, start the game.
         StartCoroutine (GameLoop ());

@@ -127,9 +127,9 @@ public class ShipController : UnitMasterController {
             if (TakingWater){
                 // Reset targets if the ship was still taking water
                 if (CurrentpositionY != TargetpositionY)
-                    TargetpositionY = TargetpositionY;
+                    TargetpositionY = CurrentpositionY;
                 if (CurrentRotationX != TargetRotationX)
-                    TargetRotationX = TargetRotationX;
+                    TargetRotationX = CurrentRotationX;
                 if (CurrentRotationZ != TargetRotationZ)
                     TargetRotationX = CurrentRotationZ;
                 TakingWater = false;

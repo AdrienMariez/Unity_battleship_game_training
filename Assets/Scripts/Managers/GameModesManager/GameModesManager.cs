@@ -5,8 +5,10 @@ using UnityEngine;
 public class GameModesManager : MonoBehaviour {
     // Global parameters
     protected UnitManager[] Units;
+    public List<UnitManager> UnitList = new List<UnitManager>();
+    protected CompiledTypes.Scenarios Scenario_DB;
     protected GameManager GameManager;
-    bool CustomScenario = false;
+    protected bool CustomScenario = false;
     CustomScenariosManager CustomScenariosManager;
 
     //Scenarios parameters
@@ -36,6 +38,7 @@ public class GameModesManager : MonoBehaviour {
         }
     }
     public virtual void Begin() {
+        Scenario_DB = LoadingData.SelectedScenario;
         if (CustomScenario) { CustomScenariosManager.Begin(); }
     }
 
@@ -60,7 +63,7 @@ public class GameModesManager : MonoBehaviour {
         } else {
             // If there isn't a winner yet, restart this coroutine so the loop continues.
 
-            foreach (UnitManager unit in Units) {
+            foreach (UnitManager unit in UnitList) {
                 unit.Destroy();
             }
             // PlayerManager.UnitsUIManagerKillAllInstances();
@@ -83,29 +86,19 @@ public class GameModesManager : MonoBehaviour {
         GameManager.ResetCounters();
 
         // Setup each unit
-        foreach (UnitManager unit in Units) {
-            // TODO if not using a spawn point...
-            // if (unit.m_UseSpawnpoint) {
-                foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
-                    foreach (WorldSingleUnit worldUnit in subCategory) {
-                        if (unit.GetUnit().ToString() == worldUnit.GetUnitReference_DB().id.ToString()) {
-                            // Debug.Log (unit.GetUnit().ToString()+" / "+worldUnit.GetUnitReference_DB().id.ToString());
-                            unit.SetInstance(WorldUnitsManager.BuildUnit(worldUnit, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation));
-                        }
-                    }
-                }
-                // unit.SetInstance(Instantiate(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation) as GameObject);
-                // Will need to replace previous line with next line to use DB.
-                // unit.SetInstance(WorldUnitsManager.BuildUnit(unit.m_UnitPrefab, unit.m_SpawnPoint.position, unit.m_SpawnPoint.rotation));
-            // }
-            unit.SetGameManager(GameManager);
+        foreach (UnitManager unit in UnitList) {
+            unit.VerifyData();          // Check all units if they were manually included
+            // Debug.Log (unit.GetUnit().GetUnitName() +""+ unit.GetSpawnPoint().position.x);
+            unit.SetInstance(WorldUnitsManager.BuildUnit(unit.GetUnit(), unit.GetSpawnPoint().position, unit.GetSpawnPoint().rotation));
+
+            // unit.SetGameManager(GameManager);
 
             // If there are no corresponding playermanager, none will be sent... May cause bugs in the future, to check.
-            foreach (PlayerManagerList playerManagerSingle in GameManager.GetPlayerManagerList()) {
-                if (unit.m_Team == playerManagerSingle.m_PlayerTeam) {
-                    unit.SetPlayerManager(playerManagerSingle.m_Player.GetComponent<PlayerManager>());
-                }
-            }
+            // foreach (PlayerManagerList playerManagerSingle in GameManager.GetPlayerManagerList()) {
+            //     if (unit.GetUnit().GetUnitTeam_DB() == playerManagerSingle.GetPlayerTeam()) {
+            //         unit.SetPlayerManager(playerManagerSingle.m_Player.GetComponent<PlayerManager>());
+            //     }
+            // }
             unit.Setup();
             // unit.SetUnactive();
         }
@@ -221,7 +214,7 @@ public class GameModesManager : MonoBehaviour {
 
         return message;
     }
-    public virtual string GameMessageTeam(CompiledTypes.Teams.RowValues team) {
+    public virtual string GameMessageTeam(CompiledTypes.Teams team) {
         // Displays personnalized for each team message shown on screen during the duration of a round / of gameplay 
         string message;
         if (GameManager.GetTeamAlliesUnits() >  1) {
@@ -286,18 +279,18 @@ public class GameModesManager : MonoBehaviour {
 
     // Units
     protected void ResetAllUnits() {
-        for (int i = 0; i < Units.Length; i++) {
-            Units[i].Reset();
+        foreach (UnitManager unit in UnitList) {
+            unit.Reset();
         }
     }
     protected void EnableUnitsControl() {
-        for (int i = 0; i < Units.Length; i++) {
-            Units[i].EnableControl();
+        foreach (UnitManager unit in UnitList) {
+            unit.EnableControl();
         }
     }
     protected void DisableUnitsControl() {
-        for (int i = 0; i < Units.Length; i++) {
-            Units[i].DisableControl();
+        foreach (UnitManager unit in UnitList) {
+            unit.DisableControl();
         }
     }
 }

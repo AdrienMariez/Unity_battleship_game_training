@@ -14,11 +14,13 @@ public class GameManager : MonoBehaviour {
         Custom
     }
     [Header("Select game mode :")]
-    public GameModes m_GameMode;
-    private GameModesManager CurrentGameMode;
+        private CompiledTypes.GameModes SelectedGameMode;
+        private GameModesManager CurrentGameMode;
+    [Header("SpawnPoints :")]
+        public GameObject[] m_SpawnPoints;
     [Header("Player(s) :")]
-    public PlayerManagerList[] m_Players;
-    [HideInInspector] public List<PlayerManager> PlayersManager;
+        public PlayerManagerList[] m_Players; // The process of managing multiple players should be changed. Put in standby while it isn't used.
+        [HideInInspector] public List<PlayerManager> PlayersManager;
 
 
     // Command Points : 
@@ -35,15 +37,30 @@ public class GameManager : MonoBehaviour {
     private int TeamAlliesUnits;
     private int TeamOppositionUnits;  // The use of Opposition instead of Axis is to prevent confusion between TeamAlliesUnits and TeamAxisUnits
 
+
     private void Start() {
-        // Creation of the full unit list, this may move if other files are made for the process !
-        // WorldUnitsManager.BuildFirstLoad();
-        // Debug.Log (GlobalStart.GlobalUnitList[0]);
+
+        WorldUnitsManager.SetGameManager(this);
+        if (LoadingData.CurrentGameMode == null) {
+            SelectedGameMode = WorldUnitsManager.GetDB().GameModes.duel;
+        } else {
+            SelectedGameMode = LoadingData.CurrentGameMode;
+        }
+        
+        // Debug.Log (SelectedGameMode.id);
         // Set each PlayerManager
         foreach (PlayerManagerList player in m_Players) {
+            if (LoadingData.PlayerTeam == null) {
+                // Debug.Log ("Basic Allies selected");
+                player.SetPlayerTeam(WorldUnitsManager.GetDB().Teams.Allies);
+            } else {
+                // Debug.Log (LoadingData.PlayerTeam.id + "selected");
+                player.SetPlayerTeam(LoadingData.PlayerTeam);
+            }
+            
             PlayersManager.Add(player.m_Player.GetComponent<PlayerManager>());
             //Give the correct team to the player
-            player.m_Player.GetComponent<PlayerManager>().SetPlayerTeam(player.m_PlayerTeam);
+            player.m_Player.GetComponent<PlayerManager>().SetPlayerTeam(player.GetPlayerTeam());
         }
         foreach (PlayerManager playerManager in PlayersManager) {
             playerManager.SetGameManager(this);
@@ -51,22 +68,22 @@ public class GameManager : MonoBehaviour {
             playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
         }
 
-        // Everything is set, now use only the GameMode selected
-        if (m_GameMode == GameModes.Duel) {
+        if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.duel.id) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
-        } else if (m_GameMode == GameModes.Points) {
+        } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.points.id) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModePoints>();
-        } else if (m_GameMode == GameModes.Custom) {
+        } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.custom.id) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeCustom>();
         } else {
             Debug.Log ("No suitable file found for the selected scenario !");
         }
+
         CurrentGameMode.SetGameManager(this);
         CurrentGameMode.Begin();
     }
 
-    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam) {
-        // Debug.Log ("UnitSpawned : "+unitTeam);
+    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams unitTeam) {
+        // Debug.Log ("UnitSpawned : "+unitTeam.id);
         WorldUnitsManager.CreateNewUnitMapModel(unitGameObject, unitTeam);  // Ultimately, this should disappear.
 
         foreach (var playerManager in PlayersManager) {
@@ -77,7 +94,7 @@ public class GameManager : MonoBehaviour {
         UpdateGameModeGameplay();
         UpdateGameModeMessage();
     }
-    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool unitActive) {
+    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool unitActive) {
         foreach (var playerManager in PlayersManager) {
            playerManager.UnitDead(unitGameObject, unitTeam, unitActive); 
         }
@@ -87,9 +104,9 @@ public class GameManager : MonoBehaviour {
         UpdateGameModeMessage();
     }
 
-    private void UpdateScore(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool positive) {
+    private void UpdateScore(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool positive) {
         // positive stands for " does the score need too be updated in a positive (unit spawned) or a negative way ?"
-        if (unitTeam == CompiledTypes.Teams.RowValues.Allies) {
+        if (unitTeam.id == WorldUnitsManager.GetDB().Teams.Allies.id) {
             if (positive) {                                                                                                                 // If unit is spawned... 
                 TeamAlliesUnits += 1;                                                                                                           // Unit counter goes up
                 AlliesTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is deduced
@@ -98,7 +115,7 @@ public class GameManager : MonoBehaviour {
                 AlliesTeamCurrentCommandPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is refund
                 AxisTeamCurrentVictoryPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitVictoryPointsValue();                // Enemy is credited with the points.
             }
-        } else if (unitTeam == CompiledTypes.Teams.RowValues.Axis) {
+        } else if (unitTeam.id == WorldUnitsManager.GetDB().Teams.Axis.id) {
             if (positive) {
                 TeamOppositionUnits += 1; 
                 AxisTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();
@@ -178,9 +195,8 @@ public class GameManager : MonoBehaviour {
     
 
     public void EndGame() {
-        // string sceneName = "MainMenuScene3d";
-        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-        LoadingData.sceneToLoad = "MainMenuScene3d";
+        WorldUnitsManager.SetGameManager(null);
+        LoadingData.CleanData();
         SceneManager.LoadScene("Loading");
     }
 }

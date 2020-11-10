@@ -23,8 +23,8 @@ public class PlayerManager : MonoBehaviour
     private bool FreeCamera = false;
     public FreeLookCam m_FreeLookCamera;
     public Camera m_MapCamera;
-    private GameManager GameManager;
-    private CompiledTypes.Teams.RowValues PlayerTeam;
+    private GameManager GameManager; public void SetGameManager(GameManager gameManager) { GameManager = gameManager; }
+    private CompiledTypes.Teams PlayerTeam; public void SetPlayerTeam (CompiledTypes.Teams _t) { PlayerTeam = _t;} public CompiledTypes.Teams GetPlayerTeam() { return PlayerTeam; }
     private UIManager UIManager;
     private MapManager MapManager;
     private UnitsUIManager UnitsUIManager;
@@ -144,15 +144,15 @@ public class PlayerManager : MonoBehaviour
 
     private void FindAllPossibleTargets() {
         // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
-        // PlayerUnits = GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g"));
         Debug.Log ("FindAllPossibleTargets called in PlayerManager - WARNING ! This should be used with precaution !");
         PlayerUnits = new List<GameObject>();
-        PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.ToString("g")));
+        PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.id));
         // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
     }
-    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams.RowValues team) {
-        // Debug.Log ("UnitSpawned : "+ unitGameObject.name);
-        if (team == PlayerTeam) {
+    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams team) {
+        // Debug.Log ("UnitSpawned : "+ unitGameObject.name+" - "+team.id);
+        // Debug.Log ("PlayerTeam : "+ PlayerTeam.id);
+        if (team.id == PlayerTeam.id) {
             PlayerUnits.Add(unitGameObject);
             unitGameObject.GetComponent<UnitMasterController>().SetPlayerManager(this);
             unitGameObject.GetComponent<UnitMasterController>().SetGameManager(GameManager);
@@ -163,11 +163,11 @@ public class PlayerManager : MonoBehaviour
         //     Debug.Log ("Playable units : "+ unit);
         // }
     }
-    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams.RowValues unitTeam, bool unitActive) {
+    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool unitActive) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
         PlayerUnits.Remove(unitGameObject);
         UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
-        if (unitTeam == PlayerTeam && unitActive) {
+        if (unitTeam.id == PlayerTeam.id && unitActive) {
             SetCurrentUnitDead(true);
         }
         // Debug.Log ("Playable units - UnitDead : "+ PlayerUnits.Count);
@@ -278,10 +278,7 @@ public class PlayerManager : MonoBehaviour
         // Debug.Log ("Current target for player manager : "+ ActiveTarget);
     }
 
-    // public void SetPlayer(CompiledTypes.Teams.RowValues PlayerTeam){}
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
-
-    // public void InitUnitsUI() { UnitsUIManager.Init(); }
     
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap() {
@@ -300,13 +297,7 @@ public class PlayerManager : MonoBehaviour
 
         CheckCameraRotation();
     }
-    public void SetGameManager(GameManager gameManager) {
-        GameManager = gameManager;
-    }
-    public void SetPlayerTeam(CompiledTypes.Teams.RowValues playerTeam) {
-        PlayerTeam = playerTeam;
-    }
-    public CompiledTypes.Teams.RowValues GetPlayerTeam() { return PlayerTeam; }
+    
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
         SetOverlayUI();

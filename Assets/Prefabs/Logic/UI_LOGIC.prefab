@@ -831,7 +831,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2288381753715508376}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 975.5, y: -1793, z: 3219}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6283074086803692809}
@@ -849,28 +849,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389c1a890a29aee4c8b85f7ee8ab7c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitList: []
+  ScenarioUsesCommandPointsForSpawnSystem: 0
   m_Units:
-  - m_Team: 0
-    m_Nation: 0
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: bb93005dd1dbb7b4eb795881e0c715c2,
-      type: 3}
+  - UnitManual: 0
+    m_Unit: 0
     m_UnitName: Fuso
-    m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 0}
-  - m_Team: 2
-    m_Nation: 1
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-      type: 3}
+    m_UnitCanMove: 1
+    m_UnitCanShoot: 1
+    m_UnitCanSpawn: 1
+  - UnitManual: 0
+    m_Unit: 0
     m_UnitName: Takao
-    m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 0}
-  - m_Team: 2
-    m_Nation: 1
-    m_UnitPrefab: {fileID: 2661556145241615456, guid: 3ee69761e41562e448985268709dd548,
-      type: 3}
+    m_UnitCanMove: 1
+    m_UnitCanShoot: 1
+    m_UnitCanSpawn: 1
+  - UnitManual: 0
+    m_Unit: 0
     m_UnitName: Myoko
-    m_UseSpawnpoint: 1
     m_SpawnPoint: {fileID: 0}
+    m_UnitCanMove: 1
+    m_UnitCanShoot: 1
+    m_UnitCanSpawn: 1
   m_NumRoundsToWin: 5
   m_StartDelay: 3
   m_EndDelay: 3
@@ -886,6 +888,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7f0f2623f605b498118a5c119246f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitList: []
+  ScenarioUsesCommandPointsForSpawnSystem: 0
 --- !u!114 &7765476883459488792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,8 +902,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a2abeb77d5626408c5d6520ed71334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitList: []
+  ScenarioUsesCommandPointsForSpawnSystem: 0
   m_Units: []
-  m_NumRoundsToWin: 5
+  m_TeamCommandPoints: 0
+  m_RequiredVictoryPointsToWin: 0
   m_StartDelay: 3
   m_EndDelay: 3
 --- !u!1 &4091723152308571082
@@ -1041,7 +1048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GameMode: 0
+  m_SpawnPoints: []
   m_Players:
   - m_Player: {fileID: 178880490422712058}
     m_PlayerTeam: 0

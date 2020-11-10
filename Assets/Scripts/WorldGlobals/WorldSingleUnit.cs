@@ -19,7 +19,7 @@ public class WorldSingleUnit {
         private GameObject UnitDeathFX; public GameObject GetUnitDeathFX(){ return UnitDeathFX; }         // If there were multiple of those, there could be multiple death FX
     private CompiledTypes.Countries Nation; public CompiledTypes.Countries GetUnitNation(){ return Nation; }
     private CompiledTypes.Teams.RowValues Team; public CompiledTypes.Teams.RowValues GetUnitTeam(){ return Team; }
-    private CompiledTypes.Teams Team_DB;
+    private CompiledTypes.Teams Team_DB; public CompiledTypes.Teams GetUnitTeam_DB(){ return Team_DB; }
     // SCORES
         private int UnitCommandPointsCost; public int GetUnitCommandPointsCost(){ return UnitCommandPointsCost; }
         private int UnitVictoryPointsValue; public int GetUnitVictoryPointsValue(){ return UnitVictoryPointsValue; }
