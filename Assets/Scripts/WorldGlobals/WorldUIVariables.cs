@@ -33,7 +33,7 @@ public class WorldUIVariables : MonoBehaviour {
         public AudioClip m_ErrorSound; private static AudioClip ErrorSound; public static AudioClip GetErrorSound() { return ErrorSound; }
 
 /////////////////////////////////////////////////////////   
-    private static bool FirstLoad = true;
+    private static bool FirstLoad = true; public static bool GetFirstLoad() { return FirstLoad; }
     private void Start() {
         if (FirstLoad){
             FirstLoad = false;

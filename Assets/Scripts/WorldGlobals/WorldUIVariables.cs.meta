@@ -3,7 +3,33 @@ guid: 0392c69231170244fab097b32a0df1bd
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_TankUI: {fileID: 3767798349071585903, guid: d6e3488007fb27342aa3dbd9b4b6c943,
+      type: 3}
+  - m_PlaneUI: {fileID: 3767798349071585903, guid: 0f03957ced6e3b944aa3afe5809805fb,
+      type: 3}
+  - m_ShipUI: {fileID: 3767798349071585903, guid: 01508d3f85183714dba31f34f90a8fdf,
+      type: 3}
+  - m_BuildingUI: {fileID: 3767798349071585903, guid: 9cd88652289e6ca40bff2e44d24c371b,
+      type: 3}
+  - m_PlayerMapUI: {fileID: 3767798349071585903, guid: d831b0162ed93fb4cbcf8ca4781196e9,
+      type: 3}
+  - m_TurretUI: {fileID: 3767798349071585903, guid: 86f6f6dfebfbb3549a7d6a3a9707a4d5,
+      type: 3}
+  - m_PauseMenu: {fileID: 2857608438053203770, guid: c6848c63a56ee124b943be9809d20048,
+      type: 3}
+  - m_TurretStatusSprites: {fileID: 6431504518210083437, guid: 9cd5523b943aa6646a153ca9fd830c40,
+      type: 3}
+  - m_SpawnerUI: {instanceID: 0}
+  - m_SpawnerUnitSelect: {instanceID: 0}
+  - m_ShellDecal: {instanceID: 0}
+  - m_ShellCamera: {instanceID: 0}
+  - m_UnitUI: {instanceID: 0}
+  - m_UnitMapUI: {instanceID: 0}
+  - m_ShipDamageControlUI: {instanceID: 0}
+  - m_ShipDamageControlAlertUI: {instanceID: 0}
+  - m_ErrorModel: {instanceID: 0}
+  - m_ErrorSound: {instanceID: 0}
   executionOrder: -102
   icon: {instanceID: 0}
   userData: 

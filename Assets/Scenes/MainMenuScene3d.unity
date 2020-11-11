@@ -278,7 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 410108970}
   m_Layer: 0
-  m_Name: Environment
+  m_Name: EnvironmentMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -438,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 764306140}
   m_Layer: 0
-  m_Name: UI_LOGIC
+  m_Name: UI_LOGICMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 837096957}
   - component: {fileID: 837096956}
   m_Layer: 0
-  m_Name: EventSystem
+  m_Name: EventSystemMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -612,7 +612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1063848004}
   m_Layer: 4
-  m_Name: OceanInputs
+  m_Name: OceanInputsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1297,7 +1297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620906255}
   m_Layer: 0
-  m_Name: GameObjects
+  m_Name: GameObjectsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1364,7 +1364,7 @@ GameObject:
   - component: {fileID: 1774689519}
   - component: {fileID: 1774689518}
   m_Layer: 4
-  m_Name: Ocean
+  m_Name: OceanMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

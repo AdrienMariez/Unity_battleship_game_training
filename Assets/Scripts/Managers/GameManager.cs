@@ -13,14 +13,20 @@ public class GameManager : MonoBehaviour {
         Points,
         Custom
     }
+
+    public GameObject m_Ocean;
+
     [Header("Select game mode :")]
         private CompiledTypes.GameModes SelectedGameMode;
         private GameModesManager CurrentGameMode;
     [Header("SpawnPoints :")]
         public GameObject[] m_SpawnPoints;
     [Header("Player(s) :")]
+        public GameObject m_PlayerObject;
         public PlayerManagerList[] m_Players; // The process of managing multiple players should be changed. Put in standby while it isn't used.
         [HideInInspector] public List<PlayerManager> PlayersManager;
+    [Header("World Global  Variables:")]
+        public GameObject m_WorldGlobals;
 
 
     // Command Points : 
@@ -39,6 +45,13 @@ public class GameManager : MonoBehaviour {
 
 
     private void Start() {
+        if (LoadingData.SelectedScenario == null && LoadingData.PlayerTeam == null && LoadingData.CurrentGameMode == null) {
+            return;
+        }
+        
+        if (WorldUIVariables.GetFirstLoad() || WorldUnitsManager.GetFirstLoad()){
+            Instantiate(m_WorldGlobals);
+        }
 
         WorldUnitsManager.SetGameManager(this);
         if (LoadingData.CurrentGameMode == null) {
@@ -46,10 +59,11 @@ public class GameManager : MonoBehaviour {
         } else {
             SelectedGameMode = LoadingData.CurrentGameMode;
         }
-        
         // Debug.Log (SelectedGameMode.id);
+
         // Set each PlayerManager
         foreach (PlayerManagerList player in m_Players) {
+            player.SetPlayerObject(Instantiate(m_PlayerObject));
             if (LoadingData.PlayerTeam == null) {
                 // Debug.Log ("Basic Allies selected");
                 player.SetPlayerTeam(WorldUnitsManager.GetDB().Teams.Allies);
@@ -58,15 +72,17 @@ public class GameManager : MonoBehaviour {
                 player.SetPlayerTeam(LoadingData.PlayerTeam);
             }
             
-            PlayersManager.Add(player.m_Player.GetComponent<PlayerManager>());
+            PlayersManager.Add(player.GetPlayerObject().GetComponent<PlayerManager>());
             //Give the correct team to the player
-            player.m_Player.GetComponent<PlayerManager>().SetPlayerTeam(player.GetPlayerTeam());
+            player.GetPlayerObject().GetComponent<PlayerManager>().SetPlayerTeam(player.GetPlayerTeam());
         }
         foreach (PlayerManager playerManager in PlayersManager) {
             playerManager.SetGameManager(this);
             playerManager.Reset();
             playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
         }
+
+        Instantiate(m_Ocean);
 
         if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.duel.id) {
             CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();

@@ -851,28 +851,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitList: []
   ScenarioUsesCommandPointsForSpawnSystem: 0
-  m_Units:
-  - UnitManual: 0
-    m_Unit: 0
-    m_UnitName: Fuso
-    m_SpawnPoint: {fileID: 0}
-    m_UnitCanMove: 1
-    m_UnitCanShoot: 1
-    m_UnitCanSpawn: 1
-  - UnitManual: 0
-    m_Unit: 0
-    m_UnitName: Takao
-    m_SpawnPoint: {fileID: 0}
-    m_UnitCanMove: 1
-    m_UnitCanShoot: 1
-    m_UnitCanSpawn: 1
-  - UnitManual: 0
-    m_Unit: 0
-    m_UnitName: Myoko
-    m_SpawnPoint: {fileID: 0}
-    m_UnitCanMove: 1
-    m_UnitCanShoot: 1
-    m_UnitCanSpawn: 1
   m_NumRoundsToWin: 5
   m_StartDelay: 3
   m_EndDelay: 3
@@ -1048,11 +1026,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e521b6f8588c44f9e68c769421eb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Ocean: {fileID: 1334736177561604824, guid: 1e2883ac1b53b554fb2983eca7b91b09, type: 3}
   m_SpawnPoints: []
+  m_PlayerObject: {fileID: 6283074086803692814, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
+    type: 3}
   m_Players:
-  - m_Player: {fileID: 178880490422712058}
-    m_PlayerTeam: 0
+  - m_PlayerTeam: 0
   PlayersManager: []
+  m_WorldGlobals: {fileID: 5865306459900658953, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
+    type: 3}
 --- !u!82 &6283074086476641188
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1197,7 +1179,6 @@ Transform:
   - {fileID: 2750149263618360984}
   - {fileID: 3957427512800558379}
   - {fileID: 3857801870254737274}
-  - {fileID: 178880490422712061}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1629,85 +1610,4 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4040051506252021485, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
     type: 3}
   m_PrefabInstance: {fileID: 979690338399680919}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &6145852513305357300
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 6283074086803692809}
-    m_Modifications:
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6283074086803692814, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-        type: 3}
-      propertyPath: m_Name
-      value: UI_LOGIC_PLAYER
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d, type: 3}
---- !u!1 &178880490422712058 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6283074086803692814, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6145852513305357300}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &178880490422712061 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6283074086803692809, guid: 0d37a9af6d3d1a04fa72b9d1c487ce0d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6145852513305357300}
   m_PrefabAsset: {fileID: 0}

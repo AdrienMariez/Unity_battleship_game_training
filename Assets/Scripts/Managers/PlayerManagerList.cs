@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class PlayerManagerList {
 
-    public GameObject m_Player;
+    private GameObject PlayerObject; public GameObject GetPlayerObject() { return PlayerObject; } public void SetPlayerObject (GameObject _g) { PlayerObject = _g; }
     public CompiledTypes.Teams.RowValues m_PlayerTeam;
     private CompiledTypes.Teams PlayerTeam; public CompiledTypes.Teams GetPlayerTeam() { return PlayerTeam; } public void SetPlayerTeam (CompiledTypes.Teams _t) { PlayerTeam = _t; }
 

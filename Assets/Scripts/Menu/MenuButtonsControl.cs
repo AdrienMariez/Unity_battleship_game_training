@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 public class MenuButtonsControl : MonoBehaviour {
@@ -45,6 +44,10 @@ public class MenuButtonsControl : MonoBehaviour {
         [HideInInspector] public List<CompiledTypes.Scenarios> ScenariosDBListTrimed = new List<CompiledTypes.Scenarios>();
     // Scenarios Options
         private GameObject ScenariosOptionsContainerInstance;
+
+
+
+        Scene PreviewScene;
         
 
     void Start() {
@@ -275,7 +278,35 @@ public class MenuButtonsControl : MonoBehaviour {
                 _toggleAISpawn.isOn = _spawnPointDuel.GetCanSpawn();
             SpawnPointsDuel.Add(_spawnPointDuel);
         }
+
+        // SceneManager.LoadScene(SelectedScenario.ScenarioScene, LoadSceneMode.Additive);
+
+        // AsyncOperation async = SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
+        // yield return async;
+        StartCoroutine (LoadPreviewScene ());
     }
+
+    protected virtual IEnumerator LoadPreviewScene () {
+        yield return StartCoroutine (CreateScene ());
+        yield return StartCoroutine (DestroyElements ());
+    }
+    protected virtual IEnumerator CreateScene () {
+        // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
+        bool loaded = false;
+        SceneManager.LoadScene(SelectedScenario.ScenarioScene, LoadSceneMode.Additive);
+        loaded = true;
+        yield return loaded;
+    }
+    protected virtual IEnumerator DestroyElements () {
+        // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
+        bool loaded = false;
+        GameObject _UI_LOGIC = GameObject.Find("UI_LOGIC"); Destroy(_UI_LOGIC);
+        GameObject _environment = GameObject.Find("Environment"); Destroy(_environment);
+        GameObject _eventSystem = GameObject.Find("EventSystem"); Destroy(_eventSystem);
+        loaded = true;
+        yield return loaded;
+    }
+
     public class SpawnPointDuel {
         private CompiledTypes.DuelSpawnPoints _spawnPointDB; public CompiledTypes.DuelSpawnPoints GetSpawnPointDB(){ return _spawnPointDB; } public void SetSpawnPointDB(CompiledTypes.DuelSpawnPoints _sp){ _spawnPointDB = _sp; }
         // private string _spawnPointIdentifier;  public string GetSpawnPointID(){ return _spawnPointIdentifier; } public void SetSpawnPointID(string _spID){ _spawnPointIdentifier = _spID; }

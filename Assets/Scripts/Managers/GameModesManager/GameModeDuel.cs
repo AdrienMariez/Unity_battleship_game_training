@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class GameModeDuel : GameModesManager {
-    public UnitManager[] m_Units;               // Public unit list. There could be multiple of those, in theory
+    // public UnitManager[] m_Units;               // Public unit list. There could be multiple of those, in theory
 
     [Header("Gameplay options : ")]
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game. Overrides NumRoundsToWin in GameModeDuel to allow multiple rounds games.
