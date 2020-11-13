@@ -8,11 +8,11 @@ public class TurretManager : MonoBehaviour {
     private bool Active = false;
     private bool Dead = false;
     private bool Pause = false;
-    private bool Map = false;
-    private bool DamageControl = false;
-    private bool FreeCamera = false;
+    private bool Map = false; public void SetMap(bool map) { Map = map; SetPlayerControl(); }
+    private bool DamageControl = false; public void SetDamageControl(bool damageControl) { DamageControl = damageControl; SetPlayerControl(); }
+    private bool FreeCamera = false; public void SetFreeCamera(bool freeCamera) { FreeCamera = freeCamera; SetPlayerControl(); }
     private bool PlayerControl = false;
-    private PlayerManager PlayerManager;
+    private PlayerManager PlayerManager; public void SetPlayerManager(PlayerManager playerManager){ PlayerManager = playerManager; FreeLookCam = PlayerManager.GetFreeLookCam(); }
     private FreeLookCam FreeLookCam;
     private UnitMasterController UnitMasterController;
     private CompiledTypes.Weapons_roles.RowValues CurrentControlledWeaponRole; public CompiledTypes.Weapons_roles.RowValues GetCurrentTurretRole() { return CurrentControlledWeaponRole; }
@@ -23,7 +23,7 @@ public class TurretManager : MonoBehaviour {
         private List <GameObject> NavalArtilleryTurrets = new List<GameObject>();
         private List <GameObject> ArtilleryTurrets = new List<GameObject>();
         private float ElevationRatio;               // % of elevation needed
-        private float TargetRange;
+        private float TargetRange; public float GetTargetRange() { return TargetRange; } 
         private Vector3 TargetPosition;
         private float MaxRange = -1;
         private float MinRange = 100000;
@@ -45,9 +45,10 @@ public class TurretManager : MonoBehaviour {
     private List <TurretStatusType> TurretStatus = new List<TurretStatusType>();
 
     private bool AIControl = false;
-    private bool AIHasATarget = false;
+    private bool AIHasATarget = false; public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
     private Vector3 AITargetPosition;
-    private float AITargetRange;
+    private float AITargetRange; public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; TargetRange = targetRange; }
+    
 
     private List <TurretListItem> TurretList = new List<TurretListItem>();
     public class TurretListItem {
@@ -227,28 +228,12 @@ public class TurretManager : MonoBehaviour {
         if (Active)
             ReinitializeCurrentWeaponSelected();
     }
-    public void SetMap(bool map) {
-        Map = map;
-        SetPlayerControl();
-    }
     public void SetPause() {
         Pause = !Pause;
         SetPlayerControl();
         foreach (TurretListItem turret in TurretList) {
             turret.GetTurretRotation().SetPause(Pause);
         }
-    }
-    public void SetDamageControl(bool damageControl) {
-        DamageControl = damageControl;
-        SetPlayerControl();
-    }
-    public void SetPlayerManager(PlayerManager playerManager){
-        PlayerManager = playerManager;
-        FreeLookCam = PlayerManager.GetFreeLookCam();
-    }
-    public void SetFreeCamera(bool freeCamera) {
-        FreeCamera = freeCamera;
-        SetPlayerControl();
     }
     public void SetRepairRate(float Rate) {
         foreach (TurretListItem turret in TurretList) {
@@ -315,9 +300,6 @@ public class TurretManager : MonoBehaviour {
         // Debug.Log ("TurretStatus : "+ TurretStatus);
         return TurretStatus;
     }
-    public float GetTargetRange() {
-        return TargetRange;
-    }
 
     public void SetAITargetToFireOn(Vector3 targetPosition) {
         AITargetPosition = targetPosition;
@@ -325,10 +307,4 @@ public class TurretManager : MonoBehaviour {
         //     Debug.Log ("AITargetPosition : "+ AITargetPosition);
         // }
     }
-    public void SetAITargetRange(float targetRange) {
-        AITargetRange = targetRange;
-        TargetRange = targetRange;
-        // Debug.Log ("AITargetRange : "+ AITargetRange);
-    }
-    public void SetAIHasTarget(bool hasTarget) { AIHasATarget = hasTarget; SetPlayerControl(); }
 }

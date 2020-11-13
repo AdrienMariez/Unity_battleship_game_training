@@ -61,11 +61,11 @@ public class UnitManager {
     }
 
     public void Setup () {
-        Instance.transform.position = _spawnPoint.position;
-        Instance.transform.rotation = _spawnPoint.rotation;
+        // Instance.transform.position = _spawnPoint.position;
+        // Instance.transform.rotation = _spawnPoint.rotation;
 
-        Instance.SetActive(false);
-        Instance.SetActive(true);
+        // Instance.SetActive(false);
+        // Instance.SetActive(true);
     }
 
 
@@ -81,21 +81,19 @@ public class UnitManager {
 
     // Used at the start of each round to put the unit into it's default state.
     public void Reset () {
-        // Instance.transform.position = m_SpawnPoint.position;
-        // Instance.transform.rotation = m_SpawnPoint.rotation;
-        Instance.transform.position = _spawnPoint.position;
-        Instance.transform.rotation = _spawnPoint.rotation;
+        // Instance.transform.position = _spawnPoint.position;
+        // Instance.transform.rotation = _spawnPoint.rotation;
 
-        Instance.SetActive(false);
-        Instance.SetActive(true);
+        // Instance.SetActive(false);
+        // Instance.SetActive(true);
     }
 
     public void SetInstance(GameObject gameobj) {
         Instance = gameobj;
         gameobj.GetComponent<UnitMasterController>().SetUnitName(_customName);
-        if (Instance.GetComponent<UnitAIController>()) {
-            Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(_unitCanMove, _unitCanShoot, _unitCanSpawn);
-        }
+        // if (Instance.GetComponent<UnitAIController>()) {
+        //     Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(_unitCanMove, _unitCanShoot, _unitCanSpawn);
+        // }
     }
     public void Destroy() {
         if (Instance) {

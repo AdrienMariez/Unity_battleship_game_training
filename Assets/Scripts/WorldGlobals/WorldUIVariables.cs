@@ -2,6 +2,8 @@
 using UnityEngine;
 
 public class WorldUIVariables : MonoBehaviour {
+    [Header("Menu UI")]
+        public GameObject m_SpawnPointUI; private static GameObject SpawnPointUI; public static GameObject GetSpawnPointUI() { return SpawnPointUI; }
     [Header("Player UI")]
         public GameObject m_TankUI; private static GameObject TankUI; public static GameObject GetTankUI() { return TankUI; }
         public GameObject m_PlaneUI; private static GameObject PlaneUI;public static GameObject GetPlaneUI() { return PlaneUI; }
@@ -25,6 +27,8 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Units UI")]
         public GameObject m_UnitUI; private static GameObject UnitUI; public static GameObject GetUnitUI() { return UnitUI; }
         public GameObject m_UnitMapUI; private static GameObject UnitMapUI; public static GameObject GetUnitMapUI() { return UnitMapUI; }
+    [Header("Map UI")]
+        public GameObject m_MapPattern; private static GameObject MapPattern; public static GameObject GetMapPattern() { return MapPattern; }
     [Header("Damage Control UI")]
         public GameObject m_ShipDamageControlUI; private static GameObject ShipDamageControlUI; public static GameObject GetShipDamageControlUI() { return ShipDamageControlUI; }
         public GameObject m_ShipDamageControlAlertUI; private static GameObject ShipDamageControlAlertUI; public static GameObject GetShipDamageControlAlertUI() { return ShipDamageControlAlertUI; }
@@ -34,13 +38,16 @@ public class WorldUIVariables : MonoBehaviour {
 
 /////////////////////////////////////////////////////////   
     private static bool FirstLoad = true; public static bool GetFirstLoad() { return FirstLoad; }
-    private void Start() {
+    private void Awake() {
         if (FirstLoad){
             FirstLoad = false;
+            // Debug.Log ("WorldUIVariables FirstLoad");
             WorldSetUI();
         }
     }
     private void WorldSetUI() {
+        // Menu UI
+            SpawnPointUI = m_SpawnPointUI; if (SpawnPointUI == null) { Debug.Log ("No SpawnPointUI found."); }
         // Player UI
             TankUI = m_TankUI; if (TankUI == null) { Debug.Log ("No TankUI found."); }
             PlaneUI = m_PlaneUI; if (PlaneUI == null) { Debug.Log ("No PlaneUI found."); }
@@ -69,6 +76,9 @@ public class WorldUIVariables : MonoBehaviour {
         // Units UI
             UnitUI = m_UnitUI; if (UnitUI == null) { Debug.Log ("No UnitUI found."); }
             UnitMapUI = m_UnitMapUI; if (UnitMapUI == null) { Debug.Log ("No UnitMapUI found."); }
+
+        // Map UI
+            MapPattern = m_MapPattern; if (MapPattern == null) { Debug.Log ("No MapPattern found."); }
 
         // Damage Control UI
             ShipDamageControlUI = m_ShipDamageControlUI; if (ShipDamageControlUI == null) { Debug.Log ("No ShipDamageControlUI found."); }

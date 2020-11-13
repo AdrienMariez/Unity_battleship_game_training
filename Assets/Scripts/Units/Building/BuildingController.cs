@@ -9,13 +9,13 @@ public class BuildingController : UnitMasterController {
         // base.SpawnUnit();
     }
 
-    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
-        base.SetUnitFromWorldUnitsManager(unit);
-    }
+    // public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
+    //     base.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
+    // }
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
-    private void FixedUpdate() {
+    public override void FixedUpdate() {
 		// Debug.Log("Active :"+ Active);
 
         // The following is used to kill an active ship for debug purposes

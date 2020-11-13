@@ -33,14 +33,14 @@ public class ShipController : UnitMasterController {
         // base.SpawnUnit();
     }
 
-    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+    public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // Set Movement
             if (GetComponent<ShipMovement>()) {
                 Movement = GetComponent<ShipMovement>();
                 Movement.BeginOperations(this);
             }
 
-        base.SetUnitFromWorldUnitsManager(unit);
+        base.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
         
         // Set Buoyancy
             Buoyancy = this.gameObject.AddComponent<ShipBuoyancy>() as Crest.ShipBuoyancy;
@@ -73,7 +73,8 @@ public class ShipController : UnitMasterController {
 
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
-    private void FixedUpdate() {
+    public override void FixedUpdate() {
+        base.FixedUpdate();
 		// Debug.Log("Active :"+ Active);
 		// Debug.Log("m_Buoyancy :"+ m_Buoyancy);
         BuoyancyLoop();

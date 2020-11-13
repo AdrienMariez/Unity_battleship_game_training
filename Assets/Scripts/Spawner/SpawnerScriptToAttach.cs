@@ -22,6 +22,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList;
 
     UnitMasterController UnitController;
+    UnitAIController AIController;
     private bool Active;
     private bool Dead;
     private bool SpawnMenuOpen = false;
@@ -42,6 +43,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         SpawnerUI = WorldUIVariables.GetSpawnerUI();
         SpawnerSpacing = WorldUIVariables.GetSpawnerSpacing();
         UnitController = GetComponent<UnitMasterController>();
+        AIController = GetComponent<UnitAIController>();
         CreateSpawnList();
     }
     private void CreateSpawnList() {
@@ -50,14 +52,14 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 // Debug.Log(subCategory[0].GetUnitName());
 
                 if (subCategory[0] != null) {                                                       // Check the first element of each category, if it is good !
-                    foreach (var categorySelected in m_SpawnableCategories) {
+                    foreach (SpawnerUnitCategory categorySelected in m_SpawnableCategories) {
                         if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory) {
                             SpawnableUnitsList.Add(subCategory[i]);
                         }
                     }
-                } else {
-                    break;                                                                          // If nothing is in the list (as intended, stop checking)
                 }
+                //else { break; }                                                                         // Don't break, it will prevent the check of any OTHER category
+                
             }
         }
         StartCoroutine(SpawnPauseLogic());
@@ -76,8 +78,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // Debug.Log(UnitController.m_UnitName +" - SpawnableUnitsList.Count "+ SpawnableUnitsList.Count);
 
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
-            // Debug.Log(UnitController.m_UnitName +" - UnitController.GetTeam() "+ UnitController.GetTeam());
-            if (singleUnit.GetUnitTeam_DB() == UnitController.GetTeam()) {
+            // Debug.Log(UnitController.GetTeam().id);
+            // Debug.Log(singleUnit.GetUnitName() +" - "+ singleUnit.GetUnitTeam_DB().id);
+            if (singleUnit.GetUnitTeam_DB().id == UnitController.GetTeam().id) {
                 // Debug.Log (singleUnit.GetUnitName());
                 TeamedSpawnableUnitsList.Add(singleUnit);                   // Populate the list
             }
@@ -171,7 +174,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     protected void TrySpawn (WorldSingleUnit unit) {
         if (TrySpawnUnit(unit)) {
-            SpawnUnit(unit);
+            SpawnUnit(unit, AIController.GetUnitCanMove(), AIController.GetUnitCanShoot(), AIController.GetUnitCanSpawn());
         }
     }
     Vector3 SpawnPosition;
@@ -202,17 +205,21 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             trySpawn2 = true;
         }
 
-        SpawnPosition = m_ShipSpawnPosition.position;
+        // SpawnPosition = m_ShipSpawnPosition.position;
+        // for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
+        //     SpawnPosition = m_ShipSpawnPosition.position;
+        //     SpawnPosition.x = m_ShipSpawnPosition.position.x + Random.Range(-500, 500);
+        //     SpawnPosition.z = m_ShipSpawnPosition.position.z + Random.Range(-500, 500);
+        //     Collider[] hitColliders = Physics.OverlapSphere(SpawnPosition, 100f);
+        //     if (hitColliders.Length == 0) {
+        //         trySpawn1 = true; //Spawn location correct !
+        //         break;
+        //     }
+        // }
 
-        for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
-            SpawnPosition = m_ShipSpawnPosition.position;
-            SpawnPosition.x = m_ShipSpawnPosition.position.x + Random.Range(-500, 500);
-            SpawnPosition.z = m_ShipSpawnPosition.position.z + Random.Range(-500, 500);
-            Collider[] hitColliders = Physics.OverlapSphere(SpawnPosition, 100f);
-            if (hitColliders.Length == 0) {
-                trySpawn1 = true; //Spawn location correct !
-                break;
-            }
+        SpawnPosition = TryPosition(m_ShipSpawnPosition);
+        if (SpawnPosition != m_ShipSpawnPosition.position) {
+            trySpawn1 = true;
         }
 
 
@@ -228,11 +235,28 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             return false;
         }
     }
-    public void SpawnUnit (WorldSingleUnit unit) {
+    public static Vector3 TryPosition (Transform transform) {
+        Vector3 position = transform.position;
+        // float _x = transform.position.x;
+        // float _z = transform.position.z;
+        for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
+            position = transform.position;
+            position.x = transform.position.x + Random.Range(-500, 500);
+            position.z = transform.position.z + Random.Range(-500, 500);
+            Collider[] hitColliders = Physics.OverlapSphere(position, 100f);
+            if (hitColliders.Length == 0) {
+                break;
+            }
+            // Debug.Log("TryPosition loop !");
+        }
+        // Debug.Log("TryPosition found ! Original _x : " + _x +" current x : "+ position.x + "Original _z : " + _z +" current z : "+ position.z);
+        return position;
+    }
+    public void SpawnUnit (WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // GameObject spawnedUnitInstance =
         //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
 
-        WorldUnitsManager.BuildUnit(unit, SpawnPosition, m_ShipSpawnPosition.rotation);
+        WorldUnitsManager.BuildUnit(unit, SpawnPosition, m_ShipSpawnPosition.rotation, aiMove, aiShoot, aiSpawn);
     }
 
     private void SwitchSpawnMenu() {

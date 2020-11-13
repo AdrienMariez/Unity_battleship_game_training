@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     // private GameObject[] PlayerUnits;
     private List <GameObject> PlayerUnits = new List<GameObject>();
     private int CurrentTarget = 0;
+    private GameObject CurrentTargetObj;
+    private GameObject PreviousTargetObj;
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
     private bool ActiveTargetSet = false;
@@ -117,12 +119,14 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void SetNextTarget() {
+        // CurrentTargetObj;PreviousTargetObj;
         //If we overflow, get back to the beginning
         if (CurrentTarget >= (PlayerUnits.Count-1)) {
             CurrentTarget = 0;
         } else {
             CurrentTarget += 1;
         }
+
         // Debug.Log ("Playable units - SetNextTarget : "+ PlayerUnits.Count);
         // Debug.Log ("CurrentTarget - SetNextTarget : "+ CurrentTarget);
         
@@ -283,8 +287,8 @@ public class PlayerManager : MonoBehaviour
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap() {
         MapActive = !MapActive;
-        if (MapActive)
-            SetEnabledUnit();
+        // if (MapActive)
+        //     SetEnabledUnit();
 
         UIManager.SetMap(MapActive);
 
@@ -294,7 +298,7 @@ public class PlayerManager : MonoBehaviour
         m_MapCamera.enabled = MapActive;
 
         ActiveTarget.GetComponent<UnitMasterController>().SetMap(MapActive);
-
+        SetOverlayUI();
         CheckCameraRotation();
     }
     

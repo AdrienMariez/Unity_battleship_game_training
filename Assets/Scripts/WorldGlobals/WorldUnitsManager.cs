@@ -25,7 +25,7 @@ public class WorldUnitsManager : MonoBehaviour {
 
     private static GameManager GameManager; public static GameManager GetGameManager(){ return GameManager; } public static void SetGameManager(GameManager _s){ GameManager =_s; }
 
-    private void Start() {
+    private void Awake() {
         if (FirstLoad){
             FirstLoad = false;
             DB = new CastleDB(CastleDBAsset);
@@ -147,7 +147,7 @@ public class WorldUnitsManager : MonoBehaviour {
         // }
     }
 
-    public static GameObject BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation) {
+    public static GameObject BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation, bool aiMove, bool aiShoot, bool aiSpawn) {
         // MODEL
             GameObject spawnedUnitInstance =
                 Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
@@ -198,7 +198,7 @@ public class WorldUnitsManager : MonoBehaviour {
                 TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
 
         // COMMON DATA
-            unitController.SetUnitFromWorldUnitsManager(unit);
+            unitController.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
 
         // HEALTH
             UnitHealth.SetCurrentHealth(unit.GetUnitHealth());
@@ -208,12 +208,10 @@ public class WorldUnitsManager : MonoBehaviour {
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());
             TCP.SetCameraLateralOffset(unit.GetUnitCameraCameraOffset());
-        
 
+        // MAP
+            unitController.SetMapModel(CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam_DB()));
 
-
-
-        // WorldUnitsManager.CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam());        // Commented for now
         return spawnedUnitInstance;
     }
 
@@ -225,11 +223,12 @@ public class WorldUnitsManager : MonoBehaviour {
         }
     }
 
-    public static void CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams team) {
+    public static GameObject CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams team) {
         //Create the map element corresponding to the unit
         GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory_DB()), unitGameObject.transform);
         var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
+        return tempModel;
     }
 
     public static Color SetColor(CompiledTypes.Teams team) {

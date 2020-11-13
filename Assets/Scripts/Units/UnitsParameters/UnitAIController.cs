@@ -31,11 +31,14 @@ public class UnitAIController : UnitParameter {
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
     [Header("What is this particular model allowed to do ?")]
-    public bool UnitCanMove = true;
-    public bool UnitCanShoot = true;
-    public bool UnitCanSpawn = true;
+    public bool UnitCanMove = true; public void SetUnitCanMove(bool _b) { UnitCanMove = _b; } public bool GetUnitCanMove() { return UnitCanMove; }
+    public bool UnitCanShoot = true; public void SetUnitCanShoot(bool _b) { UnitCanShoot = _b; }public bool GetUnitCanShoot() { return UnitCanShoot; }
+    public bool UnitCanSpawn = true; public void SetUnitCanSpawn(bool _b) { UnitCanSpawn = _b; }public bool GetUnitCanSpawn() { return UnitCanSpawn; }
 
-    public virtual void BeginOperations () {
+    public virtual void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
+        UnitCanMove = aiMove;
+        UnitCanShoot = aiShoot;
+        UnitCanSpawn = aiSpawn;
         UnitMasterController = GetComponent<UnitMasterController>();
         // GetTargets();
 
@@ -45,25 +48,33 @@ public class UnitAIController : UnitParameter {
         } else if (!UnitCanMove && !UnitCanShoot) {
             UnitsAICurrentState = UnitsAIStates.Idle;
         }
-    }
-    void Start () {
-        // CheckMoveAbility();
-        CheckShootAbility();
-        CheckSpawnAbility();
-
+        // Check if the AI is able to do set orders
+        if (UnitCanShoot) {
+            CheckShootAbility();
+        }
+        if (UnitCanSpawn) {
+            CheckSpawnAbility();
+        }
         StartCoroutine(AIOrdersLoop());
     }
-    public virtual void SetAIFromUnitManager(bool unitCanMove, bool unitCanShoot, bool unitCanSpawn) {      // Start from a spawn point
-        UnitCanMove = unitCanMove;
-        UnitCanShoot = unitCanShoot;
-        UnitCanSpawn = unitCanSpawn;
+    void Awake () {
+        // CheckMoveAbility();
+        // CheckShootAbility();
+        // CheckSpawnAbility();
+
+        // StartCoroutine(AIOrdersLoop());
+    }
+    public virtual void SetAIFromUnitManager(bool aiMove, bool aiShoot, bool aiSpawn) {      // Start from a spawn point
+        UnitCanMove = aiMove;
+        UnitCanShoot = aiShoot;
+        UnitCanSpawn = aiSpawn;
         // if (unitCanMove) {
         //     CheckMoveAbility();
         // }
-        if (unitCanShoot) {
+        if (UnitCanShoot) {
             CheckShootAbility();
         }
-        if (unitCanSpawn) {
+        if (UnitCanSpawn) {
             CheckSpawnAbility();
         }
     }
@@ -299,6 +310,7 @@ public class UnitAIController : UnitParameter {
                 Stressed = true;
                 TurretManager.SetAIHasTarget(true);     // Allowed to engage target
             } else {
+                // Debug.Log("Unit : "+ Name +" - TurretManager : "+TurretManager);
                 TurretManager.SetAIHasTarget(false);    // If the target is too far
             }
         }else {
@@ -363,7 +375,7 @@ public class UnitAIController : UnitParameter {
         int unitChosen = Random.Range(0, listCount);
         // Debug.Log(unitChosen +" / "+listCount);
         if (spawnerScript.TrySpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {
-            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen]);
+            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], UnitCanMove, UnitCanShoot, UnitCanSpawn);
         }
         // foreach (WorldSingleUnit singleUnit in spawnerScript.GetTeamedSpawnableUnitsList()) {
         //     Debug.Log(singleUnit.GetUnitName());

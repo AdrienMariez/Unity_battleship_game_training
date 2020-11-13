@@ -51,12 +51,10 @@ public class MenuButtonsControl : MonoBehaviour {
         
 
     void Start() {
-        // foreach (CompiledTypes.Scenarios scenario2 in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
-            // Debug.Log (" scenario : "+scenario.ScenarioScene);
-            foreach (CompiledTypes.Scenarios scenario in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
-                ScenariosDBList.Add(scenario);
-            }
-        // }
+        LoadingData.InMenu = true;
+        foreach (CompiledTypes.Scenarios scenario in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
+            ScenariosDBList.Add(scenario);
+        }
 
         OpenMainMenu();
         LoadMenuUnits();
@@ -82,10 +80,10 @@ public class MenuButtonsControl : MonoBehaviour {
             int randomUnitId = Random.Range(0, spawnableShipList.Count);
             // Debug.Log (randomUnitId+" / "+spawnableShipList.Count);
             // Debug.Log (" Spawning "+spawnableShipList[randomUnitId].GetUnitName());
-            GameObject Instance = WorldUnitsManager.BuildUnit(spawnableShipList[randomUnitId], spawnPoint.transform.position, spawnPoint.transform.rotation);
-            if (Instance.GetComponent<UnitAIController>()) {
-                Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(false, false, false);
-            }
+            GameObject Instance = WorldUnitsManager.BuildUnit(spawnableShipList[randomUnitId], spawnPoint.transform.position, spawnPoint.transform.rotation, false, false, false);
+            // if (Instance.GetComponent<UnitAIController>()) {
+            //     Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(false, false, false);
+            // }
         }
     }
 
@@ -283,26 +281,38 @@ public class MenuButtonsControl : MonoBehaviour {
 
         // AsyncOperation async = SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
         // yield return async;
-        StartCoroutine (LoadPreviewScene ());
+        StartCoroutine (LoadPreviewScene ());                       // Load scene to get any needed info to display
     }
 
     protected virtual IEnumerator LoadPreviewScene () {
-        yield return StartCoroutine (CreateScene ());
-        yield return StartCoroutine (DestroyElements ());
+        yield return StartCoroutine (CreateMapScene ());               // Create scene
+        yield return StartCoroutine (DestroyMapElements ());           // Destroy elements in scene that are not needed
+        yield return StartCoroutine (CreateMapSpawnPoints ());
     }
-    protected virtual IEnumerator CreateScene () {
+    protected virtual IEnumerator CreateMapScene () {
         // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
         bool loaded = false;
         SceneManager.LoadScene(SelectedScenario.ScenarioScene, LoadSceneMode.Additive);
         loaded = true;
         yield return loaded;
     }
-    protected virtual IEnumerator DestroyElements () {
+    protected virtual IEnumerator DestroyMapElements () {
         // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
         bool loaded = false;
         GameObject _UI_LOGIC = GameObject.Find("UI_LOGIC"); Destroy(_UI_LOGIC);
         GameObject _environment = GameObject.Find("Environment"); Destroy(_environment);
         GameObject _eventSystem = GameObject.Find("EventSystem"); Destroy(_eventSystem);
+        loaded = true;
+        yield return loaded;
+    }
+    protected virtual IEnumerator CreateMapSpawnPoints () {
+        bool loaded = false;
+        Transform spawnPointHolder = GameObject.Find("GameObjects").transform;
+        Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointHolder);
+        foreach (CompiledTypes.DuelSpawnPoints spawnPoint in SelectedScenario.DuelSpawnPointsList) {
+            Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
+            GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
+        }
         loaded = true;
         yield return loaded;
     }

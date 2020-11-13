@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System.Collections;
 
 namespace FreeLookCamera {
     public class FreeLookCam : MonoBehaviour {
@@ -9,13 +9,14 @@ namespace FreeLookCamera {
         // 	Camera Rig
         // 		Pivot
         // 			Camera
+        private Rigidbody Rigidbody;
         private Camera Cam; // Main camera
         private Transform Pivot; // the point at which the camera points to
         private Transform Axis; // the point at which the camera pivots around
 
         [Header("Camera")]
             [Tooltip("Field of View")] [Range(1f, 150f)] [SerializeField] private float m_FieldOfView = 60f;
-            [Tooltip("How fast the rig will move to keep up with the target's position.")] [SerializeField] private float m_MoveSpeed = 20f;
+            [Tooltip("How fast the rig will move to keep up with the target's position.")] [SerializeField] private float m_MoveSpeed = 20f; private float MoveSpeed; private bool MoveLimited;
             [Tooltip("How fast the rig will rotate from user input.")] [Range(0f, 10f)] [SerializeField] private float m_TurnSpeed = 0.02f;
             [Tooltip("How much smoothing to apply to the turn input, to reduce mouse-turn jerkiness")] [SerializeField] private float m_TurnSmoothing = 0f;
             [Tooltip("The maximum vertical value for the rotation of the pivot.")] [SerializeField] private float m_TiltMax = 75f;
@@ -68,14 +69,28 @@ namespace FreeLookCamera {
         }
 
         private void Awake(){
+            Rigidbody = GetComponentInChildren<Rigidbody>();
             Cam = GetComponentInChildren<Camera>();
             Pivot = GetComponentInChildren<Camera>().transform.parent;
             Axis = Pivot.parent;
+            MoveSpeed = m_MoveSpeed; MoveLimited = false;
 
             m_RaycastProjector = GameObject.Find("RaycastProjector");
         }
 
-        protected void Update() {
+        protected void LateUpdate() {
+            // Lazy check if a collision is detected
+            if (Rigidbody.velocity != Vector3.zero || Rigidbody.angularVelocity != Vector3.zero) {
+                if (MoveLimited == false) {
+                    // Debug.Log ("Collision !");
+                    MoveSpeed = 0.2f;
+                    MoveLimited = true;
+                    StartCoroutine(ResetSpeed());
+                }
+                Rigidbody.velocity = Vector3.zero;
+                Rigidbody.angularVelocity = Vector3.zero;
+            }
+
             // Debug.Log ("m_Axis   : "+ m_Axis);
             if (ActivePlayerUnit != null) {
                 FollowTarget(Time.deltaTime);
@@ -106,6 +121,11 @@ namespace FreeLookCamera {
                 
                 // Debug.Log("targetDistance = "+ targetDistance);
             }
+        }
+        IEnumerator ResetSpeed(){
+            yield return new WaitForSeconds(1f);
+            // Debug.Log ("Speed reset");
+            MoveSpeed = m_MoveSpeed; MoveLimited = false;
         }
         protected void TargetRangeCameraTilt() {
             CameraTiltPercentage = 100 - (((TiltAngle - m_TiltMin) * 100) / (m_TiltMax - m_TiltMin));
@@ -154,7 +174,7 @@ namespace FreeLookCamera {
 
         protected void FollowTarget(float deltaTime) {
             // Move the rig towards target position.
-            transform.position = Vector3.Lerp(transform.position, ActivePlayerUnitTransform.position, deltaTime * m_MoveSpeed);
+            transform.position = Vector3.Lerp(transform.position, ActivePlayerUnitTransform.position, deltaTime * MoveSpeed);
         }
 
         private void HandleRotationMovement() {

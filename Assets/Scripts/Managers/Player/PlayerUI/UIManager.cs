@@ -58,12 +58,12 @@ namespace UI {
         CompiledTypes.Weapons_roles.RowValues CurrentControlledWeapon;
         private WorldUIVariables WorldUIVariables;
 
-        private void Start() {
+        private void Awake() {
             PlayerUI = GameObject.Find("UI");
             IconsSpacing = WorldUIVariables.GetIconsSpacing();
             TimeToDestroyCamera = WorldUIVariables.GetTimeToDestroyCamera();
         }
-        private void Update() {
+        private void LateUpdate() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
                 float CurrentSpeed = Mathf.Round(ActiveTarget.GetComponent<Rigidbody>().velocity.magnitude);
                 if (ShipCurrentSpeed != null)
@@ -101,6 +101,9 @@ namespace UI {
                         DisplayTurretsAAAimer.transform.position = new Vector2(AimerPosition.x, AimerPosition.y);
                     }
                 }
+                // else if (true) {
+                //     CloseTurretUI();
+                // }
             }
         }
 
@@ -365,10 +368,12 @@ namespace UI {
         private void DisplayAITurretOverlay(){
             if (TurretUIInstance) {
                 if (FreeCamera || OverlayUI) {
+                    // Debug.Log ("case 1 AI : "+FreeCamera+" / "+ OverlayUI);
                     DisplayTurretsAAAimer.GetComponent<Image>().enabled = false;
                     DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = false;
                     DisplayTurretsAIControl.GetComponent<Image>().enabled = true;
                 } else {
+                    // Debug.Log ("case 2 Normal : "+FreeCamera+" / "+ OverlayUI);
                     DisplayTurretsAAAimer.GetComponent<Image>().enabled = true;
                     DisplayTurretsArtilleryAimer.GetComponent<Image>().enabled = true;
                     DisplayTurretsAIControl.GetComponent<Image>().enabled = false;

@@ -18,6 +18,8 @@ public class UnitMasterController : MonoBehaviour {
     protected CompiledTypes.Teams UnitTeam; public CompiledTypes.Teams GetTeam() { return UnitTeam; }
     protected int UnitCommandPointsCost; public int GetUnitCommandPointsCost() { return UnitCommandPointsCost; }
     protected int UnitVictoryPointsValue; public int GetUnitVictoryPointsValue() { return UnitVictoryPointsValue; }
+
+    private GameObject MapModel; public void SetMapModel(GameObject _g){ MapModel = _g; }
     
     protected List<HitboxComponent> UnitComponents = new List<HitboxComponent>();
     protected float RepairRate = 0;  public float GetRepairRate(){ return RepairRate; }
@@ -47,23 +49,13 @@ public class UnitMasterController : MonoBehaviour {
         underwaterBackRight,
         armorPlate
     }
-    // Spawn
-    // private void Start() {
-    //     StartCoroutine(SpawnPauseLogic());
-    // }
-    // IEnumerator SpawnPauseLogic(){
-    //     yield return new WaitForSeconds(0.3f);
-    //     ResumeStart();
-    // }
-    // public void ResumeStart() {
-    //     if (GameManager != null) {
-    //         GameManager.UnitSpawned(this.gameObject, UnitTeam);
-    //     }
-    //     else if (GameObject.Find("GameManager") != null) {
-    //         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    //         GameManager.UnitSpawned(this.gameObject, UnitTeam);
-    //     }
-    // }
+    
+    public virtual void FixedUpdate() {
+        // MapModel.transform.position.y = 300;
+        if ( !Dead && transform.position.y < 0) {
+            MapModel.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+    }
     // Turrets
     public virtual void SetTotalTurrets(int turrets) { }
     public virtual void SetMaxTurretRange(float maxRange) { UnitAI.SetMaxTurretRange(maxRange); }
@@ -136,7 +128,7 @@ public class UnitMasterController : MonoBehaviour {
     }
 
     // Main Gameplay
-    public virtual void SetUnitFromWorldUnitsManager(WorldSingleUnit unit) {
+    public virtual void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // Sets the basic unit info from WorldUnitsManager and the corresponding WorldSingleUnit info.
         // Debug.Log ("SetPlayerManager" +unit);
 
@@ -170,7 +162,7 @@ public class UnitMasterController : MonoBehaviour {
 
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
-            UnitAI.BeginOperations();
+            UnitAI.BeginOperations(aiMove, aiShoot, aiSpawn);
             UnitAI.SetUnitTeam(UnitTeam);
             UnitAI.SetName(UnitName);
 

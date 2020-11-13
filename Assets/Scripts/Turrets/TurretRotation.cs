@@ -83,7 +83,7 @@ public class TurretRotation : MonoBehaviour {
         CurrentAng = Transform.localRotation.eulerAngles.y;                  // Get initial angle horizontal
         CurrentAngElev = ElevationTransform.localRotation.eulerAngles.x;     // Get initial angle vertical
 
-        StartCoroutine(PositionSafeguardLoop());
+        StartCoroutine(PositionSafeguardLoop());                                // Every 2 seconds, the turret position is reset. This prevents any case where the turrets slowly drift away from their initial position
     }
 
     private void CheckAudio() {
@@ -171,6 +171,7 @@ public class TurretRotation : MonoBehaviour {
     IEnumerator PositionSafeguardLoop(){
         while (true) {
             yield return new WaitForSeconds(2f);
+            // Debug.Log("current: " + Transform.localPosition.x + " - hoped : " + PositionSafeguard.x);
             Transform.localPosition = PositionSafeguard;
             // Transform.localPosition = new Vector3 (0.0f, 0.0f, 0.0f);
         }

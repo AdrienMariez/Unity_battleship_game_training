@@ -45,63 +45,66 @@ public class GameManager : MonoBehaviour {
 
 
     private void Start() {
-        if (LoadingData.SelectedScenario == null && LoadingData.PlayerTeam == null && LoadingData.CurrentGameMode == null) {
-            return;
-        }
-        
-        if (WorldUIVariables.GetFirstLoad() || WorldUnitsManager.GetFirstLoad()){
-            Instantiate(m_WorldGlobals);
-        }
+        // If scenario is called from main menu, stop all action
+            if (LoadingData.InMenu == true) {
+                return;
+            }
+        // Include & set world globals
+            if (WorldUIVariables.GetFirstLoad() || WorldUnitsManager.GetFirstLoad()){
+                // Debug.Log ("m_WorldGlobals");
+                Instantiate(m_WorldGlobals);
+            }
+            WorldUnitsManager.SetGameManager(this);
 
-        WorldUnitsManager.SetGameManager(this);
-        if (LoadingData.CurrentGameMode == null) {
-            SelectedGameMode = WorldUnitsManager.GetDB().GameModes.duel;
-        } else {
-            SelectedGameMode = LoadingData.CurrentGameMode;
-        }
-        // Debug.Log (SelectedGameMode.id);
+        // Create map
+            Instantiate(WorldUIVariables.GetMapPattern());
 
         // Set each PlayerManager
-        foreach (PlayerManagerList player in m_Players) {
-            player.SetPlayerObject(Instantiate(m_PlayerObject));
-            if (LoadingData.PlayerTeam == null) {
-                // Debug.Log ("Basic Allies selected");
-                player.SetPlayerTeam(WorldUnitsManager.GetDB().Teams.Allies);
-            } else {
-                // Debug.Log (LoadingData.PlayerTeam.id + "selected");
-                player.SetPlayerTeam(LoadingData.PlayerTeam);
+            foreach (PlayerManagerList player in m_Players) {
+                player.SetPlayerObject(Instantiate(m_PlayerObject));
+                if (LoadingData.PlayerTeam == null) {
+                    // Debug.Log ("Basic Allies selected");
+                    player.SetPlayerTeam(WorldUnitsManager.GetDB().Teams.Allies);
+                } else {
+                    // Debug.Log (LoadingData.PlayerTeam.id + "selected");
+                    player.SetPlayerTeam(LoadingData.PlayerTeam);
+                }
+                
+                PlayersManager.Add(player.GetPlayerObject().GetComponent<PlayerManager>());
+                //Give the correct team to the player
+                player.GetPlayerObject().GetComponent<PlayerManager>().SetPlayerTeam(player.GetPlayerTeam());
             }
-            
-            PlayersManager.Add(player.GetPlayerObject().GetComponent<PlayerManager>());
-            //Give the correct team to the player
-            player.GetPlayerObject().GetComponent<PlayerManager>().SetPlayerTeam(player.GetPlayerTeam());
-        }
-        foreach (PlayerManager playerManager in PlayersManager) {
-            playerManager.SetGameManager(this);
-            playerManager.Reset();
-            playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
-        }
+            foreach (PlayerManager playerManager in PlayersManager) {
+                playerManager.SetGameManager(this);
+                playerManager.Reset();
+                playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
+            }
+        // Include ocean
+            Instantiate(m_Ocean);
 
-        Instantiate(m_Ocean);
+        // GameMode
+            if (LoadingData.CurrentGameMode == null) {
+                SelectedGameMode = WorldUnitsManager.GetDB().GameModes.duel;
+            } else {
+                SelectedGameMode = LoadingData.CurrentGameMode;
+            }
+            // Debug.Log (SelectedGameMode.id);
 
-        if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.duel.id) {
-            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
-        } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.points.id) {
-            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModePoints>();
-        } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.custom.id) {
-            CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeCustom>();
-        } else {
-            Debug.Log ("No suitable file found for the selected scenario !");
-        }
-
-        CurrentGameMode.SetGameManager(this);
-        CurrentGameMode.Begin();
+            if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.duel.id) {
+                CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeDuel>();
+            } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.points.id) {
+                CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModePoints>();
+            } else if (SelectedGameMode.id == WorldUnitsManager.GetDB().GameModes.custom.id) {
+                CurrentGameMode = GameObject.Find("GameModes").GetComponent<GameModeCustom>();
+            } else {
+                Debug.Log ("No suitable file found for the selected scenario !");
+            }
+            CurrentGameMode.SetGameManager(this);
+            CurrentGameMode.Begin();
     }
 
     public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams unitTeam) {
         // Debug.Log ("UnitSpawned : "+unitTeam.id);
-        WorldUnitsManager.CreateNewUnitMapModel(unitGameObject, unitTeam);  // Ultimately, this should disappear.
-
         foreach (var playerManager in PlayersManager) {
            playerManager.UnitSpawned(unitGameObject, unitTeam); 
         }
