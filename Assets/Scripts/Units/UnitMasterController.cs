@@ -26,6 +26,7 @@ public class UnitMasterController : MonoBehaviour {
 
     protected bool Active = false;
     protected bool Dead = false;
+    protected bool InGameBoundaries = false;
     private SpawnerScriptToAttach Spawner;
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
@@ -258,6 +259,18 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {}
+
+    public virtual void SetInGameBoundaries(bool action) {
+        // True : enters game boundaries / False : exits game boundaries
+        if (InGameBoundaries != action) {
+            InGameBoundaries = action;
+            if (InGameBoundaries) {
+                Debug.Log(UnitName+" has has entered the game zone !");
+            } else {
+                Debug.Log(UnitName+" has exited the game zone !");
+            }
+        }
+    }
 
     public void SetPlayerManager(PlayerManager playerManager) {
         // Debug.Log ("SetPlayerManager" +UnitName);

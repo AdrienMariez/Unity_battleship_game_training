@@ -72,6 +72,9 @@ MonoBehaviour:
   m_WeaponHitMask:
     serializedVersion: 2
     m_Bits: 40448
+  m_WorldMask:
+    serializedVersion: 2
+    m_Bits: 40704
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

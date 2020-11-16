@@ -217,7 +217,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         //     }
         // }
 
-        SpawnPosition = TryPosition(m_ShipSpawnPosition);
+        SpawnPosition = TryPosition(m_ShipSpawnPosition, unit.GetUnitSize());
         if (SpawnPosition != m_ShipSpawnPosition.position) {
             trySpawn1 = true;
         }
@@ -235,22 +235,25 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             return false;
         }
     }
-    public static Vector3 TryPosition (Transform transform) {
+    public static Vector3 TryPosition (Transform transform, float unitSize) {
         Vector3 position = transform.position;
-        // float _x = transform.position.x;
-        // float _z = transform.position.z;
+        Collider[] hitColliders = Physics.OverlapSphere(position, unitSize);
+        if (hitColliders.Length == 0) {
+            return position;
+        }
+
         for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
             position = transform.position;
             position.x = transform.position.x + Random.Range(-500, 500);
             position.z = transform.position.z + Random.Range(-500, 500);
-            Collider[] hitColliders = Physics.OverlapSphere(position, 100f);
-            if (hitColliders.Length == 0) {
+            Collider[] _hitColliders = Physics.OverlapSphere (position, unitSize, WorldUnitsManager.GetHitMask());
+            if (_hitColliders.Length == 0) {
                 break;
             }
             // Debug.Log("TryPosition loop !");
         }
         // Debug.Log("TryPosition found ! Original _x : " + _x +" current x : "+ position.x + "Original _z : " + _z +" current z : "+ position.z);
-        return position;
+        return position;                    // Be aware that if no position is found after 30 tries, it is spawned anyway.
     }
     public void SpawnUnit (WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // GameObject spawnedUnitInstance =

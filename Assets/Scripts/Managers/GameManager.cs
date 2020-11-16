@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿// using System;
+// using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // Game Manager deals with major game workings, like checking any unit spawn, current game mode...

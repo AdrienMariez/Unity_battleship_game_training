@@ -17,9 +17,12 @@ public class WorldUnitsManager : MonoBehaviour {
     public TextAsset CastleDBAsset;
     private static CastleDB DB; public static CastleDB GetDB(){ return DB; }
 
-    [Tooltip("What can be hit by ammo or more generally, what is considered a game element tat can be damaged.")]
+    [Tooltip("What can be hit by ammo or more generally, what is considered a game element that can be damaged.")]
     public LayerMask m_WeaponHitMask;
     private static LayerMask HitMask; public static LayerMask GetHitMask(){ return HitMask; }
+    [Tooltip("What can be collided ingame or more generally, what is considered an element that should be checked for any collision.")]
+    public LayerMask m_WorldMask;
+    private static LayerMask WorldMask; public static LayerMask GetWorldMask(){ return WorldMask; }
 
     private static bool FirstLoad = true; public static bool GetFirstLoad(){ return FirstLoad; }
 
@@ -30,6 +33,7 @@ public class WorldUnitsManager : MonoBehaviour {
             FirstLoad = false;
             DB = new CastleDB(CastleDBAsset);
             HitMask = m_WeaponHitMask;
+            WorldMask = m_WorldMask;
             WorldSetUnits();
         }
     }

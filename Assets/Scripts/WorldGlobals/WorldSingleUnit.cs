@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class WorldSingleUnit {
     // Each parameter is built at the first loading of the game from each prefab added in WorldUnitsManager.
     private GameObject UnitPrefab; public GameObject GetUnitModel(){ return UnitPrefab; }
+    private float UnitSize = 100f; public float GetUnitSize(){ return UnitSize; }
     private CompiledTypes.Global_Units UnitReference_DB; public CompiledTypes.Global_Units GetUnitReference_DB(){ return UnitReference_DB; }
 
     private string UnitName; public string GetUnitName(){ return UnitName; }
@@ -56,6 +57,13 @@ public class WorldSingleUnit {
             if (UnitPrefab == null) {
                 Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
                 UnitPrefab = WorldUIVariables.GetErrorModel();
+            }
+            // Set max unit scale ( used to make space for spawning models)
+            if (UnitPrefab.transform.Find("Bounding").transform.Find("BoundingBox")) {
+                Transform _bounding = UnitPrefab.transform.Find("Bounding").transform.Find("BoundingBox");
+                float UnitSize = _bounding.localScale.x;
+                if (_bounding.localScale.y > UnitSize) { UnitSize = _bounding.localScale.y; }
+                if (_bounding.localScale.z > UnitSize) { UnitSize = _bounding.localScale.z; }
             }
 
         // NAME

@@ -89,7 +89,7 @@ public class GameModesManager : MonoBehaviour {
         foreach (UnitManager unit in UnitList) {
             unit.VerifyData();          // Check all units if they were manually included
             // Debug.Log (unit.GetUnit().GetUnitName() +""+ unit.GetSpawnPoint().position.x);
-            Vector3 SpawnPosition = SpawnerScriptToAttach.TryPosition(unit.GetSpawnPoint());
+            Vector3 SpawnPosition = SpawnerScriptToAttach.TryPosition(unit.GetSpawnPoint(), unit.GetUnit().GetUnitSize());
             unit.SetInstance(WorldUnitsManager.BuildUnit(unit.GetUnit(), SpawnPosition, unit.GetSpawnPoint().rotation, unit.GetUnitCanMove(), unit.GetUnitCanShoot(), unit.GetUnitCanSpawn()));
 
             // unit.SetGameManager(GameManager);

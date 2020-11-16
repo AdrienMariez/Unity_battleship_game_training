@@ -4,9 +4,9 @@ public class HitboxComponent : MonoBehaviour {
     [Tooltip("Initial HP of the element")]
     public float m_ElementHealth = 100.0f;
     [Tooltip("Armor of the element (equivalent in rolled steel mm) Buoyancy elements do not use this (use conventionnal armors or hull parts to make belt armors)")]
-    public float m_ElementArmor = 100.0f;
+    public float m_ElementArmor = 100.0f; public float GetElementArmor(){ return m_ElementArmor; }
     [Tooltip("Type of element")]
-    public UnitMasterController.ElementType m_ElementType = UnitMasterController.ElementType.hull;
+    public UnitMasterController.ElementType m_ElementType = UnitMasterController.ElementType.hull; public UnitMasterController.ElementType GetElementType(){ return m_ElementType; }
 
     [Header("FX")]
     [Tooltip("When the element is destroyed, will it emit smoke ?")]
@@ -17,13 +17,14 @@ public class HitboxComponent : MonoBehaviour {
 
     // [Header("Debug")]
     //     public bool debug = false;
+    
     private float CurrentHealth;
     private float RepairRate;
-    private float EngineRepairRate;
-    private float FireRepairRate;
+    private float EngineRepairRate; public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }
+    private float FireRepairRate; public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
     private bool ImmortalComponent = false;
     private bool ArmorComponent = false;
-    private bool BuoyancyComponent = false;
+    private bool BuoyancyComponent = false; public bool GetBuoyancyComponent(){ return BuoyancyComponent; }
     private bool Dead = false;
 
 
@@ -144,13 +145,14 @@ public class HitboxComponent : MonoBehaviour {
         }
     }
 
+    public void InteractionWithGameBoundaries (bool action) {
+        // True : enters game boundaries
+        // False : exits game boundaries
+        UnitMasterController.SetInGameBoundaries(action);
+    }
+
     public void SetUnitController(UnitMasterController unitMasterComponent){
         UnitMasterController = unitMasterComponent;
         InitializeModules();
     }
-    public void SetDamageControlEngine(float crew){ EngineRepairRate = crew; }
-    public void SetDamageControlFire(float crew){ FireRepairRate = crew; }
-    public UnitMasterController.ElementType GetElementType(){ return m_ElementType; }
-    public float GetElementArmor(){ return m_ElementArmor; }
-    public bool GetBuoyancyComponent(){ return BuoyancyComponent; }
 }
