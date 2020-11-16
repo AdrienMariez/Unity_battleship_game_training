@@ -19,7 +19,7 @@ public class UnitMasterController : MonoBehaviour {
     protected int UnitCommandPointsCost; public int GetUnitCommandPointsCost() { return UnitCommandPointsCost; }
     protected int UnitVictoryPointsValue; public int GetUnitVictoryPointsValue() { return UnitVictoryPointsValue; }
 
-    private GameObject MapModel; public void SetMapModel(GameObject _g){ MapModel = _g; }
+    private GameObject MapModel; public void SetMapModel(GameObject _g){ MapModel = _g; } public GameObject GetMapModel(){ return MapModel; }
     
     protected List<HitboxComponent> UnitComponents = new List<HitboxComponent>();
     protected float RepairRate = 0;  public float GetRepairRate(){ return RepairRate; }
@@ -52,7 +52,7 @@ public class UnitMasterController : MonoBehaviour {
     
     public virtual void FixedUpdate() {
         // MapModel.transform.position.y = 300;
-        if ( !Dead && transform.position.y < 0) {
+        if ( !Dead && transform.position.y < 0 && MapModel != null) {
             MapModel.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
     }
@@ -130,7 +130,7 @@ public class UnitMasterController : MonoBehaviour {
     // Main Gameplay
     public virtual void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // Sets the basic unit info from WorldUnitsManager and the corresponding WorldSingleUnit info.
-        // Debug.Log ("SetPlayerManager" +unit);
+        // Debug.Log ("SetUnitFromWorldUnitsManager "+unit.GetUnitName()+" AI : "+aiMove+" : "+aiShoot+" : "+aiSpawn);
 
         // Set all common parameters
             SetUnitName(unit.GetUnitName());
@@ -162,15 +162,14 @@ public class UnitMasterController : MonoBehaviour {
 
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
-            UnitAI.BeginOperations(aiMove, aiShoot, aiSpawn);
             UnitAI.SetUnitTeam(UnitTeam);
             UnitAI.SetName(UnitName);
 
         // Set turrets
             if (unit.GetWeaponExists()) {
                 Turrets = this.gameObject.AddComponent<TurretManager>();
-                UnitAI.SetTurretManager(Turrets);
             }
+
 
         // Set HardPoints
             Transform parentHardPointTransform = this.transform.Find("HardPoints").transform;
@@ -226,10 +225,14 @@ public class UnitMasterController : MonoBehaviour {
             }
 
         // Set turrets
-            if (GetComponent<TurretManager>()) {
+            if (UnitWorldSingleUnit.GetWeaponExists()) {
                 // Debug.Log("yes"+ Turrets);
                 Turrets.BeginOperations(this);
+                UnitAI.SetTurretManager(Turrets);
             }
+
+        // Start AI after turrets were set
+            UnitAI.BeginOperations(aiMove, aiShoot, aiSpawn);
 
         // Send to GameManager if any
             if (WorldUnitsManager.GetGameManager() != null) {

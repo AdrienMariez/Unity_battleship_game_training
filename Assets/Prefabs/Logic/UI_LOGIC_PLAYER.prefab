@@ -31,8 +31,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6283074087289817513}
   - {fileID: 6283074086434329465}
+  - {fileID: 7027640245566443773}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FreeLookCamera: {fileID: 6793310901664237954}
-  m_MapCamera: {fileID: 6283074087289817515}
 --- !u!114 &5717046087276596324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c48f123888c3144c9d79a03f1c15036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &2956409725849262402
+--- !u!1001 &2283749410747990038
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -131,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 9094650477598888171, guid: 5c4bf205fcb5c0044ada347d3448753d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9094650477598888171, guid: 5c4bf205fcb5c0044ada347d3448753d,
         type: 3}
@@ -155,17 +154,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c4bf205fcb5c0044ada347d3448753d, type: 3}
---- !u!4 &6283074087289817513 stripped
+--- !u!4 &7027640245566443773 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9094650477598888171, guid: 5c4bf205fcb5c0044ada347d3448753d,
     type: 3}
-  m_PrefabInstance: {fileID: 2956409725849262402}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &6283074087289817515 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 9094650477598888169, guid: 5c4bf205fcb5c0044ada347d3448753d,
-    type: 3}
-  m_PrefabInstance: {fileID: 2956409725849262402}
+  m_PrefabInstance: {fileID: 2283749410747990038}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6793310901297230226
 PrefabInstance:
@@ -217,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 682091736796586731, guid: b9f1bb91a68dfac4f88dffc33fcd578b,
         type: 3}

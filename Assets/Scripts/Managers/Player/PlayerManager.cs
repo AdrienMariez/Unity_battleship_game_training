@@ -23,8 +23,8 @@ public class PlayerManager : MonoBehaviour
     private bool DamageControl = false;
     private bool SpawnerMenu = false;
     private bool FreeCamera = false;
-    public FreeLookCam m_FreeLookCamera;
-    public Camera m_MapCamera;
+    public FreeLookCam m_FreeLookCamera; public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
+    private Camera MapCamera;
     private GameManager GameManager; public void SetGameManager(GameManager gameManager) { GameManager = gameManager; }
     private CompiledTypes.Teams PlayerTeam; public void SetPlayerTeam (CompiledTypes.Teams _t) { PlayerTeam = _t;} public CompiledTypes.Teams GetPlayerTeam() { return PlayerTeam; }
     private UIManager UIManager;
@@ -38,13 +38,14 @@ public class PlayerManager : MonoBehaviour
         ActiveTarget = null;
         ActiveTargetSet = false;
         CurrentTarget = 0;
+        MapCamera = Instantiate(WorldUIVariables.GetMapCamera(), this.transform).GetComponent<Camera>();
         MapManager = GetComponent<MapManager>();
-        MapManager.SetMapCamera(m_MapCamera);
+        MapManager.SetMapCamera(MapCamera);
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         UnitsUIManager = GetComponent<UnitsUIManager>();
-        UnitsUIManager.Init(this, m_MapCamera);
+        UnitsUIManager.Init(this, MapCamera);
         UnitsUIManager.SetPlayerTag(PlayerTeam);
         // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
@@ -295,7 +296,7 @@ public class PlayerManager : MonoBehaviour
         MapManager.SetInitialPosition(ActiveTarget);
         MapManager.SetMap(MapActive);
 
-        m_MapCamera.enabled = MapActive;
+        MapCamera.enabled = MapActive;
 
         ActiveTarget.GetComponent<UnitMasterController>().SetMap(MapActive);
         SetOverlayUI();
@@ -340,7 +341,6 @@ public class PlayerManager : MonoBehaviour
         m_FreeLookCamera.SetCurrentTurretRole(currentControlledTurret);
     }
     public void ShellFollowedByCameraDestroyed() { UIManager.ShellFollowedByCameraDestroyed(); }
-    public FreeLookCam GetFreeLookCam(){ return m_FreeLookCamera; }
 
     public void Reset(){
         PlayerUnits.Clear();

@@ -22,6 +22,7 @@ public class UnitUIManager : MonoBehaviour {
     private string DistanceString;
 
     private GameObject UIName;
+        private Text UINameText;
     private GameObject UIDistance;
     private GameObject UIHealth;
         private Slider HealthBar;
@@ -42,12 +43,13 @@ public class UnitUIManager : MonoBehaviour {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
         Unit = unit;
-        if (unit.transform.Find("Bounding")) {
-            BoundsRenderer = Unit.transform.Find("Bounding").GetComponent<Renderer>();
+        if (unit.transform.Find("Bounding").transform.Find("BoundingBox")) {
+            BoundsRenderer = Unit.transform.Find("Bounding").transform.Find("BoundingBox").GetComponent<Renderer>();
             BoundsFound = true;
         }
 
         UIName = this.transform.Find("Name").gameObject;
+            UINameText = UIName.GetComponent<Text>();
         UIDistance = this.transform.Find("Distance").gameObject;
         UIPointer = this.transform.Find("Pointer").gameObject;
 
@@ -63,6 +65,7 @@ public class UnitUIManager : MonoBehaviour {
             HealthBarColor = UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>();
             if (unit.GetComponent<UnitHealth>()) {
                 MaximumHealth = unit.GetComponent<UnitHealth>().GetStartingHealth();
+                // Debug.Log ("InitializeUIModule"+MaximumHealth);
                 CurrentHealth = unit.GetComponent<UnitHealth>().GetCurrentHealth();
             }
             HealthBar.maxValue = MaximumHealth;
@@ -76,7 +79,7 @@ public class UnitUIManager : MonoBehaviour {
         // Coroutine created to prevent too much calculus for ship behaviour
         // NameActionPaused = true;
         yield return new WaitForSeconds(0.1f);
-        UIName.GetComponent<Text>().text = Unit.name;
+        UINameText.text = Unit.name;
         // NameActionPaused = false;
     }
 
@@ -125,7 +128,7 @@ public class UnitUIManager : MonoBehaviour {
                 if (!UnitCurrentlyPlayed) {
                     UpdateDistanceText();
                 } else {
-                    UIDistance.GetComponent<Text>().text = "Played unit";
+                    UINameText.text = "Played unit";
                 }
             } else {
                 UIName.SetActive(false);
@@ -159,7 +162,7 @@ public class UnitUIManager : MonoBehaviour {
         // Coroutine created to prevent too much calculus for ship behaviour
         DistanceActionPaused = true;
         yield return new WaitForSeconds(0.1f);
-        UIName.GetComponent<Text>().text = Unit.name;
+        UINameText.text = Unit.name;
         DistanceActionPaused = false;
     }
     private void CreateBoundBox(){
@@ -244,6 +247,8 @@ public class UnitUIManager : MonoBehaviour {
         // Destroy();
         Destroy (this.gameObject);
     }
-    public void Destroy() { //Debug.Log ("Destroy");
-    Destroy (this.gameObject); }
+    public void Destroy() {
+        // Debug.Log ("Destroy");
+        Destroy (this.gameObject);
+    }
 }

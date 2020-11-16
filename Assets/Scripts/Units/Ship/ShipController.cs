@@ -11,6 +11,7 @@ public class ShipController : UnitMasterController {
 
     // Water damage parameters
         private Transform ShipModel;                // instead of moving the whole when it's taking water (but not sinking), only the visible model is tilted.
+        protected List<Transform> TransformsToSink = new List<Transform>();
         private float CurrentRotationX  = 0.0f;
         private float CurrentRotationZ = 0.0f;
         private float CurrentpositionY = 0.0f;
@@ -62,6 +63,9 @@ public class ShipController : UnitMasterController {
 
         if (this.gameObject.transform.childCount > 0){
             ShipModel = this.gameObject.transform.GetChild(0);
+        }
+        foreach (Transform child in this.gameObject.transform) {
+            TransformsToSink.Add(child);
         }
 
 
@@ -179,11 +183,14 @@ public class ShipController : UnitMasterController {
             // Debug.Log("CurrentY :"+ CurrentpositionY + "Target :"+ TargetpositionY);
         }
         // CurrentpositionY = (Mathf.Round(CurrentpositionY * 100)) / 100;
-        ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+        // ShipModel.transform.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+        foreach (Transform child in TransformsToSink) {
+            child.localPosition = new Vector3(0.0f, CurrentpositionY, 0.0f);
+        }
 
         // Check death by taking in too much water
-        if (CurrentpositionY < -2 && !Dead) {
-            Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY + " / -2");
+        if (CurrentpositionY < -5 && !Dead) {
+            Debug.Log("A ship was destroyed due to rotation Y being : " + CurrentpositionY + " / -5");
             CallDeath();
         }
     }
@@ -206,11 +213,15 @@ public class ShipController : UnitMasterController {
         }
         // CurrentRotationZ = (Mathf.Round(CurrentRotationZ * 100)) / 100;
 
-        ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
+        foreach (Transform child in TransformsToSink) {
+            child.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
+        }
+
+        // ShipModel.transform.localRotation = Quaternion.Euler (new Vector3 (CurrentRotationX, 0.0f, CurrentRotationZ));
 
         // Check death by taking in too much water
-        if (CurrentRotationX < -3  && !Dead|| CurrentRotationX > 3  && !Dead|| CurrentRotationZ < -15  && !Dead|| CurrentRotationZ > 15 && !Dead) {
-            Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " / 3 - or Z being : " + CurrentRotationZ + " / 15");
+        if (CurrentRotationX < -5  && !Dead|| CurrentRotationX > 5  && !Dead|| CurrentRotationZ < -20  && !Dead|| CurrentRotationZ > 20 && !Dead) {
+            Debug.Log("A ship was destroyed due to rotation X being : " + CurrentRotationX + " / 5 - or Z being : " + CurrentRotationZ + " / 20");
             CallDeath();
         }
     }

@@ -11,6 +11,8 @@ public class UnitUI : UnitParameter {
     private float CurrentHealth;
     private List <GameObject> UIElement = new List<GameObject>();
     private List <GameObject> UIMapElement = new List<GameObject>();
+    private List <UnitUIManager> UIElementManager = new List<UnitUIManager>();
+    private List <UnitMapUIManager> UIMapElementManager = new List<UnitMapUIManager>();
 
     public void SetUIElement(GameObject uiElement) {
         uiElement.gameObject.name = Name;
@@ -24,7 +26,7 @@ public class UnitUI : UnitParameter {
         uiElement.transform.Find("BoundingBox").transform.Find("BoundingBoxBottomRight").GetComponent<Image>().color = WorldUnitsManager.SetColor(Team);
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
-        UIElement.Add(uiElement);
+        UIElementManager.Add(uiElement.GetComponent<UnitUIManager>());
     }
     public void SetUIMapElement(GameObject uiElement) {
         // UIElement = uiElement;
@@ -34,18 +36,18 @@ public class UnitUI : UnitParameter {
         uiElement.transform.Find("Distance").GetComponent<Text>().color = WorldUnitsManager.SetColor(Team);
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
-        UIMapElement.Add(uiElement);
+        UIMapElementManager.Add(uiElement.GetComponent<UnitMapUIManager>());
     }
 
     public void SetCurrentHealth(float HP) {
         CurrentHealth = HP;
         if (!Dead) {  
             Color barColor = CheckHealthColor();
-            foreach (var element in UIElement) {
-                element.GetComponent<UnitUIManager>().SetCurrentHealth(HP, barColor);
+            foreach (UnitUIManager element in UIElementManager) {
+                element.SetCurrentHealth(HP, barColor);
             }
-            foreach (var element in UIMapElement) {
-                element.GetComponent<UnitMapUIManager>().SetCurrentHealth(HP, barColor);
+            foreach (UnitMapUIManager element in UIMapElementManager) {
+                element.SetCurrentHealth(HP, barColor);
             }
         }
     }
@@ -62,23 +64,23 @@ public class UnitUI : UnitParameter {
 
     public void SetDead() {
         Dead = true;
-        foreach (var element in UIElement) {
-            element.GetComponent<UnitUIManager>().SetDead();
+        foreach (UnitUIManager element in UIElementManager) {
+            element.SetDead();
         }
-        UIElement.Clear();
-        foreach (var element in UIMapElement) {
-            element.GetComponent<UnitMapUIManager>().SetDead();
+        UIElementManager.Clear();
+        foreach (UnitMapUIManager element in UIMapElementManager) {
+            element.SetDead();
         }
-        UIMapElement.Clear();
+        UIMapElementManager.Clear();
     }
     public void KillAllUIInstances() {
-        foreach (var element in UIElement) {
-            element.GetComponent<UnitUIManager>().Destroy();
+        foreach (UnitUIManager element in UIElementManager) {
+            element.Destroy();
         }
-        foreach (var element in UIMapElement) {
-            element.GetComponent<UnitMapUIManager>().Destroy();
+        foreach (UnitMapUIManager element in UIMapElementManager) {
+            element.Destroy();
         }
-        UIElement.Clear();
-        UIMapElement.Clear();
+        UIElementManager.Clear();
+        UIMapElementManager.Clear();
     }
 }

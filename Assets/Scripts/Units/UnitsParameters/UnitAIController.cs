@@ -8,7 +8,7 @@ public class UnitAIController : UnitParameter {
     protected string Name; public void SetName(string name) { Name = name; } // For debug purposes
     protected bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
     protected float TurnInputLimit = 0;
-    protected float MaxTurretsRange; public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; CheckState(); }
+    protected float MaxTurretsRange; public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; }
     protected GameObject TargetUnit;
     protected int PlayerTargetUnitIndex = 0;
     protected GameObject PlayerSetTargetUnit;
@@ -36,6 +36,7 @@ public class UnitAIController : UnitParameter {
     public bool UnitCanSpawn = true; public void SetUnitCanSpawn(bool _b) { UnitCanSpawn = _b; }public bool GetUnitCanSpawn() { return UnitCanSpawn; }
 
     public virtual void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
+        // Debug.Log ("BeginOperations "+Name+" Sent AI : "+aiMove+" : "+aiShoot+" : "+aiSpawn);
         UnitCanMove = aiMove;
         UnitCanShoot = aiShoot;
         UnitCanSpawn = aiSpawn;
@@ -55,6 +56,7 @@ public class UnitAIController : UnitParameter {
         if (UnitCanSpawn) {
             CheckSpawnAbility();
         }
+        // Debug.Log ("BeginOperations "+Name+" AI : "+UnitCanMove+" : "+UnitCanShoot+" : "+UnitCanSpawn);
         StartCoroutine(AIOrdersLoop());
     }
     void Awake () {

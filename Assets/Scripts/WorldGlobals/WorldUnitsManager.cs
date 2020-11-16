@@ -196,14 +196,16 @@ public class WorldUnitsManager : MonoBehaviour {
 
             // CAMERA
                 TargetCameraParameters TCP = spawnedUnitInstance.AddComponent<TargetCameraParameters>();
-
-        // COMMON DATA
-            unitController.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
-
+                
+        // Order is important, if Health is set after the unit controller, the health UI won't be correctly displayed 
         // HEALTH
             UnitHealth.SetCurrentHealth(unit.GetUnitHealth());
             UnitHealth.SetStartingHealth(unit.GetUnitHealth());
             UnitHealth.SetDeathFX(unit.GetUnitDeathFX());
+
+        // COMMON DATA
+            unitController.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
+
         // CAMERA
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());

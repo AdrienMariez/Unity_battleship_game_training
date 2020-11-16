@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour {
             }
             WorldUnitsManager.SetGameManager(this);
 
+
         // Create map
             Instantiate(WorldUIVariables.GetMapPattern());
 

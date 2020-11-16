@@ -756,8 +756,8 @@
 					"UnitHealth": 10000,
 					"UnitCameraParameters": [
 						{
-							"Distance": 90,
-							"Height": 5,
+							"Distance": 120,
+							"Height": 25,
 							"Lateraloffset": 0
 						}
 					],
@@ -1221,11 +1221,11 @@
 							"Repaircrew": 5
 						}
 					],
-					"UnitHealth": 8000,
+					"UnitHealth": 800000,
 					"UnitCameraParameters": [
 						{
-							"Distance": 50,
-							"Height": 5,
+							"Distance": 105,
+							"Height": 25,
 							"Lateral Offset": 0,
 							"Lateraloffset": 0
 						}
@@ -1541,7 +1541,7 @@
 					],
 					"UnitCameraParameters": [
 						{
-							"Distance": 60,
+							"Distance": 120,
 							"Height": 25,
 							"Lateraloffset": 0
 						}

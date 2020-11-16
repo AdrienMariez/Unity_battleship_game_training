@@ -16,7 +16,9 @@ public class MenuButtonsControl : MonoBehaviour {
     // GameplayScenarios options :
         private CompiledTypes.Teams PlayerTeam = null;
         private CompiledTypes.Scenarios SelectedScenario;
+        private Scene CurrentScene;
         private CompiledTypes.GameModes CurrentGameMode;
+        private Camera MapCamera;
     // Duel  Specific Options
         public GameObject m_MenuUIDuelOptions;
         public GameObject m_DuelSpawnDropdown;
@@ -24,12 +26,6 @@ public class MenuButtonsControl : MonoBehaviour {
         private GameObject MenuUIDuelSpawnPointsContainerInstance;
         private List<SpawnPointDuel> SpawnPointsDuel = new List<SpawnPointDuel>();
         private int RoundsToWin;
-
-    [Header("Units in the background")]
-        public GameObject[] m_ShipSpawnPoints;
-
-    // // Units lists
-    //     [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
     // Scenario type selection
         Button ButtonDuelCategory;
@@ -45,46 +41,20 @@ public class MenuButtonsControl : MonoBehaviour {
     // Scenarios Options
         private GameObject ScenariosOptionsContainerInstance;
 
-
-
-        Scene PreviewScene;
-        
+        Scene PreviewScene;     
 
     void Start() {
         LoadingData.InMenu = true;
         foreach (CompiledTypes.Scenarios scenario in WorldUnitsManager.GetDB().Scenarios.GetAll()) {
             ScenariosDBList.Add(scenario);
         }
+        // Create map
+            Instantiate(WorldUIVariables.GetMapPattern());
 
         OpenMainMenu();
-        LoadMenuUnits();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 1.0f;
-    }
-
-    protected void LoadMenuUnits() {    
-        List<WorldSingleUnit> spawnableShipList = new List<WorldSingleUnit>();
-        foreach (List<WorldSingleUnit> category in WorldUnitsManager.GetUnitsByCategory()) {
-            foreach (WorldSingleUnit unit in category) {
-                // Debug.Log (" unit "+unit.GetUnitName());
-                if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
-                    spawnableShipList.Add(unit);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        foreach (GameObject spawnPoint in m_ShipSpawnPoints) {
-            int randomUnitId = Random.Range(0, spawnableShipList.Count);
-            // Debug.Log (randomUnitId+" / "+spawnableShipList.Count);
-            // Debug.Log (" Spawning "+spawnableShipList[randomUnitId].GetUnitName());
-            GameObject Instance = WorldUnitsManager.BuildUnit(spawnableShipList[randomUnitId], spawnPoint.transform.position, spawnPoint.transform.rotation, false, false, false);
-            // if (Instance.GetComponent<UnitAIController>()) {
-            //     Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(false, false, false);
-            // }
-        }
     }
 
     protected void OpenMainMenu() {
@@ -115,7 +85,6 @@ public class MenuButtonsControl : MonoBehaviour {
             if (buttonGameMode.id == CurrentGameMode.id) {                               // If the current selected category is already set, don't reset it 
                 return;
             }
-            
         }
         CurrentGameMode = buttonGameMode;
         // Debug.Log (buttonGameMode);
@@ -127,6 +96,10 @@ public class MenuButtonsControl : MonoBehaviour {
         PlayerTeam = null;
         if (MenuUIDuelOptionsInstance) {                                            // Destroy the parameters instance here
             Destroy (MenuUIDuelOptionsInstance);
+        }
+        if (SelectedScenario != null) {
+            SceneManager.UnloadSceneAsync(SelectedScenario.ScenarioScene);          // Unload current scene if any
+            SelectedScenario = null;
         }
 
         foreach (CompiledTypes.Scenarios scenario in ScenariosDBList) {             // Find all suitable scenarios
@@ -179,6 +152,11 @@ public class MenuButtonsControl : MonoBehaviour {
                 TeamDropdownValueChanged(_teamDropdown);
             });
             PlayerTeam = WorldUnitsManager.GetDB().Teams.Allies;
+
+        // // Map Preview
+        //     MapCamera = Instantiate(WorldUIVariables.GetMapCamera(), MenuUIDuelOptionsInstance.transform.Find("MapPreview").transform).GetComponent<Camera>();
+        //     MapCamera.enabled = true;
+
         // Play button
             Button _buttonPlayDuel = MenuUIDuelOptionsInstance.transform.Find("PlayScenarioButton").GetComponent<Button>();
             _buttonPlayDuel.onClick.AddListener(() => { ButtonPlayDuelOnClick(); });
@@ -222,6 +200,10 @@ public class MenuButtonsControl : MonoBehaviour {
             GameObject.Destroy(child.gameObject);
             SpawnPointsDuel = new List<SpawnPointDuel>();
         }
+        if (SelectedScenario != null) {
+            SceneManager.UnloadSceneAsync(SelectedScenario.ScenarioScene);
+        }
+        
 
         // Debug.Log (" SetDuelOptions ");
         SelectedScenario = scenario;
@@ -308,11 +290,17 @@ public class MenuButtonsControl : MonoBehaviour {
     protected virtual IEnumerator CreateMapSpawnPoints () {
         bool loaded = false;
         Transform spawnPointHolder = GameObject.Find("GameObjects").transform;
-        Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointHolder);
+        // Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointHolder);
         foreach (CompiledTypes.DuelSpawnPoints spawnPoint in SelectedScenario.DuelSpawnPointsList) {
             Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
             GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
         }
+        // Map Preview
+            GameObject _mapCameraObject = Instantiate(WorldUIVariables.GetMenuMapCamera());
+            MapCamera = _mapCameraObject.GetComponent<Camera>();
+            SceneManager.MoveGameObjectToScene(_mapCameraObject, SceneManager.GetSceneByName(SelectedScenario.ScenarioScene));
+            MapCamera.enabled = true;
+
         loaded = true;
         yield return loaded;
     }
@@ -379,23 +367,6 @@ public class MenuButtonsControl : MonoBehaviour {
     }
 
 
-    /*protected void OpenMainMenu() {
-        MenuUIInstance = Instantiate(m_MenuUI);
-        Button buttonScenarioTraining = MenuUIInstance.transform.Find("ButtonScenarioTraining").GetComponent<Button>();
-		buttonScenarioTraining.onClick.AddListener(ButtonScenarioTrainingOnClick);
-        Button buttonScenario1 = MenuUIInstance.transform.Find("ButtonScenario1").GetComponent<Button>();
-		buttonScenario1.onClick.AddListener(ButtonScenario1OnClick);
-        Button buttonScenario2 = MenuUIInstance.transform.Find("ButtonScenario2").GetComponent<Button>();
-		buttonScenario2.onClick.AddListener(ButtonScenario2OnClick);
-        Button buttonScenario3 = MenuUIInstance.transform.Find("ButtonScenario3").GetComponent<Button>();
-		buttonScenario3.onClick.AddListener(ButtonScenario3OnClick);
-        Button buttonExit = MenuUIInstance.transform.Find("ButtonExit").GetComponent<Button>();
-		buttonExit.onClick.AddListener(ButtonExitOnClick);
-        Button buttonOptions = MenuUIInstance.transform.Find("ButtonOptions").GetComponent<Button>();
-		buttonOptions.onClick.AddListener(ButtonOptionsOnClick);
-        Button buttonCredits = MenuUIInstance.transform.Find("ButtonCredits").GetComponent<Button>();
-		buttonCredits.onClick.AddListener(ButtonCreditsOnClick);
-    }*/
     protected void CloseMainMenu() {
         if (MenuUIInstance)
             Destroy (MenuUIInstance);

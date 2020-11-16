@@ -4,6 +4,7 @@ using UnityEngine;
 public class WorldUIVariables : MonoBehaviour {
     [Header("Menu UI")]
         public GameObject m_SpawnPointUI; private static GameObject SpawnPointUI; public static GameObject GetSpawnPointUI() { return SpawnPointUI; }
+        public GameObject m_MenuMapCamera; private static GameObject MenuMapCamera; public static GameObject GetMenuMapCamera() { return MenuMapCamera; }
     [Header("Player UI")]
         public GameObject m_TankUI; private static GameObject TankUI; public static GameObject GetTankUI() { return TankUI; }
         public GameObject m_PlaneUI; private static GameObject PlaneUI;public static GameObject GetPlaneUI() { return PlaneUI; }
@@ -29,6 +30,7 @@ public class WorldUIVariables : MonoBehaviour {
         public GameObject m_UnitMapUI; private static GameObject UnitMapUI; public static GameObject GetUnitMapUI() { return UnitMapUI; }
     [Header("Map UI")]
         public GameObject m_MapPattern; private static GameObject MapPattern; public static GameObject GetMapPattern() { return MapPattern; }
+        public GameObject m_MapCamera; private static GameObject MapCamera; public static GameObject GetMapCamera() { return MapCamera; }
     [Header("Damage Control UI")]
         public GameObject m_ShipDamageControlUI; private static GameObject ShipDamageControlUI; public static GameObject GetShipDamageControlUI() { return ShipDamageControlUI; }
         public GameObject m_ShipDamageControlAlertUI; private static GameObject ShipDamageControlAlertUI; public static GameObject GetShipDamageControlAlertUI() { return ShipDamageControlAlertUI; }
@@ -48,6 +50,7 @@ public class WorldUIVariables : MonoBehaviour {
     private void WorldSetUI() {
         // Menu UI
             SpawnPointUI = m_SpawnPointUI; if (SpawnPointUI == null) { Debug.Log ("No SpawnPointUI found."); }
+            MenuMapCamera = m_MenuMapCamera; if (MenuMapCamera == null) { Debug.Log ("No MenuMapCamera found."); }
         // Player UI
             TankUI = m_TankUI; if (TankUI == null) { Debug.Log ("No TankUI found."); }
             PlaneUI = m_PlaneUI; if (PlaneUI == null) { Debug.Log ("No PlaneUI found."); }
@@ -79,6 +82,7 @@ public class WorldUIVariables : MonoBehaviour {
 
         // Map UI
             MapPattern = m_MapPattern; if (MapPattern == null) { Debug.Log ("No MapPattern found."); }
+            MapCamera = m_MapCamera; if (MapCamera == null) { Debug.Log ("No MapCamera found."); }
 
         // Damage Control UI
             ShipDamageControlUI = m_ShipDamageControlUI; if (ShipDamageControlUI == null) { Debug.Log ("No ShipDamageControlUI found."); }
