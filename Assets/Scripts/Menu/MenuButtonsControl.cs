@@ -303,10 +303,22 @@ public class MenuButtonsControl : MonoBehaviour {
             GameObject _mapCameraObject = Instantiate(WorldGlobals.GetMenuMapCamera());
             MapCamera = _mapCameraObject.GetComponent<Camera>();
             SceneManager.MoveGameObjectToScene(_mapCameraObject, SceneManager.GetSceneByName(SelectedScenario.ScenarioScene));
-            int height = SelectedScenario.MapSizeList[0].Top - SelectedScenario.MapSizeList[0].Bottom;
-            int width = SelectedScenario.MapSizeList[0].Right - SelectedScenario.MapSizeList[0].Left;
-            // Debug.Log (" height  "+height+ " width  "+width);
 
+            // Debug.Log (" height  "+height+ " width  "+width);
+            // Camera
+                Transform _gameBoundariesHolder = GameObject.Find("GameBoundaries").transform;
+                Transform _gameBoundaries = _gameBoundariesHolder.Find("GameBoundary").transform;
+                Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
+
+                _mapCameraObject.transform.position = new Vector3(_gameBoundaries.position.x, _mapCameraObject.transform.position.y, _gameBoundaries.position.z);
+
+                float _height = _gameBoundaries.localScale.x;
+                float _width =_gameBoundaries.localScale.z;
+                float _size = _height;
+                if (_width > _size) {
+                    _size = _width;
+                } 
+                MapCamera.orthographicSize = _size;
             MapCamera.enabled = true;
 
         loaded = true;

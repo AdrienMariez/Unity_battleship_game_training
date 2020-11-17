@@ -10,7 +10,6 @@ namespace CompiledTypes
     {
         public string id;
 public string ScenarioScene;
-public List<MapSize> MapSizeList = new List<MapSize>();
 public List<ScenarioGameModes> ScenarioGameModesList = new List<ScenarioGameModes>();
 public List<DuelSpawnPoints> DuelSpawnPointsList = new List<DuelSpawnPoints>();
 
@@ -26,7 +25,6 @@ E
             SimpleJSON.JSONNode node = root.GetSheetWithName("Scenarios").Rows[(int)line];
 id = node["id"];
 ScenarioScene = node["ScenarioScene"];
-foreach(var item in node["MapSize"]) { MapSizeList.Add(new MapSize(root, item));}
 foreach(var item in node["ScenarioGameModes"]) { ScenarioGameModesList.Add(new ScenarioGameModes(root, item));}
 foreach(var item in node["DuelSpawnPoints"]) { DuelSpawnPointsList.Add(new DuelSpawnPoints(root, item));}
 

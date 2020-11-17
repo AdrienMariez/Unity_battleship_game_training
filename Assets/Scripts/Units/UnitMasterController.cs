@@ -255,7 +255,7 @@ public class UnitMasterController : MonoBehaviour {
                 }
                 if (collider.GetComponent<GameBoundariesManager> () != null) {
                     isOutOfGameZone = false;
-                    Debug.Log(UnitName+" has spawned outside the game zone !");
+                    // Debug.Log(UnitName+" has spawned inside the game zone !");
                 }
             }
             if (isToKill) {
@@ -289,7 +289,7 @@ public class UnitMasterController : MonoBehaviour {
         if (InGameBoundaries != action) {
             InGameBoundaries = action;
             if (InGameBoundaries) {
-                Debug.Log(UnitName+" has has entered the game zone !");
+                // Debug.Log(UnitName+" has has entered the game zone !");
             } else {
                 Debug.Log(UnitName+" has exited the game zone !");
             }

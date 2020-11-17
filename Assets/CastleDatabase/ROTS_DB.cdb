@@ -14,10 +14,6 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "MapSize"
-				},
-				{
-					"typeStr": "8",
 					"name": "ScenarioGameModes"
 				},
 				{
@@ -71,14 +67,6 @@
 							"DuelSpawnPointName": "SPDuelNaval08",
 							"DuelSpawnPointCategory": "ship"
 						}
-					],
-					"MapSize": [
-						{
-							"Top": 6910,
-							"Bottom": -2535,
-							"Right": 7448,
-							"Left": -2993
-						}
 					]
 				},
 				{
@@ -89,8 +77,7 @@
 							"ScenarioGameMode": "points"
 						}
 					],
-					"DuelSpawnPoints": [],
-					"MapSize": []
+					"DuelSpawnPoints": []
 				},
 				{
 					"id": "C",
@@ -100,8 +87,7 @@
 							"ScenarioGameMode": "custom"
 						}
 					],
-					"DuelSpawnPoints": [],
-					"MapSize": []
+					"DuelSpawnPoints": []
 				},
 				{
 					"id": "D",
@@ -127,8 +113,7 @@
 							"DuelSpawnPointName": "SPDuelNaval02",
 							"DuelSpawnPointCategory": "ship"
 						}
-					],
-					"MapSize": []
+					]
 				},
 				{
 					"id": "E",
@@ -158,8 +143,7 @@
 							"DuelSpawnPointName": "SPDuelNaval08",
 							"DuelSpawnPointCategory": "ship"
 						}
-					],
-					"MapSize": []
+					]
 				}
 			],
 			"separators": [],
@@ -3401,35 +3385,6 @@
 				{
 					"typeStr": "6:Units_categories",
 					"name": "DuelSpawnPointCategory"
-				}
-			]
-		},
-		{
-			"name": "Scenarios@MapSize",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "3",
-					"name": "Top"
-				},
-				{
-					"typeStr": "3",
-					"name": "Bottom",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "Left",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "Right",
-					"display": null
 				}
 			]
 		}
