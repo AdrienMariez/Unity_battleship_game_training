@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7135658397945489505}
   - component: {fileID: 282135415314082085}
   - component: {fileID: 8091174073427879976}
+  - component: {fileID: 6348745837041855930}
   m_Layer: 0
   m_Name: GlobalSharedVariables
   m_TagString: Untagged
@@ -143,6 +144,31 @@ MonoBehaviour:
     type: 3}
   m_ShipDamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
     type: 3}
+  m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
+    type: 3}
+  m_ErrorSound: {fileID: 8300000, guid: eaba9bdd004614f4a8cb662f8f6f76de, type: 3}
+--- !u!114 &6348745837041855930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865306459900658953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75956d155ab6cc40ac748a80f744e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
+    type: 3}
+  m_TimeToDestroyCamera: 3
+  m_MenuMapCamera: {fileID: 9094650477598888172, guid: d254b47dc2c0af84492cfe954d8e72b8,
+    type: 3}
+  m_MapPattern: {fileID: 6347733742488189580, guid: 870dd635617ffd940ae1172044f7d5e4,
+    type: 3}
+  m_MapCamera: {fileID: 9094650477598888172, guid: 5c4bf205fcb5c0044ada347d3448753d,
+    type: 3}
+  m_GamingAreaKillZonePadding: 200
   m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
     type: 3}
   m_ErrorSound: {fileID: 8300000, guid: eaba9bdd004614f4a8cb662f8f6f76de, type: 3}

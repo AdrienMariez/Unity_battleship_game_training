@@ -61,7 +61,7 @@ namespace UI {
         private void Awake() {
             PlayerUI = GameObject.Find("UI");
             IconsSpacing = WorldUIVariables.GetIconsSpacing();
-            TimeToDestroyCamera = WorldUIVariables.GetTimeToDestroyCamera();
+            TimeToDestroyCamera = WorldGlobals.GetTimeToDestroyCamera();
         }
         private void LateUpdate() {
             if (DisplayGameUI && ActiveTarget != null && DisplayUI) {
@@ -425,7 +425,7 @@ namespace UI {
         public void SendPlayerShellToUI(GameObject shellInstance){ if (!ShellCameraUsed) { CreatePlayerShellUI(shellInstance); } }
         private void CreatePlayerShellUI(GameObject shellInstance) {
             ShellCameraUsed = true;
-            GameObject shellCamera = Instantiate (WorldUIVariables.GetShellCamera(), shellInstance.transform);
+            GameObject shellCamera = Instantiate (WorldGlobals.GetShellCamera(), shellInstance.transform);
             shellInstance.GetComponent<ShellStat>().SetIsFollowedByCamera(PlayerManager, shellCamera, TimeToDestroyCamera);
         }
         public void ShellFollowedByCameraDestroyed() { StartCoroutine(WaitForDestroy()); }

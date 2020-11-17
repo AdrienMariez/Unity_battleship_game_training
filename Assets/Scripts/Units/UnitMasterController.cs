@@ -9,7 +9,7 @@ public class UnitMasterController : MonoBehaviour {
     protected WorldSingleUnit UnitWorldSingleUnit;
     protected CompiledTypes.Global_Units UnitReference_DB;
 
-    protected string UnitName; public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s;}
+    protected string UnitName; public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s;} public string GetUnitName() { return UnitName; }
     protected CompiledTypes.Units_categories.RowValues UnitCategory; public CompiledTypes.Units_categories.RowValues GetUnitCategory() { return UnitCategory; }
     protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory; public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() { return UnitSubCategory; }
     protected CompiledTypes.Units_sub_categories UnitSubCategory_DB; public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB() { return UnitSubCategory_DB; }
@@ -26,7 +26,7 @@ public class UnitMasterController : MonoBehaviour {
 
     protected bool Active = false;
     protected bool Dead = false;
-    protected bool InGameBoundaries = false;
+    protected bool InGameBoundaries = false;                // True : unit is within game boundaries / False : unit is out of game
     private SpawnerScriptToAttach Spawner;
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
@@ -244,6 +244,29 @@ public class UnitMasterController : MonoBehaviour {
                     GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
                 }
             }
+
+        // Check if unit is within game zone
+            Collider[] colliders = Physics.OverlapSphere (transform.position, unit.GetUnitSize());
+            bool isToKill = true;
+            bool isOutOfGameZone = true;
+            foreach (var collider in colliders) {
+                if (collider.GetComponent<KillZoneBoundariesManager> () != null) {
+                    isToKill = false;
+                }
+                if (collider.GetComponent<GameBoundariesManager> () != null) {
+                    isOutOfGameZone = false;
+                    Debug.Log(UnitName+" has spawned outside the game zone !");
+                }
+            }
+            if (isToKill) {
+                Debug.Log(UnitName+ " was spawned outside of bounds and was subsequently destroyed");
+                DestroyUnit();
+                return;
+            }
+            if (isOutOfGameZone) {
+                Debug.Log(UnitName+ " was spawned outside of the game zone");
+                InGameBoundaries = true;
+            }
     }
 
     public virtual void SetActive(bool activate) {
@@ -262,6 +285,7 @@ public class UnitMasterController : MonoBehaviour {
 
     public virtual void SetInGameBoundaries(bool action) {
         // True : enters game boundaries / False : exits game boundaries
+        // This method should just warn the player / AI that this unit is leaving the game
         if (InGameBoundaries != action) {
             InGameBoundaries = action;
             if (InGameBoundaries) {

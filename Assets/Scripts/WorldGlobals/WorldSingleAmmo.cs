@@ -24,19 +24,19 @@ public class WorldSingleAmmo {
             AmmoPrefab = (Resources.Load("Prefabs/Ammo/"+ammo.AmmoModelPathList[0].AmmoPath+""+ammo.AmmoModelPathList[0].AmmoModel, typeof(GameObject))) as GameObject;
             if (AmmoPrefab == null) {
                 Debug.Log (" Ammo was implemented without a model ! Unit id :"+ ammo.id);
-                AmmoPrefab = WorldUIVariables.GetErrorModel();
+                AmmoPrefab = WorldGlobals.GetErrorModel();
             }
 
         // FX
             ExplosionFX = (Resources.Load("FX/"+ammo.AmmoFXList[0].FXExplosion.FXPath+""+ammo.AmmoFXList[0].FXExplosion.FXPrefab, typeof(GameObject))) as GameObject;
             if (ExplosionFX == null) {
                 Debug.Log (" No ExplosionFX found for"+ ammo.id);
-                ExplosionFX = WorldUIVariables.GetErrorModel();
+                ExplosionFX = WorldGlobals.GetErrorModel();
             }
             WaterHitFX = (Resources.Load("FX/"+ammo.AmmoFXList[0].FXWaterHit.FXPath+""+ammo.AmmoFXList[0].FXWaterHit.FXPrefab, typeof(GameObject))) as GameObject;
             if (WaterHitFX == null) {
                 Debug.Log (" No WaterHitFX found for"+ ammo.id);
-                WaterHitFX = WorldUIVariables.GetErrorModel();
+                WaterHitFX = WorldGlobals.GetErrorModel();
             }
             DamageFX = WorldUIVariables.GetShellDecal();
 

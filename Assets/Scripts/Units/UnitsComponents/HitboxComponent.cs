@@ -150,6 +150,11 @@ public class HitboxComponent : MonoBehaviour {
         // False : exits game boundaries
         UnitMasterController.SetInGameBoundaries(action);
     }
+    public void InteractionWithKillZoneBoundaries () {
+        // If the unit leaves the game very far, destroy it
+        Debug.Log(UnitMasterController.GetUnitName()+ " has stepped outside of bounds and was subsequently destroyed");
+        UnitMasterController.DestroyUnit();
+    }
 
     public void SetUnitController(UnitMasterController unitMasterComponent){
         UnitMasterController = unitMasterComponent;

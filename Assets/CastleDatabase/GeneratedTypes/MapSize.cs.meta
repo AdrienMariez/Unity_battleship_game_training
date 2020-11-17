@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: bd25cdc2ac508de4e98f163c8a67dfe1
+guid: 0e00ed8d88b041d419ea9faf4885cfa6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - m_GlobalSharedVariables: {fileID: 5865306459900658953, guid: 8300ed9d77cdb0b45aa01bfe396f61ca,
-      type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

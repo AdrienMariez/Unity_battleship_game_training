@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
 
 
         // Create map
-            Instantiate(WorldUIVariables.GetMapPattern());
+            Instantiate(WorldGlobals.GetMapPattern());
 
         // Set each PlayerManager
             foreach (PlayerManagerList player in m_Players) {

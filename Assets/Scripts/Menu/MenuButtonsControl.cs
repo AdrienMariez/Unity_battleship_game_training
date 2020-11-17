@@ -49,7 +49,7 @@ public class MenuButtonsControl : MonoBehaviour {
             ScenariosDBList.Add(scenario);
         }
         // Create map
-            Instantiate(WorldUIVariables.GetMapPattern());
+            Instantiate(WorldGlobals.GetMapPattern());
 
         OpenMainMenu();
         Cursor.lockState = CursorLockMode.None;
@@ -123,7 +123,6 @@ public class MenuButtonsControl : MonoBehaviour {
             spawnerButton.onClick.AddListener(() => { OpenScenarioOptions(scenario, buttonGameMode); });        // Clicking on this button will open the options for the chosen scenario
         }
     }
-
     protected void OpenScenarioOptions (CompiledTypes.Scenarios scenario, CompiledTypes.GameModes gamemode) {
         // Debug.Log (" scenario : "+scenario.id +", gameMode : " + gamemode.id);
         if (scenario == SelectedScenario) {
@@ -136,6 +135,8 @@ public class MenuButtonsControl : MonoBehaviour {
             SetDuelOptions(scenario);
         }
     }
+
+    // DUEL MENU
     protected void CreateDuelOptions () {
         // Debug.Log (" OpenDuelOptions ");
         MenuUIDuelOptionsInstance = Instantiate(m_MenuUIDuelOptions, ScenariosOptionsContainerInstance.transform);
@@ -154,7 +155,7 @@ public class MenuButtonsControl : MonoBehaviour {
             PlayerTeam = WorldUnitsManager.GetDB().Teams.Allies;
 
         // // Map Preview
-        //     MapCamera = Instantiate(WorldUIVariables.GetMapCamera(), MenuUIDuelOptionsInstance.transform.Find("MapPreview").transform).GetComponent<Camera>();
+        //     MapCamera = Instantiate(WorldGlobals.GetMapCamera(), MenuUIDuelOptionsInstance.transform.Find("MapPreview").transform).GetComponent<Camera>();
         //     MapCamera.enabled = true;
 
         // Play button
@@ -194,7 +195,6 @@ public class MenuButtonsControl : MonoBehaviour {
             // Debug.Log (" Conditions not met ! ");
         }
     }
-
     protected void SetDuelOptions (CompiledTypes.Scenarios scenario) {
         foreach (Transform child in MenuUIDuelSpawnPointsContainerInstance.transform) {     // Clear the current spawnpoints list to make place for the new ones
             GameObject.Destroy(child.gameObject);
@@ -237,17 +237,17 @@ public class MenuButtonsControl : MonoBehaviour {
 
             Toggle _toggleAIMove = listElement.transform.Find("AICanMove").GetComponent<Toggle>();
             _toggleAIMove.onValueChanged.AddListener(delegate {
-                ToggleAIChanged(_dropdown, _toggleAIMove, "move");
+                ToggleDuelAIChanged(_dropdown, _toggleAIMove, "move");
             });
 
             Toggle _toggleAIShoot = listElement.transform.Find("AICanShoot").GetComponent<Toggle>();
             _toggleAIShoot.onValueChanged.AddListener(delegate {
-                ToggleAIChanged(_dropdown, _toggleAIShoot, "shoot");
+                ToggleDuelAIChanged(_dropdown, _toggleAIShoot, "shoot");
             });
 
             Toggle _toggleAISpawn = listElement.transform.Find("AICanSpawn").GetComponent<Toggle>();
             _toggleAISpawn.onValueChanged.AddListener(delegate {
-                ToggleAIChanged(_dropdown, _toggleAISpawn, "spawn");
+                ToggleDuelAIChanged(_dropdown, _toggleAISpawn, "spawn");
             });
 
             SpawnPointDuel _spawnPointDuel = new SpawnPointDuel{};
@@ -263,31 +263,16 @@ public class MenuButtonsControl : MonoBehaviour {
 
         // AsyncOperation async = SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
         // yield return async;
-        StartCoroutine (LoadPreviewScene ());                       // Load scene to get any needed info to display
+        StartCoroutine (LoadDuelPreviewScene ());                       // Load scene to get any needed info to display
     }
 
-    protected virtual IEnumerator LoadPreviewScene () {
-        yield return StartCoroutine (CreateMapScene ());               // Create scene
-        yield return StartCoroutine (DestroyMapElements ());           // Destroy elements in scene that are not needed
-        yield return StartCoroutine (CreateMapSpawnPoints ());
+    // DUEL MINIMAP PREVIEW
+    protected virtual IEnumerator LoadDuelPreviewScene () {
+        yield return StartCoroutine (CreatePreviewScene ());               // Create scene
+        yield return StartCoroutine (PreparePreviewElements ());           // Destroy elements in scene that are not needed
+        yield return StartCoroutine (CreatePreviewDuelSpawnPoints ());
     }
-    protected virtual IEnumerator CreateMapScene () {
-        // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
-        bool loaded = false;
-        SceneManager.LoadScene(SelectedScenario.ScenarioScene, LoadSceneMode.Additive);
-        loaded = true;
-        yield return loaded;
-    }
-    protected virtual IEnumerator DestroyMapElements () {
-        // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
-        bool loaded = false;
-        GameObject _UI_LOGIC = GameObject.Find("UI_LOGIC"); Destroy(_UI_LOGIC);
-        GameObject _environment = GameObject.Find("Environment"); Destroy(_environment);
-        GameObject _eventSystem = GameObject.Find("EventSystem"); Destroy(_eventSystem);
-        loaded = true;
-        yield return loaded;
-    }
-    protected virtual IEnumerator CreateMapSpawnPoints () {
+    protected virtual IEnumerator CreatePreviewDuelSpawnPoints () {
         bool loaded = false;
         Transform spawnPointHolder = GameObject.Find("GameObjects").transform;
         // Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointHolder);
@@ -295,16 +280,40 @@ public class MenuButtonsControl : MonoBehaviour {
             Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
             GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
         }
-        // Map Preview
-            GameObject _mapCameraObject = Instantiate(WorldUIVariables.GetMenuMapCamera());
+
+        loaded = true;
+        yield return loaded;
+    }
+    // ALL GAMEPLAY MINIMAP PREVIEW
+    protected virtual IEnumerator CreatePreviewScene () {
+        // yield return SceneManager.LoadSceneAsync(SelectedScenario.ScenarioScene);
+        bool loaded = false;
+        SceneManager.LoadScene(SelectedScenario.ScenarioScene, LoadSceneMode.Additive);
+        loaded = true;
+        yield return loaded;
+    }
+    protected virtual IEnumerator PreparePreviewElements () {
+        bool loaded = false;
+        // Destroy unwanted elements
+            GameObject _UI_LOGIC = GameObject.Find("UI_LOGIC"); Destroy(_UI_LOGIC);
+            GameObject _environment = GameObject.Find("Environment"); Destroy(_environment);
+            GameObject _eventSystem = GameObject.Find("EventSystem"); Destroy(_eventSystem);
+
+        // Create and place preview Camera 
+            GameObject _mapCameraObject = Instantiate(WorldGlobals.GetMenuMapCamera());
             MapCamera = _mapCameraObject.GetComponent<Camera>();
             SceneManager.MoveGameObjectToScene(_mapCameraObject, SceneManager.GetSceneByName(SelectedScenario.ScenarioScene));
+            int height = SelectedScenario.MapSizeList[0].Top - SelectedScenario.MapSizeList[0].Bottom;
+            int width = SelectedScenario.MapSizeList[0].Right - SelectedScenario.MapSizeList[0].Left;
+            // Debug.Log (" height  "+height+ " width  "+width);
+
             MapCamera.enabled = true;
 
         loaded = true;
         yield return loaded;
     }
 
+    // DUEL UNITS
     public class SpawnPointDuel {
         private CompiledTypes.DuelSpawnPoints _spawnPointDB; public CompiledTypes.DuelSpawnPoints GetSpawnPointDB(){ return _spawnPointDB; } public void SetSpawnPointDB(CompiledTypes.DuelSpawnPoints _sp){ _spawnPointDB = _sp; }
         // private string _spawnPointIdentifier;  public string GetSpawnPointID(){ return _spawnPointIdentifier; } public void SetSpawnPointID(string _spID){ _spawnPointIdentifier = _spID; }
@@ -314,7 +323,6 @@ public class MenuButtonsControl : MonoBehaviour {
         private bool _unitCanShoot = true;  public bool GetCanShoot(){ return _unitCanShoot; } public void SetCanShoot(bool _b){ _unitCanShoot = _b; }
         private bool _unitCanSpawn = true;  public bool GetCanSpawn(){ return _unitCanSpawn; } public void SetCanSpawn(bool _b){ _unitCanSpawn = _b; }
     }
-
     protected void DuelSpawnPointDropdownValueChanged(Dropdown dropDown, CompiledTypes.DuelSpawnPoints spawnPoint, List<WorldSingleUnit> optionUnits) {
         if (dropDown.value == 0) {
             // Debug.Log (spawnPoint.DuelSpawnPointName + " is now empty ! ");
@@ -337,8 +345,7 @@ public class MenuButtonsControl : MonoBehaviour {
             }
         }
     }
-
-    protected void ToggleAIChanged(Dropdown dropDown, Toggle _toggleAI, string _toogleType) {
+    protected void ToggleDuelAIChanged(Dropdown dropDown, Toggle _toggleAI, string _toogleType) {
         foreach (SpawnPointDuel sp in SpawnPointsDuel) {
             if (dropDown == sp.GetDropdown()) {
                 if (_toogleType == "move") {
@@ -355,7 +362,8 @@ public class MenuButtonsControl : MonoBehaviour {
             }
         }
     }
-
+    
+    // ALL GAMEPLAY
     protected void TeamDropdownValueChanged(Dropdown dropDown) {
         if (dropDown.options[dropDown.value].text == WorldUnitsManager.GetDB().Teams.Allies.Name) {
             PlayerTeam = WorldUnitsManager.GetDB().Teams.Allies;
@@ -365,7 +373,6 @@ public class MenuButtonsControl : MonoBehaviour {
             // Debug.Log (PlayerTeam + " selected ");
         }
     }
-
 
     protected void CloseMainMenu() {
         if (MenuUIInstance)

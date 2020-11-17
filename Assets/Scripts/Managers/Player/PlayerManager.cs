@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     // [HideInInspector] public bool m_Active;
     private GameObject ActiveTarget;
     private bool ActiveTargetSet = false;
-    private bool Pause = false;
+    private bool Pause = false;                                         // Pause should be a global var, not a player-local one !
     private bool MapActive = false;
     private bool DamageControl = false;
     private bool SpawnerMenu = false;
@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour
         ActiveTarget = null;
         ActiveTargetSet = false;
         CurrentTarget = 0;
-        MapCamera = Instantiate(WorldUIVariables.GetMapCamera(), this.transform).GetComponent<Camera>();
+        MapCamera = Instantiate(WorldGlobals.GetMapCamera(), this.transform).GetComponent<Camera>();
         MapManager = GetComponent<MapManager>();
         MapManager.SetMapCamera(MapCamera);
         UIManager = GetComponent<UIManager>();

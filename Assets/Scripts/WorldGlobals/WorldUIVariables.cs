@@ -4,7 +4,6 @@ using UnityEngine;
 public class WorldUIVariables : MonoBehaviour {
     [Header("Menu UI")]
         public GameObject m_SpawnPointUI; private static GameObject SpawnPointUI; public static GameObject GetSpawnPointUI() { return SpawnPointUI; }
-        public GameObject m_MenuMapCamera; private static GameObject MenuMapCamera; public static GameObject GetMenuMapCamera() { return MenuMapCamera; }
     [Header("Player UI")]
         public GameObject m_TankUI; private static GameObject TankUI; public static GameObject GetTankUI() { return TankUI; }
         public GameObject m_PlaneUI; private static GameObject PlaneUI;public static GameObject GetPlaneUI() { return PlaneUI; }
@@ -22,21 +21,12 @@ public class WorldUIVariables : MonoBehaviour {
         public float m_SpawnerSpacing = 22; private static float SpawnerSpacing = 22; public static float GetSpawnerSpacing() { return SpawnerSpacing; }
     [Header("Shell Decal")]
         public GameObject m_ShellDecal; private static GameObject ShellDecal; public static GameObject GetShellDecal() { return ShellDecal; }
-    [Header("Shell Camera")]
-        public GameObject m_ShellCamera; private static GameObject ShellCamera; public static GameObject GetShellCamera() { return ShellCamera; }
-        public float m_TimeToDestroyCamera = 3; private static float TimeToDestroyCamera = 3; public static float GetTimeToDestroyCamera() { return TimeToDestroyCamera; }
     [Header("Units UI")]
         public GameObject m_UnitUI; private static GameObject UnitUI; public static GameObject GetUnitUI() { return UnitUI; }
         public GameObject m_UnitMapUI; private static GameObject UnitMapUI; public static GameObject GetUnitMapUI() { return UnitMapUI; }
-    [Header("Map UI")]
-        public GameObject m_MapPattern; private static GameObject MapPattern; public static GameObject GetMapPattern() { return MapPattern; }
-        public GameObject m_MapCamera; private static GameObject MapCamera; public static GameObject GetMapCamera() { return MapCamera; }
     [Header("Damage Control UI")]
         public GameObject m_ShipDamageControlUI; private static GameObject ShipDamageControlUI; public static GameObject GetShipDamageControlUI() { return ShipDamageControlUI; }
         public GameObject m_ShipDamageControlAlertUI; private static GameObject ShipDamageControlAlertUI; public static GameObject GetShipDamageControlAlertUI() { return ShipDamageControlAlertUI; }
-    [Header("Error Models")]
-        public GameObject m_ErrorModel; private static GameObject ErrorModel; public static GameObject GetErrorModel() { return ErrorModel; }
-        public AudioClip m_ErrorSound; private static AudioClip ErrorSound; public static AudioClip GetErrorSound() { return ErrorSound; }
 
 /////////////////////////////////////////////////////////   
     private static bool FirstLoad = true; public static bool GetFirstLoad() { return FirstLoad; }
@@ -50,7 +40,6 @@ public class WorldUIVariables : MonoBehaviour {
     private void WorldSetUI() {
         // Menu UI
             SpawnPointUI = m_SpawnPointUI; if (SpawnPointUI == null) { Debug.Log ("No SpawnPointUI found."); }
-            MenuMapCamera = m_MenuMapCamera; if (MenuMapCamera == null) { Debug.Log ("No MenuMapCamera found."); }
         // Player UI
             TankUI = m_TankUI; if (TankUI == null) { Debug.Log ("No TankUI found."); }
             PlaneUI = m_PlaneUI; if (PlaneUI == null) { Debug.Log ("No PlaneUI found."); }
@@ -71,44 +60,13 @@ public class WorldUIVariables : MonoBehaviour {
 
         // Shell Decal
             ShellDecal = m_ShellDecal; if (ShellDecal == null) { Debug.Log ("No ShellDecal found."); }
-            
-        // Shell Camera
-            ShellCamera = m_ShellCamera; if (ShellCamera == null) { Debug.Log ("No ShellCamera found."); }
-            TimeToDestroyCamera = m_TimeToDestroyCamera;
 
         // Units UI
             UnitUI = m_UnitUI; if (UnitUI == null) { Debug.Log ("No UnitUI found."); }
             UnitMapUI = m_UnitMapUI; if (UnitMapUI == null) { Debug.Log ("No UnitMapUI found."); }
 
-        // Map UI
-            MapPattern = m_MapPattern; if (MapPattern == null) { Debug.Log ("No MapPattern found."); }
-            MapCamera = m_MapCamera; if (MapCamera == null) { Debug.Log ("No MapCamera found."); }
-
         // Damage Control UI
             ShipDamageControlUI = m_ShipDamageControlUI; if (ShipDamageControlUI == null) { Debug.Log ("No ShipDamageControlUI found."); }
             ShipDamageControlAlertUI = m_ShipDamageControlAlertUI; if (ShipDamageControlAlertUI == null) { Debug.Log ("No ShipDamageControlAlertUI found."); }
-
-        // Error Models
-            ErrorModel = m_ErrorModel; if (ErrorModel == null) { Debug.Log ("No ErrorModel found."); }
-            ErrorSound = m_ErrorSound; if (ErrorSound == null) { Debug.Log ("No ErrorSound found."); }
     }
-
-    public static GameObject BuildMapModel(CompiledTypes.Units_sub_categories unitCategory) {
-        GameObject mapModel = (Resources.Load("Prefabs/MapModels/"+unitCategory.MapModel, typeof(GameObject))) as GameObject;
-        if (mapModel != null) {
-            // Debug.Log ("BuildMapModel Worked !");
-            return mapModel;
-        } else {
-            // Debug.Log (" WUIV BuildMapModel NOT FOUND  "+unitCategory.id +" - "+ unitCategory.MapModel);
-            return ErrorModel;
-        }
-    }
-
-    // [Serializable]
-    // public class MapModelsList {
-    //     public string m_Name;
-
-    //     public GameObject m_MapModel;
-    // }
-
 }

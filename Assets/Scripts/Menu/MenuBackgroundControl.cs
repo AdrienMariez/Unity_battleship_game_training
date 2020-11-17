@@ -47,7 +47,7 @@ public class MenuBackgroundControl : MonoBehaviour {
             Destroy (mapInstance);
         }
     }
-    protected void Update() {
+    protected void FixedUpdate () {
         m_CameraAxis.transform.Rotate(0.0f, Speed, 0.0f, Space.Self);
     }
 }

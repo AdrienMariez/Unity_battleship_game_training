@@ -24,10 +24,10 @@ public class WorldUnitsManager : MonoBehaviour {
     public LayerMask m_WorldMask;
     private static LayerMask WorldMask; public static LayerMask GetWorldMask(){ return WorldMask; }
 
-    private static bool FirstLoad = true; public static bool GetFirstLoad(){ return FirstLoad; }
 
     private static GameManager GameManager; public static GameManager GetGameManager(){ return GameManager; } public static void SetGameManager(GameManager _s){ GameManager =_s; }
 
+    private static bool FirstLoad = true; public static bool GetFirstLoad(){ return FirstLoad; }
     private void Awake() {
         if (FirstLoad){
             FirstLoad = false;
@@ -231,7 +231,7 @@ public class WorldUnitsManager : MonoBehaviour {
 
     public static GameObject CreateNewUnitMapModel(GameObject unitGameObject, CompiledTypes.Teams team) {
         //Create the map element corresponding to the unit
-        GameObject tempModel = Instantiate(WorldUIVariables.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory_DB()), unitGameObject.transform);
+        GameObject tempModel = Instantiate(WorldGlobals.BuildMapModel(unitGameObject.GetComponent<UnitMasterController>().GetUnitSubCategory_DB()), unitGameObject.transform);
         var Renderer = tempModel.GetComponent<Renderer>();
         Renderer.material.SetColor("_Color", SetColor(team));
         return tempModel;

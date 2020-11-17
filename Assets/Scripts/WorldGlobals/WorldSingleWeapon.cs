@@ -48,7 +48,7 @@ public class WorldSingleWeapon {
             }
             if (WeaponPrefab == null) {
                 Debug.Log (" A turret was implemented without a model ! turret id :"+ weapon.id);
-                WeaponPrefab = WorldUIVariables.GetErrorModel();
+                WeaponPrefab = WorldGlobals.GetErrorModel();
             }
 
         // Health
@@ -158,15 +158,15 @@ public class WorldSingleWeapon {
             }
             if (RotationSound == null) {
                 Debug.Log (" No TurretRotationAudio found for"+ weapon.id);
-                RotationSound = (WorldUIVariables.GetErrorSound());
+                RotationSound = (WorldGlobals.GetErrorSound());
             }
             if (FireSound == null) {
                 Debug.Log (" No FireAudio found for"+ weapon.id);
-                FireSound = (WorldUIVariables.GetErrorSound());
+                FireSound = (WorldGlobals.GetErrorSound());
             }
             if (FireFXPrefab == null) {
                 Debug.Log (" No FireFXPrefab found for"+ weapon.id);
-                FireFXPrefab = (WorldUIVariables.GetErrorModel());
+                FireFXPrefab = (WorldGlobals.GetErrorModel());
             }
 
             // Debug.Log (weapon.id +" is set");

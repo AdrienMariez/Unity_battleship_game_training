@@ -95,7 +95,7 @@ namespace FreeLookCamera {
             if (ActivePlayerUnit != null) {
                 FollowTarget(Time.deltaTime);
 
-                if (Input.GetButton ("FocusCamera")){
+                if (Input.GetButton ("FocusCamera")){           // TODO shouldn't be allowed when game is paused
                     Cam.fieldOfView = m_FieldOfViewFocus;
                     Cam.transform.localRotation = Quaternion.Euler(-20, 0, 0);
                 } else {

@@ -56,7 +56,7 @@ public class WorldSingleUnit {
             }
             if (UnitPrefab == null) {
                 Debug.Log (" A unit was implemented without a model ! Unit id :"+ unit.id);
-                UnitPrefab = WorldUIVariables.GetErrorModel();
+                UnitPrefab = WorldGlobals.GetErrorModel();
             }
             // Set max unit scale ( used to make space for spawning models)
             if (UnitPrefab.transform.Find("Bounding").transform.Find("BoundingBox")) {
@@ -104,7 +104,7 @@ public class WorldSingleUnit {
 
             if (UnitDeathFX == null) {
                 Debug.Log (" No UnitDeathFX found. Unit id :"+ unit.id);
-                UnitDeathFX = WorldUIVariables.GetErrorModel();
+                UnitDeathFX = WorldGlobals.GetErrorModel();
             }
             // Debug.Log (UnitName+"UnitSubCategory : "+UnitSubCategory+" - UnitCategory :  "+UnitCategory+" - UnitDeathFX :  "+UnitDeathFX);
         // END CATEGORY
