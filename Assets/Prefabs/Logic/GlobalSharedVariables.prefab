@@ -103,8 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpawnPointUI: {fileID: 3288714511833522810, guid: 871e993e8bc4f3f41acab3809591090e,
     type: 3}
-  m_MenuMapCamera: {fileID: 9094650477598888172, guid: d254b47dc2c0af84492cfe954d8e72b8,
-    type: 3}
   m_TankUI: {fileID: 3767798349071585903, guid: d6e3488007fb27342aa3dbd9b4b6c943,
     type: 3}
   m_PlaneUI: {fileID: 3767798349071585903, guid: 0f03957ced6e3b944aa3afe5809805fb,
@@ -129,24 +127,14 @@ MonoBehaviour:
   m_SpawnerSpacing: 22
   m_ShellDecal: {fileID: 4744224058704857523, guid: 369e6201e6a2b1a42aeb832f212c7a1f,
     type: 3}
-  m_ShellCamera: {fileID: 1319206062417769342, guid: 7ad42dd040809e64ab169366c8c85cef,
-    type: 3}
-  m_TimeToDestroyCamera: 3
   m_UnitUI: {fileID: 6431504518210083437, guid: e8d6b40ae48c32a4ca0241497a235e4a,
     type: 3}
   m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
-    type: 3}
-  m_MapPattern: {fileID: 6347733742488189580, guid: 870dd635617ffd940ae1172044f7d5e4,
-    type: 3}
-  m_MapCamera: {fileID: 9094650477598888172, guid: 5c4bf205fcb5c0044ada347d3448753d,
     type: 3}
   m_ShipDamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
     type: 3}
   m_ShipDamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
     type: 3}
-  m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
-    type: 3}
-  m_ErrorSound: {fileID: 8300000, guid: eaba9bdd004614f4a8cb662f8f6f76de, type: 3}
 --- !u!114 &6348745837041855930
 MonoBehaviour:
   m_ObjectHideFlags: 0

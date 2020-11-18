@@ -8,12 +8,6 @@ using UnityEngine.SceneManagement;
 // Game Manager deals with major game workings, like checking any unit spawn, current game mode...
 public class GameManager : MonoBehaviour {
 
-    public enum GameModes {
-        Duel,
-        Points,
-        Custom
-    }
-
     public GameObject m_Ocean;
 
     [Header("Select game mode :")]
@@ -45,10 +39,6 @@ public class GameManager : MonoBehaviour {
 
 
     private void Start() {
-        // If scenario is called from main menu, stop all action
-            if (LoadingData.InMenu == true) {
-                return;
-            }
         // Include & set world globals
             if (WorldUIVariables.GetFirstLoad() || WorldUnitsManager.GetFirstLoad()){
                 // Debug.Log ("m_WorldGlobals");
@@ -56,9 +46,29 @@ public class GameManager : MonoBehaviour {
             }
             WorldUnitsManager.SetGameManager(this);
 
+        // Create map elements
+            Transform _gameBoundariesHolder = GameObject.Find("GameBoundaries").transform;
+            Transform _gameBoundaries = _gameBoundariesHolder.Find("GameBoundary").transform;
+            Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
+
+            Transform _mapPatternHolder = Instantiate(WorldGlobals.GetMapPattern()).transform;
+                _mapPatternHolder.position = _gameBoundaries.position;
+            GameObject _mapPattern = GameObject.Find("MapSeaGameArea");
+                _mapPattern.transform.localScale = new Vector3(_gameBoundaries.localScale.x / 10, 1.0f, _gameBoundaries.localScale.z / 10);
+                Material _mapMaterial = _mapPattern.GetComponent<MeshRenderer>().material;
+                    _mapMaterial.mainTextureScale = new Vector2(_mapPattern.transform.localScale.x / 100, _mapPattern.transform.localScale.z / 100);
+            GameObject _mapPatternForbiddenZone = GameObject.Find("MapSeaOutOfBounds");
+                _mapPatternForbiddenZone.transform.localScale = new Vector3(_gameBoundariesKill.localScale.x / 10, 1.0f, _gameBoundariesKill.localScale.z / 10);
+                Material _mapForbiddenZoneMaterial = _mapPatternForbiddenZone.GetComponent<MeshRenderer>().material;
+                    _mapForbiddenZoneMaterial.mainTextureScale = new Vector2(_mapPatternForbiddenZone.transform.localScale.x / 100, _mapPatternForbiddenZone.transform.localScale.z / 100);
+
+        // If scenario is called from main menu, stop all action
+            if (LoadingData.InMenu == true) {
+                return;
+            }
 
         // Create map
-            Instantiate(WorldGlobals.GetMapPattern());
+            // Instantiate(WorldGlobals.GetMapPattern());
 
         // Set each PlayerManager
             foreach (PlayerManagerList player in m_Players) {
