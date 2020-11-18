@@ -198,7 +198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7285307687401985603}
   m_Layer: 16
-  m_Name: MapSeaTiled
+  m_Name: MapSea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
