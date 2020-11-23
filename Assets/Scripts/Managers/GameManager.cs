@@ -37,6 +37,14 @@ public class GameManager : MonoBehaviour {
     private int TeamAlliesUnits;
     private int TeamOppositionUnits;  // The use of Opposition instead of Axis is to prevent confusion between TeamAlliesUnits and TeamAxisUnits
 
+    // Player common parameters :
+        // Cameras
+            protected float MapCameraMaxSize; public float GetMapCameraMaxSize() { return MapCameraMaxSize; }
+            protected float MapCameraPosTop; public float GetMapCameraPosTop() { return MapCameraPosTop; }
+            protected float MapCameraPosBottom; public float GetMapCameraPosBottom() { return MapCameraPosBottom; }
+            protected float MapCameraPosLeft; public float GetMapCameraPosLeft() { return MapCameraPosLeft; }
+            protected float MapCameraPosRight; public float GetCameraPosRight() { return MapCameraPosRight; }
+
 
     private void Start() {
         // Include & set world globals
@@ -61,14 +69,34 @@ public class GameManager : MonoBehaviour {
                 _mapPatternForbiddenZone.transform.localScale = new Vector3(_gameBoundariesKill.localScale.x / 10, 1.0f, _gameBoundariesKill.localScale.z / 10);
                 Material _mapForbiddenZoneMaterial = _mapPatternForbiddenZone.GetComponent<MeshRenderer>().material;
                     _mapForbiddenZoneMaterial.mainTextureScale = new Vector2(_mapPatternForbiddenZone.transform.localScale.x / 100, _mapPatternForbiddenZone.transform.localScale.z / 100);
+            
+            GameObject _mapPatternKillZone = GameObject.Find("MapSeaKillZone");
+                _mapPatternKillZone.transform.localScale = new Vector3(_gameBoundariesKill.localScale.x , 1.0f, _gameBoundariesKill.localScale.z);
+                Material _mapKillZoneMaterial = _mapPatternKillZone.GetComponent<MeshRenderer>().material;
+                    _mapKillZoneMaterial.mainTextureScale = new Vector2(_mapPatternForbiddenZone.transform.localScale.x / 10, _mapPatternForbiddenZone.transform.localScale.z / 10);
+
+
 
         // If scenario is called from main menu, stop all action
             if (LoadingData.InMenu == true) {
                 return;
             }
 
-        // Create map
-            // Instantiate(WorldGlobals.GetMapPattern());
+        // Common Map Parameters
+            // Map Camera
+                float _height = _gameBoundariesKill.localScale.x;
+                float _width =_gameBoundariesKill.localScale.z;
+                float _mapCameraMaxSize = _height;
+                if (_width > _mapCameraMaxSize) {
+                    _mapCameraMaxSize = _width;
+                }
+                MapCameraMaxSize = _mapCameraMaxSize / 2;
+
+                MapCameraPosTop = _gameBoundariesKill.position.z + _gameBoundariesKill.localScale.z / 2;
+                MapCameraPosBottom = _gameBoundariesKill.position.z - _gameBoundariesKill.localScale.z / 2;
+                MapCameraPosLeft = _gameBoundariesKill.position.x - _gameBoundariesKill.localScale.x / 2;
+                MapCameraPosRight = _gameBoundariesKill.position.x + _gameBoundariesKill.localScale.x / 2;
+                // Debug.Log ("MapCameraPosTop" + MapCameraPosTop + "MapCameraPosBottom" + MapCameraPosBottom + "MapCameraPosLeft" + MapCameraPosLeft + "MapCameraPosRight" + MapCameraPosRight);
 
         // Set each PlayerManager
             foreach (PlayerManagerList player in m_Players) {
@@ -87,7 +115,7 @@ public class GameManager : MonoBehaviour {
             }
             foreach (PlayerManager playerManager in PlayersManager) {
                 playerManager.SetGameManager(this);
-                playerManager.Reset();
+                playerManager.ResetPlayerFromGameManager();
                 playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
             }
         // Include ocean
@@ -218,7 +246,7 @@ public class GameManager : MonoBehaviour {
 
     public void ResetPlayerManager() {
         foreach (var playerManager in PlayersManager) {
-           playerManager.Reset(); 
+           playerManager.ResetPlayerFromGameManager(); 
         }
     }
 

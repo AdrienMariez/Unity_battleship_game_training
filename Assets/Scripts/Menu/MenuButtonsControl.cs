@@ -49,7 +49,7 @@ public class MenuButtonsControl : MonoBehaviour {
             ScenariosDBList.Add(scenario);
         }
         // Create map
-            Instantiate(WorldGlobals.GetMapPattern());
+            // Instantiate(WorldGlobals.GetMapPattern());
 
         OpenMainMenu();
         Cursor.lockState = CursorLockMode.None;
@@ -308,7 +308,7 @@ public class MenuButtonsControl : MonoBehaviour {
             // Camera
                 Transform _gameBoundariesHolder = GameObject.Find("GameBoundaries").transform;
                 Transform _gameBoundaries = _gameBoundariesHolder.Find("GameBoundary").transform;
-                Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
+                // Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
 
                 _mapCameraObject.transform.position = new Vector3(_gameBoundaries.position.x, _mapCameraObject.transform.position.y, _gameBoundaries.position.z);
 
@@ -318,7 +318,7 @@ public class MenuButtonsControl : MonoBehaviour {
                 if (_width > _size) {
                     _size = _width;
                 } 
-                MapCamera.orthographicSize = _size;
+                MapCamera.orthographicSize = _size / 2;
             MapCamera.enabled = true;
 
         loaded = true;

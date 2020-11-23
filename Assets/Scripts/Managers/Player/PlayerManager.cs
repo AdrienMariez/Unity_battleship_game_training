@@ -31,8 +31,8 @@ public class PlayerManager : MonoBehaviour
     private MapManager MapManager;
     private UnitsUIManager UnitsUIManager;
 
-    private void Init() {
-        // Debug.Log ("INIT");
+    private void InitPlayerFromGameManager() {
+        // Debug.Log ("InitPlayerFromGameManager");
         PlayerUnits.Clear();
         PlayerUnits = new List<GameObject>();
         ActiveTarget = null;
@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
         MapCamera = Instantiate(WorldGlobals.GetMapCamera(), this.transform).GetComponent<Camera>();
         MapManager = GetComponent<MapManager>();
         MapManager.SetMapCamera(MapCamera);
+        MapManager.InitMapFromPlayerManager(GameManager);
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
@@ -275,7 +276,7 @@ public class PlayerManager : MonoBehaviour
         UIManager.SetActiveTarget(ActiveTarget);
         UnitsUIManager.SetPlayedUnit(ActiveTarget);
         UIManager.SetCurrentUnitDead(false);
-        MapManager.SetPlayedUnit(ActiveTarget);
+        MapManager.MoveCameraToUnit(ActiveTarget.transform);
 
         if (ActiveTarget.GetComponent<TurretManager>()) {
             ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
@@ -293,7 +294,7 @@ public class PlayerManager : MonoBehaviour
 
         UIManager.SetMap(MapActive);
 
-        MapManager.SetInitialPosition(ActiveTarget);
+        // MapManager.ResetCameraPositionToUnit(ActiveTarget.transform);
         MapManager.SetMap(MapActive);
 
         MapCamera.enabled = MapActive;
@@ -342,11 +343,12 @@ public class PlayerManager : MonoBehaviour
     }
     public void ShellFollowedByCameraDestroyed() { UIManager.ShellFollowedByCameraDestroyed(); }
 
-    public void Reset(){
+    public void ResetPlayerFromGameManager(){
         PlayerUnits.Clear();
         PlayerUnits = new List<GameObject>();
         ActiveTarget = null;
-        Init();
+
+        InitPlayerFromGameManager();
         UIManager.SetCurrentUnitDead(true);
         // Debug.Log ("Playable units - Reset : "+ PlayerUnits.Count);
     }
