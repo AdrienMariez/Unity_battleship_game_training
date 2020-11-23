@@ -11,7 +11,7 @@ public class UnitUIManager : MonoBehaviour {
     private Camera Cam;
     private UnitsUIManager UnitsUIManager;
     private GameObject Unit;
-    private Renderer BoundsRenderer;
+    private BoxCollider BoxCollider;
     private bool BoundsFound = false;
     private GameObject ActiveUnit;
     private bool UnitCurrentlyPlayed = false;
@@ -44,7 +44,7 @@ public class UnitUIManager : MonoBehaviour {
         Cam = cam;
         Unit = unit;
         if (unit.transform.Find("Bounding").transform.Find("BoundingBox")) {
-            BoundsRenderer = Unit.transform.Find("Bounding").transform.Find("BoundingBox").GetComponent<Renderer>();
+            BoxCollider =  Unit.transform.Find("Bounding").transform.Find("BoundingBox").GetComponent<BoxCollider>();
             BoundsFound = true;
         }
 
@@ -168,7 +168,7 @@ public class UnitUIManager : MonoBehaviour {
     private void CreateBoundBox(){
         if (BoundsFound) {
             // Inspired by : https://answers.unity.com/questions/292031/how-to-display-a-rectangle-around-a-player.html
-            Bounds b = BoundsRenderer.bounds;
+            Bounds b = BoxCollider.bounds;
             Vector3[] pts = new Vector3[8];
 
             // All 8 vertices of the bounds

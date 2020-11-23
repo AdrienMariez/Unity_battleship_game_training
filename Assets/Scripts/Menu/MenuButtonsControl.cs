@@ -19,6 +19,8 @@ public class MenuButtonsControl : MonoBehaviour {
         private Scene CurrentScene;
         private CompiledTypes.GameModes CurrentGameMode;
         private Camera MapCamera;
+        private Button ButtonPlay;
+        private bool CanPlay = false;
     // Duel  Specific Options
         public GameObject m_MenuUIDuelOptions;
         public GameObject m_DuelSpawnDropdown;
@@ -28,9 +30,9 @@ public class MenuButtonsControl : MonoBehaviour {
         private int RoundsToWin;
 
     // Scenario type selection
-        Button ButtonDuelCategory;
-        Button ButtonPointsCategory;
-        Button ButtonCustomCategory;
+        private Button ButtonDuelCategory;
+        private Button ButtonPointsCategory;
+        private Button ButtonCustomCategory;
 
     [Header("Scenario List")]
         public GameObject m_ScenarioSelect;
@@ -41,7 +43,7 @@ public class MenuButtonsControl : MonoBehaviour {
     // Scenarios Options
         private GameObject ScenariosOptionsContainerInstance;
 
-        Scene PreviewScene;     
+        Scene PreviewScene;
 
     void Start() {
         LoadingData.InMenu = true;
@@ -159,11 +161,11 @@ public class MenuButtonsControl : MonoBehaviour {
         //     MapCamera.enabled = true;
 
         // Play button
-            Button _buttonPlayDuel = MenuUIDuelOptionsInstance.transform.Find("PlayScenarioButton").GetComponent<Button>();
-            _buttonPlayDuel.onClick.AddListener(() => { ButtonPlayDuelOnClick(); });
+            ButtonPlay = MenuUIDuelOptionsInstance.transform.Find("PlayScenarioButton").GetComponent<Button>();
+            ButtonPlay.onClick.AddListener(() => { ButtonPlayDuelOnClick(); });
+            CanPlayDuelTry();
     }
-    protected void ButtonPlayDuelOnClick(){
-        // Debug.Log (" button play ");
+    protected void CanPlayDuelTry(){
         if (PlayerTeam != null && SpawnPointsDuel.Count > 0) {
             // Debug.Log (" case 1 ");
             float alliesCount = 0;
@@ -185,12 +187,24 @@ public class MenuButtonsControl : MonoBehaviour {
             // Debug.Log (alliesCount +" / "+ axisCount);
             if (alliesCount > 0 && axisCount > 0) {
                 // Debug.Log (" Can start scenario ");
-                LoadingData.SelectedScenario = SelectedScenario;
-                LoadingData.PlayerTeam = PlayerTeam;
-                LoadingData.CurrentGameMode = CurrentGameMode;
-                LoadingData.SpawnPointsDuel = SpawnPointsDuel;
-                SceneManager.LoadScene("Loading");
+                CanPlay = true;
+                ButtonPlay.interactable = true;
             }
+        } else {
+            // Debug.Log (" Conditions not met ! ");
+            CanPlay = false;
+            ButtonPlay.interactable = false;
+        }
+    }
+    protected void ButtonPlayDuelOnClick(){
+        // Debug.Log (" button play ");
+        if (CanPlay) {
+            // Debug.Log (" Can start scenario ");
+            LoadingData.SelectedScenario = SelectedScenario;
+            LoadingData.PlayerTeam = PlayerTeam;
+            LoadingData.CurrentGameMode = CurrentGameMode;
+            LoadingData.SpawnPointsDuel = SpawnPointsDuel;
+            SceneManager.LoadScene("Loading");
         } else {
             // Debug.Log (" Conditions not met ! ");
         }
@@ -275,10 +289,16 @@ public class MenuButtonsControl : MonoBehaviour {
     protected virtual IEnumerator CreatePreviewDuelSpawnPoints () {
         bool loaded = false;
         Transform spawnPointHolder = GameObject.Find("GameObjects").transform;
-        // Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointHolder);
-        foreach (CompiledTypes.DuelSpawnPoints spawnPoint in SelectedScenario.DuelSpawnPointsList) {
-            Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
-            GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
+        // foreach (CompiledTypes.DuelSpawnPoints spawnPoint in SelectedScenario.DuelSpawnPointsList) {
+        //     Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
+        //     GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
+        // }
+        foreach (SpawnPointDuel spawnPoint in SpawnPointsDuel) {
+            spawnPoint.SetSpawnPointLocation(spawnPointHolder.Find(spawnPoint.GetSpawnPointDB().DuelSpawnPointName));
+
+            // Transform spawnPointLocation = spawnPointHolder.Find(spawnPoint.GetSpawnPointDB().DuelSpawnPointName);
+            GameObject previewElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPoint.GetSpawnPointLocation());
+            spawnPoint.SetCurrentUnitPreview(previewElement);
         }
 
         loaded = true;
@@ -327,9 +347,12 @@ public class MenuButtonsControl : MonoBehaviour {
 
     // DUEL UNITS
     public class SpawnPointDuel {
+        // DATA ONLY USED FOR MENU
         private CompiledTypes.DuelSpawnPoints _spawnPointDB; public CompiledTypes.DuelSpawnPoints GetSpawnPointDB(){ return _spawnPointDB; } public void SetSpawnPointDB(CompiledTypes.DuelSpawnPoints _sp){ _spawnPointDB = _sp; }
-        // private string _spawnPointIdentifier;  public string GetSpawnPointID(){ return _spawnPointIdentifier; } public void SetSpawnPointID(string _spID){ _spawnPointIdentifier = _spID; }
         private Dropdown _dropdown; public Dropdown GetDropdown(){ return _dropdown; } public void SetDropdown(Dropdown _d){ _dropdown = _d; }
+        private Transform _spawnPointLocation; public Transform GetSpawnPointLocation(){ return _spawnPointLocation; } public void SetSpawnPointLocation(Transform _t){ _spawnPointLocation = _t; }
+        private GameObject _currentUnitPreview; public GameObject GetCurrentUnitPreview(){ return _currentUnitPreview; } public void SetCurrentUnitPreview(GameObject _g){ _currentUnitPreview = _g; }
+        // DATA USED FOR THE SCENARIO
         private WorldSingleUnit _unit = null;  public WorldSingleUnit GetUnit(){ return _unit; } public void SetUnit(WorldSingleUnit _SWU ){ _unit = _SWU; }
         private bool _unitCanMove = true;  public bool GetCanMove(){ return _unitCanMove; } public void SetCanMove(bool _b){ _unitCanMove = _b; }
         private bool _unitCanShoot = true;  public bool GetCanShoot(){ return _unitCanShoot; } public void SetCanShoot(bool _b){ _unitCanShoot = _b; }
@@ -343,6 +366,15 @@ public class MenuButtonsControl : MonoBehaviour {
                 if (dropDown == sp.GetDropdown()) {
                     Debug.Log (sp.GetSpawnPointDB().DuelSpawnPointName + " is now empty ! ");
                     sp.SetUnit(null);
+                    if (sp.GetCurrentUnitPreview() != null) {
+                        if (sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>()){
+                            sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>().DestroyUnit();
+                        } else {
+                            Destroy(sp.GetCurrentUnitPreview());
+                        }
+                        GameObject previewElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), sp.GetSpawnPointLocation());
+                        sp.SetCurrentUnitPreview(previewElement);
+                    }
                 }
             }
         } else {
@@ -353,9 +385,30 @@ public class MenuButtonsControl : MonoBehaviour {
                 if (dropDown == sp.GetDropdown()) {
                     sp.SetUnit(optionUnits[dropDown.value-1]);
                     // Debug.Log (" Spawn point : " + sp.GetSpawnPointDB().DuelSpawnPointName + " - Unit : " + optionUnits[dropDown.value-1].GetUnitName());
+                    if (sp.GetCurrentUnitPreview() != null) {
+                        if (sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>()){
+                            sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>().DestroyUnit();
+                        } else {
+                            Destroy(sp.GetCurrentUnitPreview());
+                        }
+                        GameObject unitPreview = WorldUnitsManager.BuildUnit(sp.GetUnit(), sp.GetSpawnPointLocation().position, sp.GetSpawnPointLocation().rotation, false, false, false);
+
+                        // Multiply scale of map model preview (so it is visible)
+                        Vector3 modelScale = unitPreview.transform.localScale;
+                        modelScale *= 5f;
+                        unitPreview.transform.localScale = modelScale;
+                        if (unitPreview.transform.Find("Bounding").transform.Find("BoundingBox")) {
+                            Vector3 mapScale = unitPreview.transform.Find("Bounding").transform.Find("BoundingBox").localScale;
+                            mapScale = new Vector3(Mathf.Abs(mapScale.x *= 30f), Mathf.Abs(mapScale.y *= 30f), Mathf.Abs(mapScale.z *= 30f));
+                            unitPreview.transform.Find("Bounding").transform.Find("BoundingBox").localScale = mapScale;
+                        }
+
+                        sp.SetCurrentUnitPreview(unitPreview);
+                    }
                 }
             }
         }
+        CanPlayDuelTry();
     }
     protected void ToggleDuelAIChanged(Dropdown dropDown, Toggle _toggleAI, string _toogleType) {
         foreach (SpawnPointDuel sp in SpawnPointsDuel) {
@@ -390,38 +443,7 @@ public class MenuButtonsControl : MonoBehaviour {
         if (MenuUIInstance)
             Destroy (MenuUIInstance);
     }
-    void ButtonScenarioTrainingOnClick(){
-        // Debug.Log ("Button Scenario Training Clicked !");
-        // string sceneName = "ROTS_scenario_training";
-        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
-        // LoadingData.sceneToLoad = "ROTS_scenario_training";
-        // SceneManager.LoadScene("Loading");
-    }
-    void ButtonScenario1OnClick(){
-        // Debug.Log ("Button Scenario 1 Clicked !");
-        // string sceneName = "ROTS_scenario_1";
-        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        // LoadingData.sceneToLoad = "ROTS_scenario_1";
-        // SceneManager.LoadScene("Loading");
-    }
-    void ButtonScenario2OnClick(){
-        // Debug.Log ("Button Scenario 2 Clicked !");
-        // string sceneName = "ROTS_scenario_2";
-        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        // LoadingData.sceneToLoad = "ROTS_scenario_2";
-        // SceneManager.LoadScene("Loading");
-    }
-    void ButtonScenario3OnClick(){
-        // Debug.Log ("Button Scenario 3 Clicked !");
-        // string sceneName = "ROTS_scenario_3";
-        // SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        // LoadingData.sceneToLoad = "ROTS_scenario_3";
-        // SceneManager.LoadScene("Loading");
-    }
     void ButtonExitOnClick(){
         // Debug.Log ("Exit Options Clicked !");
         Application.Quit();
