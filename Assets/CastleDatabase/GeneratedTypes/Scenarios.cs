@@ -15,10 +15,7 @@ public List<DuelSpawnPoints> DuelSpawnPointsList = new List<DuelSpawnPoints>();
 
         public enum RowValues { 
 A, 
-B, 
-C, 
-D, 
-E
+B
  } 
         public Scenarios (CastleDBParser.RootNode root, RowValues line) 
         {

@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
             Transform _gameBoundaries = _gameBoundariesHolder.Find("GameBoundary").transform;
             Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
 
-            Transform _mapPatternHolder = Instantiate(WorldGlobals.GetMapPattern()).transform;
+            Transform _mapPatternHolder = Instantiate(WorldGlobals.GetMapPattern(), GameObject.Find("GameObjects").transform).transform;
                 _mapPatternHolder.position = _gameBoundaries.position;
             GameObject _mapPattern = GameObject.Find("MapSeaGameArea");
                 _mapPattern.transform.localScale = new Vector3(_gameBoundaries.localScale.x / 10, 1.0f, _gameBoundaries.localScale.z / 10);

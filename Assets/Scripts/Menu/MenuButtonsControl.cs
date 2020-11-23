@@ -210,15 +210,22 @@ public class MenuButtonsControl : MonoBehaviour {
         }
     }
     protected void SetDuelOptions (CompiledTypes.Scenarios scenario) {
+        // CLEAN DATA
         foreach (Transform child in MenuUIDuelSpawnPointsContainerInstance.transform) {     // Clear the current spawnpoints list to make place for the new ones
             GameObject.Destroy(child.gameObject);
-            SpawnPointsDuel = new List<SpawnPointDuel>();
         }
         if (SelectedScenario != null) {
             SceneManager.UnloadSceneAsync(SelectedScenario.ScenarioScene);
         }
+        if (SpawnPointsDuel.Count > 0) {
+            Debug.Log (" clean data ");
+            foreach (SpawnPointDuel sp in SpawnPointsDuel) {     // Clear the current spawnpoint list if needed
+                GameObject.Destroy(sp.GetCurrentUnitPreview());
+            }
+            SpawnPointsDuel = new List<SpawnPointDuel>();
+        }
         
-
+        // CREATE EACH SPAWNPOINT DATA
         // Debug.Log (" SetDuelOptions ");
         SelectedScenario = scenario;
         foreach (CompiledTypes.DuelSpawnPoints spawnPoint in scenario.DuelSpawnPointsList) {
@@ -289,15 +296,10 @@ public class MenuButtonsControl : MonoBehaviour {
     protected virtual IEnumerator CreatePreviewDuelSpawnPoints () {
         bool loaded = false;
         Transform spawnPointHolder = GameObject.Find("GameObjects").transform;
-        // foreach (CompiledTypes.DuelSpawnPoints spawnPoint in SelectedScenario.DuelSpawnPointsList) {
-        //     Transform spawnPointObject = spawnPointHolder.Find(spawnPoint.DuelSpawnPointName);
-        //     GameObject listElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPointObject);
-        // }
         foreach (SpawnPointDuel spawnPoint in SpawnPointsDuel) {
             spawnPoint.SetSpawnPointLocation(spawnPointHolder.Find(spawnPoint.GetSpawnPointDB().DuelSpawnPointName));
 
-            // Transform spawnPointLocation = spawnPointHolder.Find(spawnPoint.GetSpawnPointDB().DuelSpawnPointName);
-            GameObject previewElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPoint.GetSpawnPointLocation());
+            GameObject previewElement = Instantiate(WorldUIVariables.GetSpawnPointUI(), spawnPoint.GetSpawnPointLocation());    // Place spawnpoint placeholder on top of spawn location
             spawnPoint.SetCurrentUnitPreview(previewElement);
         }
 
@@ -359,14 +361,14 @@ public class MenuButtonsControl : MonoBehaviour {
         private bool _unitCanSpawn = true;  public bool GetCanSpawn(){ return _unitCanSpawn; } public void SetCanSpawn(bool _b){ _unitCanSpawn = _b; }
     }
     protected void DuelSpawnPointDropdownValueChanged(Dropdown dropDown, CompiledTypes.DuelSpawnPoints spawnPoint, List<WorldSingleUnit> optionUnits) {
-        if (dropDown.value == 0) {
+        if (dropDown.value == 0) {                          // if unit selected was "no unit for this spawnpoint"
             // Debug.Log (spawnPoint.DuelSpawnPointName + " is now empty ! ");
             // Do stuff to empty !
             foreach (SpawnPointDuel sp in SpawnPointsDuel) {
                 if (dropDown == sp.GetDropdown()) {
                     Debug.Log (sp.GetSpawnPointDB().DuelSpawnPointName + " is now empty ! ");
                     sp.SetUnit(null);
-                    if (sp.GetCurrentUnitPreview() != null) {
+                    if (sp.GetCurrentUnitPreview() != null) {                                                                       // Destroy previous preview
                         if (sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>()){
                             sp.GetCurrentUnitPreview().GetComponent<UnitMasterController>().DestroyUnit();
                         } else {
@@ -391,7 +393,8 @@ public class MenuButtonsControl : MonoBehaviour {
                         } else {
                             Destroy(sp.GetCurrentUnitPreview());
                         }
-                        GameObject unitPreview = WorldUnitsManager.BuildUnit(sp.GetUnit(), sp.GetSpawnPointLocation().position, sp.GetSpawnPointLocation().rotation, false, false, false);
+                        GameObject unitPreview =
+                            WorldUnitsManager.BuildUnit(sp.GetUnit(), sp.GetSpawnPointLocation().position, sp.GetSpawnPointLocation().rotation, false, false, false);
 
                         // Multiply scale of map model preview (so it is visible)
                         Vector3 modelScale = unitPreview.transform.localScale;

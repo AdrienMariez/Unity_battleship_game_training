@@ -71,33 +71,10 @@
 				},
 				{
 					"id": "B",
-					"ScenarioScene": "ROTS_scenario_A",
-					"ScenarioGameModes": [
-						{
-							"ScenarioGameMode": "points"
-						}
-					],
-					"DuelSpawnPoints": []
-				},
-				{
-					"id": "C",
-					"ScenarioScene": "ROTS_scenario_A",
-					"ScenarioGameModes": [
-						{
-							"ScenarioGameMode": "custom"
-						}
-					],
-					"DuelSpawnPoints": []
-				},
-				{
-					"id": "D",
-					"ScenarioScene": "ROTS_scenario_A",
+					"ScenarioScene": "ROTS_scenario_B",
 					"ScenarioGameModes": [
 						{
 							"ScenarioGameMode": "duel"
-						},
-						{
-							"ScenarioGameMode": "points"
 						}
 					],
 					"DuelSpawnPoints": [
@@ -112,35 +89,17 @@
 						{
 							"DuelSpawnPointName": "SPDuelNaval02",
 							"DuelSpawnPointCategory": "ship"
-						}
-					]
-				},
-				{
-					"id": "E",
-					"ScenarioScene": "ROTS_scenario_A",
-					"ScenarioGameModes": [
-						{
-							"ScenarioGameMode": "duel"
 						},
 						{
-							"ScenarioGameMode": "custom"
-						}
-					],
-					"DuelSpawnPoints": [
-						{
-							"DuelSpawnPointName": "SPDuelNaval03",
+							"DuelSpawnPointName": "SPDuelNaval05",
 							"DuelSpawnPointCategory": "ship"
 						},
 						{
-							"DuelSpawnPointName": "SPDuelNaval04",
+							"DuelSpawnPointName": "SPDuelNaval06",
 							"DuelSpawnPointCategory": "ship"
 						},
 						{
 							"DuelSpawnPointName": "SPDuelNaval07",
-							"DuelSpawnPointCategory": "ship"
-						},
-						{
-							"DuelSpawnPointName": "SPDuelNaval08",
 							"DuelSpawnPointCategory": "ship"
 						}
 					]
