@@ -58,7 +58,7 @@ public class ShipController : UnitMasterController {
                 RepairRate = DamageControl.GetRepairRate();
             }
 
-        if (GetComponent<TurretManager>())
+        if (UnitWorldSingleUnit.GetWeaponExists())
             Turrets.SetRepairRate(RepairRate);
 
         if (this.gameObject.transform.childCount > 0){
@@ -282,7 +282,7 @@ public class ShipController : UnitMasterController {
     public void SetDamageControlWater(int setCrew){ WaterRepairCrew = setCrew; }
     public void SetDamageControlTurrets(int setCrew){
         TurretsRepairCrew = setCrew;
-        if (GetComponent<TurretManager>() && Turrets != null) {
+        if (UnitWorldSingleUnit.GetWeaponExists() && Turrets != null) {
             Turrets.SetTurretRepairRate(TurretsRepairCrew);
         }
     }
@@ -320,12 +320,11 @@ public class ShipController : UnitMasterController {
             DamageControl.SetActive(Active);
     }
     public override void SetMap(bool map) {
-        if (GetComponent<TurretManager>())
-            Turrets.SetMap(map);
         if (GetComponent<ShipDamageControl>())
             DamageControl.SetMap(map);
         if (GetComponent<ShipMovement>())
             Movement.SetMap(map);
+        base.SetMap(map);
     }
     public override void SetPause(bool pause){
         base.SetPause(pause);

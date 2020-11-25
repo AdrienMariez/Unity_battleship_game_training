@@ -142,45 +142,45 @@ public class GameManager : MonoBehaviour {
             CurrentGameMode.Begin();
     }
 
-    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams unitTeam) {
+    public void UnitSpawned(UnitMasterController unitController, CompiledTypes.Teams unitTeam) {
         // Debug.Log ("UnitSpawned : "+unitTeam.id);
         foreach (var playerManager in PlayersManager) {
-           playerManager.UnitSpawned(unitGameObject, unitTeam); 
+           playerManager.UnitSpawned(unitController, unitTeam); 
         }
 
-        UpdateScore(unitGameObject, unitTeam, true);
+        UpdateScore(unitController, unitTeam, true);
         UpdateGameModeGameplay();
         UpdateGameModeMessage();
     }
-    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool unitActive) {
+    public void UnitDead(UnitMasterController unitController, CompiledTypes.Teams unitTeam, bool unitActive) {
         foreach (var playerManager in PlayersManager) {
-           playerManager.UnitDead(unitGameObject, unitTeam, unitActive); 
+           playerManager.UnitDead(unitController, unitTeam, unitActive); 
         }
 
-        UpdateScore(unitGameObject, unitTeam, false);
+        UpdateScore(unitController, unitTeam, false);
         UpdateGameModeGameplay();
         UpdateGameModeMessage();
     }
 
-    private void UpdateScore(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool positive) {
+    private void UpdateScore(UnitMasterController unitController, CompiledTypes.Teams unitTeam, bool positive) {
         // positive stands for " does the score need too be updated in a positive (unit spawned) or a negative way ?"
         if (unitTeam.id == WorldUnitsManager.GetDB().Teams.Allies.id) {
             if (positive) {                                                                                                                 // If unit is spawned... 
                 TeamAlliesUnits += 1;                                                                                                           // Unit counter goes up
-                AlliesTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is deduced
+                AlliesTeamCurrentCommandPoints -= unitController.GetUnitCommandPointsCost();                                                    // Unit price is deduced
             } else {                                                                                                                        // If unit is killed...
                 TeamAlliesUnits -= 1;                                                                                                           // Unit counter goes down
-                AlliesTeamCurrentCommandPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();               // Unit price is refund
-                AxisTeamCurrentVictoryPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitVictoryPointsValue();                // Enemy is credited with the points.
+                AlliesTeamCurrentCommandPoints += unitController.GetUnitCommandPointsCost();                                                    // Unit price is refund
+                AxisTeamCurrentVictoryPoints += unitController.GetUnitVictoryPointsValue();                                                     // Enemy is credited with the points.
             }
         } else if (unitTeam.id == WorldUnitsManager.GetDB().Teams.Axis.id) {
             if (positive) {
                 TeamOppositionUnits += 1; 
-                AxisTeamCurrentCommandPoints -= unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();
+                AxisTeamCurrentCommandPoints -= unitController.GetUnitCommandPointsCost();
             } else {
                 TeamOppositionUnits -= 1; 
-                AxisTeamCurrentCommandPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitCommandPointsCost();
-                AlliesTeamCurrentVictoryPoints += unitGameObject.GetComponent<UnitMasterController>().GetUnitVictoryPointsValue(); 
+                AxisTeamCurrentCommandPoints += unitController.GetUnitCommandPointsCost();
+                AlliesTeamCurrentVictoryPoints += unitController.GetUnitVictoryPointsValue(); 
             }
         }
     }

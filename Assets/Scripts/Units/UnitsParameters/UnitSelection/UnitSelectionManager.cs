@@ -7,7 +7,7 @@ public class UnitSelectionManager : UnitParameter {
     PlayerManager PlayerManager;
         public void SetPlayerManager(PlayerManager _s){ PlayerManager = _s; TryData(); }
     UnitMasterController UnitController;
-        public void SetUnitController(UnitMasterController _s){ UnitController = _s; UnitController.SetUnitSelectionManager(this); TryData(); }
+        public void SetUnitController(UnitMasterController _s){ UnitController = _s; TryData(); }
 
 
     private void TryData() {
@@ -15,17 +15,30 @@ public class UnitSelectionManager : UnitParameter {
             SelectorActive = true;
         }
     }
-    // void OnMouseEnter() { Debug.Log("Mouse entered GameObject."); }
-    // void OnMouseExit() { Debug.Log("Mouse is no longer on GameObject."); }
-    void OnMouseOver() {
-        // Debug.Log("False mouse over "+ UnitController.GetUnitName());
-        if (MapActive) {
-            Debug.Log("Mouse over "+ UnitController.GetUnitName());
+    void OnMouseEnter() { 
+        if (SelectorActive && MapActive) {
+            // Debug.Log("Mouse entered "+ UnitController.GetUnitName());
+            PlayerManager.HighlightUnitByMap(UnitController, true);
         }
     }
+    void OnMouseExit() {
+        if (SelectorActive && MapActive) {
+            // Debug.Log("Mouse exited "+ UnitController.GetUnitName());
+            PlayerManager.HighlightUnitByMap(UnitController, false);
+        }
+    }
+    // void OnMouseOver() {
+    //     if (SelectorActive && MapActive) {
+    //         Debug.Log("Mouse over "+ UnitController.GetUnitName());
+    //     }
+    // }
     void OnMouseDown() {
         if (SelectorActive && MapActive) {
-            Debug.Log("Mouse click on "+ UnitController.GetUnitName());
+            // Debug.Log("FAKE Mouse click on "+ UnitController.GetUnitName());
+            if (PlayerManager.GetPlayerTeam().id == UnitController.GetTeam().id) {
+                // Debug.Log("Mouse click on "+ UnitController.GetUnitName());
+                PlayerManager.SwitchSelectedUnitByController(UnitController);
+            }
         }
     }
 

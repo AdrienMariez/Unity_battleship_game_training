@@ -175,8 +175,6 @@ public class WorldUnitsManager : MonoBehaviour {
         // SCRIPTS
             // UI
                 UnitUI UnitUI = spawnedUnitInstance.AddComponent<UnitUI>();
-            // MOUSE SELECTION
-                UnitSelectionManager selectionManager = spawnedUnitInstance.AddComponent<UnitSelectionManager>();
             // HEALTH
                 UnitHealth UnitHealth = spawnedUnitInstance.AddComponent<UnitHealth>();
                 
@@ -209,21 +207,18 @@ public class WorldUnitsManager : MonoBehaviour {
             UnitHealth.SetStartingHealth(unit.GetUnitHealth());
             UnitHealth.SetDeathFX(unit.GetUnitDeathFX());
 
-        // MOUSE SELECTION
-            selectionManager.SetUnitController(unitController);
-
         // CAMERA
             TCP.SetCameraDistance(unit.GetUnitCameraDistance());
             TCP.SetCameraHeight(unit.GetUnitCameraHeight());
             TCP.SetCameraLateralOffset(unit.GetUnitCameraCameraOffset());
 
         // COMMON DATA
+            unitController.SetUnitModel(spawnedUnitInstance);
             unitController.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
 
         // MAP
             GameObject mapUnitInstance =
                 CreateNewUnitMapModel(spawnedUnitInstance, unit.GetUnitTeam_DB());
-            // mapUnitInstance.AddComponent<UnitSelectionManager>();
             unitController.SetMapModel(mapUnitInstance);
 
 

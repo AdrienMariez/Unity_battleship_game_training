@@ -9,10 +9,6 @@ public class BuildingController : UnitMasterController {
         // base.SpawnUnit();
     }
 
-    // public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
-    //     base.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
-    // }
-
     // private bool ActionPaused = false;
     // private bool ActionPaused2 = false;
     public override void FixedUpdate() {
@@ -41,13 +37,6 @@ public class BuildingController : UnitMasterController {
     
 
     // ALL OVERRIDES METHODS
-    public override void SetActive(bool activate) {
-        base.SetActive(activate);
-    }
-    public override void SetMap(bool map) {
-        if (GetComponent<TurretManager>())
-            Turrets.SetMap(map);
-    }
 
     // Turrets
     public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
@@ -79,8 +68,5 @@ public class BuildingController : UnitMasterController {
     // public override void CallDeath() {
     //     base.CallDeath();    
     // }
-    public override void DestroyUnit(){
-        // Debug.Log ("Destroy unit : "+gameObject.name);
-        base.DestroyUnit();
-    }
+
 }

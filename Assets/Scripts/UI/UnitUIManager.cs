@@ -10,10 +10,10 @@ public class UnitUIManager : MonoBehaviour {
 
     private Camera Cam;
     private UnitsUIManager UnitsUIManager;
-    private GameObject Unit;
+    private UnitsUIManager.PlayerSideUnitsUI PlayerSideUnitUI;
+    private GameObject UnitModel;
     private BoxCollider BoxCollider;
     private bool BoundsFound = false;
-    private GameObject ActiveUnit;
     private bool UnitCurrentlyPlayed = false;
     private GameObject EnemyTargetUnit;
     private bool UnitCurrentlyTargeted = false;
@@ -39,12 +39,13 @@ public class UnitUIManager : MonoBehaviour {
     const string RangeDisplayMeter = "{0} m";
     const string RangeDisplayKilometer = "{0} km";
 
-    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager unitsUIManager) {
+    public void InitializeUIModule(Camera cam, GameObject unit, UnitsUIManager.PlayerSideUnitsUI playerSideUnitUI, UnitsUIManager unitsUIManager) {
         // Debug.Log ("InitializeUIModule");
         Cam = cam;
-        Unit = unit;
-        if (unit.transform.Find("Bounding").transform.Find("BoundingBox")) {
-            BoxCollider =  Unit.transform.Find("Bounding").transform.Find("BoundingBox").GetComponent<BoxCollider>();
+        PlayerSideUnitUI = playerSideUnitUI;
+        UnitModel = PlayerSideUnitUI.GetUnitModel();
+        if (PlayerSideUnitUI.GetUnitModel().transform.Find("Bounding").transform.Find("BoundingBox")) {
+            BoxCollider =  PlayerSideUnitUI.GetUnitModel().transform.Find("Bounding").transform.Find("BoundingBox").GetComponent<BoxCollider>();
             BoundsFound = true;
         }
 
@@ -63,38 +64,34 @@ public class UnitUIManager : MonoBehaviour {
             UIHealth = this.transform.Find("Health").gameObject;
             HealthBar = UIHealth.transform.GetComponent<Slider>();
             HealthBarColor = UIHealth.transform.Find("FillArea").Find("Fill").GetComponent<Image>();
-            if (unit.GetComponent<UnitHealth>()) {
-                MaximumHealth = unit.GetComponent<UnitHealth>().GetStartingHealth();
+            MaximumHealth = PlayerSideUnitUI.GetUnitController().GetUnitHealth().GetStartingHealth();
+            CurrentHealth = PlayerSideUnitUI.GetUnitController().GetUnitHealth().GetCurrentHealth();
                 // Debug.Log ("InitializeUIModule"+MaximumHealth);
-                CurrentHealth = unit.GetComponent<UnitHealth>().GetCurrentHealth();
-            }
             HealthBar.maxValue = MaximumHealth;
             HealthBar.value = CurrentHealth;
 
         UnitsUIManager = unitsUIManager;
         StartCoroutine(PauseActionName());
+        StartCoroutine(CheckDestructionCondition());
     }
     // private bool NameActionPaused = false;
     IEnumerator PauseActionName(){
         // Coroutine created to prevent too much calculus for ship behaviour
         // NameActionPaused = true;
         yield return new WaitForSeconds(0.1f);
-        UINameText.text = Unit.name;
+        UINameText.text = PlayerSideUnitUI.GetUnitController().GetUnitName();
         // NameActionPaused = false;
     }
 
     protected void FixedUpdate() {
         // Debug.Log ("Unit : "+ Unit+" - Cam : "+ Cam);
-        if (Unit == null) {
-            Destroy();
-            return;
-        }
-        Vector3 heading = Unit.transform.position - Cam.transform.position;
+        
+        Vector3 heading = UnitModel.transform.position - Cam.transform.position;
 
         if (Vector3.Dot(Cam.transform.forward, heading) > 0 && !UnitCurrentlyPlayed) {
             
 
-            float size = 1000*(1/Vector3.Distance(Cam.transform.position, Unit.transform.position));
+            float size = 1000*(1/Vector3.Distance(Cam.transform.position, UnitModel.transform.position));
             size = Mathf.Min(size, 1);
             size = Mathf.Max(size, 0.2f);
             // var position = Cam.WorldToScreenPoint (enemies[e].position);
@@ -102,7 +99,7 @@ public class UnitUIManager : MonoBehaviour {
 
             // Update position of UI if it is supposed to be visible
             // Debug.Log (this.gameObject.name+" calculus : " + Vector3.Dot(Cam.transform.forward, heading));
-            Vector3 screenPos = Cam.WorldToScreenPoint(Unit.transform.position);
+            Vector3 screenPos = Cam.WorldToScreenPoint(UnitModel.transform.position);
             Vector3 updatedPos = new Vector2(screenPos.x, (screenPos.y + (30*size)));
             this.transform.position  = updatedPos;
 
@@ -144,9 +141,18 @@ public class UnitUIManager : MonoBehaviour {
         }
     }
 
+    IEnumerator CheckDestructionCondition(){
+        while (true) {
+            yield return new WaitForSeconds(2f);
+            if (UnitModel == null) {
+                Destroy();
+            }
+        }
+    }
+
     private void UpdateDistanceText(){
         if (!DistanceActionPaused) {
-            float distance = (Unit.transform.position - Cam.transform.position).magnitude;
+            float distance = (UnitModel.transform.position - Cam.transform.position).magnitude;
             if (distance > 999) {
                 distance = (Mathf.Round(distance / 100)) / 10f;
                 DistanceString = string.Format(RangeDisplayKilometer, distance);
@@ -154,15 +160,13 @@ public class UnitUIManager : MonoBehaviour {
                 DistanceString = string.Format(RangeDisplayMeter, Mathf.Round(distance));
             }
             UIDistance.GetComponent<Text>().text = DistanceString;
-            StartCoroutine(PauseActionDistance());
         }
     }
     private bool DistanceActionPaused = false;
     IEnumerator PauseActionDistance(){
-        // Coroutine created to prevent too much calculus for ship behaviour
+        // Coroutine created to prevent too much calculus
         DistanceActionPaused = true;
         yield return new WaitForSeconds(0.1f);
-        UINameText.text = Unit.name;
         DistanceActionPaused = false;
     }
     private void CreateBoundBox(){
@@ -203,9 +207,8 @@ public class UnitUIManager : MonoBehaviour {
         }
     }
 
-    public void SetPlayerUnit(GameObject activeUnit){
-        ActiveUnit = activeUnit;
-        if (ActiveUnit == Unit) {
+    public void SetPlayerUnit(bool isActive){
+        if (isActive) {
             UnitCurrentlyPlayed = true;
         } else {
             UnitCurrentlyPlayed = false;
@@ -215,7 +218,7 @@ public class UnitUIManager : MonoBehaviour {
 
     public void SetEnemyTargetUnit(GameObject targetUnit){
         EnemyTargetUnit = targetUnit;
-        if (EnemyTargetUnit == Unit) {
+        if (EnemyTargetUnit == UnitModel) {
             UnitCurrentlyTargeted = true;
             // UIName.GetComponent<Text>().text = Unit.name;
         } else {
@@ -230,6 +233,10 @@ public class UnitUIManager : MonoBehaviour {
         HealthBarColor.color = barColor;
     }
 
+    public void ChangeName(string name) {
+        UINameText.text = name;
+    }
+
     public void SetDead() {
         UIName.GetComponent<Text>().color = Color.grey;
         UIDistance.GetComponent<Text>().color = Color.grey;
@@ -239,7 +246,7 @@ public class UnitUIManager : MonoBehaviour {
         UIBoundingBoxBL.GetComponent<Image>().color = Color.grey;
         UIBoundingBoxBR.GetComponent<Image>().color = Color.grey;
 
-        UnitsUIManager.RemoveUIElement(this.gameObject);
+        // UnitsUIManager.RemoveUIElement(this.gameObject);
         StartCoroutine(WaitForDestroy());
     }
     IEnumerator WaitForDestroy(){
@@ -249,6 +256,7 @@ public class UnitUIManager : MonoBehaviour {
     }
     public void Destroy() {
         // Debug.Log ("Destroy");
+        UnitsUIManager.RemoveUIForSingleUnit(PlayerSideUnitUI);
         Destroy (this.gameObject);
     }
 }

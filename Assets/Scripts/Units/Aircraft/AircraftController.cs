@@ -271,6 +271,7 @@ using UnityEngine;
 
         // All the airplane controller should be redone. Nothing works in the workflow atm.
         public override void SetMap(bool map) {
+            base.SetMap(map);
         }
         public override float GetStartingHealth() { return(GetComponent<AircraftHealth>().GetStartingHealth()); }
         public override float GetCurrentHealth() { return(GetComponent<AircraftHealth>().GetCurrentHealth()); }

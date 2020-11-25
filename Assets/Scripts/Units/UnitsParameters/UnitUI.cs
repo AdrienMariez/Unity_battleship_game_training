@@ -36,6 +36,7 @@ public class UnitUI : UnitParameter {
         uiElement.transform.Find("Distance").GetComponent<Text>().color = WorldUnitsManager.SetColor(Team);
         uiElement.transform.Find("Health").GetComponent<Slider>().maxValue = MaximumHealth;
         uiElement.transform.Find("Health").GetComponent<Slider>().value = CurrentHealth;
+        uiElement.GetComponent<UnitMapUIManager>().SetUnitTeam(Team);
         UIMapElementManager.Add(uiElement.GetComponent<UnitMapUIManager>());
     }
 
@@ -59,6 +60,15 @@ public class UnitUI : UnitParameter {
         } else {
             return new Color(0.0f, 0.75f, 0.14f);
             // return Color.green;
+        }
+    }
+
+    public void ChangeName(string name) {
+        foreach (UnitUIManager element in UIElementManager) {
+            element.ChangeName(name);
+        }
+        foreach (UnitMapUIManager element in UIMapElementManager) {
+            element.ChangeName(name);
         }
     }
 

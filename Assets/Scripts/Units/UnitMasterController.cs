@@ -9,7 +9,10 @@ public class UnitMasterController : MonoBehaviour {
     protected WorldSingleUnit UnitWorldSingleUnit; public WorldSingleUnit GetUnitWorldSingleUnit() { return UnitWorldSingleUnit; }
     protected CompiledTypes.Global_Units UnitReference_DB;
 
-    protected string UnitName; public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s;} public string GetUnitName() { return UnitName; }
+    protected GameObject UnitModel; public void SetUnitModel(GameObject _g){ UnitModel = _g; } public GameObject GetUnitModel() { return UnitModel; }
+
+    protected string UnitName;
+        public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s; UnitUI.ChangeName(UnitName); } public string GetUnitName() { return UnitName; }
     protected CompiledTypes.Units_categories.RowValues UnitCategory; public CompiledTypes.Units_categories.RowValues GetUnitCategory() { return UnitCategory; }
     protected CompiledTypes.Units_sub_categories.RowValues UnitSubCategory; public CompiledTypes.Units_sub_categories.RowValues GetUnitSubCategory() { return UnitSubCategory; }
     protected CompiledTypes.Units_sub_categories UnitSubCategory_DB; public CompiledTypes.Units_sub_categories GetUnitSubCategory_DB() { return UnitSubCategory_DB; }
@@ -33,8 +36,7 @@ public class UnitMasterController : MonoBehaviour {
 
     protected UnitAIController UnitAI;
     protected UnitUI UnitUI;
-    protected UnitSelectionManager UnitSelector; public void SetUnitSelectionManager(UnitSelectionManager _s){ UnitSelector = _s; } 
-    protected UnitHealth Health;
+    protected UnitHealth Health; public UnitHealth GetUnitHealth() { return Health; }
     protected TurretManager Turrets;
     private GameObject EnemyTargetUnit;
 
@@ -102,7 +104,7 @@ public class UnitMasterController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
         if (GameManager)
-            GameManager.UnitDead(this.gameObject, UnitTeam, Active);
+            GameManager.UnitDead(this, UnitTeam, Active);
         if (GetComponent<SpawnerScriptToAttach>())
             GetComponent<SpawnerScriptToAttach>().SetDeath(true);
 
@@ -113,7 +115,7 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetDeath(true);
         UnitUI.KillAllUIInstances();
         if (GameManager) {
-            GameManager.UnitDead(this.gameObject, UnitTeam, Active);
+            GameManager.UnitDead(this, UnitTeam, Active);
         }
         Destroy(gameObject);
     }
@@ -135,7 +137,6 @@ public class UnitMasterController : MonoBehaviour {
         // Debug.Log ("SetUnitFromWorldUnitsManager "+unit.GetUnitName()+" AI : "+aiMove+" : "+aiShoot+" : "+aiSpawn);
 
         // Set all common parameters
-            SetUnitName(unit.GetUnitName());
             // Debug.Log ("SetUnitFromWorldUnitsManager - " +UnitName);
             UnitCategory = unit.GetUnitCategory();
             UnitSubCategory = unit.GetUnitSubCategory();
@@ -162,13 +163,15 @@ public class UnitMasterController : MonoBehaviour {
             UnitUI.SetCurrentHealth(HP);
             UnitUI.SetUnitTeam(UnitTeam);
 
+            SetUnitName(unit.GetUnitName());
+
         // Set AI
             UnitAI = GetComponent<UnitAIController>();
             UnitAI.SetUnitTeam(UnitTeam);
             UnitAI.SetName(UnitName);
 
         // Set turrets
-            if (unit.GetWeaponExists()) {
+            if (UnitWorldSingleUnit.GetWeaponExists()) {
                 Turrets = this.gameObject.AddComponent<TurretManager>();
             }
 
@@ -240,7 +243,7 @@ public class UnitMasterController : MonoBehaviour {
             if (WorldUnitsManager.GetGameManager() != null) {
                 // Debug.Log ("SetGameManager" +UnitName);
                 GameManager = WorldUnitsManager.GetGameManager();
-                GameManager.UnitSpawned(this.gameObject, UnitTeam);
+                GameManager.UnitSpawned(this, UnitTeam);
                 if (GetComponent<SpawnerScriptToAttach>()){
                     GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
                 }
@@ -273,7 +276,7 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void SetActive(bool activate) {
         Active = activate;
         UnitAI.SetAIActive(!Active);
-        if (GetComponent<TurretManager>())
+        if (UnitWorldSingleUnit.GetWeaponExists())
             Turrets.SetActive(Active);
         if (GetComponent<SpawnerScriptToAttach>())
             GetComponent<SpawnerScriptToAttach>().SetActive(Active);
@@ -283,8 +286,10 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {
-        // Debug.Log("Map open : " + mapActive);
-        UnitSelector.SetMap(mapActive);
+        if (UnitWorldSingleUnit.GetWeaponExists()) {
+            Turrets.SetMap(mapActive);
+        }
+        // Debug.Log("Unit Map open : " + mapActive);
     }
 
     public virtual void SetFreeCamera(bool freeCam) {
@@ -315,7 +320,6 @@ public class UnitMasterController : MonoBehaviour {
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
             GetComponent<SpawnerScriptToAttach>().BeginOperations(this, UnitAI);
         }
-        UnitSelector.SetPlayerManager(PlayerManager);
     }
     // public void SetGameManager(GameManager gameManager){
     //     // Debug.Log ("SetGameManager" +UnitName);

@@ -12,7 +12,12 @@ public class PlayerManager : MonoBehaviour {
         private GameObject _unitModel; public GameObject GetUnitModel(){ return _unitModel; } public void SetUnitModel(GameObject _g){ _unitModel = _g; }
         private UnitMasterController _unitController; public UnitMasterController GetUnitController(){ return _unitController; } public void SetUnitController(UnitMasterController _s){ _unitController = _s; }
         private bool _unitActive; public bool GetUnitActive(){ return _unitActive; } public void SetUnitActive(bool _b){ _unitActive = _b; }
+
+        private UnitUIManager _unitUI; public UnitUIManager GetUnitUI(){ return _unitUI; } public void SetUnitUI(UnitUIManager _s){ _unitUI = _s; }
+        private UnitMapUIManager _unitUIMap; public UnitMapUIManager GetUnitUIMap(){ return _unitUIMap; } public void SetUnitUIMap(UnitMapUIManager _s){ _unitUIMap = _s; }
     }
+
+
     private int PlayerUnitCurrentIndex = 0;
     private PlayerUnit CurrentPlayerControlledUnit;
 
@@ -142,38 +147,41 @@ public class PlayerManager : MonoBehaviour {
             SwitchSelectedUnitByIndex(PlayerUnitCurrentIndex);
     }
 
-    public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams team) {
+    public void UnitSpawned(UnitMasterController unitController, CompiledTypes.Teams team) {
         // Debug.Log ("UnitSpawned : "+ unitGameObject.name+" - "+team.id);
         // Debug.Log ("PlayerTeam : "+ PlayerTeam.id);
         if (team.id == PlayerTeam.id) {
             PlayerUnit _unit = new PlayerUnit{};
-                _unit.SetUnitModel(unitGameObject);
-                _unit.SetUnitController(unitGameObject.GetComponent<UnitMasterController>());
+                _unit.SetUnitModel(unitController.GetUnitModel());
+                _unit.SetUnitController(unitController);
                 _unit.SetUnitActive(false);
             PlayerUnitList.Add(_unit);
 
             
             _unit.GetUnitController().SetPlayerManager(this);
-            // _unit.GetUnitController().SetGameManager(GameManager);
+        }
+        UnitsUIManager.SpawnUnit(unitController, team);
 
+
+        // Late check : if no units were available and a player owned unit spawns, set it as controlled
+        if (team.id == PlayerTeam.id) {
             if (CurrentPlayerControlledUnit == null) {
                 SwitchSelectedUnitByIndex(0);
             }
         }
-        UnitsUIManager.SpawnUnit(unitGameObject, team);
         // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnitList.Count);
         // foreach (var unit in PlayerUnitList) {
         //     Debug.Log ("Playable units : "+ unit);
         // }
 
     }
-    public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool unitActive) {
+    public void UnitDead(UnitMasterController unitController, CompiledTypes.Teams unitTeam, bool unitActive) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
 
         if (unitTeam.id == PlayerTeam.id) {
-            UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
+            UnitsUIManager.RemoveUnit(unitController, unitTeam);
             foreach (PlayerUnit unit in PlayerUnitList) {
-                if (unit.GetUnitModel() == unitGameObject) {
+                if (unit.GetUnitController() == unitController) {
                     if (unit.GetUnitActive()) {
                         SetCurrentUnitDead(true);
                     }
@@ -231,16 +239,17 @@ public class PlayerManager : MonoBehaviour {
         }
     }
     private void SwitchSelectedUnitByIndex(int index) {
+        // Debug.Log ("SwitchSelectedUnitByIndex");
         // CHECK IF CURRENT UNIT IS NOT ALREADY SET (in case there is only one playable unit)
         if (PlayerUnitList[index] == CurrentPlayerControlledUnit) {
             return;
         }
-
         // DEAL WITH PREVIOUS UNIT
         foreach (PlayerUnit unit in PlayerUnitList) {
             if (unit.GetUnitActive()) {
                 unit.SetUnitActive(false);
                 unit.GetUnitController().SetActive(false);
+                UnitsUIManager.SetPlayedUnit(unit.GetUnitController(), false);
             }
         }
 
@@ -260,31 +269,41 @@ public class PlayerManager : MonoBehaviour {
         // SEND DATA NEEDED
         m_FreeLookCamera.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
         UIManager.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
-        UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitModel());
+        // UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitModel());
+        UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitController(), true);
         UIManager.SetCurrentUnitDead(false);
         MapManager.MoveCameraToUnit(CurrentPlayerControlledUnit.GetUnitModel().transform);
+
     }
-    private void SwitchSelectedUnitByUnit(GameObject targetUnit) {
-        foreach (PlayerUnit unit in PlayerUnitList) {
-            
+    public void SwitchSelectedUnitByController(UnitMasterController unitController) {
+        for (int i = 0; i < PlayerUnitList.Count; i++) {
+            if (unitController == PlayerUnitList[i].GetUnitController()) {
+                PlayerUnitCurrentIndex = i;
+                if (VerifyPlayerUnitsListIntegrity())
+                    SwitchSelectedUnitByIndex(PlayerUnitCurrentIndex);
+                return;
+            }
         }
     }
+
+    public void HighlightUnitByMap(UnitMasterController highlightedUnitController, bool isHighlighted) {
+        UnitsUIManager.SetHighlightedUnit(highlightedUnitController, isHighlighted);
+    }
+
+
 
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
     
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
     public void SetMap() {
         MapActive = !MapActive;
-        // if (MapActive)
-        //     SetEnabledUnit();
 
         UIManager.SetMap(MapActive);
-
-        // MapManager.ResetCameraPositionToUnit(CurrentPlayerControlledUnit.GetUnitModel().transform);
+        UnitsUIManager.SetMap(MapActive);
         MapManager.SetMap(MapActive);
 
         MapCamera.enabled = MapActive;
-
+        // Debug.Log("Player Map open : " + MapActive);
         CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
         SetOverlayUI();
         CheckCameraRotation();
