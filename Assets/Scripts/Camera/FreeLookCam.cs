@@ -238,13 +238,11 @@ namespace FreeLookCamera {
             Cursor.visible = set;
         }
 
-        public void SetActiveTarget(GameObject TargetSent) {
-            ActivePlayerUnit = TargetSent;
+        public void SetActiveTarget(GameObject targetModel, UnitMasterController unitController) {
+            ActivePlayerUnit = targetModel;
             ActivePlayerUnitTransform = ActivePlayerUnit.transform;
 
-            if (ActivePlayerUnit.GetComponent<UnitMasterController>()) {
-                ActivePlayerUnitCategory = ActivePlayerUnit.GetComponent<UnitMasterController>().GetUnitCategory();
-            }
+            ActivePlayerUnitCategory = unitController.GetUnitCategory();
 
             if (ActivePlayerUnit.GetComponent<TargetCameraParameters>()) {                                      // Set camera position relative to the target
                 m_CameraDistance = ActivePlayerUnit.GetComponent<TargetCameraParameters>().GetCameraDistance();

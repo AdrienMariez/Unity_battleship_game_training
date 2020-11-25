@@ -44,7 +44,7 @@ namespace UI {
         private GameObject DisplayTurretsCurrentTorpedoes;
         private GameObject DisplayTurretsCurrentDepthCharges;
         private GameObject ActiveTarget;
-        private string TargetType; 
+        private CompiledTypes.Units_categories.RowValues CurrentPlayedUnitCategory; public void SetCurrentPlayedUnitCategory(CompiledTypes.Units_categories.RowValues _E) { CurrentPlayedUnitCategory = _E; } 
         private bool CurrentUnitDead;
         private bool FreeCamera = false;
         private bool OverlayUI = false;
@@ -69,13 +69,14 @@ namespace UI {
                 if (ShipCurrentSpeed != null)
                     ShipCurrentSpeed.text = string.Format(ShipCurrentSpeedDisplay, CurrentSpeed);
 
-                if (TargetType == "Tank") {
+                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.ground) {
                     CurrentHP = Mathf.Round(ActiveTarget.GetComponent<TankHealth>().GetCurrentHealth());
                     if (ActiveTarget.GetComponent<TurretManager>()) {
                         // Heavy load ! to change if tanks are worked on !
                         CreateTurretsStatusDisplay();
                     }
-                } else if (TargetType == "Aircraft") {
+                }
+                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.aircraft) {
                     CurrentHP = Mathf.Round(ActiveTarget.GetComponent<AircraftHealth>().GetCurrentHealth());
                     UnitHP.value = CurrentHP;
                 }
@@ -111,14 +112,14 @@ namespace UI {
             CloseGameUI();
             CloseTurretUI();
             if (DisplayGameUI && !DisplayMapUI && DisplayUI) {
-                // Debug.Log("SetOpenUI :  - TargetType = "+ TargetType);
-                if (TargetType == "Tank") {
+                // Debug.Log("SetOpenUI :  - CurrentPlayedUnitCategory = "+ CurrentPlayedUnitCategory);
+                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.ground) {
                     OpenTankUI();
-                } else if (TargetType == "Building") {
+                } else if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.building) {
                     OpenBuildingUI();
-                }else if (TargetType == "Aircraft") {
+                }else if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.aircraft) {
                     OpenPlaneUI();
-                } else if (TargetType == "Ship") {
+                } else if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.ship) {
                     OpenShipUI();
                 }
                 if (ActiveTarget.GetComponent<TurretManager>()) {
@@ -233,19 +234,15 @@ namespace UI {
             Score.text = CurrentScore;
         }
 
-        public void SetTargetType(string Type) {
-            TargetType = Type;
-        }
 
-        public void SetActiveTarget(GameObject Target) {
-            ActiveTarget = Target;
+        public void SetActiveTarget(GameObject targetModel, UnitMasterController unitController) {
+            ActiveTarget = targetModel;
 
             SetOpenUI();
-            if (ActiveTarget.GetComponent<UnitMasterController>())
-                StartingHP = ActiveTarget.GetComponent<UnitMasterController>().GetStartingHealth();
-                SetCurrentUnitHealth(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentHealth());
-                CurrentUnitDead = ActiveTarget.GetComponent<UnitMasterController>().GetDeath();
-                ChangeSpeedStep(ActiveTarget.GetComponent<UnitMasterController>().GetCurrentSpeedStep());
+            StartingHP = unitController.GetStartingHealth();
+            SetCurrentUnitHealth(unitController.GetCurrentHealth());
+            CurrentUnitDead = unitController.GetDeath();
+            ChangeSpeedStep(unitController.GetCurrentSpeedStep());
         }
 
         public void SetPlayerUITurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledTurret) {
@@ -455,7 +452,7 @@ namespace UI {
         public void ChangeSpeedStep(int currentSpeedStep){
             SpeedStep = currentSpeedStep;
             if (PlayerUIInstance) {
-                if (TargetType == "Ship") {
+                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.ship) {
                     ShipSpeedStep.value = SpeedStep;
                 }
             }
@@ -463,7 +460,7 @@ namespace UI {
         public void SetRotationInput(float rotation){
             CurrentRotation = rotation;
             if (PlayerUIInstance) {
-                if (TargetType == "Ship") {
+                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.ship) {
                     ShipTurningSpeed.value = CurrentRotation;
                 }
             }

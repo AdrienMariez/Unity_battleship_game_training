@@ -28,24 +28,28 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     private bool SpawnMenuOpen = false;
 
     // Globals
-    protected GameManager GameManager;
-    protected PlayerManager PlayerManager;
+    protected GameManager GameManager; public void SetGameManager(GameManager gameManager) { GameManager = gameManager; }
+    protected PlayerManager PlayerManager; public void
+    SetPlayerManager(PlayerManager playerManager) {
+        PlayerManager = playerManager;
+
+        // In the future, just sending a new PlayerManager could rebuild a new CreateTeamedSpawnList() here
+    }
+    
+    public void BeginOperations(UnitMasterController unitController, UnitAIController aiController) {
+        UnitController = unitController;
+        AIController = aiController;
+
+        SpawnerSpacing = WorldUIVariables.GetSpawnerSpacing();
+        CreateSpawnList();
+    }
 
 
     // UI
-    private GameObject SpawnerUI;
     private GameObject SpawnMenuInstance;
     private GameObject SpawnListContainerInstance;
     private float SpawnerSpacing;
 
-
-    void Start() {
-        SpawnerUI = WorldUIVariables.GetSpawnerUI();
-        SpawnerSpacing = WorldUIVariables.GetSpawnerSpacing();
-        UnitController = GetComponent<UnitMasterController>();
-        AIController = GetComponent<UnitAIController>();
-        CreateSpawnList();
-    }
     private void CreateSpawnList() {
         foreach (List<WorldSingleUnit> subCategory in WorldUnitsManager.GetUnitsBySubcategory()) {
             for (int i=0; i < subCategory.Count; i++) {
@@ -55,6 +59,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                     foreach (SpawnerUnitCategory categorySelected in m_SpawnableCategories) {
                         if (subCategory[i].GetUnitSubCategory() == categorySelected.m_UnitSubCategory) {
                             SpawnableUnitsList.Add(subCategory[i]);
+                            // Debug.Log(subCategory[i].GetUnitName());
                         }
                     }
                 }
@@ -81,7 +86,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             // Debug.Log(UnitController.GetTeam().id);
             // Debug.Log(singleUnit.GetUnitName() +" - "+ singleUnit.GetUnitTeam_DB().id);
             if (singleUnit.GetUnitTeam_DB().id == UnitController.GetTeam().id) {
-                // Debug.Log (singleUnit.GetUnitName());
+                // Debug.Log (UnitController.GetUnitName()+ " - " +singleUnit.GetUnitName());
                 TeamedSpawnableUnitsList.Add(singleUnit);                   // Populate the list
             }
         }
@@ -94,7 +99,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 if(TryOpenSpawnMenu()) { OpenSpawnMenu(); } // Only case that opens the menu
                 else { SwitchSpawnMenu(); }
             } else { CloseSpawnMenu(); }
-            // SpawnUnit();
             // Debug.Log("SpawnMenu pushed, show spawn list !");
         }
     }
@@ -102,19 +106,16 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     private bool TryOpenSpawnMenu(){
         // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
-            if (singleUnit.GetUnitTeam_DB() == UnitController.GetTeam()) {
+            if (singleUnit.GetUnitTeam_DB().id == UnitController.GetTeam().id) {
                 return true;
             }
         }
-        // if (success) { return true; }
-        // else { return false; }
         return false;
     }
     private void OpenSpawnMenu(){
-        // Debug.Log ("Spawn menu open and ready !");
-        // Debug.Log (UnitController.m_UnitName);
+        // Debug.Log ("Spawn menu open and ready for "+UnitController.GetUnitName());
 
-        SpawnMenuInstance = Instantiate(SpawnerUI);
+        SpawnMenuInstance = Instantiate(WorldUIVariables.GetSpawnerUI());
         SpawnListContainerInstance = SpawnMenuInstance.transform.Find("SpawnListContainer").gameObject;
 
         CreateUnitSpawnerListDisplay();
@@ -237,12 +238,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     public static Vector3 TryPosition (Transform transform, float unitSize) {
         Vector3 position = transform.position;
-        Collider[] hitColliders = Physics.OverlapSphere(position, unitSize);
+        Collider[] hitColliders = Physics.OverlapSphere(position, unitSize, WorldUnitsManager.GetHitMask());
         if (hitColliders.Length == 0) {
             return position;
         }
 
         for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
+            // Debug.Log("TryPosition loop !");
             position = transform.position;
             position.x = transform.position.x + Random.Range(-500, 500);
             position.z = transform.position.z + Random.Range(-500, 500);
@@ -250,7 +252,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             if (_hitColliders.Length == 0) {
                 break;
             }
-            // Debug.Log("TryPosition loop !");
         }
         // Debug.Log("TryPosition found ! Original _x : " + _x +" current x : "+ position.x + "Original _z : " + _z +" current z : "+ position.z);
         return position;                    // Be aware that if no position is found after 30 tries, it is spawned anyway.
@@ -287,12 +288,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             }
         }
     }
-    public void SetGameManager(GameManager gameManager) {
-        GameManager = gameManager;
-    }
-    public void SetPlayerManager(PlayerManager playerManager) {
-        PlayerManager = playerManager;
-    }
+
     // public void SetUnitController(UnitMasterController unitController) {
     //     UnitController = unitController;
     // }

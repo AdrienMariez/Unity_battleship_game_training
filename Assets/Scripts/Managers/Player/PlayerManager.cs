@@ -6,18 +6,16 @@ using UI;
 using System.Collections.Generic;
 
 // This class stores the currently played unit and allows to enable player controls for units or disable them
-public class PlayerManager : MonoBehaviour
-{
-    //public FreeLookCam m_FreeLookCam;
+public class PlayerManager : MonoBehaviour {
+    private List <PlayerUnit> PlayerUnitList = new List<PlayerUnit>();
+    public class PlayerUnit {
+        private GameObject _unitModel; public GameObject GetUnitModel(){ return _unitModel; } public void SetUnitModel(GameObject _g){ _unitModel = _g; }
+        private UnitMasterController _unitController; public UnitMasterController GetUnitController(){ return _unitController; } public void SetUnitController(UnitMasterController _s){ _unitController = _s; }
+        private bool _unitActive; public bool GetUnitActive(){ return _unitActive; } public void SetUnitActive(bool _b){ _unitActive = _b; }
+    }
+    private int PlayerUnitCurrentIndex = 0;
+    private PlayerUnit CurrentPlayerControlledUnit;
 
-    // private GameObject[] PlayerUnits;
-    private List <GameObject> PlayerUnits = new List<GameObject>();
-    private int CurrentTarget = 0;
-    private GameObject CurrentTargetObj;
-    private GameObject PreviousTargetObj;
-    // [HideInInspector] public bool m_Active;
-    private GameObject ActiveTarget;
-    private bool ActiveTargetSet = false;
     private bool Pause = false;                                         // Pause should be a global var, not a player-local one !
     private bool MapActive = false;
     private bool DamageControl = false;
@@ -33,11 +31,11 @@ public class PlayerManager : MonoBehaviour
 
     private void InitPlayerFromGameManager() {
         // Debug.Log ("InitPlayerFromGameManager");
-        PlayerUnits.Clear();
-        PlayerUnits = new List<GameObject>();
-        ActiveTarget = null;
-        ActiveTargetSet = false;
-        CurrentTarget = 0;
+        PlayerUnitList.Clear();
+        PlayerUnitList = new List<PlayerUnit>();
+        CurrentPlayerControlledUnit = null;
+        PlayerUnitCurrentIndex = 0;
+
         MapCamera = Instantiate(WorldGlobals.GetMapCamera(), this.transform).GetComponent<Camera>();
         MapManager = GetComponent<MapManager>();
         MapManager.SetMapCamera(MapCamera);
@@ -51,17 +49,16 @@ public class PlayerManager : MonoBehaviour
         // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
         // UnitsUIManager.Init();
-        // Debug.Log ("PlayerUnits.Count : "+ PlayerUnits.Count);
-        SetEnabledUnit();
+        // Debug.Log ("PlayerUnitList.Count : "+ PlayerUnitList.Count);
+        // SwitchSelectedUnitByIndex();
         // UIManager.Reset();                // If the level has restarted, set the unit as not dead (no other check)
     }
 
     protected void Update() {
-        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
-        if (ActiveTarget == null && !ActiveTargetSet) {
-            // SetNextTarget();
-            SetEnabledUnit();
-        }
+        // Debug.Log ("Playable units : "+ PlayerUnitList.Count);
+        // if (CurrentPlayerControlledUnit == null) {
+        //     SetNextTarget();
+        // }
         if (!Pause) {     
             if (Input.GetButtonDown ("HideUI"))
                 SetHideUI();
@@ -96,9 +93,7 @@ public class PlayerManager : MonoBehaviour
         m_FreeLookCamera.SetFreeCamera(FreeCamera);
         UIManager.SetFreeCamera(FreeCamera);
 
-        if (ActiveTarget.GetComponent<TurretManager>()) {
-            ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
-        }
+        CurrentPlayerControlledUnit.GetUnitController().SetFreeCamera(FreeCamera);
     }
 
     public void SetPause() {
@@ -115,173 +110,164 @@ public class PlayerManager : MonoBehaviour
             Time.timeScale = 1f;   
         }
         // Debug.Log ("Pause : "+ Pause);
-        if (ActiveTarget != null)
-            ActiveTarget.GetComponent<UnitMasterController>().SetPause(Pause);
+        if (CurrentPlayerControlledUnit != null)
+            CurrentPlayerControlledUnit.GetUnitController().SetPause(Pause);
         CheckCameraRotation();
     }
 
     private void SetNextTarget() {
-        // CurrentTargetObj;PreviousTargetObj;
         //If we overflow, get back to the beginning
-        if (CurrentTarget >= (PlayerUnits.Count-1)) {
-            CurrentTarget = 0;
+        if (PlayerUnitCurrentIndex >= (PlayerUnitList.Count-1)) {
+            PlayerUnitCurrentIndex = 0;
         } else {
-            CurrentTarget += 1;
+            PlayerUnitCurrentIndex += 1;
         }
 
-        // Debug.Log ("Playable units - SetNextTarget : "+ PlayerUnits.Count);
-        // Debug.Log ("CurrentTarget - SetNextTarget : "+ CurrentTarget);
+        // Debug.Log ("Playable units - SetNextTarget : "+ PlayerUnitList.Count);
+        // Debug.Log ("PlayerUnitCurrentIndex - SetNextTarget : "+ PlayerUnitCurrentIndex);
         
-        if (PlayerUnits.Count > 1 || !ActiveTargetSet)
-            SetEnabledUnit();
+        if (VerifyPlayerUnitsListIntegrity())
+            SwitchSelectedUnitByIndex(PlayerUnitCurrentIndex);
     }
     private void SetPreviousTarget() {
-        if (CurrentTarget <= 0) {
-            CurrentTarget = PlayerUnits.Count-1;
+        if (PlayerUnitCurrentIndex <= 0 || PlayerUnitCurrentIndex > PlayerUnitList.Count-1) {
+            PlayerUnitCurrentIndex = PlayerUnitList.Count-1;
         } else {
-            CurrentTarget -= 1;
+            PlayerUnitCurrentIndex -= 1;
         }
-        // Debug.Log ("Playable units - SetPreviousTarget : "+ PlayerUnits.Count);
-        // Debug.Log ("CurrentTarget - SetPreviousTarget : "+ CurrentTarget);
+        // Debug.Log ("Playable units - SetPreviousTarget : "+ PlayerUnitList.Count);
+        // Debug.Log ("PlayerUnitCurrentIndex - SetPreviousTarget : "+ PlayerUnitCurrentIndex);
 
-        if (PlayerUnits.Count > 1 || !ActiveTargetSet)
-            SetEnabledUnit();
+        if (VerifyPlayerUnitsListIntegrity())
+            SwitchSelectedUnitByIndex(PlayerUnitCurrentIndex);
     }
 
-    private void FindAllPossibleTargets() {
-        // The check to look if any playable is spawned during the game is made only if the player tries to switch unit
-        Debug.Log ("FindAllPossibleTargets called in PlayerManager - WARNING ! This should be used with precaution !");
-        PlayerUnits = new List<GameObject>();
-        PlayerUnits.AddRange(GameObject.FindGameObjectsWithTag(PlayerTeam.id));
-        // Debug.Log ("Playable units - FindAllPossibleTargets : "+ PlayerUnits.Count + " - ActiveTargetSet : "+ ActiveTargetSet);
-    }
     public void UnitSpawned(GameObject unitGameObject, CompiledTypes.Teams team) {
         // Debug.Log ("UnitSpawned : "+ unitGameObject.name+" - "+team.id);
         // Debug.Log ("PlayerTeam : "+ PlayerTeam.id);
         if (team.id == PlayerTeam.id) {
-            PlayerUnits.Add(unitGameObject);
-            unitGameObject.GetComponent<UnitMasterController>().SetPlayerManager(this);
-            unitGameObject.GetComponent<UnitMasterController>().SetGameManager(GameManager);
+            PlayerUnit _unit = new PlayerUnit{};
+                _unit.SetUnitModel(unitGameObject);
+                _unit.SetUnitController(unitGameObject.GetComponent<UnitMasterController>());
+                _unit.SetUnitActive(false);
+            PlayerUnitList.Add(_unit);
+
+            
+            _unit.GetUnitController().SetPlayerManager(this);
+            // _unit.GetUnitController().SetGameManager(GameManager);
+
+            if (CurrentPlayerControlledUnit == null) {
+                SwitchSelectedUnitByIndex(0);
+            }
         }
         UnitsUIManager.SpawnUnit(unitGameObject, team);
-        // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnits.Count);
-        // foreach (var unit in PlayerUnits) {
+        // Debug.Log ("Playable units - UnitSpawned: "+ PlayerUnitList.Count);
+        // foreach (var unit in PlayerUnitList) {
         //     Debug.Log ("Playable units : "+ unit);
         // }
+
     }
     public void UnitDead(GameObject unitGameObject, CompiledTypes.Teams unitTeam, bool unitActive) {
         // Debug.Log ("UnitDead : "+ unitGameObject.name);
-        PlayerUnits.Remove(unitGameObject);
-        UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
-        if (unitTeam.id == PlayerTeam.id && unitActive) {
-            SetCurrentUnitDead(true);
+
+        if (unitTeam.id == PlayerTeam.id) {
+            UnitsUIManager.RemoveUnit(unitGameObject, unitTeam);
+            foreach (PlayerUnit unit in PlayerUnitList) {
+                if (unit.GetUnitModel() == unitGameObject) {
+                    if (unit.GetUnitActive()) {
+                        SetCurrentUnitDead(true);
+                    }
+                    PlayerUnitList.Remove(unit);
+                }
+            }
+
         }
-        // Debug.Log ("Playable units - UnitDead : "+ PlayerUnits.Count);
+        // Debug.Log ("Playable units - UnitDead : "+ PlayerUnitList.Count);
     }
 
     public void SendEnemiesToPlayerUnits(List <GameObject> enemiesUnitsObjectList) {
         // Debug.Log ("enemiesUnitsObjectList : "+ enemiesUnitsObjectList.Count);
-        // if (PlayerUnits.Count > 0) {
-            foreach (var unit in PlayerUnits) {
-                // Debug.Log ("Playable units : "+ unit);
-                unit.GetComponent<UnitMasterController>().SetNewEnemyList(enemiesUnitsObjectList);
-            }
-        // }
+        foreach (PlayerUnit unit in PlayerUnitList) {
+            // Debug.Log ("Playable units : "+ unit);
+            unit.GetUnitController().SetNewEnemyList(enemiesUnitsObjectList);
+        }
         
         // This should be changed for multiplayer
-        // if (PlayerUnits.Count > 0) {
+            List <GameObject> _playerUnits = new List<GameObject>();
+            foreach (PlayerUnit unit in PlayerUnitList) {
+                _playerUnits.Add(unit.GetUnitModel());
+            }
             foreach (var unit in enemiesUnitsObjectList) {
                 // Debug.Log ("Enemy units : "+ unit);
-                unit.GetComponent<UnitMasterController>().SetNewEnemyList(PlayerUnits);
+                unit.GetComponent<UnitMasterController>().SetNewEnemyList(_playerUnits);
             }
-        // }
         
-        // Debug.Log ("Playable units : "+ PlayerUnits.Count);
+        // Debug.Log ("Playable units : "+ PlayerUnitList.Count);
     }
 
     public void SendCurrentEnemyTarget(GameObject targetUnit) {
         UnitsUIManager.SetCurrentEnemyTarget(targetUnit);
     }
 
-    private void SetEnabledUnit() {
-        if (PlayerUnits.Count == 0){
+    private bool VerifyPlayerUnitsListIntegrity() {
+        if (PlayerUnitList.Count == 0){                                                        // If no unit available
             // Debug.Log ("Case 1");
-            ActiveTargetSet = false;
-            return;
-        } else if (PlayerUnits.Count == 1) {
+            return false;
+        } else if (PlayerUnitList.Count == 1) {                                                // If only one unit available
             // Debug.Log ("Case 2");
-            ActiveTargetSet = true;
-        } else if (PlayerUnits.Count < CurrentTarget) {         // Previously check was on (PlayerUnits[CurrentTarget] == null)
+            if (PlayerUnitList[0].GetUnitActive()) {
+                return true;
+            } else {
+                SetNextTarget();
+                return false;
+            }
+        } else if (PlayerUnitList.Count < PlayerUnitCurrentIndex) {                                     // If index overflowed
             // Debug.Log ("Case 3");
-            ActiveTargetSet = false;
+            SetNextTarget();
+            return false;
+        } else {                                                                               
+            // Debug.Log ("Case 4");
+            return true;
+        }
+    }
+    private void SwitchSelectedUnitByIndex(int index) {
+        // CHECK IF CURRENT UNIT IS NOT ALREADY SET (in case there is only one playable unit)
+        if (PlayerUnitList[index] == CurrentPlayerControlledUnit) {
+            return;
+        }
+
+        // DEAL WITH PREVIOUS UNIT
+        foreach (PlayerUnit unit in PlayerUnitList) {
+            if (unit.GetUnitActive()) {
+                unit.SetUnitActive(false);
+                unit.GetUnitController().SetActive(false);
+            }
+        }
+
+        // SET CURRENT UNIT
+        if (PlayerUnitList[index] != null) {
+            CurrentPlayerControlledUnit = PlayerUnitList[index];
+            CurrentPlayerControlledUnit.SetUnitActive(true);
+            CurrentPlayerControlledUnit.GetUnitController().SetActive(true);
+            CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
+            UIManager.SetCurrentPlayedUnitCategory(CurrentPlayerControlledUnit.GetUnitController().GetUnitCategory());
+            CurrentPlayerControlledUnit.GetUnitController().SetFreeCamera(FreeCamera);
+        } else {
             SetNextTarget();
             return;
-        } else {
-            // Debug.Log ("Case 4");
-            ActiveTargetSet = true;
         }
-        if (PlayerUnits[CurrentTarget] != null) {
-            ActiveTarget = PlayerUnits[CurrentTarget];
-        } else {
-            SetNextTarget();
-        }
-        // Debug.Log ("PlayerUnits.Length : "+ PlayerUnits.Count);
-        // Debug.Log ("ActiveTarget : "+ ActiveTarget);
-        // Debug.Log ("CurrentTarget : "+ CurrentTarget);
-        UIManager.SetTargetType("Unknown");
 
-        for (int i = 0; i < PlayerUnits.Count; i++){
-            if (PlayerUnits[i] == null){ continue; }
-            // If it's a tank :
-            if (PlayerUnits[i].GetComponent<TankMovement>()) {
-                if (i == CurrentTarget) {
-                    PlayerUnits[i].GetComponent<TankMovement>().SetActive(true);
-                    PlayerUnits[i].GetComponent<TurretManager>().SetActive(true);
-                    UIManager.SetTargetType("Tank");
-                    //Debug.Log ("Current target is a tank : "+ PlayerUnits[CurrentTarget].GetComponent<TankMovement>());
-                } else {
-                    PlayerUnits[i].GetComponent<TankMovement>().SetActive(false);
-                    PlayerUnits[i].GetComponent<TurretManager>().SetActive(false);
-                }
-            }
-            else if (PlayerUnits[i].GetComponent<AircraftController>()) {
-                if (i == CurrentTarget) {
-                    PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = true;
-                    UIManager.SetTargetType("Aircraft");
-                    // Debug.Log ("Current target is a plane");
-                } else {
-                    PlayerUnits[i].GetComponent<AircraftUserControl4Axis>().m_Active = false;
-                }
-            }
-            else if (PlayerUnits[i].GetComponent<ShipController>()) {
-                if (i == CurrentTarget) {
-                    PlayerUnits[i].GetComponent<ShipController>().SetActive(true);
-                    PlayerUnits[i].GetComponent<ShipController>().SetMap(MapActive);
-                    UIManager.SetTargetType("Ship");
-                } else {
-                    PlayerUnits[i].GetComponent<ShipController>().SetActive(false);
-                } 
-            }
-            else if (PlayerUnits[i].GetComponent<BuildingController>()) {
-                if (i == CurrentTarget) {
-                    PlayerUnits[i].GetComponent<BuildingController>().SetActive(true);
-                    PlayerUnits[i].GetComponent<BuildingController>().SetMap(MapActive);
-                    UIManager.SetTargetType("Building");
-                } else {
-                    PlayerUnits[i].GetComponent<BuildingController>().SetActive(false);
-                } 
-            }
-        }
-        m_FreeLookCamera.SetActiveTarget(ActiveTarget);
-        UIManager.SetActiveTarget(ActiveTarget);
-        UnitsUIManager.SetPlayedUnit(ActiveTarget);
+        // SEND DATA NEEDED
+        m_FreeLookCamera.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
+        UIManager.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
+        UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitModel());
         UIManager.SetCurrentUnitDead(false);
-        MapManager.MoveCameraToUnit(ActiveTarget.transform);
-
-        if (ActiveTarget.GetComponent<TurretManager>()) {
-            ActiveTarget.GetComponent<TurretManager>().SetFreeCamera(FreeCamera);
+        MapManager.MoveCameraToUnit(CurrentPlayerControlledUnit.GetUnitModel().transform);
+    }
+    private void SwitchSelectedUnitByUnit(GameObject targetUnit) {
+        foreach (PlayerUnit unit in PlayerUnitList) {
+            
         }
-        // Debug.Log ("Current target for player manager : "+ ActiveTarget);
     }
 
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
@@ -294,12 +280,12 @@ public class PlayerManager : MonoBehaviour
 
         UIManager.SetMap(MapActive);
 
-        // MapManager.ResetCameraPositionToUnit(ActiveTarget.transform);
+        // MapManager.ResetCameraPositionToUnit(CurrentPlayerControlledUnit.GetUnitModel().transform);
         MapManager.SetMap(MapActive);
 
         MapCamera.enabled = MapActive;
 
-        ActiveTarget.GetComponent<UnitMasterController>().SetMap(MapActive);
+        CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
         SetOverlayUI();
         CheckCameraRotation();
     }
@@ -344,13 +330,13 @@ public class PlayerManager : MonoBehaviour
     public void ShellFollowedByCameraDestroyed() { UIManager.ShellFollowedByCameraDestroyed(); }
 
     public void ResetPlayerFromGameManager(){
-        PlayerUnits.Clear();
-        PlayerUnits = new List<GameObject>();
-        ActiveTarget = null;
+        PlayerUnitList.Clear();
+        PlayerUnitList = new List<PlayerUnit>();
+        CurrentPlayerControlledUnit = null;
 
         InitPlayerFromGameManager();
         UIManager.SetCurrentUnitDead(true);
-        // Debug.Log ("Playable units - Reset : "+ PlayerUnits.Count);
+        // Debug.Log ("Playable units - Reset : "+ PlayerUnitList.Count);
     }
     public void UnitsUIManagerKillAllInstances(){
         UnitsUIManager.KillAllInstances();

@@ -6,7 +6,7 @@ public class UnitMasterController : MonoBehaviour {
     [Header("Global units elements : ")]
     // Same as WorldSingleUnit !
 
-    protected WorldSingleUnit UnitWorldSingleUnit;
+    protected WorldSingleUnit UnitWorldSingleUnit; public WorldSingleUnit GetUnitWorldSingleUnit() { return UnitWorldSingleUnit; }
     protected CompiledTypes.Global_Units UnitReference_DB;
 
     protected string UnitName; public void SetUnitName(string _s) { UnitName = _s; gameObject.name = _s;} public string GetUnitName() { return UnitName; }
@@ -33,6 +33,7 @@ public class UnitMasterController : MonoBehaviour {
 
     protected UnitAIController UnitAI;
     protected UnitUI UnitUI;
+    protected UnitSelectionManager UnitSelector; public void SetUnitSelectionManager(UnitSelectionManager _s){ UnitSelector = _s; } 
     protected UnitHealth Health;
     protected TurretManager Turrets;
     private GameObject EnemyTargetUnit;
@@ -281,7 +282,16 @@ public class UnitMasterController : MonoBehaviour {
         if (GetComponent<TurretManager>())
             Turrets.SetPause();
     }
-    public virtual void SetMap(bool mapActive) {}
+    public virtual void SetMap(bool mapActive) {
+        // Debug.Log("Map open : " + mapActive);
+        UnitSelector.SetMap(mapActive);
+    }
+
+    public virtual void SetFreeCamera(bool freeCam) {
+        if (UnitWorldSingleUnit.GetWeaponExists()) {
+            Turrets.SetFreeCamera(freeCam);
+        }
+    }
 
     public virtual void SetInGameBoundaries(bool action) {
         // True : enters game boundaries / False : exits game boundaries
@@ -303,14 +313,15 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetPlayerManager(PlayerManager);
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
-            // GetComponent<SpawnerScriptToAttach>().SetUnitController(this);
+            GetComponent<SpawnerScriptToAttach>().BeginOperations(this, UnitAI);
         }
+        UnitSelector.SetPlayerManager(PlayerManager);
     }
-    public void SetGameManager(GameManager gameManager){
-        // Debug.Log ("SetGameManager" +UnitName);
-        GameManager = gameManager;
-        if (GetComponent<SpawnerScriptToAttach>()){
-            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-        }
-    }
+    // public void SetGameManager(GameManager gameManager){
+    //     // Debug.Log ("SetGameManager" +UnitName);
+    //     GameManager = gameManager;
+    //     if (GetComponent<SpawnerScriptToAttach>()){
+    //         GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+    //     }
+    // }
 }
