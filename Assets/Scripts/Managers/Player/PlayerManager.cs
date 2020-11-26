@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour {
     private GameManager GameManager; public void SetGameManager(GameManager gameManager) { GameManager = gameManager; }
     private CompiledTypes.Teams PlayerTeam; public void SetPlayerTeam (CompiledTypes.Teams _t) { PlayerTeam = _t;} public CompiledTypes.Teams GetPlayerTeam() { return PlayerTeam; }
     private UIManager UIManager;
-    private MapManager MapManager;
+    private MapManager MapManager; public MapManager GetMapManager(){ return MapManager; }
     private UnitsUIManager UnitsUIManager;
 
     private void InitPlayerFromGameManager() {
@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour {
         MapCamera = Instantiate(WorldGlobals.GetMapCamera(), this.transform).GetComponent<Camera>();
         MapManager = GetComponent<MapManager>();
         MapManager.SetMapCamera(MapCamera);
-        MapManager.InitMapFromPlayerManager(GameManager);
+        MapManager.InitMapFromPlayerManager(GameManager, this);
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
@@ -286,12 +286,6 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    public void HighlightUnitByMap(UnitMasterController highlightedUnitController, bool isHighlighted) {
-        UnitsUIManager.SetHighlightedUnit(highlightedUnitController, isHighlighted);
-    }
-
-
-
     public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ UIManager.SetPlayerCanvas(playerCanvas); UnitsUIManager.SetPlayerCanvas(playerCanvas, playerMapCanvas); }
     
     public void SetScoreMessage(string message) { UIManager.SetScoreMessage(message); }
@@ -308,7 +302,8 @@ public class PlayerManager : MonoBehaviour {
         SetOverlayUI();
         CheckCameraRotation();
     }
-    
+
+// CURRENT UNIT DISPLAY 1 CAMERA
     public void SetDamageControl(bool damageControl){
         DamageControl = damageControl;
         SetOverlayUI();
@@ -335,11 +330,31 @@ public class PlayerManager : MonoBehaviour {
             m_FreeLookCamera.SetMouse(false);
         }
     }
+// CURRENT UNIT AI CONTROLS
+    public void SendNewMoveLocationToCurrentPlayerControlledUnit(Vector3 waypointPosition) {
+        Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", move to this position : " + waypointPosition);
+        CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition);
+    }
+    public void SendAttackTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
+        Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", attack this unit :  "+ rightClickedUnitController.GetUnitName());
+        CurrentPlayerControlledUnit.GetUnitController().SendAttackTarget(rightClickedUnitController);
+    }
+    public void SendFollowTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
+        if (rightClickedUnitController != CurrentPlayerControlledUnit.GetUnitController()) {
+            Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", follow this unit :  "+ rightClickedUnitController.GetUnitName());
+            CurrentPlayerControlledUnit.GetUnitController().SendFollowTarget(rightClickedUnitController);
+        }
+    }
 
+// CURRENT UNIT UI 
+    public void HighlightUnitByMap(UnitMasterController highlightedUnitController, bool isHighlighted) {
+        UnitsUIManager.SetHighlightedUnit(highlightedUnitController, isHighlighted);
+    }
     public void SetCurrentUnitHealth(float health){ UIManager.SetCurrentUnitHealth(health); }
     public void SetCurrentUnitDead(bool isUnitDead){ UIManager.SetCurrentUnitDead(isUnitDead); }
     public void ChangeSpeedStep(int currentSpeedStep){ UIManager.ChangeSpeedStep(currentSpeedStep); }
     public void SetRotationInput(float rotation){ UIManager.SetRotationInput(rotation); }
+// CURRENT UNIT TURRETS
     public void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){ UIManager.SetSingleTurretStatus(status, turretNumber); }
     public void SendPlayerShellToUI(GameObject shellInstance){ UIManager.SendPlayerShellToUI(shellInstance); }
     public void SetPlayerTurretRole(CompiledTypes.Weapons_roles.RowValues currentControlledTurret) {

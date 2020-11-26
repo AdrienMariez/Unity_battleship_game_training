@@ -4,14 +4,18 @@ using UnityEngine;
 public class UnitSelectionManager : UnitParameter {
     bool SelectorActive = false;                                                                                // If this isn't set, do not let the selection process work
     bool MapActive = false; public virtual void SetMap(bool mapActive) { MapActive = mapActive; }
-    PlayerManager PlayerManager;
+    protected PlayerManager PlayerManager;
+    protected MapManager MapManager;
         public void SetPlayerManager(PlayerManager _s){ PlayerManager = _s; TryData(); }
-    UnitMasterController UnitController;
+    protected UnitMasterController UnitController;
+    protected UnitAIController UnitAIController;
         public void SetUnitController(UnitMasterController _s){ UnitController = _s; TryData(); }
 
 
     private void TryData() {
         if (UnitController != null && PlayerManager != null) {
+            UnitAIController = UnitController.GetUnitAI();
+            MapManager = PlayerManager.GetMapManager();
             SelectorActive = true;
         }
     }
@@ -21,6 +25,21 @@ public class UnitSelectionManager : UnitParameter {
             PlayerManager.HighlightUnitByMap(UnitController, true);
         }
     }
+
+    void OnMouseOver () {
+        if (SelectorActive && MapActive) {
+            if (Input.GetMouseButtonDown(1)) {
+                // Debug.Log("Unit right clicked :  "+ UnitController.GetUnitName()); 
+                MapManager.SetUnitRightClickedThisFrame();
+                if (PlayerManager.GetPlayerTeam().id == UnitController.GetTeam().id) {
+                    PlayerManager.SendFollowTargetToCurrentPlayerControlledUnit(UnitController);
+                } else {
+                    PlayerManager.SendAttackTargetToCurrentPlayerControlledUnit(UnitController);
+                }
+            }
+        }
+    }
+
     void OnMouseExit() {
         if (SelectorActive && MapActive) {
             // Debug.Log("Mouse exited "+ UnitController.GetUnitName());

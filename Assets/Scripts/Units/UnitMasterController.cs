@@ -34,7 +34,7 @@ public class UnitMasterController : MonoBehaviour {
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
-    protected UnitAIController UnitAI;
+    protected UnitAIController UnitAI; public UnitAIController GetUnitAI() { return UnitAI; }
     protected UnitUI UnitUI;
     protected UnitHealth Health; public UnitHealth GetUnitHealth() { return Health; }
     protected TurretManager Turrets;
@@ -125,10 +125,23 @@ public class UnitMasterController : MonoBehaviour {
         UnitAI.SetNewEnemyList(enemiesUnitsObjectList);
     }
     public void SetCurrentTarget(GameObject targetUnit) {
+        // An switch in the target via UnitAIController
         EnemyTargetUnit = targetUnit;
         if (Active) {
             PlayerManager.SendCurrentEnemyTarget(targetUnit);
         }
+    }
+    public void SendAttackTarget(UnitMasterController rightClickedUnitController){
+        // An attack order set by the map
+        if (rightClickedUnitController.GetUnitModel() != EnemyTargetUnit) { // If the target is not already selected
+            UnitAI.SetPlayerSetTargetByController(rightClickedUnitController);
+        }
+    }
+    public void SendFollowTarget(UnitMasterController rightClickedUnitController){
+        // A follow fellow unit order set by the map
+    }
+    public void SendNewMoveLocationToAI(Vector3 waypointPosition) {
+        // A move order set by the map
     }
 
     // Main Gameplay

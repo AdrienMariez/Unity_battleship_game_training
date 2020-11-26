@@ -156,6 +156,9 @@ MonoBehaviour:
     type: 3}
   m_MapCamera: {fileID: 9094650477598888172, guid: 5c4bf205fcb5c0044ada347d3448753d,
     type: 3}
+  m_MapMask:
+    serializedVersion: 2
+    m_Bits: 256
   m_GamingAreaKillZonePadding: 200
   m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
     type: 3}

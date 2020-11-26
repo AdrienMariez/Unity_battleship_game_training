@@ -11,6 +11,9 @@ public class WorldGlobals : MonoBehaviour {
     [Header("Map")]
         public GameObject m_MapPattern; private static GameObject MapPattern; public static GameObject GetMapPattern() { return MapPattern; }
         public GameObject m_MapCamera; private static GameObject MapCamera; public static GameObject GetMapCamera() { return MapCamera; }
+        [Tooltip("What can be hit by ammo or more generally, what is considered a game element that can be damaged.")]
+        public LayerMask m_MapMask;
+        private static LayerMask MapMask; public static LayerMask GetMapMask(){ return MapMask; }
     [Header("Gaming Area")]
         public int m_GamingAreaKillZonePadding = 200; private static int GamingAreaKillZonePadding = 200; public static int GetGamingAreaKillZonePadding() { return GamingAreaKillZonePadding; }
     [Header("Error Placeholders")]
@@ -34,6 +37,7 @@ public class WorldGlobals : MonoBehaviour {
         // Map
             MapPattern = m_MapPattern; if (MapPattern == null) { Debug.Log ("No MapPattern found."); }
             MapCamera = m_MapCamera; if (MapCamera == null) { Debug.Log ("No MapCamera found."); }
+            MapMask = m_MapMask;
         // Gaming Area
             GamingAreaKillZonePadding = m_GamingAreaKillZonePadding;
         // Error Models

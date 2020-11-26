@@ -113,7 +113,7 @@ public class UnitAIController : UnitParameter {
             if (Input.GetButtonUp ("SetNewTarget")) {
                 // Debug.Log("SetNewTarget");
                 ChangePlayerTargetIndex();
-                SetPlayerSetTarget();
+                SetPlayerSetTargetByIndex();
             }
         }   
     }
@@ -246,7 +246,7 @@ public class UnitAIController : UnitParameter {
         // Debug.Log ("Targetable units : "+ EnemyUnitsList.Count);
         // Debug.Log ("PlayerTargetUnitIndex : "+ PlayerTargetUnitIndex);
     }
-    protected void SetPlayerSetTarget() {
+    protected void SetPlayerSetTargetByIndex() {
         // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
         // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
         if (PlayerSetTargetUnit == null) {
@@ -257,6 +257,20 @@ public class UnitAIController : UnitParameter {
         }
         PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
         TargetUnit = PlayerSetTargetUnit;
+        UnitMasterController.SetCurrentTarget(TargetUnit);
+        CheckState();
+    }
+    public void SetPlayerSetTargetByController(UnitMasterController targetedUnitController) {
+        // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
+        // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
+        for (int i = 0; i < EnemyUnitsList.Count; i++) {
+            if (targetedUnitController.GetUnitModel() == EnemyUnitsList[i]) {
+                PlayerTargetUnitIndex = i; 
+            }
+        }
+        PlayerSetTargetUnit = targetedUnitController.GetUnitModel();
+        TargetUnit = PlayerSetTargetUnit;
+        
         UnitMasterController.SetCurrentTarget(TargetUnit);
         CheckState();
     }

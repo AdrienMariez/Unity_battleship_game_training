@@ -19,8 +19,9 @@ public class MapManager : MonoBehaviour {
     private float MaxSize = 3000;
     private float MinSize = 300;
 
-    public void InitMapFromPlayerManager(GameManager gameManager) {
+    public void InitMapFromPlayerManager(GameManager gameManager, PlayerManager playerManager) {
         GameManager = gameManager;
+        PlayerManager = playerManager;
         MaxSize = GameManager.GetMapCameraMaxSize();
         PlayerCanvas = GameObject.Find("UICanvas").GetComponent<Canvas>();
         PlayerMapCanvas = GameObject.Find("UIMapCanvas").GetComponent<Canvas>();
@@ -70,6 +71,44 @@ public class MapManager : MonoBehaviour {
                 MapCamera.orthographicSize = CurrentSize;
                 CheckCameraSpeed();
             }
+        }
+    }
+
+    private bool UnitRightClickedThisFrame = false; public void SetUnitRightClickedThisFrame() { UnitRightClickedThisFrame = true; }
+
+    public RaycastHit RaycastHit;
+    private Vector3 RaycastTargetPosition;
+    protected void LateUpdate() {
+        if (MapActive && !UnitRightClickedThisFrame) {
+            if (Input.GetMouseButtonDown(1)) {
+                // If a unit was not right clicked upon (set in UnitSelectionManager), the map got right clicked on.
+
+                Vector3 mousePosition = MapCamera.ScreenToWorldPoint(Input.mousePosition);
+                Ray ray = new Ray(mousePosition, MapCamera.gameObject.transform.forward);
+                    Plane hPlane = new Plane(Vector3.up, Vector3.zero);         // This is a plane at 0,0,0 which simulates the sea collision model
+                    float distance = 0; 
+
+                    if (Physics.Raycast(ray, out RaycastHit, Mathf.Infinity, WorldGlobals.GetMapMask())) {               // If a collision model is hit
+                        Debug.Log("Other Object detected");
+                        Debug.DrawRay(mousePosition + (MapCamera.gameObject.transform.forward * 100), MapCamera.gameObject.transform.TransformDirection(Vector3.forward) * RaycastHit.distance, Color.yellow);
+                        RaycastTargetPosition = RaycastHit.point;
+                    } else if (hPlane.Raycast(ray, out distance)) {                                             // If the "water" is hit
+                        Debug.Log("Water detected");
+                        Debug.DrawRay(mousePosition + (MapCamera.gameObject.transform.forward * 100), MapCamera.gameObject.transform.TransformDirection(Vector3.forward) * distance, Color.red);
+                        RaycastTargetPosition = mousePosition + MapCamera.gameObject.transform.TransformDirection(Vector3.forward) * distance;
+                    } else {                                                                                    // If it is in the sky
+                        Debug.Log("Map command exited the game space for some reason. This case should be resolved.");
+                        Debug.DrawRay(mousePosition + (MapCamera.gameObject.transform.forward * 100), MapCamera.gameObject.transform.TransformDirection(Vector3.forward) * 100000, Color.white);
+                        RaycastTargetPosition = mousePosition + MapCamera.gameObject.transform.TransformDirection(Vector3.forward) * 100000;
+                    }
+
+                // Instantiate (WorldUIVariables.GetSpawnPointUI(), RaycastTargetPosition, transform.rotation);
+
+                PlayerManager.SendNewMoveLocationToCurrentPlayerControlledUnit(RaycastTargetPosition);
+            }
+        }
+        if (UnitRightClickedThisFrame){
+            UnitRightClickedThisFrame = false;
         }
     }
 
@@ -124,6 +163,6 @@ public class MapManager : MonoBehaviour {
     public void SetMap(bool active) {
         MapActive = active;
         PlayerCanvas.enabled = !MapActive;
-        PlayerMapCanvas.enabled = MapActive;
+        PlayerMapCanvas.enabled = MapActive;      
     }
 }
