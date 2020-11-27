@@ -175,7 +175,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     protected void TrySpawn (WorldSingleUnit unit) {
         if (TrySpawnUnit(unit)) {
-            SpawnUnit(unit, AIController.GetUnitCanMove(), AIController.GetUnitCanShoot(), AIController.GetUnitCanSpawn());
+            SpawnUnit(unit, AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
         }
     }
     Vector3 SpawnPosition;

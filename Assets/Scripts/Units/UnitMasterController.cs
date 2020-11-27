@@ -125,11 +125,20 @@ public class UnitMasterController : MonoBehaviour {
         UnitAI.SetNewEnemyList(enemiesUnitsObjectList);
     }
     public void SetCurrentTarget(GameObject targetUnit) {
-        // An switch in the target via UnitAIController
+        // A switch in the target via UnitAIController
         EnemyTargetUnit = targetUnit;
         if (Active) {
             PlayerManager.SendCurrentEnemyTarget(targetUnit);
         }
+        if (PlayerManager != null) {
+            if (targetUnit != null) {
+                PlayerManager.SendUnitEnemyTarget(this, targetUnit);
+            } else {
+                PlayerManager.CleanUnitEnemyTarget(this);
+            }
+        }
+        // Debug.Log ("SetCurrentTarget : "+ PlayerManager+" - "+ targetUnit);
+        // PlayerManager.SendUnitEnemyTarget(this, targetUnit);
     }
     public void SendAttackTarget(UnitMasterController rightClickedUnitController){
         // An attack order set by the map
@@ -182,6 +191,7 @@ public class UnitMasterController : MonoBehaviour {
             UnitAI = GetComponent<UnitAIController>();
             UnitAI.SetUnitTeam(UnitTeam);
             UnitAI.SetName(UnitName);
+            // UnitAI.SetName(unit.GetChildrenCanMove(), unit.GetChildrenCanShoot(), unit.GetChildrenCanSpawn());
 
         // Set turrets
             if (UnitWorldSingleUnit.GetWeaponExists()) {

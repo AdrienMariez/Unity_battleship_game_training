@@ -213,10 +213,6 @@ public class PlayerManager : MonoBehaviour {
         // Debug.Log ("Playable units : "+ PlayerUnitList.Count);
     }
 
-    public void SendCurrentEnemyTarget(GameObject targetUnit) {
-        UnitsUIManager.SetCurrentEnemyTarget(targetUnit);
-    }
-
     private bool VerifyPlayerUnitsListIntegrity() {
         if (PlayerUnitList.Count == 0){                                                        // If no unit available
             // Debug.Log ("Case 1");
@@ -256,6 +252,7 @@ public class PlayerManager : MonoBehaviour {
         // SET CURRENT UNIT
         if (PlayerUnitList[index] != null) {
             CurrentPlayerControlledUnit = PlayerUnitList[index];
+            UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitController(), true);
             CurrentPlayerControlledUnit.SetUnitActive(true);
             CurrentPlayerControlledUnit.GetUnitController().SetActive(true);
             CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
@@ -269,8 +266,6 @@ public class PlayerManager : MonoBehaviour {
         // SEND DATA NEEDED
         m_FreeLookCamera.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
         UIManager.SetActiveTarget(CurrentPlayerControlledUnit.GetUnitModel(), PlayerUnitList[PlayerUnitCurrentIndex].GetUnitController());
-        // UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitModel());
-        UnitsUIManager.SetPlayedUnit(CurrentPlayerControlledUnit.GetUnitController(), true);
         UIManager.SetCurrentUnitDead(false);
         MapManager.MoveCameraToUnit(CurrentPlayerControlledUnit.GetUnitModel().transform);
 
@@ -344,6 +339,18 @@ public class PlayerManager : MonoBehaviour {
             Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", follow this unit :  "+ rightClickedUnitController.GetUnitName());
             CurrentPlayerControlledUnit.GetUnitController().SendFollowTarget(rightClickedUnitController);
         }
+    }
+
+    public void SendCurrentEnemyTarget(GameObject targetUnit) {
+        if (CurrentPlayerControlledUnit != null) {
+            UnitsUIManager.SetCurrentEnemyTarget(targetUnit);
+        }
+    }
+    public void SendUnitEnemyTarget(UnitMasterController UnitController, GameObject targetUnit) {
+        UnitsUIManager.SendUnitEnemyTarget(UnitController, targetUnit);
+    }
+    public void CleanUnitEnemyTarget(UnitMasterController UnitController) {
+        UnitsUIManager.CleanUnitEnemyTarget(UnitController);
     }
 
 // CURRENT UNIT UI 

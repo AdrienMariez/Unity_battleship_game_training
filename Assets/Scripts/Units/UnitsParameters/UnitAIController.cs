@@ -31,15 +31,21 @@ public class UnitAIController : UnitParameter {
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
     [Header("What is this particular model allowed to do ?")]
-    public bool UnitCanMove = true; public void SetUnitCanMove(bool _b) { UnitCanMove = _b; } public bool GetUnitCanMove() { return UnitCanMove; }
-    public bool UnitCanShoot = true; public void SetUnitCanShoot(bool _b) { UnitCanShoot = _b; }public bool GetUnitCanShoot() { return UnitCanShoot; }
-    public bool UnitCanSpawn = true; public void SetUnitCanSpawn(bool _b) { UnitCanSpawn = _b; }public bool GetUnitCanSpawn() { return UnitCanSpawn; }
+    protected bool UnitCanMove = true; 
+    protected bool UnitCanShoot = true; 
+    protected bool UnitCanSpawn = true;
+    protected bool ChidrenCanMove = true; public bool GetChidrenCanMove() { return ChidrenCanMove; }
+    protected bool ChidrenCanShoot = true; public bool GetChidrenCanShoot() { return ChidrenCanShoot; }
+    protected bool ChidrenCanSpawn = true; public bool GetChidrenCanSpawn() { return ChidrenCanSpawn; }
 
     public virtual void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
         // Debug.Log ("BeginOperations "+Name+" Sent AI : "+aiMove+" : "+aiShoot+" : "+aiSpawn);
         UnitCanMove = aiMove;
         UnitCanShoot = aiShoot;
         UnitCanSpawn = aiSpawn;
+        ChidrenCanMove = aiMove;        // Children AI options should be untouched so they can transmit their parameters to future spawned units
+        ChidrenCanShoot = aiShoot;
+        ChidrenCanSpawn = aiSpawn;
         UnitMasterController = GetComponent<UnitMasterController>();
         // GetTargets();
 
@@ -58,13 +64,6 @@ public class UnitAIController : UnitParameter {
         }
         // Debug.Log ("BeginOperations "+Name+" AI : "+UnitCanMove+" : "+UnitCanShoot+" : "+UnitCanSpawn);
         StartCoroutine(AIOrdersLoop());
-    }
-    void Awake () {
-        // CheckMoveAbility();
-        // CheckShootAbility();
-        // CheckSpawnAbility();
-
-        // StartCoroutine(AIOrdersLoop());
     }
     public virtual void SetAIFromUnitManager(bool aiMove, bool aiShoot, bool aiSpawn) {      // Start from a spawn point
         UnitCanMove = aiMove;
@@ -205,9 +204,11 @@ public class UnitAIController : UnitParameter {
     }
     protected void CheckIfTargetExists() {
         if (EnemyUnitsList.Contains(TargetUnit)) {
-            // Debug.Log("Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
+            // Debug.Log("Case 1 : Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
+            UnitMasterController.SetCurrentTarget(TargetUnit);
             return;
         } else {
+            // Debug.Log("Case 2 : Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
             // If unit is played or not supposed to be targeting, change behaviour here
             PlayerSetTargetUnit = null;
             TargetUnit = null;
@@ -391,7 +392,7 @@ public class UnitAIController : UnitParameter {
         int unitChosen = Random.Range(0, listCount);
         // Debug.Log(unitChosen +" / "+listCount);
         if (spawnerScript.TrySpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {
-            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], UnitCanMove, UnitCanShoot, UnitCanSpawn);
+            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], ChidrenCanMove, ChidrenCanShoot, ChidrenCanSpawn);
         }
         // foreach (WorldSingleUnit singleUnit in spawnerScript.GetTeamedSpawnableUnitsList()) {
         //     Debug.Log(singleUnit.GetUnitName());

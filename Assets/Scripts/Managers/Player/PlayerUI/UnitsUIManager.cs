@@ -13,7 +13,8 @@ public class UnitsUIManager : MonoBehaviour {
     private GameObject PlayerCanvas; public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ PlayerCanvas = playerCanvas; PlayerMapCanvas  = playerMapCanvas;}
     private GameObject PlayerMapCanvas;
     private CompiledTypes.Teams PlayerTeam; public void SetPlayerTag(CompiledTypes.Teams playerTeam) { PlayerTeam = playerTeam; }
-
+    
+    private  PlayerSideUnitsUI CurrentPlayerControlledUnit;
     private List <PlayerSideUnitsUI> UnitsUIList = new List<PlayerSideUnitsUI>();
     public class PlayerSideUnitsUI {
         private GameObject _unitModel; public GameObject GetUnitModel(){ return _unitModel; } public void SetUnitModel(GameObject _g){ _unitModel = _g; }
@@ -21,6 +22,22 @@ public class UnitsUIManager : MonoBehaviour {
         private UnitUIManager _unitUI; public UnitUIManager GetUnitUI(){ return _unitUI; } public void SetUnitUI(UnitUIManager _s){ _unitUI = _s; }
         private UnitMapUIManager _unitUIMap; public UnitMapUIManager GetUnitUIMap(){ return _unitUIMap; } public void SetUnitUIMap(UnitMapUIManager _s){ _unitUIMap = _s; }
         protected UnitSelectionManager _unitSelector; public UnitSelectionManager GetUnitSelector(){ return _unitSelector; } public void SetUnitSelectionManager(UnitSelectionManager _s){ _unitSelector = _s; } 
+        private PlayerSideVisibleAttackMapOrder _unitAttackOrder; public PlayerSideVisibleAttackMapOrder GetUnitAttackOrder(){ return _unitAttackOrder; } public void SetUnitAttackOrder(PlayerSideVisibleAttackMapOrder _c){ _unitAttackOrder = _c; } 
+        private List<PlayerSideVisibleMoveMapOrders> _unitMoveOrderList = new List<PlayerSideVisibleMoveMapOrders>(); public List<PlayerSideVisibleMoveMapOrders> GetUnitMoveOrderList(){ return _unitMoveOrderList; }
+    }
+
+    public enum OrderTypes { MoveWaypoint, Attack, Follow } 
+    public class PlayerSideVisibleAttackMapOrder {               // Attack order displayed on the map for each unit for the player
+        private GameObject _orderModel; public GameObject GetOrderModel(){ return _orderModel; } public void SetOrderModel(GameObject _g){ _orderModel = _g; }
+        private GameObject _targetObj; public GameObject GetTargetObj(){ return _targetObj; } public void SetTargetObj(GameObject _g){ _targetObj = _g; }
+    }
+    public class PlayerSideVisibleMoveMapOrders {               // Move/waypoint order displayed on the map for each unit for the player
+        private int _moveOrderSortOrder; public int GetMoveOrderSortOrder(){ return _moveOrderSortOrder; } public void SetMoveOrderSortOrder(int _i){ _moveOrderSortOrder = _i; }
+        private GameObject _orderModel; public GameObject GetOrderModel(){ return _orderModel; } public void SetOrderModel(GameObject _g){ _orderModel = _g; }
+        private GameObject _startingPointObj; public GameObject GetStartingPointObj(){ return _startingPointObj; } public void SetStartingPointObj(GameObject _g){ _startingPointObj = _g; }
+        private Vector3 _startingPoint; public Vector3 GetStartingPoint(){ return _startingPoint; } public void SetStartingPoint(Vector3 _v){ _startingPoint = _v; }
+        private GameObject _endingPointObj; public GameObject GetEndingPointObj(){ return _endingPointObj; } public void SetEndingPointObj(GameObject _g){ _endingPointObj = _g; }
+        private Vector3 _endingPoint; public Vector3 GetEndingPoint(){ return _endingPoint; } public void SetEndingPoint(Vector3 _v){ _endingPoint = _v; }
     }
 
 
@@ -101,6 +118,10 @@ public class UnitsUIManager : MonoBehaviour {
                 // Debug.Log ("SetPlayedUnit : "+ activeUnitController.GetUnitName());
                 unit.GetUnitUI().SetPlayerUnit(isActive);
                 unit.GetUnitUIMap().SetPlayerUnit(isActive);
+                if (isActive) {
+                    //  Debug.Log ("SetPlayedUnit : "+ unit.GetUnitController().GetUnitName());
+                    CurrentPlayerControlledUnit = unit;
+                }
             }
         }
     }
@@ -122,8 +143,25 @@ public class UnitsUIManager : MonoBehaviour {
 
     public void SetCurrentEnemyTarget(GameObject targetUnit) {
         foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
             unit.GetUnitUI().SetEnemyTargetUnit(targetUnit);
             unit.GetUnitUIMap().SetEnemyTargetUnit(targetUnit);
+        }
+    }
+    public void SendUnitEnemyTarget(UnitMasterController UnitController, GameObject targetUnit) {
+        foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
+            if (UnitController == unit.GetUnitController()) {
+                Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitEnemyTarget : "+ targetUnit);
+            }
+        }
+    }
+    public void CleanUnitEnemyTarget(UnitMasterController UnitController) {
+        foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
+            if (UnitController == unit.GetUnitController()) {
+                Debug.Log (unit.GetUnitController().GetUnitName()+ "CleanUnitEnemyTarget");
+            }
         }
     }
 
