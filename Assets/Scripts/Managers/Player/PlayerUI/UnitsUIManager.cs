@@ -12,6 +12,7 @@ public class UnitsUIManager : MonoBehaviour {
     private Camera MapCam;
     private GameObject PlayerCanvas; public void SetPlayerCanvas(GameObject playerCanvas, GameObject playerMapCanvas){ PlayerCanvas = playerCanvas; PlayerMapCanvas  = playerMapCanvas;}
     private GameObject PlayerMapCanvas;
+    private GameObject PlayerMapOrdersCanvas;
     private CompiledTypes.Teams PlayerTeam; public void SetPlayerTag(CompiledTypes.Teams playerTeam) { PlayerTeam = playerTeam; }
     
     private  PlayerSideUnitsUI CurrentPlayerControlledUnit;
@@ -26,7 +27,6 @@ public class UnitsUIManager : MonoBehaviour {
         private List<PlayerSideVisibleMoveMapOrders> _unitMoveOrderList = new List<PlayerSideVisibleMoveMapOrders>(); public List<PlayerSideVisibleMoveMapOrders> GetUnitMoveOrderList(){ return _unitMoveOrderList; }
     }
 
-    public enum OrderTypes { MoveWaypoint, Attack, Follow } 
     public class PlayerSideVisibleAttackMapOrder {               // Attack order displayed on the map for each unit for the player
         private GameObject _orderModel; public GameObject GetOrderModel(){ return _orderModel; } public void SetOrderModel(GameObject _g){ _orderModel = _g; }
         private GameObject _targetObj; public GameObject GetTargetObj(){ return _targetObj; } public void SetTargetObj(GameObject _g){ _targetObj = _g; }
@@ -50,6 +50,7 @@ public class UnitsUIManager : MonoBehaviour {
         PlayerManager = playerManager;
         MapCam = camera;
         Cam = GameObject.Find("MainCamera").GetComponentInChildren<Camera>();
+        PlayerMapOrdersCanvas = Instantiate(WorldUIVariables.GetMapOrderCanvas());
     }
 
     public void SpawnUnit(UnitMasterController unitController, CompiledTypes.Teams team){
@@ -97,7 +98,7 @@ public class UnitsUIManager : MonoBehaviour {
         GameObject _tempMapUIObject = Instantiate(WorldUIVariables.GetUnitMapUI(), PlayerMapCanvas.transform);
         unit.GetUnitController().SetUIMapElement(_tempMapUIObject);
         UnitMapUIManager _tempMapUI = _tempMapUIObject.GetComponent<UnitMapUIManager>();
-        _tempMapUI.InitializeUIModule(MapCam, unit.GetUnitModel(), this);
+        _tempMapUI.InitializeUIModule(MapCam, unit.GetUnitModel(), this, PlayerMapOrdersCanvas);
         // UnitUIList.Add(_tempUI);
         return _tempMapUI;
     }
@@ -153,6 +154,7 @@ public class UnitsUIManager : MonoBehaviour {
             // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
             if (UnitController == unit.GetUnitController()) {
                 Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitEnemyTarget : "+ targetUnit);
+                unit.GetUnitUIMap().SetEnemyTargetUnitOrder(targetUnit);
             }
         }
     }

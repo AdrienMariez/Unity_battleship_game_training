@@ -10,10 +10,11 @@ public class WorldGlobals : MonoBehaviour {
         public GameObject m_MenuMapCamera; private static GameObject MenuMapCamera; public static GameObject GetMenuMapCamera() { return MenuMapCamera; }
     [Header("Map")]
         public GameObject m_MapPattern; private static GameObject MapPattern; public static GameObject GetMapPattern() { return MapPattern; }
+        public GameObject m_MapOrderModel; private static GameObject MapOrderModel; public static GameObject GetMapOrderModel() { return MapOrderModel; }
         public GameObject m_MapCamera; private static GameObject MapCamera; public static GameObject GetMapCamera() { return MapCamera; }
         [Tooltip("What can be hit by ammo or more generally, what is considered a game element that can be damaged.")]
-        public LayerMask m_MapMask;
-        private static LayerMask MapMask; public static LayerMask GetMapMask(){ return MapMask; }
+        public LayerMask m_MapMask; private static LayerMask MapMask; public static LayerMask GetMapMask(){ return MapMask; }
+
     [Header("Gaming Area")]
         public int m_GamingAreaKillZonePadding = 200; private static int GamingAreaKillZonePadding = 200; public static int GetGamingAreaKillZonePadding() { return GamingAreaKillZonePadding; }
     [Header("Error Placeholders")]
@@ -36,6 +37,7 @@ public class WorldGlobals : MonoBehaviour {
             MenuMapCamera = m_MenuMapCamera; if (MenuMapCamera == null) { Debug.Log ("No MenuMapCamera found."); }
         // Map
             MapPattern = m_MapPattern; if (MapPattern == null) { Debug.Log ("No MapPattern found."); }
+            MapOrderModel = m_MapOrderModel; if (MapOrderModel == null) { Debug.Log ("No MapOrderModel found."); }
             MapCamera = m_MapCamera; if (MapCamera == null) { Debug.Log ("No MapCamera found."); }
             MapMask = m_MapMask;
         // Gaming Area

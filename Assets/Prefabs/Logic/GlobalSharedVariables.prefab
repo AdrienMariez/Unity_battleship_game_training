@@ -131,6 +131,10 @@ MonoBehaviour:
     type: 3}
   m_UnitMapUI: {fileID: 6431504518210083437, guid: e9906e7ff97a54948a60129748bb5c00,
     type: 3}
+  m_MapOrderCanvas: {fileID: 3767798349071585903, guid: 3a4ef5340fce30a448339a29bcbc0049,
+    type: 3}
+  m_MapOrderModel: {fileID: 7051440355123407681, guid: 13bb72a585c1e6e439a00cc5926dc779,
+    type: 3}
   m_ShipDamageControlUI: {fileID: 4260288196587010366, guid: 6e1668fcb84f977448ad94cc335ea1c9,
     type: 3}
   m_ShipDamageControlAlertUI: {fileID: 4260288196587010366, guid: 8512eca8dce86d149968c6f442f08ab6,
@@ -153,6 +157,8 @@ MonoBehaviour:
   m_MenuMapCamera: {fileID: 9094650477598888172, guid: d254b47dc2c0af84492cfe954d8e72b8,
     type: 3}
   m_MapPattern: {fileID: 6347733742488189580, guid: 870dd635617ffd940ae1172044f7d5e4,
+    type: 3}
+  m_MapOrderModel: {fileID: 238354232811399436, guid: a106eaa7bbc2ad448a9a436820854b84,
     type: 3}
   m_MapCamera: {fileID: 9094650477598888172, guid: 5c4bf205fcb5c0044ada347d3448753d,
     type: 3}

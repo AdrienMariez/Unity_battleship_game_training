@@ -24,6 +24,9 @@ public class WorldUIVariables : MonoBehaviour {
     [Header("Units UI")]
         public GameObject m_UnitUI; private static GameObject UnitUI; public static GameObject GetUnitUI() { return UnitUI; }
         public GameObject m_UnitMapUI; private static GameObject UnitMapUI; public static GameObject GetUnitMapUI() { return UnitMapUI; }
+    [Header("Map UI")]
+        public GameObject m_MapOrderCanvas; private static GameObject MapOrderCanvas; public static GameObject GetMapOrderCanvas() { return MapOrderCanvas; }
+        public GameObject m_MapOrderModel; private static GameObject MapOrderModel; public static GameObject GetMapOrderModel() { return MapOrderModel; }
     [Header("Damage Control UI")]
         public GameObject m_ShipDamageControlUI; private static GameObject ShipDamageControlUI; public static GameObject GetShipDamageControlUI() { return ShipDamageControlUI; }
         public GameObject m_ShipDamageControlAlertUI; private static GameObject ShipDamageControlAlertUI; public static GameObject GetShipDamageControlAlertUI() { return ShipDamageControlAlertUI; }
@@ -64,6 +67,10 @@ public class WorldUIVariables : MonoBehaviour {
         // Units UI
             UnitUI = m_UnitUI; if (UnitUI == null) { Debug.Log ("No UnitUI found."); }
             UnitMapUI = m_UnitMapUI; if (UnitMapUI == null) { Debug.Log ("No UnitMapUI found."); }
+
+        // Map
+            MapOrderCanvas = m_MapOrderCanvas; if (MapOrderCanvas == null) { Debug.Log ("No MapOrderCanvas found."); }
+            MapOrderModel = m_MapOrderModel; if (MapOrderModel == null) { Debug.Log ("No MapOrderModel found."); }
 
         // Damage Control UI
             ShipDamageControlUI = m_ShipDamageControlUI; if (ShipDamageControlUI == null) { Debug.Log ("No ShipDamageControlUI found."); }

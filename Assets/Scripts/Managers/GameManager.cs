@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour {
             foreach (PlayerManager playerManager in PlayersManager) {
                 playerManager.SetGameManager(this);
                 playerManager.ResetPlayerFromGameManager();
+                // TODO Each canvas should be instanciated instead of created...
                 playerManager.SetPlayerCanvas(GameObject.Find("UICanvas"), GameObject.Find("UIMapCanvas"));
             }
         // Include ocean
