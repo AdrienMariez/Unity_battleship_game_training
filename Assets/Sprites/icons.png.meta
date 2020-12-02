@@ -92,6 +92,12 @@ TextureImporter:
   - first:
       213: -2978653956524333172
     second: mapUIattackOrder
+  - first:
+      213: -299690340437171572
+    second: mapUIattackOrderHead
+  - first:
+      213: -1290855366162983238
+    second: mapUIattackOrderTail
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -306,8 +312,8 @@ TextureImporter:
       name: dcFuelDmg
       rect:
         serializedVersion: 2
-        x: 239
-        y: 759
+        x: 240
+        y: 760
         width: 40
         height: 40
       alignment: 0
@@ -790,9 +796,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
+        y: 240
         width: 80
-        height: 560
+        height: 398
       alignment: 9
       pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -802,6 +808,48 @@ TextureImporter:
       bones: []
       spriteID: c872e841202b9a6d0800000000000000
       internalID: -2978653956524333172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mapUIattackOrderHead
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 80
+        height: 79
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8260a3293947dbf0800000000000000
+      internalID: -299690340437171572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mapUIattackOrderTail
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 639
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab6d27b32e5f51ee0800000000000000
+      internalID: -1290855366162983238
       vertices: []
       indices: 
       edges: []

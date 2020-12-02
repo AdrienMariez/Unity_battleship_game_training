@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour {
             protected float MapCameraPosLeft; public float GetMapCameraPosLeft() { return MapCameraPosLeft; }
             protected float MapCameraPosRight; public float GetCameraPosRight() { return MapCameraPosRight; }
 
+    // Boundaries
+        protected GameObject GameBoundariesZone;
+
 
     private void Start() {
         // Include & set world globals
@@ -57,6 +60,7 @@ public class GameManager : MonoBehaviour {
         // Create map elements
             Transform _gameBoundariesHolder = GameObject.Find("GameBoundaries").transform;
             Transform _gameBoundaries = _gameBoundariesHolder.Find("GameBoundary").transform;
+                GameBoundariesZone = _gameBoundaries.gameObject;
             Transform _gameBoundariesKill = _gameBoundariesHolder.Find("BoundaryKillZone").transform;
 
             Transform _mapPatternHolder = Instantiate(WorldGlobals.GetMapPattern(), GameObject.Find("GameObjects").transform).transform;
@@ -251,7 +255,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    
+    public bool AskPermissionForPosition(Vector3 position) {
+        if(GameBoundariesZone.GetComponent<Collider>().bounds.Contains(position)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void EndGame() {
         WorldUnitsManager.SetGameManager(null);

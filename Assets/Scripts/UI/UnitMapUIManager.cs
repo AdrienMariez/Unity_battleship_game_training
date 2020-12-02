@@ -113,17 +113,6 @@ public class UnitMapUIManager : MonoBehaviour {
             }
 
             if (UnitAttackOrder != null) {
-                /*
-                    // Old system that created orders in the game area. Do not use.
-                    float _scaleX = Mathf.Abs(UnitAttackOrder.GetTargetObj().transform.position.x - Unit.transform.position.x);
-                    float _scaleZ = Mathf.Abs(UnitAttackOrder.GetTargetObj().transform.position.z - Unit.transform.position.z);
-                    UnitAttackOrder.GetOrderModel().transform.localScale = new Vector3(_scaleX, 1, _scaleZ);
-                    UnitAttackOrder.GetOrderModel().transform.LookAt(UnitAttackOrder.GetTargetObj().transform);
-                    if (UnitAttackOrder.GetOrderModel().transform.position.y < 50) {
-                        UnitAttackOrder.GetOrderModel().transform.position = new Vector3(UnitAttackOrder.GetOrderModel().transform.position.x, 50, UnitAttackOrder.GetOrderModel().transform.position.z);
-                    }
-                */
-
                 Vector3 _orderScreenPos = new Vector2(_unitScreenPos.x, _unitScreenPos.y);
                 Vector3 _targetScreenPos = MapCam.WorldToScreenPoint(UnitAttackOrder.GetTargetObj().transform.position);
                 Vector3 _ordertargetScreenPos = new Vector2(_targetScreenPos.x, _targetScreenPos.y);
@@ -136,23 +125,25 @@ public class UnitMapUIManager : MonoBehaviour {
                 UnitAttackOrder.GetOrderModel().transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);                              // Rotate towards target
 
                 float distance = Vector3.Distance(_orderScreenPos, _ordertargetScreenPos);                                              // Get UI distance
-                UnitAttackOrder.GetOrderModel().transform.localScale = new Vector3(1, distance*0.01f, 1);                               // Scale Y, divide by 100 (why 100 ?)
+
+                distance *= 0.01f;                                                                                                      // divide by 100 (why 100 ?)
+                if (distance > 1) {
+                    UnitAttackOrder.GetOrderModel().transform.localScale = new Vector3(distance, distance, 1);                               // Scale Y
+                    foreach (Transform child in UnitAttackOrder.GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1/distance, 1, 1);
+                    }
+                } else {
+                    UnitAttackOrder.GetOrderModel().transform.localScale = new Vector3(1, distance, 1);
+                    foreach (Transform child in UnitAttackOrder.GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1, 1, 1);
+                    }
+                }
+
+                // UnitAttackOrder.GetOrderModel().transform.localScale = new Vector3(1, distance*0.01f, 1);                               // Scale Y, divide by 100 (why 100 ?)
 
             }
             if (UnitMoveOrderList.Count > 0) {
                 PositionMoveOrders();
-                // Vector3 _targetScreenPos = MapCam.WorldToScreenPoint(UnitMoveOrderList[0].GetEndingPoint());
-                // Vector3 _ordertargetScreenPos = new Vector2(_targetScreenPos.x, _targetScreenPos.y);
-                // // Only update the first order on Update() as the others destinations shouldn't be moving.
-                //     Vector3 _orderScreenPos = new Vector2(_unitScreenPos.x, _unitScreenPos.y);                                          // Unit position
-                //     UnitMoveOrderList[0].GetOrderModel().transform.position = _orderScreenPos;
-                //     Vector3 diff = _orderScreenPos - _targetScreenPos;
-                //         diff.Normalize();
-                //     float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-                //     UnitMoveOrderList[0].GetOrderModel().transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);                              // Rotate towards target
-
-                //     float distance = Vector3.Distance(_orderScreenPos, _ordertargetScreenPos);                                              // Get UI distance
-                //     UnitMoveOrderList[0].GetOrderModel().transform.localScale = new Vector3(1, distance*0.01f, 1);                               // Scale Y, divide by 100 (why 100 ?)
             }
         }
     }
@@ -261,7 +252,18 @@ public class UnitMapUIManager : MonoBehaviour {
                 UnitMoveOrderList[i].GetOrderModel().transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);                              // Rotate towards target
 
                 float distance = Vector3.Distance(_orderScreenPos, _ordertargetScreenPos);                                              // Get UI distance
-                UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(1, distance*0.01f, 1);                               // Scale Y, divide by 100 (why 100 ?)
+                distance *= 0.01f;                                                                                                      // divide by 100 (why 100 ?)
+                if (distance > 1) {
+                    UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(distance, distance, 1);                               // Scale Y
+                    foreach (Transform child in UnitMoveOrderList[i].GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1/distance, 1, 1);
+                    }
+                } else {
+                    UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(1, distance, 1);
+                    foreach (Transform child in UnitMoveOrderList[i].GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1, 1, 1);
+                    }
+                }
             } else {
                 Vector3 _orderScreenPosRaw = MapCam.WorldToScreenPoint(UnitMoveOrderList[i-1].GetEndingPoint());                                                                                                            // Next waypoints
                 Vector3 _orderScreenPos = new Vector2(_orderScreenPosRaw.x, _orderScreenPosRaw.y);                                          // Unit position
@@ -272,9 +274,19 @@ public class UnitMapUIManager : MonoBehaviour {
                 UnitMoveOrderList[i].GetOrderModel().transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);                              // Rotate towards target
 
                 float distance = Vector3.Distance(_orderScreenPos, _ordertargetScreenPos);                                              // Get UI distance
-                UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(1, distance*0.01f, 1);                               // Scale Y, divide by 100 (why 100 ?)
+                distance *= 0.01f;
+                if (distance > 1) {
+                    UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(distance, distance, 1);                               // Scale Y, divide by 100 (why 100 ?)
+                    foreach (Transform child in UnitMoveOrderList[i].GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1/distance, 1, 1);
+                    }
+                } else {
+                    UnitMoveOrderList[i].GetOrderModel().transform.localScale = new Vector3(1, distance, 1);
+                    foreach (Transform child in UnitMoveOrderList[i].GetOrderModel().transform) {
+                        child.transform.localScale = new Vector3(1, 1, 1);
+                    }
+                }
             }
-
         }
     }
     public enum OrderType { Attack, Move, WayPoint } 
@@ -283,7 +295,12 @@ public class UnitMapUIManager : MonoBehaviour {
         // _tempOrderObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = SetOrderColor(orderType);
         GameObject _tempOrderObject = Instantiate(WorldUIVariables.GetMapOrderModel(), this.transform);
         // _tempOrderObject.transform.GetComponent<SpriteRenderer>().color = SetOrderColor(orderType);
-        _tempOrderObject.transform.GetChild(0).GetComponent<Image>().color = SetOrderColor(orderType);
+        
+        // _tempOrderObject.transform.GetChild(0).GetComponent<Image>().color = SetOrderColor(orderType);
+
+        foreach (Transform child in _tempOrderObject.transform) {
+            child.GetComponent<Image>().color = SetOrderColor(orderType);
+        }
         return _tempOrderObject;
     }
     public static Color SetOrderColor(OrderType orderType) {

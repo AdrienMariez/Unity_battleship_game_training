@@ -328,7 +328,9 @@ public class PlayerManager : MonoBehaviour {
 // CURRENT UNIT AI CONTROLS
     public void SendNewMoveLocationToCurrentPlayerControlledUnit(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", move to this position : " + waypointPosition);
-        CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition, raycastHitType);
+        if(GameManager.AskPermissionForPosition(waypointPosition)){
+            CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition, raycastHitType);
+        }
     }
     public void SendAttackTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
         // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", attack this unit :  "+ rightClickedUnitController.GetUnitName());
