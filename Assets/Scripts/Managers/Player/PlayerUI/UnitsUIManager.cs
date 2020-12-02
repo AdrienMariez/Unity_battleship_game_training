@@ -14,7 +14,7 @@ public class UnitsUIManager : MonoBehaviour {
     private GameObject PlayerMapCanvas;
     private GameObject PlayerMapOrdersCanvas;
     private CompiledTypes.Teams PlayerTeam; public void SetPlayerTag(CompiledTypes.Teams playerTeam) { PlayerTeam = playerTeam; }
-    
+    private bool MapActive = false; public bool GetMapActive(){ return MapActive; }
     private  PlayerSideUnitsUI CurrentPlayerControlledUnit;
     private List <PlayerSideUnitsUI> UnitsUIList = new List<PlayerSideUnitsUI>();
     public class PlayerSideUnitsUI {
@@ -137,8 +137,14 @@ public class UnitsUIManager : MonoBehaviour {
     }
 
     public void SetMap(bool mapActive) {
+        MapActive = mapActive;
         foreach (PlayerSideUnitsUI unit in UnitsUIList) {
             unit.GetUnitSelector().SetMap(mapActive);
+        }
+    }
+    public void MapScaleChangeCalled() {
+        foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            unit.GetUnitUIMap().MapScaleChangeCalled();
         }
     }
 
@@ -150,11 +156,17 @@ public class UnitsUIManager : MonoBehaviour {
         }
     }
     public void SendUnitEnemyTarget(UnitMasterController UnitController, GameObject targetUnit) {
+        // This code should be used instead of a loop, but since CurrentPlayerControlledUnit is set AFTER the orders are set...
+        // Debug.Log (CurrentPlayerControlledUnit.GetUnitController().GetUnitName()+ "SendUnitEnemyTarget : "+ targetUnit);
+        // CurrentPlayerControlledUnit.GetUnitUIMap().SetEnemyTargetUnitOrder(targetUnit);
+        
+
         foreach (PlayerSideUnitsUI unit in UnitsUIList) {
             // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
             if (UnitController == unit.GetUnitController()) {
-                Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitEnemyTarget : "+ targetUnit);
+                // Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitEnemyTarget : "+ targetUnit);
                 unit.GetUnitUIMap().SetEnemyTargetUnitOrder(targetUnit);
+                return;
             }
         }
     }
@@ -162,7 +174,20 @@ public class UnitsUIManager : MonoBehaviour {
         foreach (PlayerSideUnitsUI unit in UnitsUIList) {
             // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
             if (UnitController == unit.GetUnitController()) {
-                Debug.Log (unit.GetUnitController().GetUnitName()+ "CleanUnitEnemyTarget");
+                // Debug.Log (unit.GetUnitController().GetUnitName()+ "CleanUnitEnemyTarget");
+                unit.GetUnitUIMap().CleanUnitEnemyTarget();
+                return;
+            }
+        }
+    }
+
+    public void SendUnitWaypoints(UnitMasterController UnitController, List <Vector3> waypoints) {
+        foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
+            if (UnitController == unit.GetUnitController()) {
+                // Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitWaypoints");
+                unit.GetUnitUIMap().SendUnitWaypoints(waypoints);
+                return;
             }
         }
     }

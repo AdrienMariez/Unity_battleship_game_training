@@ -248,7 +248,11 @@ public class ShipMovement : UnitParameter
 
     private void Turn() {
         // Multiply the targeted rotation by the speed : reverts input when in reverse and prevents spinning stopped ships 
-        LocalRealRotation = TurnInputValue * LocalRealSpeed;
+        if (m_CurrentSpeedStep != 0) {
+            LocalRealRotation = TurnInputValue * LocalRealSpeed * Mathf.Abs(4/m_CurrentSpeedStep);
+        } else {
+            LocalRealRotation = TurnInputValue * LocalRealSpeed;
+        }
         // Debug.Log ("- TurnInputValue - :"+ TurnInputValue);
         ShipController.SetRotationInput(LocalRealRotation);
     }

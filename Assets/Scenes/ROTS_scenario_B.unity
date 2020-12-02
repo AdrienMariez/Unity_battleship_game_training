@@ -2299,7 +2299,7 @@ PrefabInstance:
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
       propertyPath: UnitList.Array.data[1].m_UnitCanShoot
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
         type: 3}
@@ -2481,5 +2481,10 @@ PrefabInstance:
       propertyPath: UnitList.Array.data[3].m_SpawnPoint
       value: 
       objectReference: {fileID: 2090753095}
+    - target: {fileID: 8322520787321326853, guid: 130cc4876dab8ae4ab24c45d459da363,
+        type: 3}
+      propertyPath: UnitList.Array.data[3].m_UnitCanMove
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 130cc4876dab8ae4ab24c45d459da363, type: 3}

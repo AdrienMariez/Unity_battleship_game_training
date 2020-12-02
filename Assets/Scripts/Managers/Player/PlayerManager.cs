@@ -42,15 +42,15 @@ public class PlayerManager : MonoBehaviour {
         PlayerUnitCurrentIndex = 0;
 
         MapCamera = Instantiate(WorldGlobals.GetMapCamera(), this.transform).GetComponent<Camera>();
-        MapManager = GetComponent<MapManager>();
-        MapManager.SetMapCamera(MapCamera);
-        MapManager.InitMapFromPlayerManager(GameManager, this);
         UIManager = GetComponent<UIManager>();
         UIManager.SetPlayerManager(this);
         UIManager.SetFreeLookCamera(m_FreeLookCamera);
         UnitsUIManager = GetComponent<UnitsUIManager>();
         UnitsUIManager.Init(this, MapCamera);
         UnitsUIManager.SetPlayerTag(PlayerTeam);
+        MapManager = GetComponent<MapManager>();
+        MapManager.SetMapCamera(MapCamera);
+        MapManager.InitMapFromPlayerManager(GameManager, this, UnitsUIManager);
         // FindAllPossibleTargets();
         // UnitsUIManager.KillAllInstances();
         // UnitsUIManager.Init();
@@ -326,21 +326,21 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 // CURRENT UNIT AI CONTROLS
-    public void SendNewMoveLocationToCurrentPlayerControlledUnit(Vector3 waypointPosition) {
-        Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", move to this position : " + waypointPosition);
-        CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition);
+    public void SendNewMoveLocationToCurrentPlayerControlledUnit(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
+        // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", move to this position : " + waypointPosition);
+        CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition, raycastHitType);
     }
     public void SendAttackTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
-        Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", attack this unit :  "+ rightClickedUnitController.GetUnitName());
+        // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", attack this unit :  "+ rightClickedUnitController.GetUnitName());
         CurrentPlayerControlledUnit.GetUnitController().SendAttackTarget(rightClickedUnitController);
     }
     public void SendFollowTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
         if (rightClickedUnitController != CurrentPlayerControlledUnit.GetUnitController()) {
-            Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", follow this unit :  "+ rightClickedUnitController.GetUnitName());
+            // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", follow this unit :  "+ rightClickedUnitController.GetUnitName());
             CurrentPlayerControlledUnit.GetUnitController().SendFollowTarget(rightClickedUnitController);
         }
     }
-
+    // Callbacks from Units to player UI
     public void SendCurrentEnemyTarget(GameObject targetUnit) {
         if (CurrentPlayerControlledUnit != null) {
             UnitsUIManager.SetCurrentEnemyTarget(targetUnit);
@@ -351,6 +351,9 @@ public class PlayerManager : MonoBehaviour {
     }
     public void CleanUnitEnemyTarget(UnitMasterController UnitController) {
         UnitsUIManager.CleanUnitEnemyTarget(UnitController);
+    }
+    public void SendUnitWaypoints(UnitMasterController UnitController, List <Vector3> waypoints) {
+        UnitsUIManager.SendUnitWaypoints(UnitController, waypoints);
     }
 
 // CURRENT UNIT UI 

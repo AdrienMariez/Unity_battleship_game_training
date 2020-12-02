@@ -149,8 +149,13 @@ public class UnitMasterController : MonoBehaviour {
     public void SendFollowTarget(UnitMasterController rightClickedUnitController){
         // A follow fellow unit order set by the map
     }
-    public void SendNewMoveLocationToAI(Vector3 waypointPosition) {
+    public void SendNewMoveLocationToAI(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map
+        UnitAI.SetNewMoveLocation(waypointPosition, raycastHitType);
+    }
+    public void AICallbackCurrentWaypoints(List <Vector3> waypoints) {
+        // A move order set by the map
+        PlayerManager.SendUnitWaypoints(this, waypoints);
     }
 
     // Main Gameplay

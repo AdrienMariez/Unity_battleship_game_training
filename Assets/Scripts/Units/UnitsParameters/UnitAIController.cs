@@ -30,6 +30,8 @@ public class UnitAIController : UnitParameter {
     }
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
+    protected List <Vector3> Waypoints = new List<Vector3>();
+
     [Header("What is this particular model allowed to do ?")]
     protected bool UnitCanMove = true; 
     protected bool UnitCanShoot = true; 
@@ -114,11 +116,17 @@ public class UnitAIController : UnitParameter {
                 ChangePlayerTargetIndex();
                 SetPlayerSetTargetByIndex();
             }
-        }   
+        }
+        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints) {
+            float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
+            if (distance < 50) {
+                MoveCheckPointReached();
+            }
+        }
     }
     IEnumerator AIOrdersLoop(){
         while (true) {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(4f);
             if (AIActive) {
                 // Debug.Log("PauseAIOrders");
                 // If AI controlled
@@ -262,6 +270,7 @@ public class UnitAIController : UnitParameter {
         CheckState();
     }
     public void SetPlayerSetTargetByController(UnitMasterController targetedUnitController) {
+        // An attack order set by the map
         // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
         // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
         for (int i = 0; i < EnemyUnitsList.Count; i++) {
@@ -273,6 +282,26 @@ public class UnitAIController : UnitParameter {
         TargetUnit = PlayerSetTargetUnit;
         
         UnitMasterController.SetCurrentTarget(TargetUnit);
+        CheckState();
+    }
+    public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
+        // A move order set by the map, overrides check if the location is for the unit category
+        if (UnitCanMove) {
+            Waypoints.Add(waypointPosition);
+            UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
+            CheckState();
+        }
+    }
+    protected void MoveCheckPointReached() {
+        // Debug.Log("Checkpoint reached ! Timer : "+Time.time);
+        if (Waypoints.Count > 1) {
+            Waypoints.Remove(Waypoints[0]);
+            // Debug.Log(" case 1");
+        } else {
+            Waypoints.Clear();
+            // Debug.Log(" case 2");
+        }
+        UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
         CheckState();
     }
 
