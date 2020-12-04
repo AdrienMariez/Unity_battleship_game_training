@@ -31,6 +31,7 @@ public class UnitAIController : UnitParameter {
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
     protected List <Vector3> Waypoints = new List<Vector3>();
+    protected bool UsesWaypoints = false;
 
     [Header("What is this particular model allowed to do ?")]
     protected bool UnitCanMove = true; 
@@ -117,7 +118,7 @@ public class UnitAIController : UnitParameter {
                 SetPlayerSetTargetByIndex();
             }
         }
-        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints) {
+        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints && UsesWaypoints) {
             float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
             if (distance < 50) {
                 MoveCheckPointReached();
@@ -211,16 +212,16 @@ public class UnitAIController : UnitParameter {
         CheckIfTargetExists();
     }
     protected void CheckIfTargetExists() {
-        if (EnemyUnitsList.Contains(TargetUnit)) {
+        if (EnemyUnitsList.Contains(PlayerSetTargetUnit)) {
             // Debug.Log("Case 1 : Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
-            UnitMasterController.SetCurrentTarget(TargetUnit);
+            UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
             return;
         } else {
             // Debug.Log("Case 2 : Unit : "+ Name +" - Target exists ! = "+ TargetUnit);
             // If unit is played or not supposed to be targeting, change behaviour here
             PlayerSetTargetUnit = null;
             TargetUnit = null;
-            UnitMasterController.SetCurrentTarget(TargetUnit);
+            UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
             SetNewTarget();
         }
     }
@@ -240,7 +241,7 @@ public class UnitAIController : UnitParameter {
                 }
             }
         }
-        UnitMasterController.SetCurrentTarget(TargetUnit);
+        // UnitMasterController.SetCurrentTarget(TargetUnit);
         // Debug.Log("EnemyUnitsList : "+ EnemyUnitsList.Count);
         // Debug.Log("TargetUnit : "+ TargetUnit);    
 
@@ -266,28 +267,48 @@ public class UnitAIController : UnitParameter {
         }
         PlayerSetTargetUnit = EnemyUnitsList[PlayerTargetUnitIndex];
         TargetUnit = PlayerSetTargetUnit;
-        UnitMasterController.SetCurrentTarget(TargetUnit);
+        UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
         CheckState();
     }
     public void SetPlayerSetTargetByController(UnitMasterController targetedUnitController) {
         // An attack order set by the map
         // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
         // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
-        for (int i = 0; i < EnemyUnitsList.Count; i++) {
-            if (targetedUnitController.GetUnitModel() == EnemyUnitsList[i]) {
-                PlayerTargetUnitIndex = i; 
+        // if (UnitCanShoot) {   
+            for (int i = 0; i < EnemyUnitsList.Count; i++) {
+                if (targetedUnitController.GetUnitModel() == EnemyUnitsList[i]) {
+                    PlayerTargetUnitIndex = i; 
+                }
             }
-        }
-        PlayerSetTargetUnit = targetedUnitController.GetUnitModel();
-        TargetUnit = PlayerSetTargetUnit;
-        
-        UnitMasterController.SetCurrentTarget(TargetUnit);
-        CheckState();
+            PlayerSetTargetUnit = targetedUnitController.GetUnitModel();
+            TargetUnit = PlayerSetTargetUnit;
+            
+            UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
+            CheckState();
+        // }
+    }
+    public virtual void CleanPlayerSetAttackTarget() {
+        // Player Set Target removed from the map
+        // if (UnitCanShoot) {  
+            PlayerSetTargetUnit = null;
+            SetNewTarget();
+            UnitMasterController.SetCurrentTarget(null);
+        // }
     }
     public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map, overrides check if the location is for the unit category
         if (UnitCanMove) {
             Waypoints.Add(waypointPosition);
+            UsesWaypoints = true;
+            UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
+            CheckState();
+        }
+    }
+    public virtual void CleanMoveOrders() {
+        // All move orders removed from the map
+        if (UnitCanMove) {
+            Waypoints.Clear();
+            UsesWaypoints = false;
             UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
             CheckState();
         }
@@ -299,6 +320,7 @@ public class UnitAIController : UnitParameter {
             // Debug.Log(" case 1");
         } else {
             Waypoints.Clear();
+            UsesWaypoints = false;
             // Debug.Log(" case 2");
         }
         UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
@@ -395,7 +417,7 @@ public class UnitAIController : UnitParameter {
         // Debug.Log("Unit : "+ Name +" - SetAIActive = "+ activate);
         // If player control, AI inactive
         AIActive = activate;
-        UnitMasterController.SetCurrentTarget(TargetUnit);
+        UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
     }
     public void SetTurretManager(TurretManager turretManager){
         TurretManager = turretManager;

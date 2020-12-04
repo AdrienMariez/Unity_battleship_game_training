@@ -74,6 +74,11 @@ public class MapManager : MonoBehaviour {
                 UnitsUIManager.MapScaleChangeCalled();
                 CheckCameraSpeed();
             }
+            if (Input.GetButtonDown ("CleanOrdersMap")) {
+                Debug.Log ("CleanOrdersMap");
+                PlayerManager.SendCleanMoveOrdersToCurrentPlayerControlledUnit();
+                PlayerManager.SendCleanAttackTargetToCurrentPlayerControlledUnit();
+            }
         }
     }
 

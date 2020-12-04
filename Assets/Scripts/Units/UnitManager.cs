@@ -23,9 +23,7 @@ public class UnitManager {
     private Transform _spawnPoint; public Transform GetSpawnPoint(){ return _spawnPoint; } public void SetSpawnPoint(Transform _t ){ _spawnPoint = _t; }
 
     private GameObject Instance;                          // A reference to the instance of the tank when it is created.
-
-    [Header("Check this so the unit will always be set, additionnaly to any other unit set by the scenario !")]
-    public bool UnitManual = false;
+    private bool UnitFromScenario = true; public void SetUnitFromScenario(bool _b ){ UnitFromScenario = _b; }           // Is the unit set from the scenario parameters or not ?
     [Header("Custom Fixed Unit data :")]
     public CompiledTypes.Global_Units.RowValues m_Unit;         // The unit itself
     public string m_UnitName;
@@ -37,7 +35,7 @@ public class UnitManager {
     public bool m_UnitCanSpawn = true;
 
     public void VerifyData () {
-        if (!UnitManual) {
+        if (!UnitFromScenario) {
             return;
         } else {
             _unitCanMove = m_UnitCanMove;

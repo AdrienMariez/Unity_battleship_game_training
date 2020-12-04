@@ -212,6 +212,7 @@ public class UnitMapUIManager : MonoBehaviour {
     public void CleanUnitEnemyTarget(){
         if (UnitAttackOrder != null) {
             Destroy(UnitAttackOrder.GetOrderModel());
+            UnitAttackOrder = null;
         }
     }
     public void SendUnitWaypoints(List <Vector3> waypoints) {

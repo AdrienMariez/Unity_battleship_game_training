@@ -21,7 +21,7 @@ public class ShipAI : UnitAIController {
         //     return;
         // }
         // If there is a target
-        if (Waypoints.Count > 0 && UnitCanMove) {
+        if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
             UnitsAICurrentState = UnitsAIStates.FollowWayPoints;
         } else if (TargetUnit != null && UnitCanShoot) {
             // I'm not sure about this one... The logic is : if it's one of the correct states, check if the target is in range or not. Act accordingly
@@ -34,6 +34,7 @@ public class ShipAI : UnitAIController {
             }
         } else {
             if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
+
                 UnitsAICurrentState = UnitsAIStates.Patrol;
             } else {
                 UnitsAICurrentState = UnitsAIStates.Idle;
@@ -49,7 +50,6 @@ public class ShipAI : UnitAIController {
         base.CheckState();
 
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState);
-        // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - AIState = "+ AIState);
         // Debug.Log("Unit : "+ Name +" - magnitude = "+ (gameObject.transform.position - TargetUnit.transform.position).magnitude +" - MaxTurretsRange = "+ MaxTurretsRange);
     }
 
@@ -98,6 +98,9 @@ public class ShipAI : UnitAIController {
     }
     protected override void FollowWayPointsAction(){
         // Debug.Log("Unit : "+ Name +" - UnitsAICurrentState = "+ UnitsAICurrentState);
+        if (!UsesWaypoints) {
+            return;
+        }
 
         Vector3 targetDir = gameObject.transform.position - Waypoints[0];
         Vector3 forward = gameObject.transform.forward;

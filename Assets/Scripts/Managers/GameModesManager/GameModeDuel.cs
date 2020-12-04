@@ -29,16 +29,17 @@ public class GameModeDuel : GameModesManager {
                 }
                 // Debug.Log (spawnPoint.GetUnit().GetUnitName());
                 UnitManager _unitManager = new UnitManager{};
-                _unitManager.SetUnit(spawnPoint.GetUnit());
-                _unitManager.SetCustomName(spawnPoint.GetUnit().GetUnitName());
-                _unitManager.SetUnitCanMove(spawnPoint.GetCanMove());
-                _unitManager.SetUnitCanShoot(spawnPoint.GetCanShoot());
-                _unitManager.SetUnitCanSpawn(spawnPoint.GetCanSpawn());
-                foreach (GameObject sp in GameManager.m_SpawnPoints) {
-                    if (spawnPoint.GetSpawnPointDB().DuelSpawnPointName == sp.name) {
-                        _unitManager.SetSpawnPoint(sp.transform);
+                    _unitManager.SetUnit(spawnPoint.GetUnit());
+                    _unitManager.SetCustomName(spawnPoint.GetUnit().GetUnitName());
+                    _unitManager.SetUnitCanMove(spawnPoint.GetCanMove());
+                    _unitManager.SetUnitCanShoot(spawnPoint.GetCanShoot());
+                    _unitManager.SetUnitCanSpawn(spawnPoint.GetCanSpawn());
+                    _unitManager.SetUnitFromScenario(false);
+                    foreach (GameObject sp in GameManager.m_SpawnPoints) {
+                        if (spawnPoint.GetSpawnPointDB().DuelSpawnPointName == sp.name) {
+                            _unitManager.SetSpawnPoint(sp.transform);
+                        }
                     }
-                }
                 UnitList.Add(_unitManager);
                 // _unitManager.SetSpawnPoint(spawnPoint.GetSpawnPointDB().DuelSpawnPointName);
             }

@@ -332,10 +332,20 @@ public class PlayerManager : MonoBehaviour {
             CurrentPlayerControlledUnit.GetUnitController().SendNewMoveLocationToAI(waypointPosition, raycastHitType);
         }
     }
+    public void SendCleanMoveOrdersToCurrentPlayerControlledUnit() {
+        // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", stop move orders !");
+        CurrentPlayerControlledUnit.GetUnitController().CleanMoveOrdersToAI();
+    }
+
     public void SendAttackTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
         // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", attack this unit :  "+ rightClickedUnitController.GetUnitName());
-        CurrentPlayerControlledUnit.GetUnitController().SendAttackTarget(rightClickedUnitController);
+        CurrentPlayerControlledUnit.GetUnitController().SendAttackTargetToAI(rightClickedUnitController);
     }
+    public void SendCleanAttackTargetToCurrentPlayerControlledUnit() {
+        // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", stop attack order !");
+        CurrentPlayerControlledUnit.GetUnitController().CleanAttackTargetToAI();
+    }
+
     public void SendFollowTargetToCurrentPlayerControlledUnit(UnitMasterController rightClickedUnitController){
         if (rightClickedUnitController != CurrentPlayerControlledUnit.GetUnitController()) {
             // Debug.Log(CurrentPlayerControlledUnit.GetUnitController().GetUnitName() +", follow this unit :  "+ rightClickedUnitController.GetUnitName());

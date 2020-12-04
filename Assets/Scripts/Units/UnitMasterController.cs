@@ -38,7 +38,7 @@ public class UnitMasterController : MonoBehaviour {
     protected UnitUI UnitUI;
     protected UnitHealth Health; public UnitHealth GetUnitHealth() { return Health; }
     protected TurretManager Turrets;
-    private GameObject EnemyTargetUnit;
+    private GameObject PlayerSetEnemyTargetUnit;
 
     public enum ElementType {
         hull,
@@ -124,9 +124,19 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void SetNewEnemyList(List <GameObject> enemiesUnitsObjectList) {
         UnitAI.SetNewEnemyList(enemiesUnitsObjectList);
     }
+    public void SendAttackTargetToAI(UnitMasterController rightClickedUnitController){
+        // An attack order set by the map
+        if (rightClickedUnitController.GetUnitModel() != PlayerSetEnemyTargetUnit) { // If the target is not already selected
+            UnitAI.SetPlayerSetTargetByController(rightClickedUnitController);
+        }
+    }
+    public void CleanAttackTargetToAI() {
+        // Player-set target removed from the map
+        UnitAI.CleanPlayerSetAttackTarget();
+    }
     public void SetCurrentTarget(GameObject targetUnit) {
         // A switch in the target via UnitAIController
-        EnemyTargetUnit = targetUnit;
+        PlayerSetEnemyTargetUnit = targetUnit;
         if (Active) {
             PlayerManager.SendCurrentEnemyTarget(targetUnit);
         }
@@ -140,12 +150,6 @@ public class UnitMasterController : MonoBehaviour {
         // Debug.Log ("SetCurrentTarget : "+ PlayerManager+" - "+ targetUnit);
         // PlayerManager.SendUnitEnemyTarget(this, targetUnit);
     }
-    public void SendAttackTarget(UnitMasterController rightClickedUnitController){
-        // An attack order set by the map
-        if (rightClickedUnitController.GetUnitModel() != EnemyTargetUnit) { // If the target is not already selected
-            UnitAI.SetPlayerSetTargetByController(rightClickedUnitController);
-        }
-    }
     public void SendFollowTarget(UnitMasterController rightClickedUnitController){
         // A follow fellow unit order set by the map
     }
@@ -153,8 +157,12 @@ public class UnitMasterController : MonoBehaviour {
         // A move order set by the map
         UnitAI.SetNewMoveLocation(waypointPosition, raycastHitType);
     }
+    public void CleanMoveOrdersToAI() {
+        // All move orders removed from the map
+        UnitAI.CleanMoveOrders();
+    }
     public void AICallbackCurrentWaypoints(List <Vector3> waypoints) {
-        // A move order set by the map
+        // Update UI with this unit current move orders
         PlayerManager.SendUnitWaypoints(this, waypoints);
     }
 
