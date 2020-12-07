@@ -32,7 +32,8 @@ takaoUSA,
 TrainingCarrier, 
 TrainingCarrierUSA, 
 ShipyardJapan, 
-ShipyardUSA
+ShipyardUSA, 
+BimotorAircraftTest
  } 
         public Global_Units (CastleDBParser.RootNode root, RowValues line) 
         {

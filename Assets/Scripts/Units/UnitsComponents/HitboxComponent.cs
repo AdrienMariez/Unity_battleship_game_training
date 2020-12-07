@@ -151,9 +151,15 @@ public class HitboxComponent : MonoBehaviour {
         UnitMasterController.SetInGameBoundaries(action);
     }
     public void InteractionWithKillZoneBoundaries () {
-        // If the unit leaves the game very far, destroy it
+        // If the unit leaves the Kill zone boundary, destroy it
         Debug.Log(UnitMasterController.GetUnitName()+ " has stepped outside of bounds and was subsequently destroyed");
         UnitMasterController.DestroyUnit();
+    }
+
+    public void InteractionWithAirfield (bool action) {
+        // True : enters Airport Zone
+        // False : exits Airport Zone
+        UnitMasterController.SetInAirfieldZone(action);
     }
 
     public void SetUnitController(UnitMasterController unitMasterComponent){

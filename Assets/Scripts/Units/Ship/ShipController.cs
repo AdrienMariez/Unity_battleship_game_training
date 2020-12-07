@@ -30,10 +30,6 @@ public class ShipController : UnitMasterController {
         private float WaterRepairCrew;
         private float TurretsRepairCrew;
 
-    protected void Awake() {
-        // base.SpawnUnit();
-    }
-
     public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // Set Movement
             if (GetComponent<ShipMovement>()) {
@@ -289,7 +285,7 @@ public class ShipController : UnitMasterController {
     public void SetDamageControlUnset(int setCrew){ if (Health != null) { Health.SetDamageControlUnset(setCrew); } }
     public void SetSpeedInput(float Speed){ Buoyancy.SetSpeedInput(Speed); }
     public void SetRotationInput(float rotation){
-        if (GetComponent<ShipBuoyancy>())
+        if (Buoyancy != null)
             Buoyancy.SetRotationInput(rotation);
         if (Active && !Dead)
             PlayerManager.SetRotationInput(rotation);
@@ -299,11 +295,11 @@ public class ShipController : UnitMasterController {
             PlayerManager.ChangeSpeedStep(currentSpeedStep);
     }
     public void SetAISpeed(int speedStep){ 
-        if (GetComponent<ShipMovement>())
+        if (Movement != null)
             Movement.SetAISpeed(speedStep);
     }
     public void SetAIturn(float turn){
-        if (GetComponent<ShipMovement>())
+        if (Movement != null)
             Movement.SetAIturn(turn);
     }
     public void SetAITurnInputValue(float turnInputValue){ UnitAI.SetAITurnInputValue(turnInputValue); }
@@ -313,28 +309,28 @@ public class ShipController : UnitMasterController {
     // ALL OVERRIDES METHODS
     public override void SetActive(bool activate) {
         base.SetActive(activate);
-        if (GetComponent<ShipMovement>())
+        if (Movement != null)
             Movement.SetActive(Active);
         // Damage Control can be shown if active
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.SetActive(Active);
     }
     public override void SetMap(bool map) {
-        if (GetComponent<ShipDamageControl>())
-            DamageControl.SetMap(map);
-        if (GetComponent<ShipMovement>())
+        if (Movement != null)
             Movement.SetMap(map);
+        if (DamageControl != null)
+            DamageControl.SetMap(map);
         base.SetMap(map);
     }
     public override void SetPause(bool pause){
         base.SetPause(pause);
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.SetPause();
     }
 
     // Turrets
-    public override void SetTotalTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetTotalTurrets(turrets); } }
-    public override void SetDamagedTurrets(int turrets){ if (GetComponent<ShipDamageControl>()) { DamageControl.SetDamagedTurrets(turrets); } }
+    public override void SetTotalTurrets(int turrets){ if (DamageControl != null) { DamageControl.SetTotalTurrets(turrets); } }
+    public override void SetDamagedTurrets(int turrets){ if (DamageControl != null) { DamageControl.SetDamagedTurrets(turrets); } }
     public override void SetSingleTurretStatus(TurretManager.TurretStatusType status, int turretNumber){
         if (PlayerManager != null) { PlayerManager.SetSingleTurretStatus(status, turretNumber); }
     }
@@ -342,7 +338,7 @@ public class ShipController : UnitMasterController {
         if (PlayerManager != null) { PlayerManager.SendPlayerShellToUI(shellInstance); }
     }
     public override void FeedbackShellHit (bool armorPenetrated) {
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.UpdateShellsSentCounter(armorPenetrated);
     }
 
@@ -350,7 +346,7 @@ public class ShipController : UnitMasterController {
     public override float GetStartingHealth() { return(Health.GetStartingHealth()); }
     public override float GetCurrentHealth() { return(Health.GetCurrentHealth()); }
     public override int GetCurrentSpeedStep() {
-        if (GetComponent<ShipMovement>()) {
+        if (Movement != null) {
             return(Movement.GetCurrentSpeedStep());
         } else {
             return 0;
@@ -365,22 +361,22 @@ public class ShipController : UnitMasterController {
             EngineCount--;
             if (EngineCount == 0){
                 Movement.SetDead(true);
-                if (GetComponent<ShipDamageControl>())
+                if (DamageControl != null)
                     DamageControl.SetDamagedEngine(2);
             } else {
-                Movement.SetDamaged(EngineCount/EngineCountTotal);
-                if (GetComponent<ShipDamageControl>())
+                Movement.SetEnginesDamaged(EngineCount/EngineCountTotal);
+                if (DamageControl != null)
                     DamageControl.SetDamagedEngine(1);
             }
         } else if (elementType == ElementType.steering) {
             Movement.SetAllowTurnInputChange(false);
-            if (GetComponent<ShipDamageControl>())
+            if (DamageControl != null)
                 DamageControl.SetDamagedSteering(true);
         } else if (elementType == ElementType.ammo) {
             Health.AmmoExplosion();
         } else if (elementType == ElementType.fuel) {
             Health.StartFire();
-            if (GetComponent<ShipDamageControl>())
+            if (DamageControl != null)
                 DamageControl.SetFireBurning(true);
         }
     }
@@ -389,24 +385,24 @@ public class ShipController : UnitMasterController {
             EngineCount++;
             if (EngineCount > 0)
                 Movement.SetDead(false);
-                if (GetComponent<ShipDamageControl>() && EngineCount < EngineCountTotal)
+                if (DamageControl != null && EngineCount < EngineCountTotal)
                     DamageControl.SetDamagedEngine(1);
                 else
                     DamageControl.SetDamagedEngine(0);
-            Movement.SetDamaged(EngineCount/EngineCountTotal);
+            Movement.SetEnginesDamaged(EngineCount/EngineCountTotal);
         } else if (elementType == ElementType.steering) {
             Movement.SetAllowTurnInputChange(true);
-            if (GetComponent<ShipDamageControl>())
+            if (DamageControl != null)
                 DamageControl.SetDamagedSteering(false);
         } else if (elementType == ElementType.fuel) {
             Health.EndFire();
-            if (GetComponent<ShipDamageControl>())
+            if (DamageControl != null)
                 DamageControl.SetFireBurning(false);
         }
     }
     public override void SetDamageControlEngineCount(){ if (EngineCount < 0) { EngineCount = 1; EngineCountTotal = 1; } else { EngineCount ++; EngineCountTotal++; } }
     public override void SendHitInfoToDamageControl (bool armorPenetrated) {
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.UpdateShellsReceivedCounter(armorPenetrated);
     }
     public override void CallDeath() {
@@ -423,7 +419,7 @@ public class ShipController : UnitMasterController {
             Buoyancy.Sink(1f + LeakRatio, 0, 0);
         }
 
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.SetShipDeath(true);
         Movement.SetDead(true);
         Buoyancy.SetDead(true);
@@ -431,7 +427,7 @@ public class ShipController : UnitMasterController {
     public override void DestroyUnit(){
         // This removes the unit from the scene
         // Debug.Log ("Destroy unit : "+gameObject.name);
-        if (GetComponent<ShipDamageControl>())
+        if (DamageControl != null)
             DamageControl.Destroy();
         
         base.DestroyUnit();

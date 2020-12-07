@@ -70,6 +70,7 @@ public Global_Units TrainingCarrier { get { return Get(CompiledTypes.Global_Unit
 public Global_Units TrainingCarrierUSA { get { return Get(CompiledTypes.Global_Units.RowValues.TrainingCarrierUSA); } } 
 public Global_Units ShipyardJapan { get { return Get(CompiledTypes.Global_Units.RowValues.ShipyardJapan); } } 
 public Global_Units ShipyardUSA { get { return Get(CompiledTypes.Global_Units.RowValues.ShipyardUSA); } } 
+public Global_Units BimotorAircraftTest { get { return Get(CompiledTypes.Global_Units.RowValues.BimotorAircraftTest); } } 
 private Global_Units Get(CompiledTypes.Global_Units.RowValues line) { return new Global_Units(parsedDB.Root, line); }
 
                 public Global_Units[] GetAll() 

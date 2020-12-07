@@ -347,6 +347,8 @@ public class UnitMasterController : MonoBehaviour {
         }
     }
 
+    public virtual void SetInAirfieldZone(bool action) { }
+
     public void SetPlayerManager(PlayerManager playerManager) {
         // Debug.Log ("SetPlayerManager" +UnitName);
         PlayerManager = playerManager;

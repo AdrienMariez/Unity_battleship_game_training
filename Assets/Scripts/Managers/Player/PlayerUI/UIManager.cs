@@ -76,10 +76,6 @@ namespace UI {
                         CreateTurretsStatusDisplay();
                     }
                 }
-                if (CurrentPlayedUnitCategory == CompiledTypes.Units_categories.RowValues.aircraft) {
-                    CurrentHP = Mathf.Round(ActiveTarget.GetComponent<AircraftHealth>().GetCurrentHealth());
-                    UnitHP.value = CurrentHP;
-                }
 
                 if (TurretUIInstance) {
                     TurretTargetRange = ActiveTarget.GetComponent<TurretManager>().GetTargetRange();

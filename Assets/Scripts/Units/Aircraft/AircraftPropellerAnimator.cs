@@ -17,8 +17,7 @@ using UnityEngine;
         private Renderer m_PropellorBlurRenderer;
 
 
-        private void Awake()
-        {
+        private void Start() {
             // Set up the reference to the aeroplane controller.
             m_Plane = GetComponent<AircraftController>();
 
@@ -30,8 +29,7 @@ using UnityEngine;
         }
 
 
-        private void Update()
-        {
+        private void Update() {
             // Rotate the propellor model at a rate proportional to the throttle.
             m_PropellorModel.Rotate(0, m_MaxRpm*m_Plane.Throttle*Time.deltaTime*k_RpmToDps, 0);
 

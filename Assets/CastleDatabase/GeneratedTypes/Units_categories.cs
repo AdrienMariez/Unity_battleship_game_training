@@ -10,7 +10,6 @@ namespace CompiledTypes
     {
         public string id;
 public string Name;
-public string ScriptPaths;
 public List<Scripts> ScriptsList = new List<Scripts>();
 public string FileName;
 public List<RigidBodyData> RigidBodyDataList = new List<RigidBodyData>();
@@ -27,7 +26,6 @@ building
             SimpleJSON.JSONNode node = root.GetSheetWithName("Units_categories").Rows[(int)line];
 id = node["id"];
 Name = node["Name"];
-ScriptPaths = node["ScriptPaths"];
 foreach(var item in node["Scripts"]) { ScriptsList.Add(new Scripts(root, item));}
 FileName = node["FileName"];
 foreach(var item in node["RigidBodyData"]) { RigidBodyDataList.Add(new RigidBodyData(root, item));}

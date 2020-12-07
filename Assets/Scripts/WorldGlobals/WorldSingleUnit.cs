@@ -193,14 +193,6 @@ public class WorldSingleUnit {
                 SetDamageControl(unit);
             }
 
-        // foreach (var category in WorldUnitsManager.GetDB().Units_categories.GetAll()) {
-        //     if (category.id == UnitCategory) {   
-                // string controller = category.ScriptPaths+"/"+category.FileName+"Controller";
-                // UnitPrefab.AddComponent(Type.GetType(controller));
-                // UnitPrefab.AddComponent<ScriptName>();
-        //     }
-        // }
-
         // Debug.Log (CameraHeight+" / "+CameraDistance);
     }
 

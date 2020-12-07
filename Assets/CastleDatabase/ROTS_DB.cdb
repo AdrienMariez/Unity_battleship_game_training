@@ -1598,6 +1598,36 @@
 						}
 					],
 					"UnitHardPoints": []
+				},
+				{
+					"id": "BimotorAircraftTest",
+					"Isavariant": false,
+					"UnitName": "Bimotor",
+					"UnitHardPoints": [],
+					"index": 8,
+					"UnitModelPath": [
+						{
+							"UnitPath": "Plane/",
+							"UnitModel": "BimotorAircraftTest"
+						}
+					],
+					"UnitCategory": "Light_Bomber",
+					"UnitNation": "usa",
+					"UnitScore": [
+						{
+							"Commandpoints": 200,
+							"Victorypoints": 200
+						}
+					],
+					"UnitHealth": 1000,
+					"UnitMass": 50000,
+					"UnitCameraParameters": [
+						{
+							"Distance": 2.91,
+							"Height": 2.48,
+							"Lateraloffset": 0
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -1848,11 +1878,6 @@
 					"name": "Name"
 				},
 				{
-					"typeStr": "1",
-					"name": "ScriptPaths",
-					"display": null
-				},
-				{
 					"typeStr": "8",
 					"name": "Scripts"
 				},
@@ -1871,7 +1896,6 @@
 					"Name": "Ship",
 					"index": 0,
 					"id": "ship",
-					"ScriptPaths": "Scripts/Units/Ship",
 					"FileName": "ShipController",
 					"Scripts": [
 						{
@@ -1894,7 +1918,6 @@
 					"Name": "Submarine",
 					"index": 1,
 					"id": "submarine",
-					"ScriptPaths": "",
 					"FileName": "",
 					"Scripts": [],
 					"RigidBodyData": [
@@ -1912,13 +1935,17 @@
 					"Name": "Aircraft",
 					"index": 2,
 					"id": "aircraft",
-					"ScriptPaths": "",
-					"FileName": "",
-					"Scripts": [],
+					"FileName": "AircraftController",
+					"Scripts": [
+						{
+							"LoadOrder": 0,
+							"ScriptName": "AircraftAI"
+						}
+					],
 					"RigidBodyData": [
 						{
-							"CategoryDrag": 0.2,
-							"CategoryAngularDrag": 2,
+							"CategoryDrag": 0.02,
+							"CategoryAngularDrag": 0.09,
 							"CatUseGravity": true,
 							"CatIsKinematic": false,
 							"CatFreezePosition": false,
@@ -1930,7 +1957,6 @@
 					"Name": "Ground",
 					"index": 3,
 					"id": "ground",
-					"ScriptPaths": "",
 					"FileName": "",
 					"Scripts": [],
 					"RigidBodyData": [
@@ -1948,7 +1974,6 @@
 					"Name": "Building",
 					"index": 4,
 					"id": "building",
-					"ScriptPaths": "Scripts/Units/Building",
 					"FileName": "BuildingController",
 					"Scripts": [
 						{

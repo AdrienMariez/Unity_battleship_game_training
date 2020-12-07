@@ -3,12 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Crest;
 
-public class ShipMovement : UnitParameter
-{
-    private bool Active = false; 
-    private bool Dead = false; 
+public class ShipMovement : UnitMovement {
     private bool Damaged = false;
-    private bool MapActive = false;
     private float DamagedRatio;
     private bool AllowTurnInput = true;
     [HideInInspector] public float m_MaxSpeed = 1f;
@@ -42,7 +38,7 @@ public class ShipMovement : UnitParameter
 
     public StackComponentSmoke[] m_StackComponents;
 
-    private ShipController ShipController;
+    protected ShipController ShipController;
 
     public void BeginOperations(ShipController unitController) {
         ShipController = unitController;
@@ -257,7 +253,7 @@ public class ShipMovement : UnitParameter
         ShipController.SetRotationInput(LocalRealRotation);
     }
 
-    public void SetDamaged(float proportion){
+    public void SetEnginesDamaged(float proportion){
         if (proportion == 1){
             Damaged = false;
         } else{
@@ -269,9 +265,8 @@ public class ShipMovement : UnitParameter
             // Debug.Log ("- Engine Damaged - :"+ Damaged);
         // }
     }
-    public void SetActive(bool activate) { Active = activate; }
-    public void SetDead(bool death) {
-        Dead = death;
+    public override void SetDead(bool death) {
+        base.SetDead(death);
         SetTargetSpeed();
         if (Dead) {
             m_MovementAudio.Stop ();
@@ -292,9 +287,6 @@ public class ShipMovement : UnitParameter
     }
     public void SetAllowTurnInputChange(bool allow) { AllowTurnInput = allow; }
 
-    public void SetMap(bool map) {
-        MapActive = map;
-    }
     public int GetCurrentSpeedStep(){ return m_CurrentSpeedStep; }
     public float GetLocalRealSpeed(){ return LocalRealSpeed; }
     public void SetAISpeed(int speedStep) {

@@ -31,13 +31,9 @@ using UnityEngine;
         private AircraftController m_Plane;      // Reference to the aeroplane controller.
         private Rigidbody m_Rigidbody;
 
-
-        private void Awake()
-        {
-            // Set up the reference to the aeroplane controller.
-            m_Plane = GetComponent<AircraftController>();
-            m_Rigidbody = GetComponent<Rigidbody>();
-
+        public void BeginOperations(AircraftController unitController, Rigidbody rb) {
+            m_Plane = unitController;
+            m_Rigidbody = rb;
 
             // Add the audiosources and get the references.
             m_EngineSoundSource = gameObject.AddComponent<AudioSource>();
@@ -69,8 +65,7 @@ using UnityEngine;
         }
 
 
-        private void Update()
-        {
+        private void Update() {
             // Find what proportion of the engine's power is being used.
             var enginePowerProportion = Mathf.InverseLerp(0, m_Plane.MaxEnginePower, m_Plane.EnginePower);
 
