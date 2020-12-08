@@ -1603,7 +1603,22 @@
 					"id": "BimotorAircraftTest",
 					"Isavariant": false,
 					"UnitName": "Bimotor",
-					"UnitHardPoints": [],
+					"UnitHardPoints": [
+						{
+							"HardPointId": "0",
+							"HardPointType": "PlaneWeapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "mmg"
+						},
+						{
+							"HardPointId": "1",
+							"HardPointType": "PlaneWeapon",
+							"IsTransferedToVariants": false,
+							"IsMirrored": true,
+							"WeaponType": "mmg"
+						}
+					],
 					"index": 8,
 					"UnitModelPath": [
 						{
@@ -1620,11 +1635,11 @@
 						}
 					],
 					"UnitHealth": 1000,
-					"UnitMass": 50000,
+					"UnitMass": 1,
 					"UnitCameraParameters": [
 						{
-							"Distance": 2.91,
-							"Height": 2.48,
+							"Distance": 13,
+							"Height": 9,
 							"Lateraloffset": 0
 						}
 					]
@@ -2178,6 +2193,9 @@
 				},
 				{
 					"id": "PlanePropeller"
+				},
+				{
+					"id": "PlaneWeapon"
 				}
 			],
 			"separators": [],
@@ -2524,6 +2542,41 @@
 							"RotationSound": "turretRotation"
 						}
 					]
+				},
+				{
+					"id": "mmg",
+					"Name": "Mmg",
+					"Isavariant": false,
+					"WeaponVariantReference": [],
+					"WeaponModelPath": [
+						{
+							"TurretPath": "MachineGun",
+							"TurretModel": "MG"
+						}
+					],
+					"WeaponFX": [
+						{
+							"FXShooting": "ShellExplosionSmallPlaceholder",
+							"ShootingSound": "ShotFiring"
+						}
+					],
+					"Health": 0,
+					"Armor": 0,
+					"WeaponRoles": [
+						{
+							"Weaponrole": "AircraftMG"
+						}
+					],
+					"Ammo": "AirMGAmmo",
+					"Max_range": 2000,
+					"Min_range": 0,
+					"Muzzle_velocity": 600,
+					"Reload_time": 0.2,
+					"Precision": 75,
+					"Rotation_speed": 0,
+					"Elevation_speed": 0,
+					"Max_vertical_traverse": 0,
+					"Min_vertical_traverse": 0
 				}
 			],
 			"separators": [],
@@ -2563,6 +2616,10 @@
 				{
 					"id": "DepthCharge",
 					"Name": "Depth Charge"
+				},
+				{
+					"id": "AircraftMG",
+					"Name": "Aircraft Machine gun"
 				}
 			],
 			"separators": [],
@@ -2730,6 +2787,28 @@
 							"FXWaterHit": "ShellWaterHitTorpedoPlaceholder"
 						}
 					]
+				},
+				{
+					"id": "AirMGAmmo",
+					"Name": "AirMGAmmo",
+					"AmmoModelPath": [
+						{
+							"AmmoPath": "MachineGunAmmo/",
+							"AmmoModel": "MMGAmmo"
+						}
+					],
+					"AmmoFX": [
+						{
+							"FXExplosion": "ShellExplosionSmallPlaceholder",
+							"FXWaterHit": "ShellWaterHitSmallPlaceholder"
+						}
+					],
+					"Weight": 0.6,
+					"DamageMax": 10,
+					"DamageMin": 0,
+					"ArmorPenetration": 2,
+					"ExplosionRadius": 0,
+					"MaxLifeTime": 3
 				}
 			],
 			"separators": [],

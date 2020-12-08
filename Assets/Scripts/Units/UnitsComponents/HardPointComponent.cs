@@ -79,8 +79,35 @@ public class HardPointComponent : MonoBehaviour {
 
             
             turretRotation.BeginOperations(hardPointTransform, turretRotationSoundInstance, turretFireManager);
-            turretFireManager.BeginOperations(turretRotation, turretFireSoundInstance);
+            turretFireManager.BeginOperations(turretFireSoundInstance);
             turretHealth.BeginOperations(turretManager, turretRotation, turretFireManager);
+    }
+
+    public static void SetUpPlaneWeaponHardPoint(WorldSingleWeapon weapon,HardPointComponent hardPointComponent, Transform hardPointTransform, PlaneWeaponsManager planeWeaponsManager){
+        // MODEL
+            GameObject turretInstance =
+                Instantiate (weapon.GetWeaponPrefab(), hardPointTransform);
+
+        // Add sound
+            GameObject audioPrefab = (Resources.Load("Prefabs/Objects/TurretAudioSource", typeof(GameObject))) as GameObject;
+            GameObject turretFireSoundInstance =
+                Instantiate (audioPrefab, turretInstance.transform);
+
+        // Build/find each script
+            PlaneWeapon planeWeapon = turretInstance.GetComponent<PlaneWeapon>();
+
+            planeWeaponsManager.AddNewWeapon(turretInstance);
+
+        // Turret Fire Manager
+            planeWeapon.SetAmmoRef(weapon.GetAmmoRef());
+            planeWeapon.SetWeaponRoles(weapon.GetWeaponRoles());
+            planeWeapon.SetMaxRange(weapon.GetWeaponMaxRange());
+            planeWeapon.SetMinRange(weapon.GetWeaponMinRange());
+            planeWeapon.SetMuzzleVelocity(weapon.GetWeaponMuzzleVelocity());
+            planeWeapon.SetReloadTime(weapon.GetWeaponReloadTime());
+            planeWeapon.SetPrecision(weapon.GetWeaponPrecision());
+            
+            planeWeapon.BeginOperations(turretFireSoundInstance);
     }
 
     public static void SetUpShipFunnel(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform){

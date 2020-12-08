@@ -22,6 +22,7 @@ public class AircraftMovement : UnitMovement {
 
     public void BeginOperations(AircraftController unitController) {
         PlaneController = unitController;
+        // Debug.Log("AircraftMovement BeginOperations"+ PlaneController);
     }
 
     private void FixedUpdate() {

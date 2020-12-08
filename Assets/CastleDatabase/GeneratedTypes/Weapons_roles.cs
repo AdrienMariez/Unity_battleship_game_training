@@ -16,7 +16,8 @@ Artillery,
 NavalArtillery, 
 AntiAir, 
 Torpedo, 
-DepthCharge
+DepthCharge, 
+AircraftMG
  } 
         public Weapons_roles (CastleDBParser.RootNode root, RowValues line) 
         {

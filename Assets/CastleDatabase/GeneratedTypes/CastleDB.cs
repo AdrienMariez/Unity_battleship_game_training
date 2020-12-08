@@ -177,6 +177,7 @@ public class HardPointsType
 public HardPoints ShipFunnel { get { return Get(CompiledTypes.HardPoints.RowValues.ShipFunnel); } } 
 public HardPoints ShipPropeller { get { return Get(CompiledTypes.HardPoints.RowValues.ShipPropeller); } } 
 public HardPoints PlanePropeller { get { return Get(CompiledTypes.HardPoints.RowValues.PlanePropeller); } } 
+public HardPoints PlaneWeapon { get { return Get(CompiledTypes.HardPoints.RowValues.PlaneWeapon); } } 
 private HardPoints Get(CompiledTypes.HardPoints.RowValues line) { return new HardPoints(parsedDB.Root, line); }
 
                 public HardPoints[] GetAll() 
@@ -199,6 +200,7 @@ public Weapons JapanCA200mmY { get { return Get(CompiledTypes.Weapons.RowValues.
 public Weapons Japan120mmType10AATwin { get { return Get(CompiledTypes.Weapons.RowValues.Japan120mmType10AATwin); } } 
 public Weapons JapanBBCasemate120mm { get { return Get(CompiledTypes.Weapons.RowValues.JapanBBCasemate120mm); } } 
 public Weapons JapanTorpedo4CA { get { return Get(CompiledTypes.Weapons.RowValues.JapanTorpedo4CA); } } 
+public Weapons mmg { get { return Get(CompiledTypes.Weapons.RowValues.mmg); } } 
 private Weapons Get(CompiledTypes.Weapons.RowValues line) { return new Weapons(parsedDB.Root, line); }
 
                 public Weapons[] GetAll() 
@@ -218,6 +220,7 @@ public Weapons_roles NavalArtillery { get { return Get(CompiledTypes.Weapons_rol
 public Weapons_roles AntiAir { get { return Get(CompiledTypes.Weapons_roles.RowValues.AntiAir); } } 
 public Weapons_roles Torpedo { get { return Get(CompiledTypes.Weapons_roles.RowValues.Torpedo); } } 
 public Weapons_roles DepthCharge { get { return Get(CompiledTypes.Weapons_roles.RowValues.DepthCharge); } } 
+public Weapons_roles AircraftMG { get { return Get(CompiledTypes.Weapons_roles.RowValues.AircraftMG); } } 
 private Weapons_roles Get(CompiledTypes.Weapons_roles.RowValues line) { return new Weapons_roles(parsedDB.Root, line); }
 
                 public Weapons_roles[] GetAll() 
@@ -237,6 +240,7 @@ public Ammos ShellJapan200mm { get { return Get(CompiledTypes.Ammos.RowValues.Sh
 public Ammos ShellJapan152mm { get { return Get(CompiledTypes.Ammos.RowValues.ShellJapan152mm); } } 
 public Ammos ShellJapan120mm { get { return Get(CompiledTypes.Ammos.RowValues.ShellJapan120mm); } } 
 public Ammos TorpedoJapan610mm { get { return Get(CompiledTypes.Ammos.RowValues.TorpedoJapan610mm); } } 
+public Ammos AirMGAmmo { get { return Get(CompiledTypes.Ammos.RowValues.AirMGAmmo); } } 
 private Ammos Get(CompiledTypes.Ammos.RowValues line) { return new Ammos(parsedDB.Root, line); }
 
                 public Ammos[] GetAll() 

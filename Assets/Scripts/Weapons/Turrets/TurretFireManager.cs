@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class TurretFireManager : MonoBehaviour {
     // [Tooltip("Type of turret")] public TurretRole m_TurretRole;
-    [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles; public TurretRole[] GetTurretRoles() { return m_TurretRoles; }
-    private TurretRole TurretCurrentRole; public void SetCurrentControlledTurretRole(TurretRole currentControlledTurretRole) { TurretCurrentRole = currentControlledTurretRole; }
+    // [Tooltip("Availables roles for the turret")] public TurretRole[] m_TurretRoles; public TurretRole[] GetTurretRoles() { return m_TurretRoles; }
+    // private TurretRole TurretCurrentRole; public void SetCurrentControlledTurretRole(TurretRole currentControlledTurretRole) { TurretCurrentRole = currentControlledTurretRole; }
     [Tooltip("Points where the shells will be spawned, make as many points as there are barrels")] 
     public Transform[] m_FireMuzzles;
 
@@ -44,7 +44,6 @@ public class TurretFireManager : MonoBehaviour {
             CheckTurretStatus();
     }
     private TurretManager TurretManager; public void SetTurretManager(TurretManager turretManager){ TurretManager = turretManager; }
-    private TurretRotation TurretRotation;
     private int TurretNumber;
 
     
@@ -65,16 +64,7 @@ public class TurretFireManager : MonoBehaviour {
     private bool AIControl = false;
     private bool AIPauseFire = false;
 
-    // private void Start (){
-    //     TurretRotation = GetComponent<TurretRotation>();
-    //     // FreeLookCam = GameObject.Find("FreeLookCameraRig").GetComponent<FreeLookCam>();
-    //     Precision = 2 - ( m_Precision / 50);        // Transform the public precision percentage data to game use.
-    //     // Debug.Log("Precision = "+ Precision);
-    // }
-
-    public void BeginOperations(TurretRotation turretRotation, GameObject turretSoundInstance){
-        TurretRotation = GetComponent<TurretRotation>();
-
+    public void BeginOperations(GameObject turretSoundInstance){
         _AudioSource = turretSoundInstance.GetComponent<AudioSource>();
     }
 

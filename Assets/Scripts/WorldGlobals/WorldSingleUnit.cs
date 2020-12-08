@@ -180,7 +180,7 @@ public class WorldSingleUnit {
             } else if (unit.Isavariant && unit.UnitHardPointsList.Count > 0) {
                 SetHardPoints(masterUnitReference, true);
                 SetHardPoints(unit, false);
-            }else if (unit.UnitHardPointsList.Count > 0) {
+            } else if (unit.UnitHardPointsList.Count > 0) {
                 SetHardPoints(unit, false);
             }
 
@@ -220,6 +220,7 @@ public class WorldSingleUnit {
 // HARDPOINTS
     private List<UnitHardPoint> UnitHardPointList = new List<UnitHardPoint>(); public List<UnitHardPoint> GetUnitHardPointList(){ return UnitHardPointList; }
     private bool WeaponExists = false; public bool GetWeaponExists(){ return WeaponExists; }
+    private bool PlaneWeaponExists = false; public bool GetPlaneWeaponExists(){ return PlaneWeaponExists; }
     private void SetHardPoints(CompiledTypes.Global_Units unit, bool isAParent) {
         foreach (CompiledTypes.UnitHardPoints hardpoint in unit.UnitHardPointsList) {
             if (isAParent && !hardpoint.IsTransferedToVariants) { return; }
@@ -231,6 +232,9 @@ public class WorldSingleUnit {
             CompiledTypes.HardPoints.RowValues hardPointType = (CompiledTypes.HardPoints.RowValues)System.Enum.Parse( typeof(CompiledTypes.HardPoints.RowValues), hardPointTypeString);
             if (hardPointType == CompiledTypes.HardPoints.RowValues.Weapon) {
                 WeaponExists = true;
+            }
+            if (hardPointType == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
+                PlaneWeaponExists = true;
             }
             _hardpoint.SetHardpointType(hardPointType);
             _hardpoint.SetIsMirrored(hardpoint.IsMirrored);

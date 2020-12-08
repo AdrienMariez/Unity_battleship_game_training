@@ -38,6 +38,7 @@ public class UnitMasterController : MonoBehaviour {
     protected UnitUI UnitUI;
     protected UnitHealth Health; public UnitHealth GetUnitHealth() { return Health; }
     protected TurretManager Turrets;
+    protected PlaneWeaponsManager PlaneWeapons;
     private GameObject PlayerSetEnemyTargetUnit;
 
     public enum ElementType {
@@ -210,6 +211,9 @@ public class UnitMasterController : MonoBehaviour {
             if (UnitWorldSingleUnit.GetWeaponExists()) {
                 Turrets = this.gameObject.AddComponent<TurretManager>();
             }
+            if (UnitWorldSingleUnit.GetPlaneWeaponExists()) {
+                PlaneWeapons = this.gameObject.AddComponent<PlaneWeaponsManager>();
+            }
 
 
         // Set HardPoints
@@ -220,6 +224,8 @@ public class UnitMasterController : MonoBehaviour {
 
                 if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
                     HardPointComponent.SetUpWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, Turrets);
+                } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
+                    HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, PlaneWeapons);
                 } else {
                     HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
                 }
@@ -244,6 +250,8 @@ public class UnitMasterController : MonoBehaviour {
 
                     if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
                         HardPointComponent.SetUpWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponentCopy, hardPointTransformCopy, Turrets);
+                    } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
+                    HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, PlaneWeapons);
                     } else {
                         HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy);
                     }

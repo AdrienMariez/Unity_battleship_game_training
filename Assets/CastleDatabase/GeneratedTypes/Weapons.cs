@@ -36,7 +36,8 @@ JapanCA200mmB,
 JapanCA200mmY, 
 Japan120mmType10AATwin, 
 JapanBBCasemate120mm, 
-JapanTorpedo4CA
+JapanTorpedo4CA, 
+mmg
  } 
         public Weapons (CastleDBParser.RootNode root, RowValues line) 
         {

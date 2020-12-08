@@ -19,20 +19,11 @@ public class TurretManager : MonoBehaviour {
     private List<CompiledTypes.Weapons_roles.RowValues> UnitWeaponRoleList = new List<CompiledTypes.Weapons_roles.RowValues>(); public List<CompiledTypes.Weapons_roles.RowValues> GetUnitWeaponRoleList(){ return UnitWeaponRoleList; }
 
     [Header("Artillery")]
-        // private List <GameObject> ArtilleryTurrets;
-        private List <GameObject> NavalArtilleryTurrets = new List<GameObject>();
-        private List <GameObject> ArtilleryTurrets = new List<GameObject>();
         private float ElevationRatio;               // % of elevation needed
         private float TargetRange; public float GetTargetRange() { return TargetRange; } 
         private Vector3 TargetPosition;
         private float MaxRange = -1;
         private float MinRange = 100000;
-    [Header("AA")]
-        private List <GameObject> AATurrets = new List<GameObject>();
-    [Header("Torpedoes")]
-        private List <GameObject> TorpedoTurrets = new List<GameObject>();
-    [Header("DepthCharge")]
-        private List <GameObject> DepthChargeTurrets = new List<GameObject>();
 
     private int TotalTurrets = 0;
     private int WorkingTurrets;

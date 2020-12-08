@@ -14,7 +14,8 @@ namespace CompiledTypes
 Weapon, 
 ShipFunnel, 
 ShipPropeller, 
-PlanePropeller
+PlanePropeller, 
+PlaneWeapon
  } 
         public HardPoints (CastleDBParser.RootNode root, RowValues line) 
         {

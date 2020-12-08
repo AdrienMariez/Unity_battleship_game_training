@@ -24,7 +24,8 @@ ShellJapan356mm,
 ShellJapan200mm, 
 ShellJapan152mm, 
 ShellJapan120mm, 
-TorpedoJapan610mm
+TorpedoJapan610mm, 
+AirMGAmmo
  } 
         public Ammos (CastleDBParser.RootNode root, RowValues line) 
         {
