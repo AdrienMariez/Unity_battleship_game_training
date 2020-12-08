@@ -69,6 +69,7 @@ public class PlaneWeapon : MonoBehaviour {
             OutOfRange = false;
             CheckTurretStatus();
         }
+
         if (PlayerControl && !Reloading && !PreventFire && !OutOfRange && !Dead) {
             CheckTurretStatus();
             if (Input.GetButtonDown ("FireMainWeapon")) {

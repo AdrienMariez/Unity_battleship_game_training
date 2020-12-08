@@ -97,11 +97,8 @@ public class PlaneShellStat : MonoBehaviour {
 
 
     private void FixedUpdate () {
-        if (ShellType == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
-            CalculateTrajectoryTorpedo();
-        } else {
-            CalculateTrajectoryArtillery();
-            CheckIfShellNeedsToDieArtillery();
+        if (ShellType == CompiledTypes.Weapons_roles.RowValues.AircraftMG) {
+            CalculateTrajectoryAA ();
         }
     }
 

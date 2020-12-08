@@ -40,14 +40,14 @@ using UnityEngine;
             if (InAirportZone) {
                 if (m_State != GearState.Lowered) {
                     // Landing gear is out
-                    Debug.Log ("Airfield ''o'' expected");
+                    // Debug.Log ("Airfield ''o'' expected");
                     m_State = GearState.Lowered;
                     m_Animator.SetInteger("GearState", (int) m_State);
                 }
             } else {
                 if (m_State != GearState.Raised) {
                     // Landing gear is folded inside
-                    Debug.Log ("Airfield ..o..");
+                    // Debug.Log ("Airfield ..o..");
                     m_State = GearState.Raised;
                     m_Animator.SetInteger("GearState", (int) m_State);
                 }

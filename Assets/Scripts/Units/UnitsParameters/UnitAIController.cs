@@ -14,6 +14,7 @@ public class UnitAIController : UnitParameter {
     protected GameObject PlayerSetTargetUnit;
     protected UnitMasterController UnitMasterController;
     protected TurretManager TurretManager;
+    protected PlaneWeaponsManager PlaneWeaponsManager; public void SetPlaneWeaponsManager(PlaneWeaponsManager _s){ PlaneWeaponsManager = _s; }
     protected List <GameObject> EnemyUnitsList = new List<GameObject>();
 
     public virtual void SetAITurnInputValue(float turnInputValue){}

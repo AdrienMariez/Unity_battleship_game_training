@@ -251,7 +251,7 @@ public class UnitMasterController : MonoBehaviour {
                     if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.Weapon) {
                         HardPointComponent.SetUpWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponentCopy, hardPointTransformCopy, Turrets);
                     } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
-                    HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, PlaneWeapons);
+                        HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponentCopy, hardPointTransformCopy, PlaneWeapons);
                     } else {
                         HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy);
                     }
@@ -326,7 +326,7 @@ public class UnitMasterController : MonoBehaviour {
             GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
     public virtual void SetPause(bool pause) {
-        if (GetComponent<TurretManager>())
+        if (Turrets != null)
             Turrets.SetPause();
     }
     public virtual void SetMap(bool mapActive) {
@@ -360,8 +360,10 @@ public class UnitMasterController : MonoBehaviour {
     public void SetPlayerManager(PlayerManager playerManager) {
         // Debug.Log ("SetPlayerManager" +UnitName);
         PlayerManager = playerManager;
-        if (GetComponent<TurretManager>())
+        if (Turrets != null)
             Turrets.SetPlayerManager(PlayerManager);
+        if (PlaneWeapons != null)
+            PlaneWeapons.SetPlayerManager(PlayerManager);
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetPlayerManager(PlayerManager);
             GetComponent<SpawnerScriptToAttach>().BeginOperations(this, UnitAI);

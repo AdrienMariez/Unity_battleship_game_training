@@ -41,34 +41,34 @@ public class PlaneWeaponsManager : MonoBehaviour {
     private float AITargetRange; public void SetAITargetRange(float targetRange) { AITargetRange = targetRange; TargetRange = targetRange; }
     
 
-    private List <TurretListItem> TurretList = new List<TurretListItem>();
-    public class TurretListItem {
+    private List <WeaponsListItem> TurretList = new List<WeaponsListItem>();
+    public class WeaponsListItem {
         private GameObject _weaponGameObject;  public GameObject GetWeaponGameObject(){ return _weaponGameObject; } public void SetWeaponGameObject(GameObject _g){ _weaponGameObject = _g; }
         private PlaneWeapon _planeWeapon;  public PlaneWeapon GetPlaneWeapon(){ return _planeWeapon; } public void SetPlaneWeapon(PlaneWeapon _s){ _planeWeapon = _s; }
     }
 
     public void AddNewWeapon(GameObject weapon) {
-        TurretListItem _turret = new TurretListItem{};
-        _turret.SetWeaponGameObject(weapon);
-        _turret.SetPlaneWeapon(weapon.GetComponent<PlaneWeapon>());
-        TurretList.Add(_turret);
+        WeaponsListItem _weapon = new WeaponsListItem{};
+        _weapon.SetWeaponGameObject(weapon);
+        _weapon.SetPlaneWeapon(weapon.GetComponent<PlaneWeapon>());
+        TurretList.Add(_weapon);
     }
 
     public void BeginOperations(UnitMasterController unitController){
         UnitMasterController = unitController;
         float MaxR;
         float MinR;
-        foreach (TurretListItem turret in TurretList) {
+        foreach (WeaponsListItem _weapon in TurretList) {
             TotalTurrets++;
-            MaxR = turret.GetPlaneWeapon().GetMaxRange();
-            MinR = turret.GetPlaneWeapon().GetMinRange();
+            MaxR = _weapon.GetPlaneWeapon().GetMaxRange();
+            MinR = _weapon.GetPlaneWeapon().GetMinRange();
             if (MaxR > MaxRange)
                 MaxRange = MaxR;
             if (MinR < MinRange)
                 MinRange = MinR;
-            turret.GetPlaneWeapon().SetTurretManager(this);
+            _weapon.GetPlaneWeapon().SetTurretManager(this);
             
-            foreach (CompiledTypes.Weapons_roles.RowValues role in turret.GetPlaneWeapon().GetWeaponRoles()) {
+            foreach (CompiledTypes.Weapons_roles.RowValues role in _weapon.GetPlaneWeapon().GetWeaponRoles()) {
                 if (!UnitWeaponRoleList.Contains(role)) {
                     UnitWeaponRoleList.Add(role);
                 }
@@ -99,7 +99,7 @@ public class PlaneWeaponsManager : MonoBehaviour {
             }
             // Debug.Log(ElevationRatio + " : ElevationRatio");
 
-            foreach (TurretListItem turret in TurretList) {
+            foreach (WeaponsListItem turret in TurretList) {
                 turret.GetPlaneWeapon().SetTargetRange(TargetRange);
                 turret.GetPlaneWeapon().SetTargetPosition(TargetPosition);
             }
@@ -110,9 +110,9 @@ public class PlaneWeaponsManager : MonoBehaviour {
             // ElevationRatio = (Mathf.Round(AITargetRange * 100 / (MaxRange - MinRange)));
             TargetRange = AITargetRange;                                                        // So the UI Knows the current AI range ?
             // Debug.Log("ElevationRatio = "+ ElevationRatio);
-            foreach (TurretListItem turret in TurretList) {
-                turret.GetPlaneWeapon().SetTargetRange(AITargetRange);
-                turret.GetPlaneWeapon().SetTargetPosition(AITargetPosition);
+            foreach (WeaponsListItem _weapon in TurretList) {
+                _weapon.GetPlaneWeapon().SetTargetRange(AITargetRange);
+                _weapon.GetPlaneWeapon().SetTargetPosition(AITargetPosition);
             }
         }
         
@@ -122,25 +122,25 @@ public class PlaneWeaponsManager : MonoBehaviour {
     private void CheckForTurretSwitch() {
         if (Input.GetButtonDown ("SetWeaponNavalArtillery") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.NavalArtillery && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.NavalArtillery)){
             CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.NavalArtillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            // PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
             // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
         if (Input.GetButtonDown ("SetWeaponArtillery") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.Artillery && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.Artillery)){
             CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.Artillery;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            // PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
             // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
         if (Input.GetButtonDown ("SetWeaponAA") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.AntiAir && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.AntiAir)){
             CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.AntiAir;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            // PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
             // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
         }
         if (Input.GetButtonDown ("SetWeaponTorpedoes") && CurrentControlledWeaponRole != CompiledTypes.Weapons_roles.RowValues.Torpedo && UnitWeaponRoleList.Contains(CompiledTypes.Weapons_roles.RowValues.Torpedo)){
             CurrentControlledWeaponRole = CompiledTypes.Weapons_roles.RowValues.Torpedo;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            // PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             SetPlayerControl();
         }
     }
@@ -150,7 +150,7 @@ public class PlaneWeaponsManager : MonoBehaviour {
             // The first role is always selected. The order of the roles is set in DB by the order of UnitHardPoint in Global_Units AND in WeaponRoles in Weapons.
             // In the DB The first role in a weapon will be prioritized. The first weapon of a unit will be prioritized. Watch as these orders have consequences on gameplay.
             CurrentControlledWeaponRole = role;
-            PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
+            // PlayerManager.SetPlayerTurretRole(CurrentControlledWeaponRole);
             break;
         }
         // Debug.Log ("CurrentControlledWeaponRole : "+ CurrentControlledWeaponRole);
@@ -171,9 +171,10 @@ public class PlaneWeaponsManager : MonoBehaviour {
         }
         // Debug.Log("PlayerControl : "+ PlayerControl);
         // Debug.Log("AIControl : "+ AIControl);
+        // Debug.Log(Active+"-"+!Map+"-"+!DamageControl+"-"+!Dead+"-"+!FreeCamera+"-"+!Pause);
         int number = 0;
-        foreach (TurretListItem turret in TurretList) {
-            List<CompiledTypes.Weapons_roles.RowValues> availableWeaponRoles = turret.GetPlaneWeapon().GetWeaponRoles();
+        foreach (WeaponsListItem _weapon in TurretList) {
+            List<CompiledTypes.Weapons_roles.RowValues> availableWeaponRoles = _weapon.GetPlaneWeapon().GetWeaponRoles();
             bool matchFound = false;
             foreach (CompiledTypes.Weapons_roles.RowValues role in availableWeaponRoles) {
                 if (role == CurrentControlledWeaponRole) {
@@ -183,23 +184,23 @@ public class PlaneWeaponsManager : MonoBehaviour {
             }
 
             if (matchFound) {                               // If this was in the availableRoles loop, it would be ignored by further roles. Better do it once, it's cleaner.
-                turret.GetPlaneWeapon().SetWeaponCurrentRole(CurrentControlledWeaponRole);
-                turret.GetPlaneWeapon().SetPlayerControl(PlayerControl);
-                turret.GetPlaneWeapon().SetTurretUIActive(true);
-                turret.GetPlaneWeapon().SetTurretNumber(number);
+                _weapon.GetPlaneWeapon().SetWeaponCurrentRole(CurrentControlledWeaponRole);
+                _weapon.GetPlaneWeapon().SetPlayerControl(PlayerControl);
+                _weapon.GetPlaneWeapon().SetTurretUIActive(true);
+                _weapon.GetPlaneWeapon().SetTurretNumber(number);
                 number++;
             } else {
-                turret.GetPlaneWeapon().SetPlayerControl(false);
-                turret.GetPlaneWeapon().SetTurretUIActive(false);
+                _weapon.GetPlaneWeapon().SetPlayerControl(false);
+                _weapon.GetPlaneWeapon().SetTurretUIActive(false);
             }
-            turret.GetPlaneWeapon().SetAIControl(AIControl);
+            _weapon.GetPlaneWeapon().SetAIControl(AIControl);
         }
     }
 
     public void SetActive(bool activate) {
         Active = activate;
-        foreach (TurretListItem turret in TurretList) {
-            turret.GetPlaneWeapon().SetActive(activate);
+        foreach (WeaponsListItem _weapon in TurretList) {
+            _weapon.GetPlaneWeapon().SetActive(activate);
         }
         SetPlayerControl();
         if (Active)
@@ -225,7 +226,7 @@ public class PlaneWeaponsManager : MonoBehaviour {
     }
     public void SetDeath(bool IsShipDead) {
         Dead = IsShipDead;
-        foreach (TurretListItem turret in TurretList) {
+        foreach (WeaponsListItem turret in TurretList) {
             turret.GetPlaneWeapon().SetTurretDeath(IsShipDead);
         }
     }
@@ -256,7 +257,7 @@ public class PlaneWeaponsManager : MonoBehaviour {
     
     public List <TurretManager.TurretStatusType> GetTurretsStatus() {
         TurretStatus.Clear();
-        foreach (TurretListItem turret in TurretList) {
+        foreach (WeaponsListItem turret in TurretList) {
             List<CompiledTypes.Weapons_roles.RowValues> availableWeaponRoles = turret.GetPlaneWeapon().GetWeaponRoles();                                                                 
             foreach (CompiledTypes.Weapons_roles.RowValues role in availableWeaponRoles) {
                 if (role == CurrentControlledWeaponRole) {

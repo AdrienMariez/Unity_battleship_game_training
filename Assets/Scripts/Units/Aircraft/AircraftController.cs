@@ -78,6 +78,12 @@ using UnityEngine;
                 }
 
             base.SetUnitFromWorldUnitsManager(unit, aiMove, aiShoot, aiSpawn);
+
+            if (UnitWorldSingleUnit.GetPlaneWeaponExists()) {
+                // Debug.Log("yes"+ PlaneWeapons);
+                PlaneWeapons.BeginOperations(this);
+                UnitAI.SetPlaneWeaponsManager(PlaneWeapons);
+            }
         }
 
         public void Move(float rollInput, float pitchInput, float yawInput, float throttleInput, bool airBrakes) {
@@ -267,23 +273,35 @@ using UnityEngine;
             base.SetActive(activate);
             if (Movement != null)
                 Movement.SetActive(Active);
+
+            if (PlaneWeapons != null)
+                PlaneWeapons.SetActive(Active);
+        }
+        public override void SetPause(bool pause) {
+            if (Turrets != null)
+                Turrets.SetPause();
+            base.SetPause(pause);
         }
         public override void SetMap(bool map) {
             if (Movement != null)
                 Movement.SetMap(map);
+            if (PlaneWeapons != null)
+                PlaneWeapons.SetMap(map);
             base.SetMap(map);
         }
         public override void SetFreeCamera(bool freeCam) {
             base.SetFreeCamera(freeCam);
             Movement.SetFreeCamera(freeCam);
+            if (PlaneWeapons != null) 
+                PlaneWeapons.SetFreeCamera(freeCam);
         }
         public override void SetInAirfieldZone(bool action) {
             if (InAirportZone != action) {
                 InAirportZone = action;
                 if (InAirportZone) {
-                    Debug.Log(UnitName+" has has entered an airfield zone !");
+                    // Debug.Log(UnitName+" has has entered an airfield zone !");
                 } else {
-                    Debug.Log(UnitName+" has exited an airfield zone !");
+                    // Debug.Log(UnitName+" has exited an airfield zone !");
                 }
                 if (LandingGear != null) {
                     LandingGear.SetInAirfieldZone(action);
