@@ -1643,6 +1643,49 @@
 							"Lateraloffset": 0
 						}
 					]
+				},
+				{
+					"id": "AirfieldUSA",
+					"Isavariant": false,
+					"UnitName": "American Airfield",
+					"UnitHardPoints": [],
+					"index": 9,
+					"UnitModelPath": [
+						{
+							"UnitPath": "Building/",
+							"UnitModel": "Airfield"
+						}
+					],
+					"UnitCategory": "Airfield",
+					"UnitNation": "usa",
+					"UnitScore": [
+						{
+							"Commandpoints": 10000,
+							"Victorypoints": 1000
+						}
+					],
+					"UnitCameraParameters": [
+						{
+							"Distance": 500,
+							"Height": 20,
+							"Lateraloffset": 0
+						}
+					],
+					"UnitHealth": 30000,
+					"UnitMass": 100000000
+				},
+				{
+					"id": "AirfieldJapan",
+					"Isavariant": true,
+					"UnitName": "Japanese Airfield",
+					"UnitHardPoints": [],
+					"index": 10,
+					"UnitVariantReference": [
+						{
+							"UnitVariantRef": "AirfieldUSA"
+						}
+					],
+					"UnitNation": "japan"
 				}
 			],
 			"separators": [],

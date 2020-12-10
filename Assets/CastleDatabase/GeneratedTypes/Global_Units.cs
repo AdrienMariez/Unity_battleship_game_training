@@ -33,7 +33,9 @@ TrainingCarrier,
 TrainingCarrierUSA, 
 ShipyardJapan, 
 ShipyardUSA, 
-BimotorAircraftTest
+BimotorAircraftTest, 
+AirfieldUSA, 
+AirfieldJapan
  } 
         public Global_Units (CastleDBParser.RootNode root, RowValues line) 
         {

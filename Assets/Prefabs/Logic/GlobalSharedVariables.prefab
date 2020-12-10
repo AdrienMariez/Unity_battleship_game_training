@@ -76,6 +76,9 @@ MonoBehaviour:
   m_WorldMask:
     serializedVersion: 2
     m_Bits: 40704
+  m_PlaneSpawnMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +169,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   m_GamingAreaKillZonePadding: 200
-  m_ErrorModel: {fileID: 7871896421843162103, guid: bbf4e3440bbde564ca13f01320926489,
+  m_ErrorModel: {fileID: 7871896421843162103, guid: f420f6fce7ccf5a4a96720e14ce93cf6,
     type: 3}
   m_ErrorSound: {fileID: 8300000, guid: eaba9bdd004614f4a8cb662f8f6f76de, type: 3}

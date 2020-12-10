@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 3651411911664692880}
   - component: {fileID: 1555652416618090463}
   - component: {fileID: 2836160532335556975}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,6 +602,7 @@ MonoBehaviour:
   m_GroundSpawnPosition: {fileID: 6119007043914030161}
   SpawnableUnitsList: []
   TeamedSpawnableUnitsList: []
+  StagingUnitList: []
 --- !u!1 &2999055004668866483
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +614,7 @@ GameObject:
   - component: {fileID: 4356806767620825673}
   - component: {fileID: 2597088637534100958}
   - component: {fileID: 1544990979124235537}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +835,7 @@ GameObject:
   - component: {fileID: 4683842931939909943}
   - component: {fileID: 3741074071227171751}
   m_Layer: 0
-  m_Name: FusoModelV4
+  m_Name: ShipyardModelV1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -916,7 +917,7 @@ GameObject:
   - component: {fileID: 4086386461325272294}
   - component: {fileID: 8632957221482536579}
   - component: {fileID: 1561024297846156307}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -979,7 +980,7 @@ GameObject:
   - component: {fileID: 1428588715892421395}
   - component: {fileID: 6234203924278511640}
   - component: {fileID: 7970337497163940215}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1042,7 +1043,7 @@ GameObject:
   - component: {fileID: 4592938007957523162}
   - component: {fileID: 422393603856031635}
   - component: {fileID: 9075867435812656166}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1135,7 +1136,7 @@ GameObject:
   - component: {fileID: 1350273341711766353}
   - component: {fileID: 5972897321225701123}
   - component: {fileID: 4386307279799575978}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: hull20 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

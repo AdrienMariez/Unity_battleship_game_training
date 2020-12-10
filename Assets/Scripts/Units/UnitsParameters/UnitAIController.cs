@@ -14,6 +14,7 @@ public class UnitAIController : UnitParameter {
     protected GameObject PlayerSetTargetUnit;
     protected UnitMasterController UnitMasterController;
     protected TurretManager TurretManager;
+    protected SpawnerScriptToAttach SpawnerScript;
     protected PlaneWeaponsManager PlaneWeaponsManager; public void SetPlaneWeaponsManager(PlaneWeaponsManager _s){ PlaneWeaponsManager = _s; }
     protected List <GameObject> EnemyUnitsList = new List<GameObject>();
 
@@ -96,6 +97,7 @@ public class UnitAIController : UnitParameter {
             // Debug.Log("Unit : "+ Name +"can't spawn");
             UnitCanSpawn = false;
         } else {
+            SpawnerScript = GetComponent<SpawnerScriptToAttach>();
             StartCoroutine(TrySpawnLoop());
         }
     }
@@ -438,15 +440,17 @@ public class UnitAIController : UnitParameter {
     }
     protected void SpawnNewUnit() {
         // Debug.Log("SpawnNewUnit");
-        SpawnerScriptToAttach spawnerScript = GetComponent<SpawnerScriptToAttach>();
-        int listCount = spawnerScript.GetTeamedSpawnableUnitsList().Count - 1;
+        int listCount = SpawnerScript.GetTeamedSpawnableUnitsList().Count - 1;
         if (listCount < 0 ) { return; } // Check if list is populated
         int unitChosen = Random.Range(0, listCount);
         // Debug.Log(unitChosen +" / "+listCount);
-        if (spawnerScript.TrySpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {
-            spawnerScript.SpawnUnit(spawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], ChidrenCanMove, ChidrenCanShoot, ChidrenCanSpawn);
+        if (SpawnerScript.StagingUnitList.Count == 0) {
+            SpawnerScript.TrySpawn(SpawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], true);
         }
-        // foreach (WorldSingleUnit singleUnit in spawnerScript.GetTeamedSpawnableUnitsList()) {
+        // if (SpawnerScript.TrySpawnUnit(SpawnerScript.GetTeamedSpawnableUnitsList()[unitChosen])) {
+        //     SpawnerScript.SpawnUnit(SpawnerScript.GetTeamedSpawnableUnitsList()[unitChosen], ChidrenCanMove, ChidrenCanShoot, ChidrenCanSpawn);
+        // }
+        // foreach (WorldSingleUnit singleUnit in SpawnerScript.GetTeamedSpawnableUnitsList()) {
         //     Debug.Log(singleUnit.GetUnitName());
         // }
     }

@@ -186,6 +186,7 @@ public class PlayerManager : MonoBehaviour {
                         SetCurrentUnitDead(true);
                     }
                     PlayerUnitList.Remove(unit);
+                    return;
                 }
             }
 

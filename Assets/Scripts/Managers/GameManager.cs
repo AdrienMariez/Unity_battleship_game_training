@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour {
         UpdateGameModeMessage();
     }
     public void UnitDead(UnitMasterController unitController, CompiledTypes.Teams unitTeam, bool unitActive) {
-        foreach (var playerManager in PlayersManager) {
+        foreach (PlayerManager playerManager in PlayersManager) {
            playerManager.UnitDead(unitController, unitTeam, unitActive); 
         }
 

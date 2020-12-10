@@ -24,6 +24,10 @@ public class WorldUnitsManager : MonoBehaviour {
     public LayerMask m_WorldMask;
     private static LayerMask WorldMask; public static LayerMask GetWorldMask(){ return WorldMask; }
 
+    [Tooltip("What is checked when spawning a plane in a spawner")]
+    public LayerMask m_PlaneSpawnMask;
+    private static LayerMask PlaneSpawnMask; public static LayerMask GetPlaneSpawnMask(){ return PlaneSpawnMask; }
+
 
     private static GameManager GameManager; public static GameManager GetGameManager(){ return GameManager; } public static void SetGameManager(GameManager _s){ GameManager =_s; }
 
@@ -34,6 +38,7 @@ public class WorldUnitsManager : MonoBehaviour {
             DB = new CastleDB(CastleDBAsset);
             HitMask = m_WeaponHitMask;
             WorldMask = m_WorldMask;
+            PlaneSpawnMask = m_PlaneSpawnMask;
             WorldSetUnits();
         }
     }

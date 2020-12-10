@@ -21,6 +21,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList;
 
+    protected bool StagingListInUse = false;
+    [HideInInspector] public List<WorldSingleUnit> StagingUnitList;
+
     UnitMasterController UnitController;
     UnitAIController AIController;
     private bool Active;
@@ -161,7 +164,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
         Button spawnerButton = SpawnListContainerInstance.transform.GetChild(i).transform.GetChild(0).GetComponent<Button>();
 		// spawnerButton.onClick.AddListener(SpawnUnit);
-        spawnerButton.onClick.AddListener(() => { TrySpawn(unit); });
+        spawnerButton.onClick.AddListener(() => { TrySpawn(unit, true); });
     }
     private void CloseSpawnMenu(){
         // Debug.Log ("Spawn menu closed !");
@@ -173,37 +176,37 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
 
-    protected void TrySpawn (WorldSingleUnit unit) {
-        if (TrySpawnUnit(unit)) {
+    public void TrySpawn (WorldSingleUnit unit, bool firstPass) {
+        if (TrySpawnUnit(unit, firstPass)) {
             SpawnUnit(unit, AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
         }
     }
     Vector3 SpawnPosition;
-    public bool TrySpawnUnit (WorldSingleUnit unit) {
+    Quaternion SpawnRotation;
+    protected bool TrySpawnUnit (WorldSingleUnit unit, bool firstPass) {
         if (GameManager == null) {
             return false;
         }
 
-        bool trySpawn1 = false;
-        bool trySpawn2 = false;
+        bool trySpawnPointSystem = false;
         // Checks if gameplay allows spawn
         if (GameManager.GetCommandPointSystem()) {
             if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Allies) {
                 if ((GameManager.GetAlliesTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
-                    trySpawn2 = true;
+                    trySpawnPointSystem = true;
                 } else {
                     return false;
                 }
             } else if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Axis) {
                 if ((GameManager.GetAxisTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
-                    trySpawn2 = true;
+                    trySpawnPointSystem = true;
                 } else {
                     return false;
                 }
             }
         } else {
             // When using slots, this will be changed.
-            trySpawn2 = true;
+            trySpawnPointSystem = true;
         }
 
         // SpawnPosition = m_ShipSpawnPosition.position;
@@ -217,50 +220,120 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         //         break;
         //     }
         // }
+        bool trySpawnPosition = false;
 
-        SpawnPosition = TryPosition(m_ShipSpawnPosition, unit.GetUnitSize());
-        if (SpawnPosition != m_ShipSpawnPosition.position) {
-            trySpawn1 = true;
+        if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
+            var _spawn = TryPosition(m_ShipSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.submarine.id) {
+            var _spawn = TryPosition(m_SubmarineSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
+            var _spawn = TryPositionSingleLocation(m_PlanesSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ground.id) {
+            var _spawn = TryPositionSingleLocation(m_GroundSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetHitMask());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else {
+            var _spawn = TryPosition(m_GroundSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
         }
 
 
-        if (trySpawn1 && trySpawn2) {
+        if (trySpawnPosition && trySpawnPointSystem) {
             return true;
         } else {
-            if (!trySpawn1) {
-                Debug.Log("No spawn location available !");
+            if (!trySpawnPosition) {
+                // Debug.Log("No spawn location available yet, putting unit in waiting list !");
+                if (firstPass) {
+                    StagingUnitList.Add(unit);
+                    if (StagingListInUse == false) {
+                        StagingListInUse = true;
+                        StartCoroutine(TrySecondPassSpawnLoop());
+                    }
+                }
             }
-            if (!trySpawn2) {
+            if (!trySpawnPointSystem) {
                 Debug.Log("No points available !");
             }
             return false;
         }
     }
-    public static Vector3 TryPosition (Transform transform, float unitSize) {
-        Vector3 position = transform.position;
-        Collider[] hitColliders = Physics.OverlapSphere(position, unitSize, WorldUnitsManager.GetHitMask());
+
+    IEnumerator TrySecondPassSpawnLoop(){
+        while (StagingListInUse) {
+            yield return new WaitForSeconds(3f);
+            // Debug.Log("TrySecondPassSpawnLoop");
+            if (StagingUnitList.Count > 0) {
+                if (TrySpawnUnit(StagingUnitList[0], false)) {
+                    SpawnUnit(StagingUnitList[0], AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
+                    // Debug.Log("TrySecondPassSpawnLoop found a position !");
+                    StagingUnitList.RemoveAt(0);
+                }
+                
+            }
+            if (StagingUnitList.Count == 0) {
+                StagingListInUse = false;
+            }
+        }
+    }
+
+    public static (Transform, bool) TryPosition (Transform transform, float unitSize) {
+        Transform _transform = transform;
+        Collider[] hitColliders = Physics.OverlapSphere(_transform.position, unitSize, WorldUnitsManager.GetHitMask());
         if (hitColliders.Length == 0) {
-            return position;
+            return (_transform, true);                        // Try initial position first (Item2 = true means position is clear)
         }
 
         for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
             // Debug.Log("TryPosition loop !");
-            position = transform.position;
-            position.x = transform.position.x + Random.Range(-500, 500);
-            position.z = transform.position.z + Random.Range(-500, 500);
-            Collider[] _hitColliders = Physics.OverlapSphere (position, unitSize, WorldUnitsManager.GetHitMask());
+             Vector3 _p = transform.position;
+            _p.x = transform.position.x + Random.Range(-500, 500);
+            _p.z = transform.position.z + Random.Range(-500, 500);
+            transform.position = _p;
+            Collider[] _hitColliders = Physics.OverlapSphere (_transform.position, unitSize, WorldUnitsManager.GetHitMask());
             if (_hitColliders.Length == 0) {
-                break;
+                return (_transform, true);
             }
         }
         // Debug.Log("TryPosition found ! Original _x : " + _x +" current x : "+ position.x + "Original _z : " + _z +" current z : "+ position.z);
-        return position;                    // Be aware that if no position is found after 30 tries, it is spawned anyway.
+        return (_transform, false);                    // If no position is found after 30 tries, it is not spawned.
     }
+    public static (Transform, bool) TryPositionSingleLocation (Transform transform, float unitSize, LayerMask layerMask) {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, unitSize, layerMask);
+        if (hitColliders.Length == 0) {
+            return (transform, true);                        // Try initial position first (Item2 = true means position is clear)
+        }
+
+        // Debug.Log("TryPosition found ! Original _x : " + _x +" current x : "+ position.x + "Original _z : " + _z +" current z : "+ position.z);
+        return (transform, false);                    // If no position is found, it is not spawned.
+    }
+
     public void SpawnUnit (WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // GameObject spawnedUnitInstance =
         //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
 
-        WorldUnitsManager.BuildUnit(unit, SpawnPosition, m_ShipSpawnPosition.rotation, aiMove, aiShoot, aiSpawn);
+        WorldUnitsManager.BuildUnit(unit, SpawnPosition, SpawnRotation, aiMove, aiShoot, aiSpawn);
     }
 
     private void SwitchSpawnMenu() {

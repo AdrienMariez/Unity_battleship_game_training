@@ -61,7 +61,7 @@ public class WorldSingleUnit {
             // Set max unit scale ( used to make space for spawning models)
             if (UnitPrefab.transform.Find("Bounding").transform.Find("BoundingBox")) {
                 Transform _bounding = UnitPrefab.transform.Find("Bounding").transform.Find("BoundingBox");
-                float UnitSize = _bounding.localScale.x;
+                UnitSize = _bounding.localScale.x;
                 if (_bounding.localScale.y > UnitSize) { UnitSize = _bounding.localScale.y; }
                 if (_bounding.localScale.z > UnitSize) { UnitSize = _bounding.localScale.z; }
             }
