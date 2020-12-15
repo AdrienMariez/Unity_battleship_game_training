@@ -393,8 +393,10 @@ public class MenuButtonsControl : MonoBehaviour {
                         } else {
                             Destroy(sp.GetCurrentUnitPreview());
                         }
-                        GameObject unitPreview =
+                        UnitMasterController unitPreviewCtrl =
                             WorldUnitsManager.BuildUnit(sp.GetUnit(), sp.GetSpawnPointLocation().position, sp.GetSpawnPointLocation().rotation, false, false, false);
+                        
+                        GameObject unitPreview = unitPreviewCtrl.GetUnitModel();
 
                         // Multiply scale of map model preview (so it is visible)
                         Vector3 modelScale = unitPreview.transform.localScale;

@@ -268,7 +268,16 @@ using UnityEngine;
             m_Immobilized = true;
         }
 
-
+        public override void SetSpawnSource(SpawnerScriptToAttach spawner) {
+            if (spawner != null) {
+                Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
+                for (int i = 0; i < 2; i++) {
+                    spawner.AddSquadMate(this);
+                }
+            } else {
+                Debug.Log(UnitName + " SetSpawnSource : No Spawner");
+            }
+        }
         public override void SetActive(bool activate) {
             base.SetActive(activate);
             if (Movement != null)

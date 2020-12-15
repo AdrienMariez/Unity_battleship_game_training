@@ -19,21 +19,43 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     public Transform m_GroundSpawnPosition;
     [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
-    [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList;
+    [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList; public List<WorldSingleUnit> GetTeamedSpawnableUnitsList() { return TeamedSpawnableUnitsList; }
 
     protected bool StagingListInUse = false;
     [HideInInspector] public List<WorldSingleUnit> StagingUnitList;
+    // private List<StagingUnit> _StagingUnitList = new List<StagingUnit>();
+    // public class StagingUnit {
+    //     private WorldSingleUnit _unitWorldSingleUnit;  public WorldSingleUnit GetUnitWorldSingleUnit(){ return _unitWorldSingleUnit; } public void SetUnitWorldSingleUnit(WorldSingleUnit _wsu){ _unitWorldSingleUnit = _wsu; }
+    //     private bool _isSquadMember;  public bool GetIsSquadMember(){ return _isSquadMember; } public void SetIsSquadMember(bool _b){ _isSquadMember = _b; }
+    //     private UnitMasterController _squadLeader;  public UnitMasterController GetWeapon(){ return _squadLeader; } public void SetWeapon(UnitMasterController _umc){ _squadLeader = _umc; }
+    //     // To remove
+    //     private CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeaponT){ _weaponType = _hpWeaponT; }
+    // }
 
-    UnitMasterController UnitController;
-    UnitAIController AIController;
+    private List<SpawnedUnitList> SquadsSpawnedList = new List<SpawnedUnitList>();
+    public class SpawnedUnitList {
+        // Spawning process
+        private WorldSingleUnit _unitWorldSingleUnit;  public WorldSingleUnit GetUnitWorldSingleUnit(){ return _unitWorldSingleUnit; } public void SetUnitWorldSingleUnit(WorldSingleUnit _wsu){ _unitWorldSingleUnit = _wsu; }
+        private int _leftToSpawn;  public int GetLeftToSpawn(){ return _leftToSpawn; }
+        // Further gameplay
+        private List<UnitMasterController> _SquadUnitsList = new List<UnitMasterController>(); public List<UnitMasterController> GetSquadUnitsList() { return _SquadUnitsList; }
+        private UnitMasterController _squadLeader;  public UnitMasterController GetSquadLeader(){ return _squadLeader; } public void SetSquadLeader(UnitMasterController _umc){ _squadLeader = _umc; }
+        private bool _isAlive;  public bool GetIsAlive(){ return _isAlive; } public void SetIsAlive(bool _b){ _isAlive = _b; }
+    }
+
+
+    // create new class with the UnitController of squadleader
+
+    protected UnitMasterController UnitController; public UnitMasterController GetUnitMasterController() {return UnitController; }
+    protected UnitAIController AIController;
     private bool Active;
     private bool Dead;
     private bool SpawnMenuOpen = false;
 
     // Globals
     protected GameManager GameManager; public void SetGameManager(GameManager gameManager) { GameManager = gameManager; }
-    protected PlayerManager PlayerManager; public void
-    SetPlayerManager(PlayerManager playerManager) {
+    protected PlayerManager PlayerManager;
+    public void SetPlayerManager(PlayerManager playerManager) {
         PlayerManager = playerManager;
 
         // In the future, just sending a new PlayerManager could rebuild a new CreateTeamedSpawnList() here
@@ -280,6 +302,81 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
 
+    protected bool TrySpawnSquad (WorldSingleUnit unit, bool firstPass) {
+        if (GameManager == null) {
+            return false;
+        }
+
+        // Checks if gameplay allows spawn
+        if (GameManager.GetCommandPointSystem()) {
+            if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Allies) {
+                if ((GameManager.GetAlliesTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Axis) {
+                if ((GameManager.GetAxisTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            // When using slots, this will be changed.
+            return true;
+        }
+        return false;
+    }
+
+    protected bool TrySpawnUnitPosition (WorldSingleUnit unit, bool firstPass) {
+        bool trySpawnPosition = false;
+
+        if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
+            var _spawn = TryPosition(m_ShipSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.submarine.id) {
+            var _spawn = TryPosition(m_SubmarineSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
+            var _spawn = TryPositionSingleLocation(m_PlanesSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ground.id) {
+            var _spawn = TryPositionSingleLocation(m_GroundSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetHitMask());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        } else {
+            var _spawn = TryPosition(m_GroundSpawnPosition, unit.GetUnitSize());
+            if (_spawn.Item2 == true) {
+                SpawnPosition = _spawn.Item1.position;
+                SpawnRotation = _spawn.Item1.rotation;
+                trySpawnPosition = true;
+            }
+        }
+
+
+        if (trySpawnPosition) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     IEnumerator TrySecondPassSpawnLoop(){
         while (StagingListInUse) {
             yield return new WaitForSeconds(3f);
@@ -333,7 +430,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // GameObject spawnedUnitInstance =
         //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
 
-        WorldUnitsManager.BuildUnit(unit, SpawnPosition, SpawnRotation, aiMove, aiShoot, aiSpawn);
+        UnitMasterController _spawnedUnitController = WorldUnitsManager.BuildUnit(unit, SpawnPosition, SpawnRotation, aiMove, aiShoot, aiSpawn);
+        _spawnedUnitController.SetSpawnSource(this);
     }
 
     private void SwitchSpawnMenu() {
@@ -362,8 +460,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
 
-    // public void SetUnitController(UnitMasterController unitController) {
-    //     UnitController = unitController;
-    // }
-    public List<WorldSingleUnit> GetTeamedSpawnableUnitsList() { return TeamedSpawnableUnitsList; }
+
+    public void AddSquadMate (UnitMasterController unit) {
+        Debug.Log("AddSquadMate");
+
+    }
 }

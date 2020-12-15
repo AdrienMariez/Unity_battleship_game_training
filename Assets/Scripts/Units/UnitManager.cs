@@ -22,7 +22,7 @@ public class UnitManager {
 
     private Transform _spawnPoint; public Transform GetSpawnPoint(){ return _spawnPoint; } public void SetSpawnPoint(Transform _t ){ _spawnPoint = _t; }
 
-    private GameObject Instance;                          // A reference to the instance of the tank when it is created.
+    private UnitMasterController UnitController;
     private bool UnitFromScenario = true; public void SetUnitFromScenario(bool _b ){ UnitFromScenario = _b; }           // Is the unit set from the scenario parameters or not ?
     [Header("Custom Fixed Unit data :")]
     public CompiledTypes.Global_Units.RowValues m_Unit;         // The unit itself
@@ -86,21 +86,23 @@ public class UnitManager {
         // Instance.SetActive(true);
     }
 
-    public void SetInstance(GameObject gameobj) {
-        Instance = gameobj;
-        gameobj.GetComponent<UnitMasterController>().SetUnitName(_customName);
+    public void SetInstance(UnitMasterController unitController) {
+        UnitController = unitController;
+        UnitController.SetUnitName(_customName);
+        UnitController.SetSpawnSource(null);
+        
         // if (Instance.GetComponent<UnitAIController>()) {
         //     Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(_unitCanMove, _unitCanShoot, _unitCanSpawn);
         // }
     }
     public void Destroy() {
-        if (Instance) {
-            Instance.GetComponent<UnitMasterController>().DestroyUnit();
+        if (UnitController) {
+            UnitController.DestroyUnit();
         }
     }
 
     public void SetUnactive() {
-        Instance.GetComponent<UnitMasterController>().SetActive(false);
+        UnitController.SetActive(false);
     }
 
     // public void SetGameManager(GameManager gameManager) { 

@@ -156,7 +156,7 @@ public class WorldUnitsManager : MonoBehaviour {
         // }
     }
 
-    public static GameObject BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation, bool aiMove, bool aiShoot, bool aiSpawn) {
+    public static UnitMasterController BuildUnit(WorldSingleUnit unit, Vector3 spawnPosition, Quaternion spawnRotation, bool aiMove, bool aiShoot, bool aiSpawn) {
         // MODEL
             GameObject spawnedUnitInstance =
                 Instantiate(unit.GetUnitModel(), spawnPosition, spawnRotation);
@@ -227,7 +227,7 @@ public class WorldUnitsManager : MonoBehaviour {
             unitController.SetMapModel(mapUnitInstance);
 
 
-        return spawnedUnitInstance;
+        return unitController;
     }
 
     private class sort : IComparer<CompiledTypes.Scripts>{

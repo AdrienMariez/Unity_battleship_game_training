@@ -104,6 +104,8 @@ public class UnitMasterController : MonoBehaviour {
         UnitUI.SetDead();
         if (GetComponent<TurretManager>())
             Turrets.SetDeath(true);
+        if (GetComponent<PlaneWeaponsManager>())
+            PlaneWeapons.SetDeath(true);
         if (GameManager)
             GameManager.UnitDead(this, UnitTeam, Active);
         if (GetComponent<SpawnerScriptToAttach>())
@@ -112,12 +114,11 @@ public class UnitMasterController : MonoBehaviour {
         tag = "Untagged";
     }
     public virtual void DestroyUnit() {
-        if (GetComponent<TurretManager>())
-            Turrets.SetDeath(true);
-        UnitUI.KillAllUIInstances();
-        if (GameManager) {
-            GameManager.UnitDead(this, UnitTeam, Active);
+        if (!Dead) {
+            CallDeath();
         }
+
+        UnitUI.KillAllUIInstances();
         Destroy(gameObject);
     }
 
@@ -316,6 +317,13 @@ public class UnitMasterController : MonoBehaviour {
                 InGameBoundaries = true;
             }
     }
+    public virtual void SetSpawnSource(SpawnerScriptToAttach spawner) {
+        // if (spawner != null) {
+        //     Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
+        // } else {
+        //     Debug.Log(UnitName + " SetSpawnSource : No Spawner");
+        // }
+    }
 
     public virtual void SetActive(bool activate) {
         Active = activate;
@@ -354,6 +362,7 @@ public class UnitMasterController : MonoBehaviour {
             }
         }
     }
+
 
     public virtual void SetInAirfieldZone(bool action) { }
 
