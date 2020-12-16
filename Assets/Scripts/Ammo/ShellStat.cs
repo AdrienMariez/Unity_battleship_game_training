@@ -99,6 +99,9 @@ public class ShellStat : MonoBehaviour {
     private void FixedUpdate () {
         if (ShellType == CompiledTypes.Weapons_roles.RowValues.Torpedo) {
             CalculateTrajectoryTorpedo();
+        } else if (ShellType == CompiledTypes.Weapons_roles.RowValues.AntiAir) {
+            CalculateTrajectoryAA();
+            CheckIfShellNeedsToDieAA();
         } else {
             CalculateTrajectoryArtillery();
             CheckIfShellNeedsToDieArtillery();
@@ -175,12 +178,33 @@ public class ShellStat : MonoBehaviour {
         float distanceToTarget = TargetRange - CurrentRange;
         float distanceToTargetRatio = (distanceToTarget * 100) / TargetRange;
 
-        if (distanceToTargetRatio < 0 && !SelfDestruct) {
-            // Engage auto destruct if the range is passed
+        if (CurrentRangeRatio >=1 && !SelfDestruct) {               // Engage auto destruct if the range is passed
             // Debug.Log("engage self destruct !");
-            // Destroy (gameObject, MaxLifeTime);
-            ShellExplosion();
             SelfDestruct = true;
+            DestroyShell(MaxLifeTime);
+
+            rb.velocity = transform.forward * MuzzleVelocity;       // Give a forward velocity to the shell for the last instants.
+        }
+
+        if (distanceToTargetRatio < 0 && !SelfDestruct) {
+            // Debug.Log("engage self destruct !");
+            SelfDestruct = true;
+            DestroyShell(MaxLifeTime);
+        }
+    }
+    private void CheckIfShellNeedsToDieAA() {
+        if (ArmorPenetrated) {                                                                                  // if an armor was penetrates but the shell didn't explode yet
+            CheckForExplosion();
+        }
+        if (transform.position.y <= 0f && !ArmorPenetrated) {                                                   // If water is hit
+            //If there wasn't any penetration before, destroy the shell with a nice splash effect when the water is hit
+            // Only if there was no penetration before or else there could be splashes inside ships and it would be silly
+            WaterHitFX = Instantiate(WaterHitFX, this.gameObject.transform);
+            WaterHitFX.transform.parent = null;                                                     // Unparent the particles from the shell.
+            WaterHitFX.GetComponent<ParticleSystem>().Play();                                       // Play the particle system.
+            WaterHitFX.GetComponent<AudioSource>().Play();                                          // Play the explosion sound effect.
+            Destroy (WaterHitFX.gameObject, WaterHitFX.GetComponent<ParticleSystem>().main.startLifetime.constant);
+            DestroyShell(0);                                                                                    // Destroy the shell.
         }
     }
 

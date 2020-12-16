@@ -26,6 +26,7 @@ public class HitboxComponent : MonoBehaviour {
     private bool ArmorComponent = false;
     private bool BuoyancyComponent = false; public bool GetBuoyancyComponent(){ return BuoyancyComponent; }
     private bool Dead = false;
+    private LayerMask Layer;
 
 
     private UnitMasterController UnitMasterController;
@@ -56,6 +57,7 @@ public class HitboxComponent : MonoBehaviour {
             // Will be used only for mobile units...
             UnitMasterController.SetDamageControlEngineCount();
         }
+        Layer = gameObject.layer;
     }
 
     private void FixedUpdate(){
@@ -160,6 +162,14 @@ public class HitboxComponent : MonoBehaviour {
         // True : enters Airport Zone
         // False : exits Airport Zone
         UnitMasterController.SetInAirfieldZone(action);
+    }
+
+    public void SetHitBoxActive(bool activate) {
+        if (activate) {
+            gameObject.layer = Layer;
+        } else {
+            gameObject.layer = LayerMask.NameToLayer("OnlyAmmoCanHit");
+        }
     }
 
     public void SetUnitController(UnitMasterController unitMasterComponent){

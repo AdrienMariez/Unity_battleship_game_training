@@ -155,6 +155,8 @@ public class TurretFireManager : MonoBehaviour {
             shellStatInstance.SetTargetRange(TargetRange);
             if (AIControl) {
                 shellStatInstance.SetFiringMode(CompiledTypes.Weapons_roles.RowValues.NavalArtillery);       // Don't let the AI shoot Artillery
+            } else {
+                shellStatInstance.SetFiringMode(WeaponCurrentRole);
             }
         } else {
             shellStatInstance.SetTargetRange(MaxRange);       // Sends max range instead of target range to the unit. This may change in the future

@@ -72,7 +72,7 @@ MonoBehaviour:
     type: 3}
   m_WeaponHitMask:
     serializedVersion: 2
-    m_Bits: 40448
+    m_Bits: 302592
   m_WorldMask:
     serializedVersion: 2
     m_Bits: 40704

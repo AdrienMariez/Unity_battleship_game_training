@@ -8,15 +8,19 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     public SpawnerUnitCategory[] m_SpawnableCategories;
     [Tooltip("Ships units spawnpoint")]
     public Transform m_ShipSpawnPosition;
+    public Transform[] m_ShipSpawnPath;
 
     [Tooltip("Submarines units spawnpoint")]
     public Transform m_SubmarineSpawnPosition;
+    public Transform[] m_SubmarineSpawnPath;
 
     [Tooltip("Planes units spawnpoint")]
-    public Transform m_PlanesSpawnPosition;
+    public Transform m_PlaneSpawnPosition;
+    public Transform[] m_PlaneSpawnPath;
 
     [Tooltip("Ground units spawnpoint")]
     public Transform m_GroundSpawnPosition;
+    public Transform[] m_GroundSpawnPath;
     [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
     [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList; public List<WorldSingleUnit> GetTeamedSpawnableUnitsList() { return TeamedSpawnableUnitsList; }
@@ -32,19 +36,25 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     //     private CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeaponT){ _weaponType = _hpWeaponT; }
     // }
 
-    private List<SpawnedUnitList> SquadsSpawnedList = new List<SpawnedUnitList>();
-    public class SpawnedUnitList {
+    private List<Squad> SquadSpawnedList = new List<Squad>();
+    protected bool SpawningListInUse = false;
+    public class Squad {
         // Spawning process
         private WorldSingleUnit _unitWorldSingleUnit;  public WorldSingleUnit GetUnitWorldSingleUnit(){ return _unitWorldSingleUnit; } public void SetUnitWorldSingleUnit(WorldSingleUnit _wsu){ _unitWorldSingleUnit = _wsu; }
-        private int _leftToSpawn;  public int GetLeftToSpawn(){ return _leftToSpawn; }
+        private int _leftToSpawn;  public int GetLeftToSpawn(){ return _leftToSpawn; } public void SetLeftToSpawn(int _i){ _leftToSpawn = _i; }
         // Further gameplay
-        private List<UnitMasterController> _SquadUnitsList = new List<UnitMasterController>(); public List<UnitMasterController> GetSquadUnitsList() { return _SquadUnitsList; }
+        private List<UnitMasterController> _squadUnitsList = new List<UnitMasterController>(); public List<UnitMasterController> GetSquadUnitsList() { return _squadUnitsList; }
         private UnitMasterController _squadLeader;  public UnitMasterController GetSquadLeader(){ return _squadLeader; } public void SetSquadLeader(UnitMasterController _umc){ _squadLeader = _umc; }
         private bool _isAlive;  public bool GetIsAlive(){ return _isAlive; } public void SetIsAlive(bool _b){ _isAlive = _b; }
     }
 
-
-    // create new class with the UnitController of squadleader
+    protected bool UnitsInSpawningAnimationListInUse = false;
+    private List<UnitInSpawningAnimation> UnitsInSpawningAnimationList = new List<UnitInSpawningAnimation>();
+    public class UnitInSpawningAnimation {
+        private UnitMasterController _unit;  public UnitMasterController GetUnit(){ return _unit; } public void SetUnit(UnitMasterController _umc){ _unit = _umc; }
+        private List<Transform> _pathPoints = new List<Transform>(); public List<Transform> GetPath() { return _pathPoints; } public void SetPath(List<Transform> _l){ _pathPoints = _l; }
+        private Squad _squad;  public Squad GetSquad(){ return _squad; } public void SetSquad(Squad _c){ _squad = _c; }
+    }
 
     protected UnitMasterController UnitController; public UnitMasterController GetUnitMasterController() {return UnitController; }
     protected UnitAIController AIController;
@@ -128,6 +138,48 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
 
+    protected void FixedUpdate() {
+        // List<UnitInSpawningAnimation> UnitsInSpawningAnimationList
+        if (UnitsInSpawningAnimationListInUse) {
+            List<UnitInSpawningAnimation> _unitsToRemoveFromList = new List<UnitInSpawningAnimation>();
+            foreach (UnitInSpawningAnimation unit in UnitsInSpawningAnimationList) {
+                Transform targetPath = unit.GetPath()[0];
+                float _speed =  10 * Time.deltaTime;
+                unit.GetUnit().GetUnitModel().transform.position = Vector3.MoveTowards(unit.GetUnit().GetUnitModel().transform.position, targetPath.position, _speed);
+
+                // var _rotationSpeed = 100 * Time.deltaTime;
+                // unit.GetUnit().GetUnitModel().transform.rotation = Quaternion.RotateTowards(unit.GetUnit().GetUnitModel().transform.rotation, targetPath.rotation, _rotationSpeed);
+
+                unit.GetUnit().GetUnitModel().transform.LookAt(targetPath.position, Vector3.up);
+
+                // Check if the position of the cube and sphere are approximately equal.
+                if (Vector3.Distance(unit.GetUnit().GetUnitModel().transform.position, targetPath.position) < 3) {
+                    // Waypoint is reached, remove it from list and go to next or stop if no more paths.
+                    unit.GetPath().Remove(unit.GetPath()[0]);
+                    Debug.Log("Waypoint reached !");
+                    if (unit.GetPath().Count <= 0) {
+                        Debug.Log("Waypoint list ended !");
+                        // Path is ended, give full control of the unit to the game process
+                        if (unit.GetSquad().GetSquadLeader() == null) {
+                            unit.GetSquad().SetSquadLeader(unit.GetUnit());
+                            unit.GetUnit().SetSpawnSource(this, true);
+                        } else {
+                            unit.GetUnit().SetSpawnSource(this, false);
+                        }
+                        unit.GetUnit().SetActivateGravity(true);
+                        unit.GetUnit().SetActivateColliders(true);
+                        _unitsToRemoveFromList.Add(unit);
+                    }
+                }
+            }
+            if (_unitsToRemoveFromList.Count > 0) {
+                foreach (UnitInSpawningAnimation unit in _unitsToRemoveFromList) {
+                    UnitsInSpawningAnimationList.Remove(unit);
+                }
+            }
+        }
+    }
+
     private bool TryOpenSpawnMenu(){
         // Verify first if a unit complies with what we want to see (a unit in the list for the correct team), otherwise, keep the menu shut !
         foreach (WorldSingleUnit singleUnit in SpawnableUnitsList) {
@@ -199,8 +251,10 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
 
     public void TrySpawn (WorldSingleUnit unit, bool firstPass) {
-        if (TrySpawnUnit(unit, firstPass)) {
-            SpawnUnit(unit, AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
+        // if (TrySpawnUnit(unit, firstPass)) {
+        if (TrySpawnSquad(unit)) {
+            CreateNewSquad(unit);
+            // SpawnUnit(unit, AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
         }
     }
     Vector3 SpawnPosition;
@@ -259,7 +313,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 trySpawnPosition = true;
             }
         } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
-            var _spawn = TryPositionSingleLocation(m_PlanesSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
+            var _spawn = TryPositionSingleLocation(m_PlaneSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
             if (_spawn.Item2 == true) {
                 SpawnPosition = _spawn.Item1.position;
                 SpawnRotation = _spawn.Item1.rotation;
@@ -302,7 +356,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         }
     }
 
-    protected bool TrySpawnSquad (WorldSingleUnit unit, bool firstPass) {
+    protected bool TrySpawnSquad (WorldSingleUnit unit) {
         if (GameManager == null) {
             return false;
         }
@@ -329,7 +383,80 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         return false;
     }
 
-    protected bool TrySpawnUnitPosition (WorldSingleUnit unit, bool firstPass) {
+    protected void CreateNewSquad(WorldSingleUnit unit) {
+        Squad _newSquad = new Squad{};
+            _newSquad.SetUnitWorldSingleUnit(unit);
+            _newSquad.SetLeftToSpawn(1);
+        SquadSpawnedList.Add(_newSquad);
+
+        if (SpawningListInUse == false) {
+            SpawningListInUse = true;
+            StartCoroutine(SpawnLoop());
+        }
+
+    }
+    IEnumerator SpawnLoop(){
+        while (SpawningListInUse) {
+            bool _spawnerHasUnitsToSpawn = false;
+            foreach (Squad squad in SquadSpawnedList) {
+                if (squad.GetLeftToSpawn() > 0) {
+                    if (TrySpawnUnitPosition(squad.GetUnitWorldSingleUnit())) {
+                        UnitMasterController _unit = SpawnUnit(squad.GetUnitWorldSingleUnit(), AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
+                        squad.GetSquadUnitsList().Add(_unit);
+
+                        // UnitsInSpawningAnimationListInUse
+                        bool _animUsed = false;
+                        Transform[] _spawnPath = m_PlaneSpawnPath;
+                        if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
+                                
+                        } else if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.submarine.id) {
+
+                        } else if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
+                            if (m_PlaneSpawnPath.Length > 0) {
+                                _animUsed = true;
+                                _spawnPath = m_PlaneSpawnPath;
+                            }
+                        } else if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ground.id) {
+
+                        }
+
+                        if (_animUsed) {
+                            _unit.SetActivateGravity(false);
+                            _unit.SetActivateColliders(false);
+
+                            UnitInSpawningAnimation _newAnimElement = new UnitInSpawningAnimation{};
+                                _newAnimElement.SetUnit(_unit);
+                                List<Transform> _pathList = new List<Transform>();
+                                foreach (Transform item in _spawnPath) {
+                                    _pathList.Add(item);
+                                }
+                                _newAnimElement.SetPath(_pathList);
+                                _newAnimElement.SetSquad(squad);
+                            UnitsInSpawningAnimationList.Add(_newAnimElement);
+
+                            UnitsInSpawningAnimationListInUse = true;
+                        } else {
+                            if (squad.GetSquadLeader() == null) {
+                                squad.SetSquadLeader(_unit);
+                                _unit.SetSpawnSource(this, true);
+                            } else {
+                                _unit.SetSpawnSource(this, false);
+                            }
+                        }
+
+                        squad.SetIsAlive(true);
+                        squad.SetLeftToSpawn(squad.GetLeftToSpawn()-1);
+                    }
+                    _spawnerHasUnitsToSpawn = true;
+                }
+            }
+            if (!_spawnerHasUnitsToSpawn) {
+                SpawningListInUse = false;
+            }
+            yield return new WaitForSeconds(3f);
+        }
+    }
+    protected bool TrySpawnUnitPosition (WorldSingleUnit unit) {
         bool trySpawnPosition = false;
 
         if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
@@ -347,7 +474,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 trySpawnPosition = true;
             }
         } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
-            var _spawn = TryPositionSingleLocation(m_PlanesSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
+            var _spawn = TryPositionSingleLocation(m_PlaneSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
             if (_spawn.Item2 == true) {
                 SpawnPosition = _spawn.Item1.position;
                 SpawnRotation = _spawn.Item1.rotation;
@@ -426,12 +553,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         return (transform, false);                    // If no position is found, it is not spawned.
     }
 
-    public void SpawnUnit (WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
+    public UnitMasterController SpawnUnit (WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
         // GameObject spawnedUnitInstance =
         //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
 
         UnitMasterController _spawnedUnitController = WorldUnitsManager.BuildUnit(unit, SpawnPosition, SpawnRotation, aiMove, aiShoot, aiSpawn);
-        _spawnedUnitController.SetSpawnSource(this);
+        // _spawnedUnitController.SetSpawnSource(this);
+        return _spawnedUnitController;
     }
 
     private void SwitchSpawnMenu() {

@@ -285,14 +285,14 @@ public class UnitMasterController : MonoBehaviour {
             UnitAI.BeginOperations(aiMove, aiShoot, aiSpawn);
 
         // Send to GameManager if any
-            if (WorldUnitsManager.GetGameManager() != null) {
-                // Debug.Log ("SetGameManager" +UnitName);
-                GameManager = WorldUnitsManager.GetGameManager();
-                GameManager.UnitSpawned(this, UnitTeam);
-                if (GetComponent<SpawnerScriptToAttach>()){
-                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-                }
-            }
+            // if (WorldUnitsManager.GetGameManager() != null) {
+            //     // Debug.Log ("SetGameManager" +UnitName);
+            //     GameManager = WorldUnitsManager.GetGameManager();
+            //     GameManager.UnitSpawned(this, UnitTeam);
+            //     if (GetComponent<SpawnerScriptToAttach>()){
+            //         GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+            //     }
+            // }
 
         // Check if unit is within game zone
             Collider[] colliders = Physics.OverlapSphere (transform.position, unit.GetUnitSize());
@@ -317,12 +317,45 @@ public class UnitMasterController : MonoBehaviour {
                 InGameBoundaries = true;
             }
     }
-    public virtual void SetSpawnSource(SpawnerScriptToAttach spawner) {
-        // if (spawner != null) {
-        //     Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
-        // } else {
-        //     Debug.Log(UnitName + " SetSpawnSource : No Spawner");
-        // }
+    public virtual void SetSpawnSource(SpawnerScriptToAttach spawner, bool isSquadLeader) {
+        if (spawner != null && isSquadLeader) {
+            // Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
+            if (WorldUnitsManager.GetGameManager() != null) {
+                // Debug.Log ("SetGameManager" +UnitName);
+                GameManager = WorldUnitsManager.GetGameManager();
+                GameManager.UnitSpawned(this, UnitTeam);
+                if (GetComponent<SpawnerScriptToAttach>()){
+                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+                }
+            }
+        } else if (spawner != null && !isSquadLeader) {
+            // Debug.Log(UnitName);
+        } else {
+            // Debug.Log(UnitName + " SetSpawnSource : No Spawner");
+            if (WorldUnitsManager.GetGameManager() != null) {
+                // Debug.Log ("SetGameManager" +UnitName);
+                GameManager = WorldUnitsManager.GetGameManager();
+                GameManager.UnitSpawned(this, UnitTeam);
+                if (GetComponent<SpawnerScriptToAttach>()){
+                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+                }
+            }
+        }
+    }
+
+    public void SetActivateGravity(bool activate) {
+        Rigidbody _rb = GetComponent<Rigidbody>();
+        if (activate) {
+            _rb.useGravity = UnitWorldSingleUnit.GetRigidBodyUseGravity();
+        } else {
+            _rb.useGravity = false;
+        }
+    }
+    public void SetActivateColliders(bool activate) {
+        // This still allows ammo to hit
+        foreach (HitboxComponent hitbox in UnitComponents) {
+            hitbox.SetHitBoxActive(activate);
+        }
     }
 
     public virtual void SetActive(bool activate) {

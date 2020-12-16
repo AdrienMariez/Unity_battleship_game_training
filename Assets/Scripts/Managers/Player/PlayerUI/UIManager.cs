@@ -223,10 +223,10 @@ namespace UI {
             Score = PlayerUIInstance.transform.Find("Score").GetComponent<Text>();
             UnitName = PlayerUIInstance.transform.Find("UnitName").GetComponent<Text>();
             UnitHP = PlayerUIInstance.transform.Find("UnitHealthSlider").GetComponent<Slider>();
-
-            UnitName.text = ActiveTarget.name;
-            UnitHP.maxValue = StartingHP;
-            UnitHP.value = CurrentHP;
+            if (ActiveTarget != null)
+                UnitName.text = ActiveTarget.name;
+                UnitHP.maxValue = StartingHP;
+                UnitHP.value = CurrentHP;
             Score.text = CurrentScore;
         }
 
