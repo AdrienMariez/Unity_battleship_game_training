@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
     //[RequireComponent(typeof (Rigidbody))]
     public class AircraftController : UnitMasterController {
@@ -29,6 +30,7 @@ using UnityEngine;
         public float EnginePower { get; private set; }                  // How much power the engine is being given.
         public float MaxEnginePower{ get { return m_MaxEnginePower; }}    // The maximum output of the engine.
         public float RollAngle { get; private set; }
+        public float RollAngle2 { get; set; }
         public float PitchAngle { get; private set; }
         public float RollInput { get; private set; }
         public float PitchInput { get; private set; }
@@ -41,7 +43,6 @@ using UnityEngine;
         private bool m_Immobilized = false;   // used for making the plane uncontrollable, i.e. if it has been hit or crashed.
         private float m_BankedTurnAmount;
         private Rigidbody m_Rigidbody;
-	    WheelCollider[] m_WheelColliders;
 
         private bool InAirportZone = false;             // Is the plane in a airfield area ?
 
@@ -174,13 +175,16 @@ using UnityEngine;
 
         private void ControlThrottle() {
             // override throttle if immobilized
-            if (m_Immobilized)
-            {
+            if (m_Immobilized) {
                 ThrottleInput = -0.5f;
             }
 
             // Adjust throttle based on throttle input (or immobilized state)
             Throttle = Mathf.Clamp01(Throttle + ThrottleInput*Time.deltaTime*m_ThrottleChangeSpeed);
+
+            foreach (AircraftPropellerAnimator animator in PropellerAnimators) {
+                animator.Throttle = Throttle;
+            }
 
             // current engine power is just:
             EnginePower = Throttle*m_MaxEnginePower;
@@ -268,7 +272,18 @@ using UnityEngine;
             m_Immobilized = true;
         }
 
-        
+        // ALL OVERRIDES METHODS
+        public override void SetStaging(bool activate, bool advancing) {
+            // Debug.Log("SetStaging");
+            foreach (AircraftPropellerAnimator animator in PropellerAnimators) {
+                if (advancing && activate) {
+                    animator.SetForceMaxThrottle(true);
+                } else {
+                    animator.SetForceMaxThrottle(false);
+                } 
+            }
+            base.SetStaging(activate, advancing);
+        }
         public override void SetActive(bool activate) {
             base.SetActive(activate);
             if (Movement != null)
@@ -276,11 +291,6 @@ using UnityEngine;
 
             if (PlaneWeapons != null)
                 PlaneWeapons.SetActive(Active);
-        }
-        public override void SetPause(bool pause) {
-            if (Turrets != null)
-                Turrets.SetPause();
-            base.SetPause(pause);
         }
         public override void SetMap(bool map) {
             if (Movement != null)

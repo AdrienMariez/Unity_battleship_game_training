@@ -156,9 +156,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 if (Vector3.Distance(unit.GetUnit().GetUnitModel().transform.position, targetPath.position) < 3) {
                     // Waypoint is reached, remove it from list and go to next or stop if no more paths.
                     unit.GetPath().Remove(unit.GetPath()[0]);
-                    Debug.Log("Waypoint reached !");
+                    // Debug.Log("Waypoint reached !");
                     if (unit.GetPath().Count <= 0) {
-                        Debug.Log("Waypoint list ended !");
+                        // Debug.Log("Waypoint list ended !");
                         // Path is ended, give full control of the unit to the game process
                         if (unit.GetSquad().GetSquadLeader() == null) {
                             unit.GetSquad().SetSquadLeader(unit.GetUnit());
@@ -166,8 +166,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         } else {
                             unit.GetUnit().SetSpawnSource(this, false);
                         }
-                        unit.GetUnit().SetActivateGravity(true);
-                        unit.GetUnit().SetActivateColliders(true);
+                        unit.GetUnit().SetStaging(false, true);
+                        // unit.GetUnit().SetActivateGravity(true);
+                        // unit.GetUnit().SetActivateColliders(true);
                         _unitsToRemoveFromList.Add(unit);
                     }
                 }
@@ -386,7 +387,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     protected void CreateNewSquad(WorldSingleUnit unit) {
         Squad _newSquad = new Squad{};
             _newSquad.SetUnitWorldSingleUnit(unit);
-            _newSquad.SetLeftToSpawn(1);
+            _newSquad.SetLeftToSpawn(3);
         SquadSpawnedList.Add(_newSquad);
 
         if (SpawningListInUse == false) {
@@ -421,8 +422,9 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         }
 
                         if (_animUsed) {
-                            _unit.SetActivateGravity(false);
-                            _unit.SetActivateColliders(false);
+                            _unit.SetStaging(true, true);
+                            // _unit.SetActivateGravity(false);
+                            // _unit.SetActivateColliders(false);
 
                             UnitInSpawningAnimation _newAnimElement = new UnitInSpawningAnimation{};
                                 _newAnimElement.SetUnit(_unit);

@@ -219,8 +219,8 @@ public class TurretManager : MonoBehaviour {
         if (Active)
             ReinitializeCurrentWeaponSelected();
     }
-    public void SetPause() {
-        Pause = !Pause;
+    public void SetPause(bool pause) {
+        Pause = pause;
         SetPlayerControl();
         foreach (TurretListItem turret in TurretList) {
             turret.GetTurretRotation().SetPause(Pause);

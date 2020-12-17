@@ -4,12 +4,12 @@ public class AircraftMovement : UnitMovement {
 
     // reference to the aeroplane that we're controlling
     private AircraftController PlaneController;
-    private float m_Throttle;
-    private bool m_AirBrakes;
-    private float m_Yaw;
+    private float Throttle;
+    private bool AirBrakes;
+    private float Yaw;
     private float roll;
     private float pitch;
-    private bool FreeCam = false;
+    private bool FreeCam = false; public void SetFreeCamera(bool _b){ FreeCam = _b; }
 
     [HideInInspector] public bool m_Active; 
 
@@ -35,23 +35,21 @@ public class AircraftMovement : UnitMovement {
                 roll = Input.GetAxis("Mouse X");
                 pitch = Input.GetAxis("Mouse Y");
             }
-            m_AirBrakes = Input.GetButton("FireMainPlane");
-            m_Yaw = Input.GetAxis("HorizontalPlane");
-            m_Throttle = Input.GetAxis("VerticalPlane");
-            // Debug.Log("m_Throttle : " + m_Throttle +"m_Yaw : " + m_Yaw);
+            AirBrakes = Input.GetButton("FireMainPlane");
+            Yaw = Input.GetAxis("HorizontalPlane");
+            Throttle = Input.GetAxis("VerticalPlane");
+            // Debug.Log("Throttle : " + Throttle +"Yaw : " + Yaw);
         } else {
             // Disable user input if the unit isn't player controlled
             // Obviously if the plane isn't player controlled, there will be an AI needed
             roll = Input.GetAxis("Submit");
             pitch = Input.GetAxis("Submit");
-            m_AirBrakes = Input.GetButton("Submit");
-            m_Yaw = Input.GetAxis("Submit");
-            m_Throttle = Input.GetAxis("Submit");
+            AirBrakes = Input.GetButton("Submit");
+            Yaw = Input.GetAxis("Submit");
+            Throttle = Input.GetAxis("Submit");
         }
 
         // Pass the input to the aeroplane
-        PlaneController.Move(roll, pitch, m_Yaw, m_Throttle, m_AirBrakes);
+        PlaneController.Move(roll, pitch, Yaw, Throttle, AirBrakes);
     }
-
-    public void SetFreeCamera(bool freeCam){ FreeCam = freeCam; }
 }

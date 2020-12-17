@@ -38,8 +38,10 @@ public class UnitMasterController : MonoBehaviour {
     protected UnitUI UnitUI;
     protected UnitHealth Health; public UnitHealth GetUnitHealth() { return Health; }
     protected TurretManager Turrets;
-    protected PlaneWeaponsManager PlaneWeapons;
     private GameObject PlayerSetEnemyTargetUnit;
+    // Planes only parameters
+        protected PlaneWeaponsManager PlaneWeapons;
+        protected List<AircraftPropellerAnimator> PropellerAnimators = new List<AircraftPropellerAnimator>(); public void AddPropellerAnimator(AircraftPropellerAnimator _apa){ PropellerAnimators.Add(_apa); }
 
     public enum ElementType {
         hull,
@@ -228,7 +230,7 @@ public class UnitMasterController : MonoBehaviour {
                 } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
                     HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponent, hardPointTransform, PlaneWeapons);
                 } else {
-                    HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform);
+                    hardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponent, hardPointTransform, this);
                 }
                 
                 // Build the copy in the case the hardpoint is mirrored
@@ -254,7 +256,7 @@ public class UnitMasterController : MonoBehaviour {
                     } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlaneWeapon) {
                         HardPointComponent.SetUpPlaneWeaponHardPoint(hardPointElement.GetWeapon(), hardPointComponentCopy, hardPointTransformCopy, PlaneWeapons);
                     } else {
-                        HardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy);
+                        hardPointComponent.SetUpHardPointComponent(hardPointElement, hardPointComponentCopy, hardPointTransformCopy, this);
                     }
                 }
             }
@@ -342,23 +344,35 @@ public class UnitMasterController : MonoBehaviour {
             }
         }
     }
+    public virtual void SetStaging(bool activate, bool advancing) {
+        // Staging status is used when a unit is in spawning mode and not available for gameplay.
 
-    public void SetActivateGravity(bool activate) {
+        // Stop the gravity to work on this unit
         Rigidbody _rb = GetComponent<Rigidbody>();
         if (activate) {
-            _rb.useGravity = UnitWorldSingleUnit.GetRigidBodyUseGravity();
-        } else {
             _rb.useGravity = false;
+        } else {
+            _rb.useGravity = UnitWorldSingleUnit.GetRigidBodyUseGravity();
         }
-    }
-    public void SetActivateColliders(bool activate) {
-        // This still allows ammo to hit
+
+        // Set AI Inactive
+        if (activate) {
+            UnitAI.SetAIActive(false);
+        } else {
+            UnitAI.SetAIActive(!Active);
+        }
+
+        // Prevent the hitboxes to collide with other game elements except ammo.
         foreach (HitboxComponent hitbox in UnitComponents) {
-            hitbox.SetHitBoxActive(activate);
+            hitbox.SetHitBoxActive(!activate);
         }
+
+        if (Turrets != null)
+            Turrets.SetPause(activate);
     }
 
     public virtual void SetActive(bool activate) {
+        // An active unit is a unit currently played by a human player
         Active = activate;
         UnitAI.SetAIActive(!Active);
         if (UnitWorldSingleUnit.GetWeaponExists())
@@ -367,10 +381,12 @@ public class UnitMasterController : MonoBehaviour {
             GetComponent<SpawnerScriptToAttach>().SetActive(Active);
     }
     public virtual void SetPause(bool pause) {
+        // Pause should be a global variable
         if (Turrets != null)
-            Turrets.SetPause();
+            Turrets.SetPause(pause);
     }
     public virtual void SetMap(bool mapActive) {
+        // Triggered whenever the map is opened or closed by the owner player
         if (UnitWorldSingleUnit.GetWeaponExists()) {
             Turrets.SetMap(mapActive);
         }

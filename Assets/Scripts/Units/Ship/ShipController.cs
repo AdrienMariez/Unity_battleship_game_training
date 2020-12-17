@@ -307,6 +307,14 @@ public class ShipController : UnitMasterController {
 
 
     // ALL OVERRIDES METHODS
+    public override void SetStaging(bool activate, bool advancing) {
+        if (advancing) {
+            SetAISpeed(3);
+        } else {
+            SetAISpeed(0);
+        }
+        base.SetStaging(activate, advancing);
+    }
     public override void SetActive(bool activate) {
         base.SetActive(activate);
         if (Movement != null)

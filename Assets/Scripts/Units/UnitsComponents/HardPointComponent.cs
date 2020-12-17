@@ -31,13 +31,15 @@ public class HardPointComponent : MonoBehaviour {
     // private void Start () { }
     // private void FixedUpdate(){ }
 
-    public static void SetUpHardPointComponent(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform){
+    public void SetUpHardPointComponent(WorldSingleUnit.UnitHardPoint hardPointElement, HardPointComponent hardPointComponent, Transform hardPointTransform, UnitMasterController unitMasterController){
         if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.ShipFunnel) {
-            SetUpShipFunnel(hardPointElement,hardPointComponent, hardPointTransform);
+            SetUpShipFunnel(hardPointElement, hardPointComponent, hardPointTransform);
+        } else if (hardPointElement.GetHardpointType() == CompiledTypes.HardPoints.RowValues.PlanePropeller) {
+            SetUpPlanePropeller(m_Prefab, hardPointTransform, unitMasterController);
         }
         // Debug.Log ("Hardpoint set.  hardpoint id :"+ hardPointElement.GetHardPointID());
     }
-    public static void SetUpWeaponHardPoint(WorldSingleWeapon weapon,HardPointComponent hardPointComponent, Transform hardPointTransform, TurretManager turretManager){
+    public static void SetUpWeaponHardPoint(WorldSingleWeapon weapon, HardPointComponent hardPointComponent, Transform hardPointTransform, TurretManager turretManager){
         // MODEL
             GameObject turretInstance =
                 Instantiate (weapon.GetWeaponPrefab(), hardPointTransform);
@@ -83,7 +85,7 @@ public class HardPointComponent : MonoBehaviour {
             turretHealth.BeginOperations(turretManager, turretRotation, turretFireManager);
     }
 
-    public static void SetUpPlaneWeaponHardPoint(WorldSingleWeapon weapon,HardPointComponent hardPointComponent, Transform hardPointTransform, PlaneWeaponsManager planeWeaponsManager){
+    public static void SetUpPlaneWeaponHardPoint(WorldSingleWeapon weapon, HardPointComponent hardPointComponent, Transform hardPointTransform, PlaneWeaponsManager planeWeaponsManager){
         // MODEL
             GameObject turretInstance =
                 Instantiate (weapon.GetWeaponPrefab(), hardPointTransform);
@@ -110,8 +112,21 @@ public class HardPointComponent : MonoBehaviour {
             planeWeapon.BeginOperations(turretFireSoundInstance);
     }
 
-    public static void SetUpShipFunnel(WorldSingleUnit.UnitHardPoint hardPointElement,HardPointComponent hardPointComponent, Transform hardPointTransform){
+    public static void SetUpShipFunnel(WorldSingleUnit.UnitHardPoint hardPointElement, HardPointComponent hardPointComponent, Transform hardPointTransform){
         
+    }
+
+    public static void SetUpPlanePropeller(GameObject propellerPrefab, Transform hardPointTransform, UnitMasterController unitMasterController){
+        // MODEL
+            GameObject propellerInstance =
+                Instantiate (propellerPrefab, hardPointTransform);
+
+        AircraftPropellerAnimator animatorScript = propellerInstance.GetComponent<AircraftPropellerAnimator>();
+
+        // animatorScript
+
+        unitMasterController.AddPropellerAnimator(animatorScript);
+        // Debug.Log ("SetUpPlanePropeller set.");
     }
 
 }
