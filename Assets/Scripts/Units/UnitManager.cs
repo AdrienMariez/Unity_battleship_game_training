@@ -89,7 +89,8 @@ public class UnitManager {
     public void SetInstance(UnitMasterController unitController) {
         UnitController = unitController;
         UnitController.SetUnitName(_customName);
-        UnitController.SetSpawnSource(null, true);
+        // UnitController.SetSpawnSource(null, true);
+        UnitController.SetSquadLeader();
         
         // if (Instance.GetComponent<UnitAIController>()) {
         //     Instance.GetComponent<UnitAIController>().SetAIFromUnitManager(_unitCanMove, _unitCanShoot, _unitCanSpawn);

@@ -21,7 +21,6 @@ public float UnitHealth;
 public float UnitMass;
 public List<UnitDamagecontrol> UnitDamagecontrolList = new List<UnitDamagecontrol>();
 public List<Buoyancy> BuoyancyList = new List<Buoyancy>();
-public List<Unitweapons> UnitweaponsList = new List<Unitweapons>();
 public List<UnitHardPoints> UnitHardPointsList = new List<UnitHardPoints>();
 
         public enum RowValues { 
@@ -53,7 +52,6 @@ UnitHealth = node["UnitHealth"].AsFloat;
 UnitMass = node["UnitMass"].AsFloat;
 foreach(var item in node["UnitDamagecontrol"]) { UnitDamagecontrolList.Add(new UnitDamagecontrol(root, item));}
 foreach(var item in node["Buoyancy"]) { BuoyancyList.Add(new Buoyancy(root, item));}
-foreach(var item in node["Unitweapons"]) { UnitweaponsList.Add(new Unitweapons(root, item));}
 foreach(var item in node["UnitHardPoints"]) { UnitHardPointsList.Add(new UnitHardPoints(root, item));}
 
         }  

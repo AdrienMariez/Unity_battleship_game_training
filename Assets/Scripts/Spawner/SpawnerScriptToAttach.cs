@@ -27,14 +27,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
     protected bool StagingListInUse = false;
     [HideInInspector] public List<WorldSingleUnit> StagingUnitList;
-    // private List<StagingUnit> _StagingUnitList = new List<StagingUnit>();
-    // public class StagingUnit {
-    //     private WorldSingleUnit _unitWorldSingleUnit;  public WorldSingleUnit GetUnitWorldSingleUnit(){ return _unitWorldSingleUnit; } public void SetUnitWorldSingleUnit(WorldSingleUnit _wsu){ _unitWorldSingleUnit = _wsu; }
-    //     private bool _isSquadMember;  public bool GetIsSquadMember(){ return _isSquadMember; } public void SetIsSquadMember(bool _b){ _isSquadMember = _b; }
-    //     private UnitMasterController _squadLeader;  public UnitMasterController GetWeapon(){ return _squadLeader; } public void SetWeapon(UnitMasterController _umc){ _squadLeader = _umc; }
-    //     // To remove
-    //     private CompiledTypes.Weapons _weaponType;  public CompiledTypes.Weapons GetWeaponType(){ return _weaponType; } public void SetWeaponType(CompiledTypes.Weapons _hpWeaponT){ _weaponType = _hpWeaponT; }
-    // }
 
     private List<Squad> SquadSpawnedList = new List<Squad>();
     protected bool SpawningListInUse = false;
@@ -44,7 +36,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         private int _leftToSpawn;  public int GetLeftToSpawn(){ return _leftToSpawn; } public void SetLeftToSpawn(int _i){ _leftToSpawn = _i; }
         // Further gameplay
         private List<UnitMasterController> _squadUnitsList = new List<UnitMasterController>(); public List<UnitMasterController> GetSquadUnitsList() { return _squadUnitsList; }
-        private UnitMasterController _squadLeader;  public UnitMasterController GetSquadLeader(){ return _squadLeader; } public void SetSquadLeader(UnitMasterController _umc){ _squadLeader = _umc; }
+        private UnitMasterController _squadLeader; public UnitMasterController GetSquadLeader(){ return _squadLeader; } 
+            public void SetSquadLeader(UnitMasterController _umc){ _squadLeader = _umc; if (_squadLeader != null) { _squadLeader.SetSquadLeader(); } }
         private bool _isAlive;  public bool GetIsAlive(){ return _isAlive; } public void SetIsAlive(bool _b){ _isAlive = _b; }
     }
 
@@ -162,10 +155,12 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         // Path is ended, give full control of the unit to the game process
                         if (unit.GetSquad().GetSquadLeader() == null) {
                             unit.GetSquad().SetSquadLeader(unit.GetUnit());
-                            unit.GetUnit().SetSpawnSource(this, true);
-                        } else {
-                            unit.GetUnit().SetSpawnSource(this, false);
+                            // unit.GetUnit().SetSpawnSource(this, true);
                         }
+                        // else {
+                        //     unit.GetUnit().SetSpawnSource(this, false);
+                        // }
+                        unit.GetUnit().SetSquad(unit.GetSquad());
                         unit.GetUnit().SetStaging(false, true);
                         // unit.GetUnit().SetActivateGravity(true);
                         // unit.GetUnit().SetActivateColliders(true);
@@ -260,103 +255,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     Vector3 SpawnPosition;
     Quaternion SpawnRotation;
-    protected bool TrySpawnUnit (WorldSingleUnit unit, bool firstPass) {
-        if (GameManager == null) {
-            return false;
-        }
-
-        bool trySpawnPointSystem = false;
-        // Checks if gameplay allows spawn
-        if (GameManager.GetCommandPointSystem()) {
-            if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Allies) {
-                if ((GameManager.GetAlliesTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
-                    trySpawnPointSystem = true;
-                } else {
-                    return false;
-                }
-            } else if (unit.GetUnitTeam() == CompiledTypes.Teams.RowValues.Axis) {
-                if ((GameManager.GetAxisTeamCurrentCommandPoints() - unit.GetUnitCommandPointsCost()) >= 0){
-                    trySpawnPointSystem = true;
-                } else {
-                    return false;
-                }
-            }
-        } else {
-            // When using slots, this will be changed.
-            trySpawnPointSystem = true;
-        }
-
-        // SpawnPosition = m_ShipSpawnPosition.position;
-        // for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
-        //     SpawnPosition = m_ShipSpawnPosition.position;
-        //     SpawnPosition.x = m_ShipSpawnPosition.position.x + Random.Range(-500, 500);
-        //     SpawnPosition.z = m_ShipSpawnPosition.position.z + Random.Range(-500, 500);
-        //     Collider[] hitColliders = Physics.OverlapSphere(SpawnPosition, 100f);
-        //     if (hitColliders.Length == 0) {
-        //         trySpawn1 = true; //Spawn location correct !
-        //         break;
-        //     }
-        // }
-        bool trySpawnPosition = false;
-
-        if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
-            var _spawn = TryPosition(m_ShipSpawnPosition, unit.GetUnitSize());
-            if (_spawn.Item2 == true) {
-                SpawnPosition = _spawn.Item1.position;
-                SpawnRotation = _spawn.Item1.rotation;
-                trySpawnPosition = true;
-            }
-        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.submarine.id) {
-            var _spawn = TryPosition(m_SubmarineSpawnPosition, unit.GetUnitSize());
-            if (_spawn.Item2 == true) {
-                SpawnPosition = _spawn.Item1.position;
-                SpawnRotation = _spawn.Item1.rotation;
-                trySpawnPosition = true;
-            }
-        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.aircraft.id) {
-            var _spawn = TryPositionSingleLocation(m_PlaneSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetPlaneSpawnMask());
-            if (_spawn.Item2 == true) {
-                SpawnPosition = _spawn.Item1.position;
-                SpawnRotation = _spawn.Item1.rotation;
-                trySpawnPosition = true;
-            }
-        } else if (unit.GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ground.id) {
-            var _spawn = TryPositionSingleLocation(m_GroundSpawnPosition, unit.GetUnitSize(), WorldUnitsManager.GetHitMask());
-            if (_spawn.Item2 == true) {
-                SpawnPosition = _spawn.Item1.position;
-                SpawnRotation = _spawn.Item1.rotation;
-                trySpawnPosition = true;
-            }
-        } else {
-            var _spawn = TryPosition(m_GroundSpawnPosition, unit.GetUnitSize());
-            if (_spawn.Item2 == true) {
-                SpawnPosition = _spawn.Item1.position;
-                SpawnRotation = _spawn.Item1.rotation;
-                trySpawnPosition = true;
-            }
-        }
-
-
-        if (trySpawnPosition && trySpawnPointSystem) {
-            return true;
-        } else {
-            if (!trySpawnPosition) {
-                // Debug.Log("No spawn location available yet, putting unit in waiting list !");
-                if (firstPass) {
-                    StagingUnitList.Add(unit);
-                    if (StagingListInUse == false) {
-                        StagingListInUse = true;
-                        StartCoroutine(TrySecondPassSpawnLoop());
-                    }
-                }
-            }
-            if (!trySpawnPointSystem) {
-                Debug.Log("No points available !");
-            }
-            return false;
-        }
-    }
-
     protected bool TrySpawnSquad (WorldSingleUnit unit) {
         if (GameManager == null) {
             return false;
@@ -387,7 +285,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     protected void CreateNewSquad(WorldSingleUnit unit) {
         Squad _newSquad = new Squad{};
             _newSquad.SetUnitWorldSingleUnit(unit);
-            _newSquad.SetLeftToSpawn(3);
+            _newSquad.SetLeftToSpawn(unit.GetSquadCount());
         SquadSpawnedList.Add(_newSquad);
 
         if (SpawningListInUse == false) {
@@ -440,11 +338,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         } else {
                             if (squad.GetSquadLeader() == null) {
                                 squad.SetSquadLeader(_unit);
-                                _unit.SetSpawnSource(this, true);
-                            } else {
-                                _unit.SetSpawnSource(this, false);
+                                // _unit.SetSpawnSource(this, true);
                             }
+                            // else {
+                            //     _unit.SetSpawnSource(this, false);
+                            // }
                         }
+                        _unit.SetSquad(squad);
 
                         squad.SetIsAlive(true);
                         squad.SetLeftToSpawn(squad.GetLeftToSpawn()-1);
@@ -503,24 +403,6 @@ public class SpawnerScriptToAttach : MonoBehaviour {
             return true;
         } else {
             return false;
-        }
-    }
-
-    IEnumerator TrySecondPassSpawnLoop(){
-        while (StagingListInUse) {
-            yield return new WaitForSeconds(3f);
-            // Debug.Log("TrySecondPassSpawnLoop");
-            if (StagingUnitList.Count > 0) {
-                if (TrySpawnUnit(StagingUnitList[0], false)) {
-                    SpawnUnit(StagingUnitList[0], AIController.GetChidrenCanMove(), AIController.GetChidrenCanShoot(), AIController.GetChidrenCanSpawn());
-                    // Debug.Log("TrySecondPassSpawnLoop found a position !");
-                    StagingUnitList.RemoveAt(0);
-                }
-                
-            }
-            if (StagingUnitList.Count == 0) {
-                StagingListInUse = false;
-            }
         }
     }
 

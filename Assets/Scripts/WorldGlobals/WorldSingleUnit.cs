@@ -31,6 +31,9 @@ public class WorldSingleUnit {
     // HEALTH
         private float UnitHealth; public float GetUnitHealth(){ return UnitHealth; }
 
+    // SQUAD
+        private int SquadCount = 1; public int GetSquadCount(){ return SquadCount; }
+
     private bool UnitSet = false;
 
     public void SetUnit(CompiledTypes.Global_Units unit) {
@@ -174,9 +177,9 @@ public class WorldSingleUnit {
 
         // HARDPOINTS
             if (unit.Isavariant && unit.UnitHardPointsList.Count == 0) {
-                if (masterUnitReference.UnitweaponsList.Count > 0) {
+                // if (masterUnitReference.UnitweaponsList.Count > 0) {
                     SetHardPoints(masterUnitReference, false);
-                }
+                // }
             } else if (unit.Isavariant && unit.UnitHardPointsList.Count > 0) {
                 SetHardPoints(masterUnitReference, true);
                 SetHardPoints(unit, false);
@@ -191,6 +194,16 @@ public class WorldSingleUnit {
                 }
             } else if (unit.BuoyancyList.Count > 0) {
                 SetDamageControl(unit);
+            }
+
+        // SQUAD
+            if (unit.Isavariant && unit.UnitScoreList.Count == 0) {
+                SquadCount = masterUnitReference.UnitScoreList[0].SquadSize;
+            } else if (unit.UnitCameraParametersList.Count > 0) {
+                SquadCount = unit.UnitScoreList[0].SquadSize;
+            }
+            if (SquadCount == 0) {
+                SquadCount = 1;
             }
 
         // Debug.Log (CameraHeight+" / "+CameraDistance);
@@ -328,4 +341,5 @@ public class WorldSingleUnit {
 
         BuoyancyRotationTime = unit.BuoyancyList[0].Rotation_time;
     }
+
 }

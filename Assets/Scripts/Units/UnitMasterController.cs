@@ -42,7 +42,7 @@ public class UnitMasterController : MonoBehaviour {
     // Planes only parameters
         protected PlaneWeaponsManager PlaneWeapons;
         protected List<AircraftPropellerAnimator> PropellerAnimators = new List<AircraftPropellerAnimator>(); public void AddPropellerAnimator(AircraftPropellerAnimator _apa){ PropellerAnimators.Add(_apa); }
-
+        protected SpawnerScriptToAttach.Squad Squad;
     public enum ElementType {
         hull,
         engine,
@@ -108,12 +108,33 @@ public class UnitMasterController : MonoBehaviour {
             Turrets.SetDeath(true);
         if (GetComponent<PlaneWeaponsManager>())
             PlaneWeapons.SetDeath(true);
-        if (GameManager)
-            GameManager.UnitDead(this, UnitTeam, Active);
         if (GetComponent<SpawnerScriptToAttach>())
             GetComponent<SpawnerScriptToAttach>().SetDeath(true);
 
         tag = "Untagged";
+        if (Squad != null) {
+            Squad.GetSquadUnitsList().Remove(this);                                                     // Remove from squad count
+            // if (Squad.GetSquadUnitsList().Count == 0 && Squad.GetLeftToSpawn() == 0) {
+            //     if (GameManager)
+            //         GameManager.UnitDead(this, UnitTeam, Active);
+            // }
+            if (Squad.GetSquadLeader() == this) {
+                if (GameManager)
+                    GameManager.UnitDead(this, UnitTeam, Active);                                           // Kill unit if squad leader
+                if (Squad.GetSquadUnitsList().Count > 0) {
+                    Squad.SetSquadLeader(Squad.GetSquadUnitsList()[0]);                                     // If another squad member is available, set is as squad leader
+                } else {
+                    Squad.SetSquadLeader(null);
+                }
+            }
+
+            if (Squad.GetSquadUnitsList().Count == 0 && Squad.GetLeftToSpawn() == 0) {
+                Squad.SetIsAlive(false);
+            }
+        } else {
+            if (GameManager)
+                GameManager.UnitDead(this, UnitTeam, Active);
+        }
     }
     public virtual void DestroyUnit() {
         if (!Dead) {
@@ -319,29 +340,39 @@ public class UnitMasterController : MonoBehaviour {
                 InGameBoundaries = true;
             }
     }
-    public virtual void SetSpawnSource(SpawnerScriptToAttach spawner, bool isSquadLeader) {
-        if (spawner != null && isSquadLeader) {
-            // Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
-            if (WorldUnitsManager.GetGameManager() != null) {
-                // Debug.Log ("SetGameManager" +UnitName);
-                GameManager = WorldUnitsManager.GetGameManager();
-                GameManager.UnitSpawned(this, UnitTeam);
-                if (GetComponent<SpawnerScriptToAttach>()){
-                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-                }
-            }
-        } else if (spawner != null && !isSquadLeader) {
-            // Debug.Log(UnitName);
-        } else {
-            // Debug.Log(UnitName + " SetSpawnSource : No Spawner");
-            if (WorldUnitsManager.GetGameManager() != null) {
-                // Debug.Log ("SetGameManager" +UnitName);
-                GameManager = WorldUnitsManager.GetGameManager();
-                GameManager.UnitSpawned(this, UnitTeam);
-                if (GetComponent<SpawnerScriptToAttach>()){
-                    GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-                }
-            }
+    // public virtual void SetSpawnSource(SpawnerScriptToAttach spawner, bool isSquadLeader) {
+    //     if (spawner != null && isSquadLeader) {
+    //         // Debug.Log(UnitName + " SetSpawnSource : " + spawner.GetUnitMasterController().GetUnitName());
+    //         if (WorldUnitsManager.GetGameManager() != null) {
+    //             // Debug.Log ("SetGameManager" +UnitName);
+    //             GameManager = WorldUnitsManager.GetGameManager();
+    //             GameManager.UnitSpawned(this, UnitTeam);
+    //             if (GetComponent<SpawnerScriptToAttach>()){
+    //                 GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+    //             }
+    //         }
+    //     } else if (spawner != null && !isSquadLeader) {
+    //         // Debug.Log(UnitName);
+    //     } else {
+    //         // Debug.Log(UnitName + " SetSpawnSource : No Spawner");
+    //         if (WorldUnitsManager.GetGameManager() != null) {
+    //             // Debug.Log ("SetGameManager" +UnitName);
+    //             GameManager = WorldUnitsManager.GetGameManager();
+    //             GameManager.UnitSpawned(this, UnitTeam);
+    //             if (GetComponent<SpawnerScriptToAttach>()){
+    //                 GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+    //             }
+    //         }
+    //     }
+    // }
+    public virtual void SetSquad(SpawnerScriptToAttach.Squad squad) {
+        Squad = squad;
+    }
+    public virtual void SetSquadLeader() {
+        GameManager = WorldUnitsManager.GetGameManager();
+        GameManager.UnitSpawned(this, UnitTeam);
+        if (GetComponent<SpawnerScriptToAttach>()){
+            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
         }
     }
     public virtual void SetStaging(bool activate, bool advancing) {

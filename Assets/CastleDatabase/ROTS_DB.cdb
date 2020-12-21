@@ -197,11 +197,6 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "Unitweapons",
-					"opt": true
-				},
-				{
-					"typeStr": "8",
 					"name": "UnitHardPoints",
 					"display": null
 				}
@@ -209,474 +204,6 @@
 			"lines": [
 				{
 					"index": 0,
-					"Unitweapons": [
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -25.004,
-									"Pos_z": 56.89,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmA",
-							"HardPoint": 1
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -21.823,
-									"Pos_z": 43.637,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB",
-							"HardPoint": 2
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -25.13,
-									"Pos_z": 5.06,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 315,
-									"ZoneEnd": 45
-								}
-							],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB",
-							"HardPoint": 3
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -22.99,
-									"Pos_z": -25.7,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 45,
-									"ZoneEnd": 315
-								}
-							],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB",
-							"HardPoint": 4
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -25.22,
-									"Pos_z": -56.29,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmB",
-							"HardPoint": 5
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -28.119,
-									"Pos_z": -70.121,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanBB356mmA",
-							"HardPoint": 6
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 9.87,
-									"Pos_y": -28.2,
-									"Pos_z": 41.81,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 130,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 7
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -9.87,
-									"Pos_y": -28.2,
-									"Pos_z": 41.81,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 130,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 8
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 10.95,
-									"Pos_y": -28.2,
-									"Pos_z": 29.26,
-									"Rotation_x": 0,
-									"Rotation_y": 30,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 110,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 9
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -10.95,
-									"Pos_y": -28.2,
-									"Pos_z": 29.26,
-									"Rotation_x": 0,
-									"Rotation_y": -30,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 110,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 0
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 11.89,
-									"Pos_y": -28.2,
-									"Pos_z": 16.58,
-									"Rotation_x": 0,
-									"Rotation_y": 30,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 11
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -11.89,
-									"Pos_y": -28.2,
-									"Pos_z": 16.58,
-									"Rotation_x": 0,
-									"Rotation_y": -30,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 12
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 12.12,
-									"Pos_y": -28.2,
-									"Pos_z": 0.89,
-									"Rotation_x": 0,
-									"Rotation_y": 150,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 13
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -12.12,
-									"Pos_y": -28.2,
-									"Pos_z": 0.89,
-									"Rotation_x": 0,
-									"Rotation_y": -150,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 14
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 12.08,
-									"Pos_y": -28.2,
-									"Pos_z": -16.7,
-									"Rotation_x": 0,
-									"Rotation_y": 150,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 120,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 15
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -12.08,
-									"Pos_y": -28.2,
-									"Pos_z": -16.7,
-									"Rotation_x": 0,
-									"Rotation_y": -150,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 120,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 16
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 11.93,
-									"Pos_y": -28.2,
-									"Pos_z": -26.69,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 150,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 17
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -11.93,
-									"Pos_y": -28.2,
-									"Pos_z": -26.69,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 150,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 18
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 9.7,
-									"Pos_y": -28.2,
-									"Pos_z": -38.86,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 125,
-							"Left_traverse_limitation": 0,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 19
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -9.7,
-									"Pos_y": -28.2,
-									"Pos_z": -38.86,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 0,
-							"Left_traverse_limitation": 125,
-							"WeaponRef": "JapanBBCasemate120mm",
-							"HardPoint": 20
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 6.96,
-									"Pos_y": -22.14,
-									"Pos_z": 26.27,
-									"Rotation_x": 0,
-									"Rotation_y": 90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 90,
-							"Left_traverse_limitation": 80,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 21
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -6.96,
-									"Pos_y": 22.14,
-									"Pos_z": 26.27,
-									"Rotation_x": 0,
-									"Rotation_y": -90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 80,
-							"Left_traverse_limitation": 90,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 22
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -3.18,
-									"Pos_y": -16.98,
-									"Pos_z": -48.08,
-									"Rotation_x": 0,
-									"Rotation_y": -90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 130,
-							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 23
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 3.18,
-									"Pos_y": -16.98,
-									"Pos_z": -48.08,
-									"Rotation_x": 0,
-									"Rotation_y": 90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 130,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 24
-						}
-					],
 					"Buoyancy": [
 						{
 							"Center_of_mass": [
@@ -723,7 +250,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 400,
-							"Victorypoints": 350
+							"Victorypoints": 350,
+							"SquadSize": 1
 						}
 					],
 					"UnitNation": "japan",
@@ -886,292 +414,6 @@
 							"Rotation_time": 100
 						}
 					],
-					"Unitweapons": [
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -27.227,
-									"Pos_z": 55.6,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 145,
-							"Left_traverse_limitation": 145,
-							"WeaponRef": "JapanCA200mmA",
-							"HardPoint": 0
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -24.37,
-									"Pos_z": 46.27,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 155,
-									"ZoneEnd": 205
-								}
-							],
-							"Right_traverse_limitation": 155,
-							"Left_traverse_limitation": 155,
-							"WeaponRef": "JapanCA200mmB",
-							"HardPoint": 1
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -27.344,
-									"Pos_z": 37.892,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [
-								{
-									"ZoneBegin": 315,
-									"ZoneEnd": 45,
-									"VerticalMinOverride": 130,
-									"VerticalMaxOverride": 0
-								}
-							],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 315,
-									"ZoneEnd": 45
-								}
-							],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanCA200mmA",
-							"HardPoint": 2
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -23.84,
-									"Pos_z": -52.75,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 140,
-							"Left_traverse_limitation": 140,
-							"WeaponRef": "JapanCA200mmY",
-							"HardPoint": 3
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 0,
-									"Pos_y": -27.239,
-									"Pos_z": -61.148,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 145,
-							"Left_traverse_limitation": 145,
-							"WeaponRef": "JapanCA200mmA",
-							"HardPoint": 4
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -7.47,
-									"Pos_y": -25.49,
-									"Pos_z": 6.4,
-									"Rotation_x": 0,
-									"Rotation_y": -90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 5
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 7.47,
-									"Pos_y": -25.49,
-									"Pos_z": 6.4,
-									"Rotation_x": 0,
-									"Rotation_y": 90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 6
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -7.47,
-									"Pos_y": -25.49,
-									"Pos_z": -12.97,
-									"Rotation_x": 0,
-									"Rotation_y": -90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 7
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 7.47,
-									"Pos_y": -25.49,
-									"Pos_z": -12.97,
-									"Rotation_x": 0,
-									"Rotation_y": 90,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [],
-							"Right_traverse_limitation": 60,
-							"Left_traverse_limitation": 60,
-							"WeaponRef": "Japan120mmType10AATwin",
-							"HardPoint": 8
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -7.96,
-									"Pos_y": -27.88,
-									"Pos_z": 11.58,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 330,
-									"ZoneEnd": 50
-								}
-							],
-							"Right_traverse_limitation": 100,
-							"Left_traverse_limitation": 5,
-							"WeaponRef": "JapanTorpedo4CA",
-							"HardPoint": 9
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 7.96,
-									"Pos_y": -27.88,
-									"Pos_z": 11.58,
-									"Rotation_x": 0,
-									"Rotation_y": 0,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 330,
-									"ZoneEnd": 50
-								}
-							],
-							"Right_traverse_limitation": 5,
-							"Left_traverse_limitation": 100,
-							"WeaponRef": "JapanTorpedo4CA",
-							"HardPoint": 10
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": -8.66,
-									"Pos_y": -27.88,
-									"Pos_z": -6.61,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": true,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 330,
-									"ZoneEnd": 50
-								}
-							],
-							"Right_traverse_limitation": 5,
-							"Left_traverse_limitation": 100,
-							"WeaponRef": "JapanTorpedo4CA",
-							"HardPoint": 11
-						},
-						{
-							"Position": [
-								{
-									"Pos_x": 8.66,
-									"Pos_y": -27.88,
-									"Pos_z": -6.61,
-									"Rotation_x": 0,
-									"Rotation_y": 180,
-									"Rotation_z": 0
-								}
-							],
-							"Mirror": false,
-							"Elevation_zones": [],
-							"No_fire_zones": [
-								{
-									"ZoneBegin": 330,
-									"ZoneEnd": 50
-								}
-							],
-							"Right_traverse_limitation": 100,
-							"Left_traverse_limitation": 5,
-							"WeaponRef": "JapanTorpedo4CA",
-							"HardPoint": 12
-						}
-					],
 					"id": "takao",
 					"UnitName": "IJN Takao",
 					"UnitDamagecontrol": [
@@ -1192,7 +434,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 200,
-							"Victorypoints": 100
+							"Victorypoints": 100,
+							"SquadSize": 1
 						}
 					],
 					"UnitNation": "japan",
@@ -1495,7 +738,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 500,
-							"Victorypoints": 500
+							"Victorypoints": 500,
+							"SquadSize": 1
 						}
 					],
 					"UnitCameraParameters": [
@@ -1566,7 +810,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 10000,
-							"Victorypoints": 1000
+							"Victorypoints": 1000,
+							"SquadSize": 1
 						}
 					],
 					"UnitCameraParameters": [
@@ -1637,7 +882,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 200,
-							"Victorypoints": 200
+							"Victorypoints": 200,
+							"SquadSize": 3
 						}
 					],
 					"UnitHealth": 1000,
@@ -1667,7 +913,8 @@
 					"UnitScore": [
 						{
 							"Commandpoints": 10000,
-							"Victorypoints": 1000
+							"Victorypoints": 1000,
+							"SquadSize": 1
 						}
 					],
 					"UnitCameraParameters": [
@@ -1714,6 +961,10 @@
 				{
 					"typeStr": "3",
 					"name": "Victorypoints"
+				},
+				{
+					"typeStr": "3",
+					"name": "SquadSize"
 				}
 			]
 		},
@@ -2866,51 +2117,6 @@
 			}
 		},
 		{
-			"name": "Global_Units@Unitweapons",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:Weapons",
-					"name": "WeaponRef"
-				},
-				{
-					"typeStr": "3",
-					"name": "HardPoint"
-				},
-				{
-					"typeStr": "8",
-					"name": "Position"
-				},
-				{
-					"typeStr": "2",
-					"name": "Mirror",
-					"display": null
-				},
-				{
-					"typeStr": "4",
-					"name": "Left_traverse_limitation",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "Right_traverse_limitation",
-					"opt": true
-				},
-				{
-					"typeStr": "8",
-					"name": "No_fire_zones"
-				},
-				{
-					"typeStr": "8",
-					"name": "Elevation_zones"
-				}
-			]
-		},
-		{
 			"name": "Global_Units@Buoyancy",
 			"props": {
 				"hide": true
@@ -2995,89 +2201,6 @@
 					"typeStr": "4",
 					"name": "Z",
 					"display": null
-				}
-			]
-		},
-		{
-			"name": "Global_Units@Unitweapons@No_fire_zones",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "4",
-					"name": "ZoneBegin",
-					"display": null
-				},
-				{
-					"typeStr": "4",
-					"name": "ZoneEnd",
-					"display": null
-				}
-			]
-		},
-		{
-			"name": "Global_Units@Unitweapons@Elevation_zones",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "4",
-					"name": "ZoneBegin",
-					"display": null
-				},
-				{
-					"typeStr": "4",
-					"name": "ZoneEnd",
-					"display": null
-				},
-				{
-					"typeStr": "4",
-					"name": "VerticalMaxOverride"
-				},
-				{
-					"typeStr": "4",
-					"name": "VerticalMinOverride",
-					"display": null
-				}
-			]
-		},
-		{
-			"name": "Global_Units@Unitweapons@Position",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "4",
-					"name": "Pos_x"
-				},
-				{
-					"typeStr": "4",
-					"name": "Pos_y"
-				},
-				{
-					"typeStr": "4",
-					"name": "Pos_z"
-				},
-				{
-					"typeStr": "4",
-					"name": "Rotation_x"
-				},
-				{
-					"typeStr": "4",
-					"name": "Rotation_y"
-				},
-				{
-					"typeStr": "4",
-					"name": "Rotation_z"
 				}
 			]
 		},
