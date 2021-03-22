@@ -44,6 +44,9 @@ public class ShipController : UnitMasterController {
             Buoyancy = GetComponent<ShipBuoyancy>();
             Buoyancy.BeginOperations(unit);
 
+            // Build Max Speed for spawner
+                MaxSpeed = Buoyancy._enginePower * 0.103f;
+
 
         // Set DamageControl
             if (unit.GetDamageControlExists()) {

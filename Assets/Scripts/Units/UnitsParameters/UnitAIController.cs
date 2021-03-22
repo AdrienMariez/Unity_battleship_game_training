@@ -28,7 +28,9 @@ public class UnitAIController : UnitParameter {
         FollowWayPoints,                // Follow a set of coordinates
         Flee,                           // Go away from a point
         BackToBase,                      // Go back to ally point
-        NoAI
+        NoAI,
+        Takeoff,
+        Landing
     }
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
@@ -51,6 +53,7 @@ public class UnitAIController : UnitParameter {
         ChidrenCanMove = aiMove;        // Children AI options should be untouched so they can transmit their parameters to future spawned units
         ChidrenCanShoot = aiShoot;
         ChidrenCanSpawn = aiSpawn;
+        // Debug.Log ("BeginOperations "+Name+" Sent Chidren AI : "+ChidrenCanMove+" : "+ChidrenCanShoot+" : "+ChidrenCanSpawn);
         UnitMasterController = GetComponent<UnitMasterController>();
         // GetTargets();
 
@@ -300,12 +303,12 @@ public class UnitAIController : UnitParameter {
     }
     public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map, overrides check if the location is for the unit category
-        if (UnitCanMove) {
+        // if (UnitCanMove) {                   // A unit with AI disabled for moving can still be ordered to move !
             Waypoints.Add(waypointPosition);
             UsesWaypoints = true;
             UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
             CheckState();
-        }
+        // }
     }
     public virtual void CleanMoveOrders() {
         // All move orders removed from the map
@@ -363,6 +366,12 @@ public class UnitAIController : UnitParameter {
             case UnitsAIStates.BackToBase:
                 BackToBaseAction();
                 break;
+            case UnitsAIStates.Takeoff:
+                TakeoffAction();
+                break;
+            case UnitsAIStates.Landing:
+                LandingAction();
+                break;
             case UnitsAIStates.NoAI:
                 NoAIAction();
                 break;
@@ -391,37 +400,24 @@ public class UnitAIController : UnitParameter {
         }
     }
 
-    protected virtual void PatrolAction(){
+    protected virtual void PatrolAction(){ }
+    protected virtual void CircleTargetAction(){ }
+    protected virtual void ApproachTargetAction(){ }
+    protected virtual void IdleAction(){ }
+    protected virtual void FollowWayPointsAction(){ }
+    protected virtual void FleeAction(){ }
+    protected virtual void BackToBaseAction(){ }
+    protected virtual void TakeoffAction(){ }
+    protected virtual void LandingAction(){ }
+    protected virtual void NoAIAction(){ }
 
-    }
-    protected virtual void CircleTargetAction(){
-
-    }
-    protected virtual void ApproachTargetAction(){
-
-    }
-    protected virtual void IdleAction(){
-
-    }
-    protected virtual void FollowWayPointsAction(){
-
-    }
-    protected virtual void FleeAction(){
-
-    }
-    protected virtual void BackToBaseAction(){
-
-    }
-    protected virtual void NoAIAction(){
-
-    }
-
-    public void SetAIActive(bool activate) {
+    public virtual void SetAIActive(bool activate) {
         // Debug.Log("Unit : "+ Name +" - SetAIActive = "+ activate);
         // If player control, AI inactive
         AIActive = activate;
         UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
     }
+    public virtual void SetStaging(bool staging) { }
     public void SetTurretManager(TurretManager turretManager){
         TurretManager = turretManager;
         // If nothing is found in TurretManager, set the AI to not use shooting behaviours.

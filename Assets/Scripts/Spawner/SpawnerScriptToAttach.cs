@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,19 +9,26 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     public SpawnerUnitCategory[] m_SpawnableCategories;
     [Tooltip("Ships units spawnpoint")]
     public Transform m_ShipSpawnPosition;
-    public Transform[] m_ShipSpawnPath;
+    public UnitPath[] m_ShipSpawnPath;
 
     [Tooltip("Submarines units spawnpoint")]
     public Transform m_SubmarineSpawnPosition;
-    public Transform[] m_SubmarineSpawnPath;
+    public UnitPath[] m_SubmarineSpawnPath;
 
     [Tooltip("Planes units spawnpoint")]
     public Transform m_PlaneSpawnPosition;
-    public Transform[] m_PlaneSpawnPath;
+    // public Transform[] m_PlaneSpawnPath2;
+    public UnitPath[] m_PlaneSpawnPath;
+    [Serializable] public class UnitPath {
+        public Transform _transform;
+        public float _speed;
+    }
 
     [Tooltip("Ground units spawnpoint")]
     public Transform m_GroundSpawnPosition;
-    public Transform[] m_GroundSpawnPath;
+    public UnitPath[] m_GroundSpawnPath;
+
+
     [HideInInspector] public List<WorldSingleUnit> SpawnableUnitsList;
 
     [HideInInspector] public List<WorldSingleUnit> TeamedSpawnableUnitsList; public List<WorldSingleUnit> GetTeamedSpawnableUnitsList() { return TeamedSpawnableUnitsList; }
@@ -45,7 +53,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     private List<UnitInSpawningAnimation> UnitsInSpawningAnimationList = new List<UnitInSpawningAnimation>();
     public class UnitInSpawningAnimation {
         private UnitMasterController _unit;  public UnitMasterController GetUnit(){ return _unit; } public void SetUnit(UnitMasterController _umc){ _unit = _umc; }
-        private List<Transform> _pathPoints = new List<Transform>(); public List<Transform> GetPath() { return _pathPoints; } public void SetPath(List<Transform> _l){ _pathPoints = _l; }
+        private List<UnitPath> _pathPoints = new List<UnitPath>(); public List<UnitPath> GetPath() { return _pathPoints; } public void SetPath(List<UnitPath> _l){ _pathPoints = _l; }
         private Squad _squad;  public Squad GetSquad(){ return _squad; } public void SetSquad(Squad _c){ _squad = _c; }
     }
 
@@ -136,17 +144,33 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         if (UnitsInSpawningAnimationListInUse) {
             List<UnitInSpawningAnimation> _unitsToRemoveFromList = new List<UnitInSpawningAnimation>();
             foreach (UnitInSpawningAnimation unit in UnitsInSpawningAnimationList) {
-                Transform targetPath = unit.GetPath()[0];
-                float _speed =  10 * Time.deltaTime;
+
+                if (unit.GetUnit().GetDead()) {
+                    unit.GetUnit().GetUnitModel().transform.parent = null;
+                    unit.GetUnit().SetStaging(false, true);
+                    _unitsToRemoveFromList.Add(unit);
+                    continue;
+                }
+
+                Transform targetPath = unit.GetPath()[0]._transform;
+                // Debug.Log(GetComponent<Rigidbody>().velocity.magnitude);
+                // Debug.Log(unit.GetUnit().GetUnitMaxSpeed());
+                float targetPathSpeedPropotion = unit.GetPath()[0]._speed;
+                if (targetPathSpeedPropotion < 20) {
+                    targetPathSpeedPropotion = 20;
+                }
+
+                float _unitSpeed = unit.GetUnit().GetUnitMaxSpeed() * (targetPathSpeedPropotion / 100);
+                // Debug.Log(_unitSpeed);
+                float _speed =  (_unitSpeed + GetComponent<Rigidbody>().velocity.magnitude) * Time.deltaTime;
+                // float _speed =  10 * Time.deltaTime;
                 unit.GetUnit().GetUnitModel().transform.position = Vector3.MoveTowards(unit.GetUnit().GetUnitModel().transform.position, targetPath.position, _speed);
 
-                // var _rotationSpeed = 100 * Time.deltaTime;
-                // unit.GetUnit().GetUnitModel().transform.rotation = Quaternion.RotateTowards(unit.GetUnit().GetUnitModel().transform.rotation, targetPath.rotation, _rotationSpeed);
-
-                unit.GetUnit().GetUnitModel().transform.LookAt(targetPath.position, Vector3.up);
+                float step = 50.0f * Time.deltaTime;
+                unit.GetUnit().GetUnitModel().transform.rotation = Quaternion.RotateTowards(unit.GetUnit().GetUnitModel().transform.rotation, targetPath.rotation, step);
 
                 // Check if the position of the cube and sphere are approximately equal.
-                if (Vector3.Distance(unit.GetUnit().GetUnitModel().transform.position, targetPath.position) < 3) {
+                if (Vector3.Distance(unit.GetUnit().GetUnitModel().transform.position, targetPath.position) < 1) {
                     // Waypoint is reached, remove it from list and go to next or stop if no more paths.
                     unit.GetPath().Remove(unit.GetPath()[0]);
                     // Debug.Log("Waypoint reached !");
@@ -161,9 +185,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         //     unit.GetUnit().SetSpawnSource(this, false);
                         // }
                         unit.GetUnit().SetSquad(unit.GetSquad());
+                        // unit.GetUnit().GetUnitModel().transform.parent = null;
                         unit.GetUnit().SetStaging(false, true);
-                        // unit.GetUnit().SetActivateGravity(true);
-                        // unit.GetUnit().SetActivateColliders(true);
                         _unitsToRemoveFromList.Add(unit);
                     }
                 }
@@ -305,7 +328,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
 
                         // UnitsInSpawningAnimationListInUse
                         bool _animUsed = false;
-                        Transform[] _spawnPath = m_PlaneSpawnPath;
+                        UnitPath[] _spawnPath = m_PlaneSpawnPath;
                         if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.ship.id) {
                                 
                         } else if (squad.GetUnitWorldSingleUnit().GetUnitCategory_DB().id == WorldUnitsManager.GetDB().Units_categories.submarine.id) {
@@ -320,15 +343,14 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         }
 
                         if (_animUsed) {
+                            _unit.GetUnitModel().transform.parent = this.gameObject.transform;
                             _unit.SetStaging(true, true);
-                            // _unit.SetActivateGravity(false);
-                            // _unit.SetActivateColliders(false);
 
                             UnitInSpawningAnimation _newAnimElement = new UnitInSpawningAnimation{};
                                 _newAnimElement.SetUnit(_unit);
-                                List<Transform> _pathList = new List<Transform>();
-                                foreach (Transform item in _spawnPath) {
-                                    _pathList.Add(item);
+                                List<UnitPath> _pathList = new List<UnitPath>();
+                                foreach (UnitPath path in _spawnPath) {
+                                    _pathList.Add(path);
                                 }
                                 _newAnimElement.SetPath(_pathList);
                                 _newAnimElement.SetSquad(squad);
@@ -416,8 +438,8 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         for (int i = 0; i <= 30; i++) { // Try 30 times to spawn the unit (if it can't with 30 tries, it is deduced there is no place !)
             // Debug.Log("TryPosition loop !");
              Vector3 _p = transform.position;
-            _p.x = transform.position.x + Random.Range(-500, 500);
-            _p.z = transform.position.z + Random.Range(-500, 500);
+            _p.x = transform.position.x + UnityEngine.Random.Range(-500, 500);
+            _p.z = transform.position.z + UnityEngine.Random.Range(-500, 500);
             transform.position = _p;
             Collider[] _hitColliders = Physics.OverlapSphere (_transform.position, unitSize, WorldUnitsManager.GetHitMask());
             if (_hitColliders.Length == 0) {
@@ -442,6 +464,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         //     Instantiate(unit.GetUnitModel(), SpawnPosition, m_ShipSpawnPosition.rotation);
 
         UnitMasterController _spawnedUnitController = WorldUnitsManager.BuildUnit(unit, SpawnPosition, SpawnRotation, aiMove, aiShoot, aiSpawn);
+        // Debug.Log ("SpawnUnit AI : "+aiMove+" : "+aiShoot+" : "+aiSpawn);
         // _spawnedUnitController.SetSpawnSource(this);
         return _spawnedUnitController;
     }

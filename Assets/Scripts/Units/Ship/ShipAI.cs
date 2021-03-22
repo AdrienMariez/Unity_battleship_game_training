@@ -182,4 +182,13 @@ public class ShipAI : UnitAIController {
     }
     // Unit Manager sent info
     public override void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
+
+    public override void SetStaging(bool staging) {
+        if (staging) {
+            UnitsAICurrentState = UnitsAIStates.NoAI; 
+        } else {
+            UnitsAICurrentState = ShipAISpawnState; 
+        }
+        // Debug.Log("Unit : "+ Name +" - UnitsAICurrentState = "+ UnitsAICurrentState);
+    }
 }

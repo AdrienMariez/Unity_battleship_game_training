@@ -19,7 +19,7 @@ using UnityEngine;
         private bool ForceMaxThrottle = false; public void
         SetForceMaxThrottle(bool _b){
             ForceMaxThrottle = _b;
-            Debug.Log("SetForceMaxThrottle : "+ForceMaxThrottle);
+            // Debug.Log("SetForceMaxThrottle : "+ForceMaxThrottle);
         }
 
 

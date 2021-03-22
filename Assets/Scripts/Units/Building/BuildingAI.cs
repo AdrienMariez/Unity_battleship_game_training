@@ -9,9 +9,10 @@ public class BuildingAI : UnitAIController {
         // Still need the specific unit Controller for specific methods
         BuildingController = GetComponent<BuildingController>();
 
-        // Building...can't move.
-        UnitCanMove = false;
         // UnitsAICurrentState for buildings is set in base.Awake()
         base.BeginOperations(UnitCanMove, aiShoot, aiSpawn);
+        
+        // Building...can't move.
+        UnitCanMove = false;
     }
 }

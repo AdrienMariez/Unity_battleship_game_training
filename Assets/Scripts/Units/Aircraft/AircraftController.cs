@@ -1,6 +1,5 @@
-using System;
 using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 
     //[RequireComponent(typeof (Rigidbody))]
     public class AircraftController : UnitMasterController {
@@ -22,6 +21,8 @@ using System.Collections.Generic;
         [SerializeField] private float m_AirBrakesEffect = 3f;        // How much the air brakes effect the drag.
         [SerializeField] private float m_ThrottleChangeSpeed = 0.3f;  // The speed with which the throttle changes.
         [SerializeField] private float m_DragIncreaseFactor = 0.001f; // how much drag should increase with speed.
+
+        public float m_TimeBeforePlayerControl{ get; private set; }     // Time to wait after takeoff for the unit to be fully added to the player units.
 
         public float Altitude { get; private set; }                     // The aeroplane's height above the ground.
         public float Throttle { get; private set; }                     // The amount of throttle being used.
@@ -57,6 +58,11 @@ using System.Collections.Generic;
                         componentsInChild.motorTorque = 0.18f;
                     }
                 }
+
+                m_TimeBeforePlayerControl = 5f;
+
+            // Build Max Speed for spawner (m/seconds)
+                MaxSpeed = m_MaxEnginePower * 3.33f;
 
             // Set Sound (?)
                 if (GetComponent<AircraftAudio>()) {
@@ -112,7 +118,7 @@ using System.Collections.Generic;
 
             CalculateDrag();
 
-            CaluclateAerodynamicEffect();
+            CalculateAerodynamicEffect();
 
             CalculateLinearForces();
 
@@ -199,7 +205,7 @@ using System.Collections.Generic;
             m_Rigidbody.angularDrag = m_OriginalAngularDrag*ForwardSpeed;
         }
 
-        private void CaluclateAerodynamicEffect() {
+        private void CalculateAerodynamicEffect() {
             // "Aerodynamic" calculations. This is a very simple approximation of the effect that a plane
             // will naturally try to align itself in the direction that it's facing when moving at speed.
             // Without this, the plane would behave a bit like the asteroids spaceship!
@@ -272,7 +278,37 @@ using System.Collections.Generic;
             m_Immobilized = true;
         }
 
+        public void SetAISpeed(int speedProportion){ 
+            Movement.SetAISpeed(speedProportion);
+        }
+        public void SetAIPitch(int pitchProportion){ 
+            Movement.SetAIPitch(pitchProportion);
+        }
+
+        public void SetPhysicalAsNormal (){
+            foreach (HitboxComponent hitbox in UnitComponents) {
+                hitbox.SetHitBoxActive(true);
+            }
+            GetComponent<Rigidbody>().useGravity = true;
+        }
+
         // ALL OVERRIDES METHODS
+        public override void SetSquadLeader() {
+            GameManager = WorldUnitsManager.GetGameManager();
+            StartCoroutine(TakeoffActionPauseLogic());
+        }
+        IEnumerator TakeoffActionPauseLogic(){
+            yield return new WaitForSeconds(m_TimeBeforePlayerControl);
+            TakeoffActionEnd();
+        }
+        protected void TakeoffActionEnd(){
+            UnitModel.transform.parent = null;
+            GameManager.UnitSpawned(this, UnitTeam);
+            if (GetComponent<SpawnerScriptToAttach>()){
+                GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+            }
+        }
+
         public override void SetStaging(bool activate, bool advancing) {
             // Debug.Log("SetStaging");
             foreach (AircraftPropellerAnimator animator in PropellerAnimators) {
@@ -282,7 +318,25 @@ using System.Collections.Generic;
                     animator.SetForceMaxThrottle(false);
                 } 
             }
-            base.SetStaging(activate, advancing);
+            // base.SetStaging(activate, advancing);
+
+            GetComponent<Rigidbody>().useGravity = false;
+
+            // Set AI Inactive
+            if (activate) {
+                UnitAI.SetStaging(true);
+                UnitAI.SetAIActive(false);
+            } else {
+                UnitAI.SetStaging(false);
+                UnitAI.SetAIActive(!Active);
+            }
+
+            foreach (HitboxComponent hitbox in UnitComponents) {
+                hitbox.SetHitBoxActive(false);
+            }
+
+            if (Turrets != null)
+                Turrets.SetPause(activate);
         }
         public override void SetActive(bool activate) {
             base.SetActive(activate);
