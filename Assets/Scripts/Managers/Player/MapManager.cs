@@ -75,7 +75,7 @@ public class MapManager : MonoBehaviour {
                 CheckCameraSpeed();
             }
             if (Input.GetButtonDown ("CleanOrdersMap")) {
-                Debug.Log ("CleanOrdersMap");
+                // Debug.Log ("CleanOrdersMap");
                 PlayerManager.SendCleanMoveOrdersToCurrentPlayerControlledUnit();
                 PlayerManager.SendCleanAttackTargetToCurrentPlayerControlledUnit();
             }

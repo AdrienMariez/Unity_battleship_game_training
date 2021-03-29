@@ -59,7 +59,7 @@ using System.Collections;
                     }
                 }
 
-                m_TimeBeforePlayerControl = 5f;
+                m_TimeBeforePlayerControl = 3f;
 
             // Build Max Speed for spawner (m/seconds)
                 MaxSpeed = m_MaxEnginePower * 3.33f;

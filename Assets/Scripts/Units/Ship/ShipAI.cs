@@ -102,11 +102,11 @@ public class ShipAI : UnitAIController {
             return;
         }
 
-        Vector3 targetDir = gameObject.transform.position - Waypoints[0];
-        Vector3 forward = gameObject.transform.forward;
+        Vector3 targetDir = transform.position - Waypoints[0];
+        Vector3 forward = transform.forward;
         float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
 
-        float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
+        float distance = (transform.position -  Waypoints[0]).magnitude;
         // Debug.Log("distance : " + distance);
 
         if (distance > RotationSafeDistance && angle > 0 && angle < 178) {                                  // If destination is far and on the right

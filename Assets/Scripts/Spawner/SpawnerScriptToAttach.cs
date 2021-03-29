@@ -308,11 +308,12 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     protected void CreateNewSquad(WorldSingleUnit unit) {
         Squad _newSquad = new Squad{};
             _newSquad.SetUnitWorldSingleUnit(unit);
-            _newSquad.SetLeftToSpawn(unit.GetSquadCount());
+            _newSquad.SetLeftToSpawn(unit.GetSquadCount());     // Add each squad member to the count left to spawn
+            // _newSquad.SetLeftToSpawn(1);                     // For test purposes, forces one model max for any squad.
         SquadSpawnedList.Add(_newSquad);
 
         if (SpawningListInUse == false) {
-            SpawningListInUse = true;
+            SpawningListInUse = true;                           // Activate spawn list
             StartCoroutine(SpawnLoop());
         }
 

@@ -131,7 +131,7 @@ public class UnitAIController : UnitParameter {
             }
         }
     }
-    IEnumerator AIOrdersLoop(){
+    protected virtual IEnumerator AIOrdersLoop(){
         while (true) {
             yield return new WaitForSeconds(4f);
             if (AIActive) {
@@ -231,7 +231,7 @@ public class UnitAIController : UnitParameter {
             SetNewTarget();
         }
     }
-    protected void SetNewTarget() {
+    protected virtual void SetNewTarget() {
         // Debug.Log("Unit : "+ Name +" - Team.id = "+ Team.id);
         TargetUnit = null;
         float range = 0f;
@@ -253,15 +253,6 @@ public class UnitAIController : UnitParameter {
 
         CheckState();
     }
-    protected void ChangePlayerTargetIndex() {
-        if (PlayerTargetUnitIndex >= (EnemyUnitsList.Count-1)) {
-            PlayerTargetUnitIndex = 0;
-        } else {
-            PlayerTargetUnitIndex += 1;
-        }
-        // Debug.Log ("Targetable units : "+ EnemyUnitsList.Count);
-        // Debug.Log ("PlayerTargetUnitIndex : "+ PlayerTargetUnitIndex);
-    }
     protected void SetPlayerSetTargetByIndex() {
         // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
         // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
@@ -276,7 +267,16 @@ public class UnitAIController : UnitParameter {
         UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
         CheckState();
     }
-    public void SetPlayerSetTargetByController(UnitMasterController targetedUnitController) {
+    protected void ChangePlayerTargetIndex() {
+        if (PlayerTargetUnitIndex >= (EnemyUnitsList.Count-1)) {
+            PlayerTargetUnitIndex = 0;
+        } else {
+            PlayerTargetUnitIndex += 1;
+        }
+        // Debug.Log ("Targetable units : "+ EnemyUnitsList.Count);
+        // Debug.Log ("PlayerTargetUnitIndex : "+ PlayerTargetUnitIndex);
+    }
+    public virtual void SetPlayerSetTargetByController(UnitMasterController targetedUnitController) {
         // An attack order set by the map
         // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
         // Debug.Log("PlayerSetTargetUnit"+PlayerSetTargetUnit);
