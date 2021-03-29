@@ -24,6 +24,7 @@ public class UnitAIController : UnitParameter {
         Patrol,                         // Follow a waypoint until a unit is seen
         CircleTarget,                   // turn aroung a position
         ApproachTarget,                 // Go to set position
+        Follow,                // Get into a formation with a fellow Unit
         Idle,                           // Wait until new orders
         FollowWayPoints,                // Follow a set of coordinates
         Flee,                           // Go away from a point
@@ -34,6 +35,9 @@ public class UnitAIController : UnitParameter {
     }
     protected UnitsAIStates UnitsAICurrentState = UnitsAIStates.Patrol;
 
+    protected UnitMasterController FollowedUnit;
+    protected Vector3 FollowedUnitSelfPositionning;         // The position the unit will try to maintain relative to the followed unit
+    protected bool FollowsUnit = false;
     protected List <Vector3> Waypoints = new List<Vector3>();
     protected bool UsesWaypoints = false;
 
@@ -301,6 +305,16 @@ public class UnitAIController : UnitParameter {
             UnitMasterController.SetCurrentTarget(null);
         // }
     }
+    public virtual void SetFollowedUnit(UnitMasterController followedUnitController) {
+        // A move order set by the map towards an allied unit
+        // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
+            CleanMoveOrders();
+            FollowsUnit = true;
+            FollowedUnit = followedUnitController;
+            UnitMasterController.AICallbackCurrentFollowedUnit(followedUnitController);
+            CheckState();
+        // }
+    }
     public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map, overrides check if the location is for the unit category
         // if (UnitCanMove) {                   // A unit with AI disabled for moving can still be ordered to move !
@@ -316,6 +330,11 @@ public class UnitAIController : UnitParameter {
             Waypoints.Clear();
             UsesWaypoints = false;
             UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
+
+            FollowsUnit = false;
+            FollowedUnit = null;
+            UnitMasterController.AICallbackCurrentFollowedUnit(FollowedUnit);
+
             CheckState();
         }
     }
@@ -353,6 +372,9 @@ public class UnitAIController : UnitParameter {
                 break;
             case UnitsAIStates.ApproachTarget:
                 ApproachTargetAction();
+                break;
+            case UnitsAIStates.Follow:
+                FollowAction();
                 break;
             case UnitsAIStates.Idle:
                 IdleAction();
@@ -403,6 +425,7 @@ public class UnitAIController : UnitParameter {
     protected virtual void PatrolAction(){ }
     protected virtual void CircleTargetAction(){ }
     protected virtual void ApproachTargetAction(){ }
+    protected virtual void FollowAction(){ }
     protected virtual void IdleAction(){ }
     protected virtual void FollowWayPointsAction(){ }
     protected virtual void FleeAction(){ }

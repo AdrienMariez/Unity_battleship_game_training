@@ -365,8 +365,11 @@ public class PlayerManager : MonoBehaviour {
     public void CleanUnitEnemyTarget(UnitMasterController UnitController) {
         UnitsUIManager.CleanUnitEnemyTarget(UnitController);
     }
-    public void SendUnitWaypoints(UnitMasterController UnitController, List <Vector3> waypoints) {
-        UnitsUIManager.SendUnitWaypoints(UnitController, waypoints);
+    public void SendUnitFollowedUnit(UnitMasterController unitController, UnitMasterController targetController) {
+        UnitsUIManager.SendUnitFollowedUnit(unitController, targetController);
+    }
+    public void SendUnitWaypoints(UnitMasterController unitController, List <Vector3> waypoints) {
+        UnitsUIManager.SendUnitWaypoints(unitController, waypoints);
     }
 
 // CURRENT UNIT UI 

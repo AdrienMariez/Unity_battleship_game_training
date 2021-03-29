@@ -19,7 +19,7 @@ public class AircraftAI : UnitAIController {
 
 
     protected AircraftController AircraftController;
-    public UnitsAIStates AircraftAISpawnState = UnitsAIStates.Patrol;
+    public UnitsAIStates AircraftAISpawnState = UnitsAIStates.CircleTarget;
     protected float RotationSafeDistance;  // this var is used to determine if a waypoint is inside a turning arc of a full speed ship
     public override void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
         // pick a random perlin starting point for lateral wandering
@@ -227,27 +227,29 @@ public class AircraftAI : UnitAIController {
         } else if (UnitsAICurrentState == UnitsAIStates.Takeoff) {
             //Don't touch anything if the plane is taking off
         } else if (TargetUnit != null && UnitCanShoot) {
-            // I'm not sure about this one... The logic is : if it's one of the correct states, check if the target is in range or not. Act accordingly
+            // If the AI is allowed to autoattack, check if the AI is set to hunt enemies
             if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
-                if ((gameObject.transform.position - TargetUnit.transform.position).magnitude > MaxTurretsRange) {
+                // This part will need to take in account bombing or strafing !
+                if ((gameObject.transform.position - TargetUnit.transform.position).magnitude > MaxTurretsRange) {      // If the unit is not yet in range...
                     UnitsAICurrentState = UnitsAIStates.ApproachTarget;
                     // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
-                } else {
+                } else {                                                                                                // If the enemy unit is in range, set behaviour accordingly
                     UnitsAICurrentState = UnitsAIStates.CircleTarget;
                     // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
                 }
             }
-        } else {
-            if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
-                UnitsAICurrentState = UnitsAIStates.Patrol;
-                // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
-            } else {
-                UnitsAICurrentState = UnitsAIStates.Idle;
-                // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
-            }
         }
+        // else {
+        //     if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
+        //         // UnitsAICurrentState = UnitsAIStates.CircleTarget;
+        //         // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
+        //     } else {
+        //         UnitsAICurrentState = UnitsAIStates.Idle;
+        //         // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
+        //     }
+        // }
 
-        base.CheckState();
+        // base.CheckState();
 
         if (AIActive) {
             Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState);
@@ -295,6 +297,7 @@ public class AircraftAI : UnitAIController {
         }
         // Debug.Log("angle : "+ angle);
     }
+    protected override void FollowAction(){ }
     protected override void IdleAction(){
         AircraftController.SetAISpeed(0);
         // ShipController.SetAIturn(0);

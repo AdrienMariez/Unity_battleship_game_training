@@ -181,10 +181,20 @@ public class UnitsUIManager : MonoBehaviour {
         }
     }
 
-    public void SendUnitWaypoints(UnitMasterController UnitController, List <Vector3> waypoints) {
+    public void SendUnitFollowedUnit(UnitMasterController unitController, UnitMasterController targetController) {
         foreach (PlayerSideUnitsUI unit in UnitsUIList) {
             // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
-            if (UnitController == unit.GetUnitController()) {
+            if (unitController == unit.GetUnitController()) {
+                // Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitWaypoints");
+                unit.GetUnitUIMap().SendUnitFollowedUnit(targetController);
+                return;
+            }
+        }
+    }
+    public void SendUnitWaypoints(UnitMasterController unitController, List <Vector3> waypoints) {
+        foreach (PlayerSideUnitsUI unit in UnitsUIList) {
+            // Debug.Log ("SetCurrentEnemyTarget : "+ unit.GetUnitController().GetUnitName());
+            if (unitController == unit.GetUnitController()) {
                 // Debug.Log (unit.GetUnitController().GetUnitName()+ "SendUnitWaypoints");
                 unit.GetUnitUIMap().SendUnitWaypoints(waypoints);
                 return;

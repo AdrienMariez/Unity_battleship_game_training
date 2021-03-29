@@ -179,6 +179,11 @@ public class UnitMasterController : MonoBehaviour {
     }
     public void SendFollowTarget(UnitMasterController rightClickedUnitController){
         // A follow fellow unit order set by the map
+        UnitAI.SetFollowedUnit(rightClickedUnitController);
+    }
+    public void AICallbackCurrentFollowedUnit(UnitMasterController rightClickedUnitController) {
+        // Update UI with this unit current move orders
+        PlayerManager.SendUnitFollowedUnit(this, rightClickedUnitController);
     }
     public void SendNewMoveLocationToAI(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map

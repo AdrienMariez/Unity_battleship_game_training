@@ -21,7 +21,9 @@ public class ShipAI : UnitAIController {
         //     return;
         // }
         // If there is a target
-        if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
+        if (FollowedUnit != null && FollowsUnit && UnitCanMove) {
+            UnitsAICurrentState = UnitsAIStates.Follow;
+        } else if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
             UnitsAICurrentState = UnitsAIStates.FollowWayPoints;
         } else if (TargetUnit != null && UnitCanShoot) {
             // I'm not sure about this one... The logic is : if it's one of the correct states, check if the target is in range or not. Act accordingly
@@ -92,6 +94,58 @@ public class ShipAI : UnitAIController {
         }
         // Debug.Log("angle : "+ angle);
     }
+    protected override void FollowAction(){
+        if (!FollowsUnit) {
+            return;
+        }
+        Vector3 targetDir = transform.position - FollowedUnit.GetUnitModel().transform.position;
+        Vector3 forward = transform.forward;
+        float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
+
+        float distance = (transform.position -  FollowedUnit.GetUnitModel().transform.position).magnitude;
+        // Debug.Log("distance : " + distance);
+
+        if (distance > RotationSafeDistance && angle > 0 && angle < 178) {                                  // If destination is far and on the right
+            ShipController.SetAIturn(0.5f);
+            ShipController.SetAISpeed(4);
+            // Debug.Log("far right - " + distance);
+            // Debug.Log("case 1 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (distance > RotationSafeDistance && angle < -0 && angle > -178) {                         // If destination is far and on the left
+            ShipController.SetAIturn(-0.5f);
+            ShipController.SetAISpeed(4);
+            // Debug.Log("far left - " + distance);
+            // Debug.Log("case 2 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (distance > RotationSafeDistance ) {                                                                       // If far
+            ShipController.SetAIturn(0);
+            // Debug.Log("far - " + distance);
+            // Debug.Log("case 3 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (angle > 0 && angle < 120) {                                                              // If destination is close and extremely on the right
+            ShipController.SetAIturn(0.5f);
+            ShipController.SetAISpeed(1);
+            // Debug.Log("close Far right - " + distance);
+            // Debug.Log("case 3 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (angle < -0 && angle > -120) {                                                            // If destination is close and extremely on the left
+            ShipController.SetAIturn(-0.5f);
+            ShipController.SetAISpeed(1);
+            // Debug.Log("close Far left - " + distance);
+            // Debug.Log("case 4 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (angle > 0 && angle < 178) {                                                              // If destination is close and on the right
+            ShipController.SetAIturn(0.5f);
+            ShipController.SetAISpeed(2);
+            // Debug.Log("close right - " + distance);
+            // Debug.Log("case 3 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (angle <= -0 && angle > -178) {                                                            // If destination is close and on the left
+            ShipController.SetAIturn(-0.5f);
+            ShipController.SetAISpeed(2);
+            // Debug.Log("close left - " + distance);
+            // Debug.Log("case 4 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else {                                                                                            // If close
+            ShipController.SetAISpeed(4);
+            ShipController.SetAIturn(0);
+            // Debug.Log("close - " + distance);
+            // Debug.Log("else - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        }
+    }
     protected override void IdleAction(){
         ShipController.SetAISpeed(0);
         ShipController.SetAIturn(0);
@@ -149,16 +203,6 @@ public class ShipAI : UnitAIController {
             // Debug.Log("close - " + distance);
             // Debug.Log("else - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
         }
-        // if (angle < 5 && angle > 180 && TurnInputLimit > -1) {
-        //     ShipController.SetAIturn(-0.5f);
-        //     Debug.Log("case 1 - angle : " + angle);
-        // } else if (angle > -5 && angle < -180 && TurnInputLimit < 1) {
-        //     Debug.Log("case 2 - angle : " + angle);
-        //     ShipController.SetAIturn(0.5f);
-        // } else {
-        //     Debug.Log("else - angle : " + angle);
-        //     ShipController.SetAIturn(0);
-        // }
     }
     protected override void FleeAction(){
 
@@ -170,7 +214,11 @@ public class ShipAI : UnitAIController {
 
     }
 
-
+    public override void SetFollowedUnit(UnitMasterController followedUnitController) {
+        if (followedUnitController.GetUnitCategory() == CompiledTypes.Units_categories.RowValues.ship) {
+            base.SetFollowedUnit(followedUnitController);
+        }
+    }
     public override void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType){
         if (raycastHitType == MapManager.RaycastHitType.Sea) {
             // Debug.Log(UnitMasterController.GetUnitName() +", ShipAI : SetNewMoveLocation : " + waypointPosition);

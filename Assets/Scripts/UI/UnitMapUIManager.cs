@@ -41,15 +41,8 @@ public class UnitMapUIManager : MonoBehaviour {
     public class PlayerSideVisibleMoveMapOrder {               // Attack order displayed on the map for each unit for the player
         private GameObject _orderModel; public GameObject GetOrderModel(){ return _orderModel; } public void SetOrderModel(GameObject _g){ _orderModel = _g; }
         private Vector3 _endingPoint; public Vector3 GetEndingPoint(){ return _endingPoint; } public void SetEndingPoint(Vector3 _v){ _endingPoint = _v; }
+        private GameObject _followedObj = null; public GameObject GetFollowedObj(){ return _followedObj; } public void SetFollowedObj(GameObject _g){ _followedObj = _g; }
     }
-    // public class PlayerSideVisibleMoveMapOrder {               // Move/waypoint order displayed on the map for each unit for the player
-    //     private int _moveOrderSortOrder; public int GetMoveOrderSortOrder(){ return _moveOrderSortOrder; } public void SetMoveOrderSortOrder(int _i){ _moveOrderSortOrder = _i; }
-    //     private GameObject _orderModel; public GameObject GetOrderModel(){ return _orderModel; } public void SetOrderModel(GameObject _g){ _orderModel = _g; }
-    //     private GameObject _startingPointObj; public GameObject GetStartingPointObj(){ return _startingPointObj; } public void SetStartingPointObj(GameObject _g){ _startingPointObj = _g; }
-    //     private Vector3 _startingPoint; public Vector3 GetStartingPoint(){ return _startingPoint; } public void SetStartingPoint(Vector3 _v){ _startingPoint = _v; }
-    //     private GameObject _endingPointObj; public GameObject GetEndingPointObj(){ return _endingPointObj; } public void SetEndingPointObj(GameObject _g){ _endingPointObj = _g; }
-    //     private Vector3 _endingPoint; public Vector3 GetEndingPoint(){ return _endingPoint; } public void SetEndingPoint(Vector3 _v){ _endingPoint = _v; }
-    // }
 
 
     // IEnumerator PauseAction(){
@@ -215,6 +208,26 @@ public class UnitMapUIManager : MonoBehaviour {
             UnitAttackOrder = null;
         }
     }
+
+    public void SendUnitFollowedUnit(UnitMasterController targetController) {
+        if (UnitMoveOrderList.Count > 0) {
+            DestroyPreviousMoveOrders();
+        }
+        if (targetController != null) {
+            PlayerSideVisibleMoveMapOrder _moveOrder = new PlayerSideVisibleMoveMapOrder{};
+                _moveOrder.SetOrderModel(BuildOrderModel(OrderType.Follow, Unit.transform));
+                _moveOrder.SetFollowedObj(targetController.gameObject);
+            UnitMoveOrderList.Add(_moveOrder);
+        }
+        
+        // UnitAttackOrder = new PlayerSideVisibleAttackMapOrder{};
+        //     UnitAttackOrder.SetOrderModel(BuildOrderModel(OrderType.Attack, Unit.transform));
+        //     UnitAttackOrder.SetTargetObj(targetController.gameObject);
+
+        // if (UnitMoveOrderList.Count > 0) {
+        //     PositionMoveOrders();
+        // }
+    }
     public void SendUnitWaypoints(List <Vector3> waypoints) {
         if (UnitMoveOrderList.Count > 0) {
             DestroyPreviousMoveOrders();
@@ -222,7 +235,7 @@ public class UnitMapUIManager : MonoBehaviour {
         // foreach (Vector3 _waypoint in waypoints) {
         for (int i = 0; i < waypoints.Count; i++){
             PlayerSideVisibleMoveMapOrder _moveOrder = new PlayerSideVisibleMoveMapOrder{};
-                _moveOrder.SetOrderModel(BuildOrderModel(OrderType.WayPoint, Unit.transform));
+                _moveOrder.SetOrderModel(BuildOrderModel(OrderType.Move, Unit.transform));
                 // if (i == 0) {
                 //     _moveOrder.SetStartingPoint(Unit);
                 // }
@@ -242,7 +255,12 @@ public class UnitMapUIManager : MonoBehaviour {
     public void PositionMoveOrders(){
         Vector3 _unitScreenPos = MapCam.WorldToScreenPoint(Unit.transform.position);
         for (int i = 0; i < UnitMoveOrderList.Count; i++){
-            Vector3 _targetScreenPos = MapCam.WorldToScreenPoint(UnitMoveOrderList[i].GetEndingPoint());
+            Vector3 _targetScreenPos;
+            if (UnitMoveOrderList[i].GetFollowedObj() != null) {
+                _targetScreenPos = MapCam.WorldToScreenPoint(UnitMoveOrderList[i].GetFollowedObj().transform.position);
+            } else {
+                _targetScreenPos = MapCam.WorldToScreenPoint(UnitMoveOrderList[i].GetEndingPoint());
+            }
             Vector3 _ordertargetScreenPos = new Vector2(_targetScreenPos.x, _targetScreenPos.y);
             if (i == 0) {                                                                                                       // First order
                 Vector3 _orderScreenPos = new Vector2(_unitScreenPos.x, _unitScreenPos.y);                                          // Unit position
@@ -290,7 +308,7 @@ public class UnitMapUIManager : MonoBehaviour {
             }
         }
     }
-    public enum OrderType { Attack, Move, WayPoint } 
+    public enum OrderType { Attack, Follow, Move } 
     public GameObject BuildOrderModel(OrderType orderType, Transform unitTransform) {
         // GameObject _tempOrderObject = Instantiate(WorldGlobals.GetMapOrderModel(), unitTransform);
         // _tempOrderObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = SetOrderColor(orderType);
@@ -308,10 +326,10 @@ public class UnitMapUIManager : MonoBehaviour {
         switch (orderType){
             case OrderType.Attack:
                 return new Color(1, 0, 0, 1f);
+            case OrderType.Follow:
+                return new Color(0, 0.7f, 1, 1f);
             case OrderType.Move:
-                return new Color(0, 0, 1, 1f);
-            case OrderType.WayPoint:
-                return new Color(1, 1, 0, 1f);
+                return new Color(0, 1, 0, 1f);
             default:
                 return new Color(1, 1, 1, 1f);
         }
