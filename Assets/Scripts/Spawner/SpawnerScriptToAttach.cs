@@ -45,8 +45,17 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         // Further gameplay
         private List<UnitMasterController> _squadUnitsList = new List<UnitMasterController>(); public List<UnitMasterController> GetSquadUnitsList() { return _squadUnitsList; }
         private UnitMasterController _squadLeader; public UnitMasterController GetSquadLeader(){ return _squadLeader; } 
-            public void SetSquadLeader(UnitMasterController _umc){ _squadLeader = _umc; if (_squadLeader != null) { _squadLeader.SetSquadLeader(); } }
+            public void SetSquadLeader(UnitMasterController _umc){
+                _squadLeader = _umc;
+                if (_squadLeader != null) { _squadLeader.SetAsSquadLeader(); }
+                foreach (UnitMasterController unit in _squadUnitsList) {
+                    if (unit != _squadLeader) {
+                        unit.UpdateSquadLeader(_squadLeader);
+                    }
+                }
+            }
         private bool _isAlive;  public bool GetIsAlive(){ return _isAlive; } public void SetIsAlive(bool _b){ _isAlive = _b; }
+        public void InitSquad(UnitMasterController spawner) { if (_squadLeader != null) { _squadLeader.InitSquad(spawner); } }
     }
 
     protected bool UnitsInSpawningAnimationListInUse = false;
@@ -179,7 +188,10 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         // Path is ended, give full control of the unit to the game process
                         if (unit.GetSquad().GetSquadLeader() == null) {
                             unit.GetSquad().SetSquadLeader(unit.GetUnit());
+                            unit.GetSquad().InitSquad(UnitController);
                             // unit.GetUnit().SetSpawnSource(this, true);
+                        } else {
+                            unit.GetUnit().UpdateSquadLeader(unit.GetSquad().GetSquadLeader());
                         }
                         // else {
                         //     unit.GetUnit().SetSpawnSource(this, false);
@@ -361,11 +373,10 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                         } else {
                             if (squad.GetSquadLeader() == null) {
                                 squad.SetSquadLeader(_unit);
-                                // _unit.SetSpawnSource(this, true);
+                                squad.InitSquad(UnitController);
+                            } else {
+                                _unit.UpdateSquadLeader(squad.GetSquadLeader());
                             }
-                            // else {
-                            //     _unit.SetSpawnSource(this, false);
-                            // }
                         }
                         _unit.SetSquad(squad);
 

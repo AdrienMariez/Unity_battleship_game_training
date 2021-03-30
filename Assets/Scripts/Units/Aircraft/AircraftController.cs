@@ -293,19 +293,23 @@ using System.Collections;
         }
 
         // ALL OVERRIDES METHODS
-        public override void SetSquadLeader() {
-            GameManager = WorldUnitsManager.GetGameManager();
-            StartCoroutine(TakeoffActionPauseLogic());
+        public override void InitSquad(UnitMasterController spawner) {
+            StartCoroutine(TakeoffActionPauseLogic(spawner));
+            
         }
-        IEnumerator TakeoffActionPauseLogic(){
+        IEnumerator TakeoffActionPauseLogic(UnitMasterController spawner){
             yield return new WaitForSeconds(m_TimeBeforePlayerControl);
-            TakeoffActionEnd();
+            TakeoffActionEnd(spawner);
         }
-        protected void TakeoffActionEnd(){
+        protected void TakeoffActionEnd(UnitMasterController spawner){
             UnitModel.transform.parent = null;
-            GameManager.UnitSpawned(this, UnitTeam);
-            if (GetComponent<SpawnerScriptToAttach>()){
-                GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+            SetPhysicalAsNormal();
+            base.InitSquad(spawner);
+            if (GetComponent<AircraftAI>()) {
+                GetComponent<AircraftAI>().TakeoffActionEnd();
+            }
+            if (SquadLeader && spawner != null) {
+                UnitAI.SetSpawnFollowedUnit(spawner);
             }
         }
 
@@ -349,6 +353,9 @@ using System.Collections;
         public override void SetMap(bool map) {
             if (Movement != null)
                 Movement.SetMap(map);
+            if (UnitAI != null) {
+                UnitAI.SetMap(map);
+            }
             if (PlaneWeapons != null)
                 PlaneWeapons.SetMap(map);
             base.SetMap(map);

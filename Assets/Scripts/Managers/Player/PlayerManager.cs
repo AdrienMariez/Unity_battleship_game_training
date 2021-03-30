@@ -294,7 +294,9 @@ public class PlayerManager : MonoBehaviour {
 
         MapCamera.enabled = MapActive;
         // Debug.Log("Player Map open : " + MapActive);
-        CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
+        if (CurrentPlayerControlledUnit != null) {
+            CurrentPlayerControlledUnit.GetUnitController().SetMap(MapActive);
+        }
         SetOverlayUI();
         CheckCameraRotation();
     }

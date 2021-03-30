@@ -30,7 +30,8 @@ public class UnitMasterController : MonoBehaviour {
     protected bool Active = false;
     protected bool Dead = false; public bool GetDead(){ return Dead; }
     protected bool InGameBoundaries = false;                // True : unit is within game boundaries / False : unit is out of game
-    private SpawnerScriptToAttach Spawner;
+    protected bool SquadLeader = false;
+    private UnitMasterController Spawner;
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
@@ -121,12 +122,12 @@ public class UnitMasterController : MonoBehaviour {
             //         GameManager.UnitDead(this, UnitTeam, Active);
             // }
             if (Squad.GetSquadLeader() == this) {
-                if (GameManager)
-                    GameManager.UnitDead(this, UnitTeam, Active);                                           // Kill unit if squad leader
                 if (Squad.GetSquadUnitsList().Count > 0) {
                     Squad.SetSquadLeader(Squad.GetSquadUnitsList()[0]);                                     // If another squad member is available, set is as squad leader
                 } else {
                     Squad.SetSquadLeader(null);
+                    if (GameManager)
+                        GameManager.UnitDead(this, UnitTeam, Active);                                       // Kill unit if this model was squad leader AND there are no surviving members
                 }
             }
 
@@ -183,7 +184,8 @@ public class UnitMasterController : MonoBehaviour {
     }
     public void AICallbackCurrentFollowedUnit(UnitMasterController rightClickedUnitController) {
         // Update UI with this unit current move orders
-        PlayerManager.SendUnitFollowedUnit(this, rightClickedUnitController);
+        if (PlayerManager)
+            PlayerManager.SendUnitFollowedUnit(this, rightClickedUnitController);
     }
     public void SendNewMoveLocationToAI(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map
@@ -195,7 +197,8 @@ public class UnitMasterController : MonoBehaviour {
     }
     public void AICallbackCurrentWaypoints(List <Vector3> waypoints) {
         // Update UI with this unit current move orders
-        PlayerManager.SendUnitWaypoints(this, waypoints);
+        if (PlayerManager)
+            PlayerManager.SendUnitWaypoints(this, waypoints);
     }
 
     // Main Gameplay
@@ -351,12 +354,20 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void SetSquad(SpawnerScriptToAttach.Squad squad) {
         Squad = squad;
     }
-    public virtual void SetSquadLeader() {
+    public virtual void InitSquad(UnitMasterController spawner) {
         GameManager = WorldUnitsManager.GetGameManager();
         GameManager.UnitSpawned(this, UnitTeam);
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
         }
+        Spawner = spawner;
+    }
+    public virtual void SetAsSquadLeader() {
+        UnitAI.SetAsSquadLeader();
+        SquadLeader = true;
+    }
+    public virtual void UpdateSquadLeader(UnitMasterController squadLeader) {
+        UnitAI.SetFollowedUnit(squadLeader);
     }
     public virtual void SetStaging(bool activate, bool advancing) {
         // Staging status is used when a unit is in spawning mode and not available for gameplay.

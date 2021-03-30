@@ -10,7 +10,7 @@ public class AircraftAI : UnitAIController {
         [SerializeField] private float m_MaxRollAngle = 45;             // The maximum angle that the AI will attempt to u
         [SerializeField] private float m_SpeedEffect = 0.01f;           // This increases the effect of the controls based on the plane's speed.
         [SerializeField] private float m_TakeoffHeight = 20;            // the AI will fly straight and only pitch upwards until reaching this height
-        private Transform MovePosition;                                 // The position the AI move to or circle
+        private Vector3 MovePosition;                                 // The position the AI move to or circle
         [SerializeField] private float m_FlyAltitude = 200;              // the AI will fly at this altitude by default
 
         // private AeroplaneController m_AeroplaneController;  // The aeroplane controller that is used to move the plane
@@ -19,8 +19,7 @@ public class AircraftAI : UnitAIController {
 
 
     protected AircraftController AircraftController;
-    public UnitsAIStates AircraftAISpawnState = UnitsAIStates.CircleTarget;
-    protected float RotationSafeDistance;  // this var is used to determine if a waypoint is inside a turning arc of a full speed ship
+    public UnitsAIStates AircraftAISpawnState = UnitsAIStates.Patrol;
     public override void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
         // pick a random perlin starting point for lateral wandering
             m_RandomPerlin = Random.Range(0f, 100f);
@@ -45,18 +44,46 @@ public class AircraftAI : UnitAIController {
                 NoAIInput();
             } else if (UnitsAICurrentState == UnitsAIStates.Takeoff) {
                 FlyForward();
+            } else if (UnitsAICurrentState == UnitsAIStates.Follow) {
+                ConvertAltitudeRequired(FollowedUnit.gameObject);
+            } else if (UnitsAICurrentState == UnitsAIStates.CircleTarget) {
+                if (MovePosition != null) {
+                    FlyTowardsPosition(MovePosition);
+                }
             } else if (Stressed && TargetUnit != null) {
-                FlyTowardsTarget();
+                ConvertAltitudeRequired(TargetUnit);
             }
         }
     }
-    protected void FlyTowardsTarget() {
-        if (AIActive) {
-            Debug.Log("FlyTowardsTarget - "+ UnitsAICurrentState);
+    protected void ConvertAltitudeRequired(GameObject targetModel) {
+        Vector3 targetPos = targetModel.transform.position;
+
+        Vector3 convertedCurrentPosForDistance = new Vector3(transform.position.x, targetModel.transform.position.y, transform.position.z);
+        float distance = (convertedCurrentPosForDistance -  targetModel.transform.position).magnitude;
+
+        if (distance > 200) {
+            targetPos = new Vector3(targetPos.x, m_FlyAltitude, targetPos.z);
+        } else if (targetModel.GetComponent<UnitMasterController>()) {
+            if (targetModel.GetComponent<UnitMasterController>().GetUnitCategory() != CompiledTypes.Units_categories.RowValues.aircraft) {
+                if (UnitsAICurrentState == UnitsAIStates.ApproachTarget) {
+                    targetPos = new Vector3(targetPos.x, m_FlyAltitude, targetPos.z); //TODO Change this
+                } else if (UnitsAICurrentState == UnitsAIStates.Follow) {
+                    targetPos = new Vector3(targetPos.x, m_FlyAltitude, targetPos.z);
+                }
+            }
         }
+
+        FlyTowardsPosition(targetPos);
+    }
+    protected void FlyTowardsTarget(GameObject targetModel) {
+        // if (AIActive) {
+        //     Debug.Log("FlyTowardsTarget - "+ UnitsAICurrentState);
+        // }
         // Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit);
+
+        
         // make the plane wander from the path, useful for making the AI seem more human, less robotic.
-        Vector3 targetPos = TargetUnit.transform.position +
+        Vector3 targetPos = targetModel.transform.position +
                             transform.right*
                             (Mathf.PerlinNoise(Time.time*m_LateralWanderSpeed, m_RandomPerlin)*2 - 1)*
                             m_LateralWanderDistance;
@@ -105,9 +132,9 @@ public class AircraftAI : UnitAIController {
         AircraftController.Move(rollInput, pitchInput, yawInput, throttleInput, false);
     }
     protected void FlyTowardsPosition(Vector3 positionV3) {
-        if (AIActive) {
-            Debug.Log("FlyTowardsPosition - "+ UnitsAICurrentState);
-        }
+        // if (AIActive) {
+        //     Debug.Log("FlyTowardsPosition - "+ UnitsAICurrentState);
+        // }
         
         // make the plane wander from the path, useful for making the AI seem more human, less robotic.
         Vector3 targetPos = positionV3 +
@@ -159,30 +186,34 @@ public class AircraftAI : UnitAIController {
         AircraftController.Move(rollInput, pitchInput, yawInput, throttleInput, false);
     }
     protected void FlyForward() {
-        if (AIActive) {
-            Debug.Log("FlyForward - "+ UnitsAICurrentState);
-        }
+        // if (AIActive) {
+        //     Debug.Log("FlyForward - "+ UnitsAICurrentState);
+        // }
+
         AircraftController.Move(0, 0, 0, 1, false);
     }
     protected  void NoAIInput() {
+        // if (AIActive) {
+        //     Debug.Log("NoAIInput - "+ UnitsAICurrentState);
+        // }
         AircraftController.Move(0, 0, 0, 0, false);
     }
-    protected override IEnumerator AIOrdersLoop(){
-        while (true) {
-            yield return new WaitForSeconds(1f);
-            if (AIActive) {
-                // Debug.Log("PauseAIOrders");
-                // If AI controlled
-                if (TargetUnit == null &&  UnitCanShoot) {
-                    SetNewTarget();
-                }
-                CheckState();
-            }
-        }
-    }
+    // protected override IEnumerator AIOrdersLoop(){
+    //     while (true) {
+    //         yield return new WaitForSeconds(1f);
+    //         if (AIActive) {
+    //             // Debug.Log("PauseAIOrders");
+    //             // If AI controlled
+    //             if (TargetUnit == null &&  UnitCanShoot) {
+    //                 SetNewTarget();
+    //             }
+    //             CheckState();
+    //         }
+    //     }
+    // }
     protected override void SetNewTarget() {
         // SetNewTarget is completely overwritten as the target position needs to be reused for TargetPosition used by planes to know where they need to go.
-        Debug.Log("Unit : "+ Name +" - Team.id = "+ Team.id);
+        // Debug.Log("Unit : "+ Name +" - Team.id = "+ Team.id);
         TargetUnit = null;
         float range = 0f;
         if (EnemyUnitsList.Count > 0) {
@@ -214,6 +245,11 @@ public class AircraftAI : UnitAIController {
 
         base.SetNewMoveLocation(updatedwaypointPosition, raycastHitType);
     }
+    protected void SetCirclePosition(){
+        // Start circling around the current location of the unit.
+        Debug.Log("SetCirclePosition");
+        MovePosition = new Vector3(transform.position.x, m_FlyAltitude, transform.position.z);
+    }
 
     // UnitsAIStates
     // UnitsAICurrentState
@@ -221,8 +257,10 @@ public class AircraftAI : UnitAIController {
         // if (UnitsAICurrentState == UnitsAIStates.NoAI) {
         //     return;
         // }
-        // If there is a target
-        if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
+
+        if (FollowedUnit != null && FollowsUnit && UnitCanMove) {
+            UnitsAICurrentState = UnitsAIStates.Follow;
+        } else if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
             UnitsAICurrentState = UnitsAIStates.FollowWayPoints;
         } else if (UnitsAICurrentState == UnitsAIStates.Takeoff) {
             //Don't touch anything if the plane is taking off
@@ -238,6 +276,9 @@ public class AircraftAI : UnitAIController {
                     // Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
                 }
             }
+        } else if (UnitsAICurrentState != UnitsAIStates.NoAI && UnitsAICurrentState != UnitsAIStates.CircleTarget) {
+            UnitsAICurrentState = UnitsAIStates.CircleTarget;
+            SetCirclePosition();
         }
         // else {
         //     if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
@@ -251,52 +292,17 @@ public class AircraftAI : UnitAIController {
 
         // base.CheckState();
 
-        if (AIActive) {
-            Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState);
-        }
+        // if (AIActive && SquadLeader) {
+        //     Debug.Log("Unit : "+ Name +" - TargetUnit = "+ TargetUnit +" - UnitsAICurrentState = "+ UnitsAICurrentState);
+        // }
 
         // Debug.Log("Unit : "+ Name +" - magnitude = "+ (gameObject.transform.position - TargetUnit.transform.position).magnitude +" - MaxTurretsRange = "+ MaxTurretsRange);
     }
 
     // Possible Actions
-    protected override void PatrolAction(){
-        // Not done at all
-        // AircraftController.SetAISpeed(1);
-        // ShipController.SetAIturn(0);
-    }
-    protected override void CircleTargetAction(){
-        AircraftController.SetAISpeed(1);
-
-        Vector3 targetDir = gameObject.transform.position - TargetUnit.transform.position;
-        Vector3 forward = gameObject.transform.forward;
-        float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
-
-        if (angle > 95 && angle > 0 && TurnInputLimit < 1 || angle > -85 && angle < 0 && TurnInputLimit < 1) {
-            // ShipController.SetAIturn(-0.5f);
-        } else if (angle < 85  && angle > 0 && TurnInputLimit > -1 || angle < -95 && angle < 0 && TurnInputLimit > -1) {
-            // ShipController.SetAIturn(0.5f);
-        } else {
-            // ShipController.SetAIturn(0);
-        }
-    }
-    protected override void ApproachTargetAction(){
-                // Debug.Log("ApproachTarget");
-        AircraftController.SetAISpeed(1);
-
-        Vector3 targetDir = gameObject.transform.position - TargetUnit.transform.position;
-        Vector3 forward = gameObject.transform.forward;
-        float angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
-
-        // Not tested !
-        if (angle > 5 && angle < 180 && TurnInputLimit < 1) {
-            // ShipController.SetAIturn(-0.5f);
-        } else if (angle < -5 && angle > -180 && TurnInputLimit > -1) {
-            // ShipController.SetAIturn(0.5f);
-        } else {
-            // ShipController.SetAIturn(0);
-        }
-        // Debug.Log("angle : "+ angle);
-    }
+    protected override void PatrolAction(){ }
+    protected override void CircleTargetAction(){ }
+    protected override void ApproachTargetAction(){ }
     protected override void FollowAction(){ }
     protected override void IdleAction(){
         AircraftController.SetAISpeed(0);
@@ -311,32 +317,12 @@ public class AircraftAI : UnitAIController {
 
         FlyTowardsPosition(Waypoints[0]);
     }
-    protected override void FleeAction(){
-        AircraftController.SetAISpeed(1);
-    }
-    protected override void BackToBaseAction(){
-        AircraftController.SetAISpeed(1);
-    }
-    protected override void TakeoffAction(){
-        // Debug.Log("Unit : "+ Name +" - UnitsAICurrentState = "+ UnitsAICurrentState);
-        // AircraftController.SetAISpeed(1);
-        // AircraftController.SetAIPitch(-1);
-        // Take off; wait for X time then switch ai for what is specified as the basic AI.
+    protected override void FleeAction(){ }
+    protected override void BackToBaseAction(){ }
+    protected override void TakeoffAction(){ }
+    public void TakeoffActionEnd(){
+        // Debug.Log("TakeoffActionEnd");
         //It's logical that there can be no planes flying after a takeoff that won't try to fly so do not care about NoAI edgecase.
-        StartCoroutine(TakeoffActionPauseLogic());
-        // UnitsAICurrentState = AircraftAISpawnState;
-        // AircraftController.SetPhysicalAsNormal();
-
-        // FUCK YOU CHECK STATE
-        // CheckState();
-    }
-    IEnumerator TakeoffActionPauseLogic(){
-        yield return new WaitForSeconds(AircraftController.m_TimeBeforePlayerControl);
-        TakeoffActionEnd();
-    }
-    protected void TakeoffActionEnd(){
-        AircraftController.SetPhysicalAsNormal();
-        // AircraftController.SetAIPitch(0);
         UnitsAICurrentState = AircraftAISpawnState;
         CheckState();
     }
@@ -346,13 +332,15 @@ public class AircraftAI : UnitAIController {
     protected override void NoAIAction(){
         AircraftController.SetAISpeed(0);
     }
-
     // Unit Manager sent info
     public override void SetAITurnInputValue(float turnInputValue){ TurnInputLimit = turnInputValue; }
 
     public override void SetAIActive(bool activate) {
         base.SetAIActive(activate);
         CheckState();
+    }
+    public override void SetMap(bool map) {
+        AIActive = map;
     }
     public override void SetStaging(bool staging) {
         if (staging) {

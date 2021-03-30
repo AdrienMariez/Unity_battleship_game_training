@@ -7,9 +7,11 @@ public class UnitAIController : UnitParameter {
     protected CompiledTypes.Teams Team; public void SetUnitTeam(CompiledTypes.Teams team){ Team = team; }
     protected string Name; public void SetName(string name) { Name = name; } // For debug purposes
     protected bool Stressed;              // Maybe this will have to change, if stressed, the unit has found a possible target and will fight it
+    protected bool SquadLeader = false;
     protected float TurnInputLimit = 0;
     protected float MaxTurretsRange; public void SetMaxTurretRange(float maxTurretsRange) { MaxTurretsRange = maxTurretsRange; }
     protected GameObject TargetUnit;
+    protected UnitMasterController TargetUnitMasterController;
     protected int PlayerTargetUnitIndex = 0;
     protected GameObject PlayerSetTargetUnit;
     protected UnitMasterController UnitMasterController;
@@ -307,13 +309,21 @@ public class UnitAIController : UnitParameter {
     }
     public virtual void SetFollowedUnit(UnitMasterController followedUnitController) {
         // A move order set by the map towards an allied unit
-        // Debug.Log("EnemyUnitsList[x]"+EnemyUnitsList[PlayerTargetUnitIndex]);
+        // Debug.Log("SetFollowedUnit");
             CleanMoveOrders();
             FollowsUnit = true;
             FollowedUnit = followedUnitController;
             UnitMasterController.AICallbackCurrentFollowedUnit(followedUnitController);
             CheckState();
         // }
+    }
+    public virtual void SetSpawnFollowedUnit(UnitMasterController followedUnitController) {
+        // If the unit has a parent(spawner) and is not allowed to move, it will follow it automatically
+        // This is what makes idle plane circle their carrier/airbase after spawn before instructions
+        if (!UnitCanMove) {
+            Debug.Log("SetSpawnFollowedUnit");
+            SetFollowedUnit(followedUnitController);
+        }
     }
     public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map, overrides check if the location is for the unit category
@@ -440,6 +450,8 @@ public class UnitAIController : UnitParameter {
         AIActive = activate;
         UnitMasterController.SetCurrentTarget(PlayerSetTargetUnit);
     }
+    public virtual void SetMap(bool map) { }
+    public virtual void SetAsSquadLeader() { SquadLeader = true; }
     public virtual void SetStaging(bool staging) { }
     public void SetTurretManager(TurretManager turretManager){
         TurretManager = turretManager;
