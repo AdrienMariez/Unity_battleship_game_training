@@ -309,7 +309,7 @@ public class UnitAIController : UnitParameter {
     }
     public virtual void SetFollowedUnit(UnitMasterController followedUnitController) {
         // A move order set by the map towards an allied unit
-        // Debug.Log("SetFollowedUnit");
+        // Debug.Log("SetFollowedUnit - "+ followedUnitController.GetUnitName());
             CleanMoveOrders();
             FollowsUnit = true;
             FollowedUnit = followedUnitController;
@@ -321,13 +321,18 @@ public class UnitAIController : UnitParameter {
         // If the unit has a parent(spawner) and is not allowed to move, it will follow it automatically
         // This is what makes idle plane circle their carrier/airbase after spawn before instructions
         if (!UnitCanMove) {
-            Debug.Log("SetSpawnFollowedUnit");
+            // Debug.Log("SetSpawnFollowedUnit");
             SetFollowedUnit(followedUnitController);
         }
     }
     public virtual void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // A move order set by the map, overrides check if the location is for the unit category
         // if (UnitCanMove) {                   // A unit with AI disabled for moving can still be ordered to move !
+            if (FollowsUnit) {
+                FollowsUnit = false;
+                FollowedUnit = null;
+                UnitMasterController.AICallbackCurrentFollowedUnit(FollowedUnit);
+            }
             Waypoints.Add(waypointPosition);
             UsesWaypoints = true;
             UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
@@ -336,7 +341,6 @@ public class UnitAIController : UnitParameter {
     }
     public virtual void CleanMoveOrders() {
         // All move orders removed from the map
-        if (UnitCanMove) {
             Waypoints.Clear();
             UsesWaypoints = false;
             UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
@@ -346,7 +350,6 @@ public class UnitAIController : UnitParameter {
             UnitMasterController.AICallbackCurrentFollowedUnit(FollowedUnit);
 
             CheckState();
-        }
     }
     protected void MoveCheckPointReached() {
         // Debug.Log("Checkpoint reached ! Timer : "+Time.time);

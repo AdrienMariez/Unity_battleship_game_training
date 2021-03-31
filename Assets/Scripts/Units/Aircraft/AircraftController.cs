@@ -94,6 +94,9 @@ using System.Collections;
         }
 
         public void Move(float rollInput, float pitchInput, float yawInput, float throttleInput, bool airBrakes) {
+            // if (Active) {
+            //     Debug.Log("Alert ! Low altitude ! - pitchInput = "+ pitchInput);
+            // }
             // Transfer input parameters into properties
             if (rollInput == 100) {
                 RollInput = 0;
@@ -295,7 +298,9 @@ using System.Collections;
         // ALL OVERRIDES METHODS
         public override void InitSquad(UnitMasterController spawner) {
             StartCoroutine(TakeoffActionPauseLogic(spawner));
-            
+        }
+        public override void InitSquadMember(UnitMasterController spawner) {
+            StartCoroutine(TakeoffActionPauseLogic(spawner));
         }
         IEnumerator TakeoffActionPauseLogic(UnitMasterController spawner){
             yield return new WaitForSeconds(m_TimeBeforePlayerControl);
@@ -304,7 +309,12 @@ using System.Collections;
         protected void TakeoffActionEnd(UnitMasterController spawner){
             UnitModel.transform.parent = null;
             SetPhysicalAsNormal();
-            base.InitSquad(spawner);
+            if (SquadLeader) {
+                base.InitSquad(spawner);
+            } else {
+                base.InitSquadMember(spawner);
+                base.UpdateSquadLeader(Squad.GetSquadLeader());
+            }
             if (GetComponent<AircraftAI>()) {
                 GetComponent<AircraftAI>().TakeoffActionEnd();
             }
@@ -312,6 +322,15 @@ using System.Collections;
                 UnitAI.SetSpawnFollowedUnit(spawner);
             }
         }
+
+        // public override void UpdateSquadLeader(UnitMasterController squadLeader) {
+        //     UnitAI.SetFollowedUnit(squadLeader);
+        //     StartCoroutine(TakeoffActionPauseLogic2(squadLeader));
+        // }
+        // IEnumerator TakeoffActionPauseLogic2(UnitMasterController squadLeader){
+        //     yield return new WaitForSeconds(m_TimeBeforePlayerControl);
+        //     TakeoffAction2End(squadLeader);
+        // }
 
         public override void SetStaging(bool activate, bool advancing) {
             // Debug.Log("SetStaging");

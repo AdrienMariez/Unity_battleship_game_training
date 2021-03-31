@@ -191,6 +191,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                             unit.GetSquad().InitSquad(UnitController);
                             // unit.GetUnit().SetSpawnSource(this, true);
                         } else {
+                            unit.GetUnit().InitSquadMember(UnitController);
                             unit.GetUnit().UpdateSquadLeader(unit.GetSquad().GetSquadLeader());
                         }
                         // else {
@@ -375,6 +376,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                                 squad.SetSquadLeader(_unit);
                                 squad.InitSquad(UnitController);
                             } else {
+                                _unit.InitSquadMember(UnitController);
                                 _unit.UpdateSquadLeader(squad.GetSquadLeader());
                             }
                         }

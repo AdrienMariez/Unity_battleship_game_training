@@ -362,6 +362,13 @@ public class UnitMasterController : MonoBehaviour {
         }
         Spawner = spawner;
     }
+    public virtual void InitSquadMember(UnitMasterController spawner) {
+        GameManager = WorldUnitsManager.GetGameManager();
+        if (GetComponent<SpawnerScriptToAttach>()){
+            GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
+        }
+        Spawner = spawner;
+    }
     public virtual void SetAsSquadLeader() {
         UnitAI.SetAsSquadLeader();
         SquadLeader = true;
