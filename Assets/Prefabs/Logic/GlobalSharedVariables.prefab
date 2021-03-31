@@ -78,7 +78,7 @@ MonoBehaviour:
     m_Bits: 40704
   m_PlaneSpawnMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 264192
 --- !u!114 &282135415314082085
 MonoBehaviour:
   m_ObjectHideFlags: 0

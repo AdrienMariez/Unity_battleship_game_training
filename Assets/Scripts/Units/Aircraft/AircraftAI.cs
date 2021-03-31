@@ -105,12 +105,12 @@ public class AircraftAI : UnitAIController {
 
         // AI applies elevator control (pitch, rotation around x) to reach the target angle
         float pitchInput = changePitch*m_PitchSensitivity;
-        if (m_TakenOff) {
-            if (AircraftController.Altitude < 100) {
-                Debug.Log("Alert ! Low altitude ! Correcting.");
-                // pitchInput = -5000;
-            }
-        }
+        // if (m_TakenOff) {
+        //     if (AircraftController.Altitude < 100) {
+        //         Debug.Log("Alert ! Low altitude ! Correcting.");
+        //         // pitchInput = -5000;
+        //     }
+        // }
 
         // clamp the planes roll
         float desiredRoll = Mathf.Clamp(targetAngleYaw, -m_MaxRollAngle*Mathf.Deg2Rad, m_MaxRollAngle*Mathf.Deg2Rad);
@@ -133,6 +133,19 @@ public class AircraftAI : UnitAIController {
         pitchInput *= currentSpeedEffect;
         yawInput *= currentSpeedEffect;
 
+        // Prevent AI from trying to use pitch down too hard (prevents AI from mindlessly crash into the sea)
+        if (pitchInput > 0) {
+            pitchInput = 0;
+        }
+        // if (SquadLeader) {
+        //     Debug.Log("pitchInput : "+pitchInput);
+        // }
+        if (m_TakenOff && SquadLeader) {
+            if (AircraftController.Altitude < 100) {
+                Debug.Log("Alert ! Low altitude ! pitchInput : "+pitchInput);
+                // pitchInput = -5000;
+            }
+        }
         // pass the current input to the plane (false = because AI never uses air brakes!)
         AircraftController.Move(rollInput, pitchInput, yawInput, throttleInput, false);
     }

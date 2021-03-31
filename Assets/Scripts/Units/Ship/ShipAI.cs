@@ -20,12 +20,11 @@ public class ShipAI : UnitAIController {
         // if (UnitsAICurrentState == UnitsAIStates.NoAI) {
         //     return;
         // }
-        // If there is a target
-        if (FollowedUnit != null && FollowsUnit && UnitCanMove) {
+        if (FollowedUnit != null && FollowsUnit) {
             UnitsAICurrentState = UnitsAIStates.Follow;
-        } else if (Waypoints.Count > 0 && UsesWaypoints && UnitCanMove) {
+        } else if (Waypoints.Count > 0 && UsesWaypoints) {
             UnitsAICurrentState = UnitsAIStates.FollowWayPoints;
-        } else if (TargetUnit != null && UnitCanShoot) {
+        } else if (TargetUnit != null && UnitCanMove && UnitCanShoot) {
             // I'm not sure about this one... The logic is : if it's one of the correct states, check if the target is in range or not. Act accordingly
             if (UnitsAICurrentState == UnitsAIStates.ApproachTarget || UnitsAICurrentState == UnitsAIStates.CircleTarget || UnitsAICurrentState == UnitsAIStates.Patrol) {
                 if ((gameObject.transform.position - TargetUnit.transform.position).magnitude > MaxTurretsRange) {
@@ -43,11 +42,11 @@ public class ShipAI : UnitAIController {
             }
         }
 
-        if (UnitsAICurrentState != UnitsAIStates.Idle && UnitsAICurrentState != UnitsAIStates.NoAI) {
-            if (!UnitCanMove) {
-                UnitsAICurrentState = UnitsAIStates.Idle;
-            }
-        }
+        // if (UnitsAICurrentState != UnitsAIStates.Idle && UnitsAICurrentState != UnitsAIStates.NoAI) {
+        //     if (!UnitCanMove) {
+        //         UnitsAICurrentState = UnitsAIStates.Idle;
+        //     }
+        // }
 
         base.CheckState();
 

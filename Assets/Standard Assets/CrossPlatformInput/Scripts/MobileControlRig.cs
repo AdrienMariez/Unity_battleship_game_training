@@ -45,14 +45,14 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         private void OnEnable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged += Update; // Obsolete
+            // EditorUserBuildSettings.activeBuildTargetChanged += Update; // Obsolete
             EditorApplication.update += Update;
         }
 
 
         private void OnDisable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged -= Update; // Obsolete
+            // EditorUserBuildSettings.activeBuildTargetChanged -= Update; // Obsolete
             EditorApplication.update -= Update;
         }
 
