@@ -158,10 +158,23 @@ public class HitboxComponent : MonoBehaviour {
         UnitMasterController.DestroyUnit();
     }
 
-    public void InteractionWithAirfield (bool action) {
-        // True : enters Airport Zone
-        // False : exits Airport Zone
-        UnitMasterController.SetInAirfieldZone(action);
+    // public void InteractionWithAirfield (bool action) {
+    //     // True : enters Airport Zone
+    //     // False : exits Airport Zone
+    //     UnitMasterController.SetInAirfieldZone(action);
+    // }
+
+    void OnCollisionEnter(Collision collision){
+        Debug.Log(UnitMasterController.GetUnitName()+ " has collided with another object / " + collision.relativeVelocity.magnitude);
+        // foreach (ContactPoint contact in collision.contacts)
+        // {
+        //     Debug.DrawRay(contact.point, contact.normal, Color.white);
+        // }
+        // if (collision.relativeVelocity.magnitude > 2)
+        //     audioSource.Play();
+    }
+    void OnTriggerEnter (Collider colliderHit) {
+        Debug.Log(UnitMasterController.GetUnitName()+ " has collided with another object - OnTriggerEnter");
     }
 
     public void SetHitBoxActive(bool activate) {

@@ -17,7 +17,7 @@ using UnityEngine;
         private Animator m_Animator;
         private Rigidbody m_Rigidbody;
         private AircraftController m_Plane;
-        private bool InAirportZone = false;
+        // private bool InAirportZone = true;
         
 
 
@@ -25,32 +25,23 @@ using UnityEngine;
             m_Plane = unitController;
             m_Rigidbody = rb;
             m_Animator = GetComponent<Animator>();
+            // m_Animator.SetInteger("GearState", (int) GearState.Raised);
         }
 
-        private void Update() {
-            // float speed = Mathf.Abs (m_Rigidbody.velocity.x) + Mathf.Abs (m_Rigidbody.velocity.y) + Mathf.Abs (m_Rigidbody.velocity.z);
-        }
+        // public void SetInAirfieldZone(bool action) {
+        //     InAirportZone = action;
+        //     // Unused...could be used to land planes
+        // }
 
-        public void SetInAirfieldZone(bool action) {
-            InAirportZone = action;
-            SetCurrentAnimationState();
-        }
-
-        private void SetCurrentAnimationState() {
-            if (InAirportZone) {
-                if (m_State != GearState.Lowered) {
-                    // Landing gear is out
-                    // Debug.Log ("Airfield ''o'' expected");
-                    m_State = GearState.Lowered;
-                    m_Animator.SetInteger("GearState", (int) m_State);
-                }
+        public void SetGear(bool action) {
+            if (action) {
+                Debug.Log ("Airfield ''o'' expected");
+                m_State = GearState.Lowered;
+                m_Animator.SetInteger("GearState", (int) m_State);
             } else {
-                if (m_State != GearState.Raised) {
-                    // Landing gear is folded inside
-                    // Debug.Log ("Airfield ..o..");
-                    m_State = GearState.Raised;
-                    m_Animator.SetInteger("GearState", (int) m_State);
-                }
+                Debug.Log ("Airfield ..o..");
+                m_State = GearState.Raised;
+                m_Animator.SetInteger("GearState", (int) m_State);
             }
         }
     }

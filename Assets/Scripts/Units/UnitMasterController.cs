@@ -448,7 +448,7 @@ public class UnitMasterController : MonoBehaviour {
     }
 
 
-    public virtual void SetInAirfieldZone(bool action) { }
+    // public virtual void SetInAirfieldZone(bool action) { }
 
     public void SetPlayerManager(PlayerManager playerManager) {
         // Debug.Log ("SetPlayerManager" +UnitName);
@@ -462,11 +462,4 @@ public class UnitMasterController : MonoBehaviour {
             GetComponent<SpawnerScriptToAttach>().BeginOperations(this, UnitAI);
         }
     }
-    // public void SetGameManager(GameManager gameManager){
-    //     // Debug.Log ("SetGameManager" +UnitName);
-    //     GameManager = gameManager;
-    //     if (GetComponent<SpawnerScriptToAttach>()){
-    //         GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-    //     }
-    // }
 }

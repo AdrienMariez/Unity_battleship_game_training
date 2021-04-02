@@ -24,9 +24,9 @@ public class UnitAIController : UnitParameter {
 
     public enum UnitsAIStates {      // This will be the State Machine used globally for all units
         Patrol,                         // Follow a waypoint until a unit is seen
-        CircleTarget,                   // turn aroung a position
+        CircleTarget,                   // turn around a position
         ApproachTarget,                 // Go to set position
-        Follow,                // Get into a formation with a fellow Unit
+        Follow,                         // Get into a formation with a fellow Unit
         Idle,                           // Wait until new orders
         FollowWayPoints,                // Follow a set of coordinates
         Flee,                           // Go away from a point

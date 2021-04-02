@@ -1968,7 +1968,7 @@ MonoBehaviour:
   m_PlaneSpawnPosition: {fileID: 4462104267295598258}
   m_PlaneSpawnPath:
   - _transform: {fileID: 330718045626879448}
-    _speed: 30
+    _speed: 10
   - _transform: {fileID: 2389161196551252298}
     _speed: 30
   m_GroundSpawnPosition: {fileID: 2234937143242066959}

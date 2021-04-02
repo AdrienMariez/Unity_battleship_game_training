@@ -45,7 +45,10 @@ using System.Collections;
         private float m_BankedTurnAmount;
         private Rigidbody m_Rigidbody;
 
-        private bool InAirportZone = false;             // Is the plane in a airfield area ?
+        private bool dragged = false;
+        private Rigidbody draggerRigidbody;
+
+        // private bool InAirportZone = false;             // Is the plane in a airfield area ?
 
         public override void SetUnitFromWorldUnitsManager(WorldSingleUnit unit, bool aiMove, bool aiShoot, bool aiSpawn) {
             // Original Unity aircraft elements
@@ -76,6 +79,7 @@ using System.Collections;
                 if (GetComponent<AircraftLandingGear>()) {
                     LandingGear = GetComponent<AircraftLandingGear>();
                     LandingGear.BeginOperations(this, m_Rigidbody);
+                    LandingGear.SetGear(true);
                 }
 
             // Set Movement
@@ -130,7 +134,19 @@ using System.Collections;
             CalculateAltitude();
         }
 
+        public override void FixedUpdate() {
+            base.FixedUpdate();
+            if (dragged) {
 
+                // Get the velocities of the dragger at the receivers position.
+                Vector3 lastDragVelocity = draggerRigidbody.GetPointVelocity(transform.position);
+                Vector3 lastDragAngularVelocity = draggerRigidbody.angularVelocity * Mathf.Rad2Deg;
+                // Drag the receiver accordingly. The dragMagnitude influences
+                // how effectively the receiver is dragged.
+                transform.position += lastDragVelocity * Time.deltaTime * 1;
+                transform.Rotate(lastDragAngularVelocity * Time.deltaTime * 1, Space.World);
+            }
+        }
         private void ClampInputs() {
             // clamp the inputs to -1 to 1 range
             RollInput = Mathf.Clamp(RollInput, -1, 1);
@@ -303,6 +319,10 @@ using System.Collections;
             StartCoroutine(TakeoffActionPauseLogic(spawner));
         }
         IEnumerator TakeoffActionPauseLogic(UnitMasterController spawner){
+            if (spawner != null) {
+               dragged = true;
+               draggerRigidbody = spawner.gameObject.GetComponent<Rigidbody>(); 
+            }
             yield return new WaitForSeconds(m_TimeBeforePlayerControl);
             TakeoffActionEnd(spawner);
         }
@@ -315,12 +335,17 @@ using System.Collections;
                 base.InitSquadMember(spawner);
                 base.UpdateSquadLeader(Squad.GetSquadLeader());
             }
+            if (dragged) {
+                dragged = false;
+                draggerRigidbody = null; 
+            }
             if (GetComponent<AircraftAI>()) {
                 GetComponent<AircraftAI>().TakeoffActionEnd();
             }
             if (SquadLeader && spawner != null) {
                 UnitAI.SetSpawnFollowedUnit(spawner);
             }
+            LandingGear.SetGear(false);
         }
 
         // public override void UpdateSquadLeader(UnitMasterController squadLeader) {
@@ -385,19 +410,19 @@ using System.Collections;
             if (PlaneWeapons != null) 
                 PlaneWeapons.SetFreeCamera(freeCam);
         }
-        public override void SetInAirfieldZone(bool action) {
-            if (InAirportZone != action) {
-                InAirportZone = action;
-                if (InAirportZone) {
-                    // Debug.Log(UnitName+" has has entered an airfield zone !");
-                } else {
-                    // Debug.Log(UnitName+" has exited an airfield zone !");
-                }
-                if (LandingGear != null) {
-                    LandingGear.SetInAirfieldZone(action);
-                }
-            }
-        }
+        // public override void SetInAirfieldZone(bool action) {
+        //     if (InAirportZone != action) {
+        //         InAirportZone = action;
+        //         if (InAirportZone) {
+        //             // Debug.Log(UnitName+" has has entered an airfield zone !");
+        //         } else {
+        //             // Debug.Log(UnitName+" has exited an airfield zone !");
+        //         }
+        //         if (LandingGear != null) {
+        //             LandingGear.SetInAirfieldZone(action);
+        //         }
+        //     }
+        // }
         public override void CallDeath() {
             base.CallDeath();
             Movement.SetDead(true);

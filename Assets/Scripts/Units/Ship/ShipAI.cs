@@ -118,6 +118,11 @@ public class ShipAI : UnitAIController {
             ShipController.SetAIturn(0);
             // Debug.Log("far - " + distance);
             // Debug.Log("case 3 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
+        } else if (distance < RotationSafeDistance / 2) {                                                              // If destination is VERY close 
+            ShipController.SetAIturn(0);
+            ShipController.SetAISpeed(0);
+            // Debug.Log("very close - " + distance);
+            // Debug.Log("case 3 - angle : " + angle +" - TurnInputLimit - " + TurnInputLimit);
         } else if (angle > 0 && angle < 120) {                                                              // If destination is close and extremely on the right
             ShipController.SetAIturn(0.5f);
             ShipController.SetAISpeed(1);

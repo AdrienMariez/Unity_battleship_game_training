@@ -465,7 +465,7 @@ public class SpawnerScriptToAttach : MonoBehaviour {
     }
     public static (Transform, bool) TryPositionSingleLocation (Transform transform, float unitSize, LayerMask layerMask) {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, unitSize, layerMask);
-        Debug.Log("TryPositionSingleLocation : " + hitColliders.Length );
+        // Debug.Log("TryPositionSingleLocation : " + hitColliders.Length );
         if (hitColliders.Length == 0) {
             return (transform, true);                        // Try initial position first (Item2 = true means position is clear)
         }

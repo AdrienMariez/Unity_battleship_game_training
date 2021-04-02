@@ -12,10 +12,8 @@ public class AircraftAI : UnitAIController {
         [SerializeField] private float m_TakeoffHeight = 20;            // the AI will fly straight and only pitch upwards until reaching this height /20
         private Vector3 MovePosition;                                 // The position the AI move to or circle
         [SerializeField] private float m_FlyAltitude = 200;              // the AI will fly at this altitude by default
-
-        // private AeroplaneController m_AeroplaneController;  // The aeroplane controller that is used to move the plane
         private float m_RandomPerlin;                       // Used for generating random point on perlin noise so that the plane will wander off path slightly
-        private bool m_TakenOff;                            // Has the plane taken off yet
+        private bool TakenOff;                            // Has the plane taken off yet
 
 
     protected AircraftController AircraftController;
@@ -23,7 +21,7 @@ public class AircraftAI : UnitAIController {
     public override void BeginOperations (bool aiMove, bool aiShoot, bool aiSpawn) {
         // pick a random perlin starting point for lateral wandering
             m_RandomPerlin = Random.Range(0f, 100f);
-            m_TakenOff = false;
+            TakenOff = false;
 
         UnitsAICurrentState = AircraftAISpawnState;
         // Still need the specific unit Controller for specific methods
@@ -38,7 +36,7 @@ public class AircraftAI : UnitAIController {
 
         if (AIActive) {
             if (Waypoints.Count > 0 && UsesWaypoints) {
-                FollowWayPointsAction();
+                FlyTowardsPosition(Waypoints[0]);
             }
             if (UnitsAICurrentState == UnitsAIStates.NoAI) {
                 NoAIInput();
@@ -105,7 +103,7 @@ public class AircraftAI : UnitAIController {
 
         // AI applies elevator control (pitch, rotation around x) to reach the target angle
         float pitchInput = changePitch*m_PitchSensitivity;
-        // if (m_TakenOff) {
+        // if (TakenOff) {
         //     if (AircraftController.Altitude < 100) {
         //         Debug.Log("Alert ! Low altitude ! Correcting.");
         //         // pitchInput = -5000;
@@ -116,10 +114,10 @@ public class AircraftAI : UnitAIController {
         float desiredRoll = Mathf.Clamp(targetAngleYaw, -m_MaxRollAngle*Mathf.Deg2Rad, m_MaxRollAngle*Mathf.Deg2Rad);
         float yawInput = 0;
         float rollInput = 0;
-        if (!m_TakenOff) {
+        if (!TakenOff) {
             // If the planes altitude is above m_TakeoffHeight we class this as taken off
             if (AircraftController.Altitude > m_TakeoffHeight) {
-                m_TakenOff = true;
+                TakenOff = true;
             }
         } else {
             // now we have taken off to a safe height, we can use the rudder and ailerons to yaw and roll
@@ -137,15 +135,13 @@ public class AircraftAI : UnitAIController {
         if (pitchInput > 0) {
             pitchInput = 0;
         }
-        // if (SquadLeader) {
-        //     Debug.Log("pitchInput : "+pitchInput);
+        // if (SquadLeader) { Debug.Log("pitchInput : "+pitchInput); }
+        
+        // if (TakenOff && SquadLeader) {
+        //     if (AircraftController.Altitude < 100) {
+        //         // Debug.Log("Alert ! Low altitude ! pitchInput : "+pitchInput);
+        //     }
         // }
-        if (m_TakenOff && SquadLeader) {
-            if (AircraftController.Altitude < 100) {
-                Debug.Log("Alert ! Low altitude ! pitchInput : "+pitchInput);
-                // pitchInput = -5000;
-            }
-        }
         // pass the current input to the plane (false = because AI never uses air brakes!)
         AircraftController.Move(rollInput, pitchInput, yawInput, throttleInput, false);
     }
@@ -255,19 +251,8 @@ public class AircraftAI : UnitAIController {
     protected override void CircleTargetAction(){ }
     protected override void ApproachTargetAction(){ }
     protected override void FollowAction(){ }
-    protected override void IdleAction(){
-        AircraftController.SetAISpeed(0);
-        // ShipController.SetAIturn(0);
-    }
-    protected override void FollowWayPointsAction(){
-        // Debug.Log("Unit : "+ Name +" - UnitsAICurrentState = "+ UnitsAICurrentState);
-        
-        if (!UsesWaypoints) {
-            FlyForward();
-        }
-
-        FlyTowardsPosition(Waypoints[0]);
-    }
+    protected override void IdleAction(){ }
+    protected override void FollowWayPointsAction(){ }
     protected override void FleeAction(){ }
     protected override void BackToBaseAction(){ }
     protected override void TakeoffAction(){ }
@@ -277,9 +262,7 @@ public class AircraftAI : UnitAIController {
         UnitsAICurrentState = AircraftAISpawnState;
         CheckState();
     }
-    protected override void LandingAction(){
-        AircraftController.SetAISpeed(0);
-    }
+    protected override void LandingAction(){ }
     protected override void NoAIAction(){
         AircraftController.SetAISpeed(0);
     }
