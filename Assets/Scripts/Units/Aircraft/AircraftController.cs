@@ -137,7 +137,7 @@ using System.Collections;
         public override void FixedUpdate() {
             base.FixedUpdate();
             if (dragged) {
-
+                // From https://github.com/oznogon/FrameDrag/blob/master/Scripts/FrameDragReceiver.cs
                 // Get the velocities of the dragger at the receivers position.
                 Vector3 lastDragVelocity = draggerRigidbody.GetPointVelocity(transform.position);
                 Vector3 lastDragAngularVelocity = draggerRigidbody.angularVelocity * Mathf.Rad2Deg;
@@ -346,6 +346,18 @@ using System.Collections;
                 UnitAI.SetSpawnFollowedUnit(spawner);
             }
             LandingGear.SetGear(false);
+        }
+        public void LandingAction(UnitMasterController airfield){
+            // Called when a landing procedure is in final approach (when a plane follows a "land" landing waypoint)
+            if (airfield != null) {
+               dragged = true;
+               draggerRigidbody = airfield.gameObject.GetComponent<Rigidbody>(); 
+            }
+            GetComponent<Rigidbody>().useGravity = false;
+            foreach (HitboxComponent hitbox in UnitComponents) {
+                hitbox.SetHitBoxActive(false);
+            }
+            LandingGear.SetGear(true);
         }
 
         // public override void UpdateSquadLeader(UnitMasterController squadLeader) {

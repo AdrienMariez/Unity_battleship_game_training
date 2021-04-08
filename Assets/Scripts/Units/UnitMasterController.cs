@@ -31,7 +31,7 @@ public class UnitMasterController : MonoBehaviour {
     protected bool Dead = false; public bool GetDead(){ return Dead; }
     protected bool InGameBoundaries = false;                // True : unit is within game boundaries / False : unit is out of game
     protected bool SquadLeader = false;
-    private UnitMasterController Spawner;
+    public UnitMasterController Spawner{ get; set; }
     protected GameManager GameManager;
     protected PlayerManager PlayerManager;
 
@@ -317,16 +317,6 @@ public class UnitMasterController : MonoBehaviour {
         // Start AI after turrets were set
             UnitAI.BeginOperations(aiMove, aiShoot, aiSpawn);
 
-        // Send to GameManager if any
-            // if (WorldUnitsManager.GetGameManager() != null) {
-            //     // Debug.Log ("SetGameManager" +UnitName);
-            //     GameManager = WorldUnitsManager.GetGameManager();
-            //     GameManager.UnitSpawned(this, UnitTeam);
-            //     if (GetComponent<SpawnerScriptToAttach>()){
-            //         GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
-            //     }
-            // }
-
         // Check if unit is within game zone
             Collider[] colliders = Physics.OverlapSphere (transform.position, unit.GetUnitSize());
             bool isToKill = true;
@@ -354,20 +344,23 @@ public class UnitMasterController : MonoBehaviour {
     public virtual void SetSquad(SpawnerScriptToAttach.Squad squad) {
         Squad = squad;
     }
+    public virtual void SetSpawner(UnitMasterController spawner) {
+        Spawner = spawner;
+    }
     public virtual void InitSquad(UnitMasterController spawner) {
         GameManager = WorldUnitsManager.GetGameManager();
         GameManager.UnitSpawned(this, UnitTeam);
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
         }
-        Spawner = spawner;
+        SetSpawner(spawner);
     }
     public virtual void InitSquadMember(UnitMasterController spawner) {
         GameManager = WorldUnitsManager.GetGameManager();
         if (GetComponent<SpawnerScriptToAttach>()){
             GetComponent<SpawnerScriptToAttach>().SetGameManager(GameManager);
         }
-        Spawner = spawner;
+        SetSpawner(spawner);
     }
     public virtual void SetAsSquadLeader() {
         UnitAI.SetAsSquadLeader();

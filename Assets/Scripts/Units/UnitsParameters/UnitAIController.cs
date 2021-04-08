@@ -30,7 +30,7 @@ public class UnitAIController : UnitParameter {
         Idle,                           // Wait until new orders
         FollowWayPoints,                // Follow a set of coordinates
         Flee,                           // Go away from a point
-        BackToBase,                      // Go back to ally point
+        BackToBase,                     // Go back to ally point
         NoAI,
         Takeoff,
         Landing

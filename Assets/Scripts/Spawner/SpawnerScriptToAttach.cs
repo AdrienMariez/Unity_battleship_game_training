@@ -23,6 +23,13 @@ public class SpawnerScriptToAttach : MonoBehaviour {
         public Transform _transform;
         public float _speed;
     }
+    public PlaneLandingPath[] m_PlaneLandingPath;
+    [Serializable] public class PlaneLandingPath {
+        public Transform _transform;
+        public bool _air;
+        public float _speed;
+    }
+    private List<UnitInSpawningAnimation> PlanesInLandingAnimationList = new List<UnitInSpawningAnimation>();
 
     [Tooltip("Ground units spawnpoint")]
     public Transform m_GroundSpawnPosition;
@@ -508,11 +515,20 @@ public class SpawnerScriptToAttach : MonoBehaviour {
                 CloseSpawnMenu();
             }
         }
+        // Inform each squad that the spawner is dead
+        foreach (Squad spawnedSquad in SquadSpawnedList) {
+            foreach (UnitMasterController unit in spawnedSquad.GetSquadUnitsList()) {
+                unit.SetSpawner(null);
+            }
+        }
     }
 
 
-    public void AddSquadMate (UnitMasterController unit) {
-        Debug.Log("AddSquadMate");
-
+    public List<PlaneLandingPath> GetLandingPath() {
+        List<PlaneLandingPath> _pathList = new List<PlaneLandingPath>();
+        for (int i = m_PlaneLandingPath.Length - 1; i >= 0 ; i--){
+            _pathList.Add(m_PlaneLandingPath[i]);
+        }
+        return _pathList;
     }
 }

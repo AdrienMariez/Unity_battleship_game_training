@@ -35,11 +35,11 @@ using UnityEngine;
 
         public void SetGear(bool action) {
             if (action) {
-                Debug.Log ("Airfield ''o'' expected");
+                // Debug.Log ("Airfield ''o'' expected");
                 m_State = GearState.Lowered;
                 m_Animator.SetInteger("GearState", (int) m_State);
             } else {
-                Debug.Log ("Airfield ..o..");
+                // Debug.Log ("Airfield ..o..");
                 m_State = GearState.Raised;
                 m_Animator.SetInteger("GearState", (int) m_State);
             }

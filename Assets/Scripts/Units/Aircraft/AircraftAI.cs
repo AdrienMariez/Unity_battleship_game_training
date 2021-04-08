@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class AircraftAI : UnitAIController {
         [SerializeField] private float m_RollSensitivity = .1f;         // How sensitively the AI applies the roll controls /.2f
@@ -10,10 +10,12 @@ public class AircraftAI : UnitAIController {
         [SerializeField] private float m_MaxRollAngle = 35;             // The maximum angle that the AI will attempt to u /45
         [SerializeField] private float m_SpeedEffect = 0.01f;           // This increases the effect of the controls based on the plane's speed. /0.01f
         [SerializeField] private float m_TakeoffHeight = 20;            // the AI will fly straight and only pitch upwards until reaching this height /20
-        private Vector3 MovePosition;                                 // The position the AI move to or circle
-        [SerializeField] private float m_FlyAltitude = 200;              // the AI will fly at this altitude by default
-        private float m_RandomPerlin;                       // Used for generating random point on perlin noise so that the plane will wander off path slightly
-        private bool TakenOff;                            // Has the plane taken off yet
+        private Vector3 MovePosition;                                   // The position the AI move to or circle
+        [SerializeField] private float m_FlyAltitude = 200;             // the AI will fly at this altitude by default
+        private float m_RandomPerlin;                                   // Used for generating random point on perlin noise so that the plane will wander off path slightly
+        private bool TakenOff;                                          // Has the plane taken off yet
+
+        private List<SpawnerScriptToAttach.PlaneLandingPath> LandingPath;       //Path used by a landing plane to land.
 
 
     protected AircraftController AircraftController;
@@ -50,6 +52,30 @@ public class AircraftAI : UnitAIController {
                 }
             } else if (Stressed && TargetUnit != null) {
                 ConvertAltitudeRequired(TargetUnit);
+            }
+
+            if (UnitsAICurrentState == UnitsAIStates.BackToBase) {
+                float distance = (gameObject.transform.position -  LandingPath[0]._transform.position).magnitude;
+                if (distance < 50)
+                    LandingPointReached();
+                FlyTowardsPosition(LandingPath[0]._transform.position);
+            }
+        }
+        // TEST
+        else {
+            if (Input.GetButtonDown ("OpenDamageControl"))  {
+                CleanMoveOrders();                      // Clean previous orders and prevent new ones with BackToBase
+                UnitsAICurrentState = UnitsAIStates.BackToBase;
+
+                BackToBaseAction();                     // Get landing waypoints data
+
+                // Build fake waypoints for visualization only
+                foreach (SpawnerScriptToAttach.PlaneLandingPath _ in LandingPath) {
+                    Waypoints.Add(_._transform.position);
+                }
+                UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
+
+                Debug.Log("Unit : "+ Name +" UnitsAICurrentState = "+ UnitsAICurrentState);
             }
         }
     }
@@ -197,6 +223,24 @@ public class AircraftAI : UnitAIController {
         // Debug.Log("SetCirclePosition");
         MovePosition = new Vector3(transform.position.x, m_FlyAltitude, transform.position.z);
     }
+    protected void LandingPointReached() {
+        if (LandingPath.Count > 1) {
+            LandingPath.Remove(LandingPath[0]);
+
+            // Build fake waypoints for visualization only
+            foreach (SpawnerScriptToAttach.PlaneLandingPath _ in LandingPath) {
+                Waypoints.Add(_._transform.position);
+            }
+            UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
+            if (!LandingPath[0]._air) {
+                AircraftController.LandingAction(UnitMasterController.Spawner);
+            }
+            // Debug.Log(" case 1");
+        } else {
+            UnitMasterController.DestroyUnit();
+            // Debug.Log(" case 2");
+        }
+    }
 
     // UnitsAIStates
     // UnitsAICurrentState
@@ -210,6 +254,8 @@ public class AircraftAI : UnitAIController {
         } else if (Waypoints.Count > 0 && UsesWaypoints) {
             UnitsAICurrentState = UnitsAIStates.FollowWayPoints;
         } else if (UnitsAICurrentState == UnitsAIStates.Takeoff) {
+            //Don't touch anything if the plane is taking off
+        } else if (UnitsAICurrentState == UnitsAIStates.BackToBase) {
             //Don't touch anything if the plane is taking off
         } else if (TargetUnit != null && UnitCanShoot) {
             // If the AI is allowed to autoattack, check if the AI is set to hunt enemies
@@ -254,7 +300,11 @@ public class AircraftAI : UnitAIController {
     protected override void IdleAction(){ }
     protected override void FollowWayPointsAction(){ }
     protected override void FleeAction(){ }
-    protected override void BackToBaseAction(){ }
+    protected override void BackToBaseAction(){
+        if (UnitMasterController.Spawner != null) {
+            LandingPath = UnitMasterController.Spawner.GetComponent<SpawnerScriptToAttach>().GetLandingPath();
+        }
+    }
     protected override void TakeoffAction(){ }
     public void TakeoffActionEnd(){
         // Debug.Log("TakeoffActionEnd");
