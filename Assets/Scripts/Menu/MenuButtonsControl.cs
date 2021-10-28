@@ -89,7 +89,7 @@ public class MenuButtonsControl : MonoBehaviour {
             }
         }
         CurrentGameMode = buttonGameMode;
-        // Debug.Log (buttonGameMode);
+        Debug.Log (buttonGameMode);
 
         foreach (Transform child in ScenariosListContainerInstance.transform) {     // Clear the current scenario list to make place for the new ones
             GameObject.Destroy(child.gameObject);

@@ -234,6 +234,7 @@ public class UnitMapUIManager : MonoBehaviour {
         }
         // foreach (Vector3 _waypoint in waypoints) {
         for (int i = 0; i < waypoints.Count; i++){
+            // Debug.Log ("waypoint");
             PlayerSideVisibleMoveMapOrder _moveOrder = new PlayerSideVisibleMoveMapOrder{};
                 _moveOrder.SetOrderModel(BuildOrderModel(OrderType.Move, Unit.transform));
                 // if (i == 0) {
@@ -253,6 +254,7 @@ public class UnitMapUIManager : MonoBehaviour {
         UnitMoveOrderList = new List<PlayerSideVisibleMoveMapOrder>();
     }
     public void PositionMoveOrders(){
+        // Debug.Log ("PositionMoveOrders");
         Vector3 _unitScreenPos = MapCam.WorldToScreenPoint(Unit.transform.position);
         for (int i = 0; i < UnitMoveOrderList.Count; i++){
             Vector3 _targetScreenPos;

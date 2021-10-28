@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public static class LoadingData {
     public static bool InMenu = false; // Default false so scenarios can be tested independantly
-    public static string MainMenu = "MainMenuScene3d";
+    public static string MainMenu = "MainMenuScene";
     public static CompiledTypes.Scenarios SelectedScenario = null;
 
     public static string SceneToLoad;

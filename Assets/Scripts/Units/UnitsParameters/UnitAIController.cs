@@ -130,12 +130,6 @@ public class UnitAIController : UnitParameter {
                 SetPlayerSetTargetByIndex();
             }
         }
-        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints && UsesWaypoints) {
-            float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
-            if (distance < 50) {
-                MoveCheckPointReached();
-            }
-        }
     }
     protected virtual IEnumerator AIOrdersLoop(){
         while (true) {

@@ -31,6 +31,7 @@ public AudioFX_StorageType AudioFX_Storage;
         public class ScenariosType 
  {public Scenarios A { get { return Get(CompiledTypes.Scenarios.RowValues.A); } } 
 public Scenarios B { get { return Get(CompiledTypes.Scenarios.RowValues.B); } } 
+public Scenarios C { get { return Get(CompiledTypes.Scenarios.RowValues.C); } } 
 private Scenarios Get(CompiledTypes.Scenarios.RowValues line) { return new Scenarios(parsedDB.Root, line); }
 
                 public Scenarios[] GetAll() 

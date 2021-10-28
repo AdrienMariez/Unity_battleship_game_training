@@ -10,6 +10,7 @@ public class AircraftAI : UnitAIController {
         [SerializeField] private float m_MaxRollAngle = 35;             // The maximum angle that the AI will attempt to u /45
         [SerializeField] private float m_SpeedEffect = 0.01f;           // This increases the effect of the controls based on the plane's speed. /0.01f
         [SerializeField] private float m_TakeoffHeight = 20;            // the AI will fly straight and only pitch upwards until reaching this height /20
+        private float ThrottleInput = 0.5f;
         private Vector3 MovePosition;                                   // The position the AI move to or circle
         [SerializeField] private float m_FlyAltitude = 200;             // the AI will fly at this altitude by default
         private float m_RandomPerlin;                                   // Used for generating random point on perlin noise so that the plane will wander off path slightly
@@ -36,9 +37,16 @@ public class AircraftAI : UnitAIController {
     protected override void FixedUpdate() {
         base.FixedUpdate();
 
+        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints && UsesWaypoints) {
+            float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
+            if (distance < 300) {
+                MoveCheckPointReached();
+            }
+        }
+
         if (AIActive) {
             if (Waypoints.Count > 0 && UsesWaypoints) {
-                FlyTowardsPosition(Waypoints[0]);
+                FlyTowardsPosition(Waypoints[0], false);
             }
             if (UnitsAICurrentState == UnitsAIStates.NoAI) {
                 NoAIInput();
@@ -48,7 +56,7 @@ public class AircraftAI : UnitAIController {
                 ConvertAltitudeRequired(FollowedUnit.gameObject);
             } else if (UnitsAICurrentState == UnitsAIStates.CircleTarget) {
                 if (MovePosition != null) {
-                    FlyTowardsPosition(MovePosition);
+                    FlyTowardsPosition(MovePosition, false);
                 }
             } else if (Stressed && TargetUnit != null) {
                 ConvertAltitudeRequired(TargetUnit);
@@ -56,9 +64,24 @@ public class AircraftAI : UnitAIController {
 
             if (UnitsAICurrentState == UnitsAIStates.BackToBase) {
                 float distance = (gameObject.transform.position -  LandingPath[0]._transform.position).magnitude;
-                if (distance < 50)
+                if (LandingPath[0]._air && distance < 50) {
+                    ThrottleInput = 0.2f;
                     LandingPointReached();
-                FlyTowardsPosition(LandingPath[0]._transform.position);
+                } else if (!LandingPath[0]._air && distance < 30) {
+                    ThrottleInput = 0.2f;
+                    LandingPointReached();
+                }
+                    
+                FlyTowardsPosition(LandingPath[0]._transform.position, true);
+
+                // Debug.Log ("LandingPath[0] : "+LandingPath[0]._transform.position.y +" / plane pos : "+ transform.position.y);
+
+                // Build fake waypoints for visualization only
+                Waypoints.Clear();
+                foreach (SpawnerScriptToAttach.PlaneLandingPath _ in LandingPath) {
+                    Waypoints.Add(_._transform.position);
+                }
+                UnitMasterController.AICallbackCurrentWaypoints(Waypoints);
             }
         }
         // TEST
@@ -70,6 +93,7 @@ public class AircraftAI : UnitAIController {
                 BackToBaseAction();                     // Get landing waypoints data
 
                 // Build fake waypoints for visualization only
+                Waypoints.Clear();
                 foreach (SpawnerScriptToAttach.PlaneLandingPath _ in LandingPath) {
                     Waypoints.Add(_._transform.position);
                 }
@@ -85,7 +109,7 @@ public class AircraftAI : UnitAIController {
         Vector3 convertedCurrentPosForDistance = new Vector3(transform.position.x, targetModel.transform.position.y, transform.position.z);
         float distance = (convertedCurrentPosForDistance -  targetModel.transform.position).magnitude;
 
-        if (distance > 200) {
+        if (distance > 1000) {
             targetPos = new Vector3(targetPos.x, m_FlyAltitude, targetPos.z);
         } else if (targetModel.GetComponent<UnitMasterController>()) {
             if (targetModel.GetComponent<UnitMasterController>().GetUnitCategory() != CompiledTypes.Units_categories.RowValues.aircraft) {
@@ -97,10 +121,10 @@ public class AircraftAI : UnitAIController {
             }
         }
 
-        FlyTowardsPosition(targetPos);
+        FlyTowardsPosition(targetPos, false);
     }
 
-    protected void FlyTowardsPosition(Vector3 positionV3) {
+    protected void FlyTowardsPosition(Vector3 positionV3, bool allowPitchDown) {
         // if (AIActive) {
         //     Debug.Log("FlyTowardsPosition - "+ UnitsAICurrentState);
         // }
@@ -125,7 +149,7 @@ public class AircraftAI : UnitAIController {
         float changePitch = targetAnglePitch - AircraftController.PitchAngle;
 
         // AI always applies gentle forward throttle
-        const float throttleInput = 0.5f;
+        // const float throttleInput = 0.5f;
 
         // AI applies elevator control (pitch, rotation around x) to reach the target angle
         float pitchInput = changePitch*m_PitchSensitivity;
@@ -158,8 +182,10 @@ public class AircraftAI : UnitAIController {
         yawInput *= currentSpeedEffect;
 
         // Prevent AI from trying to use pitch down too hard (prevents AI from mindlessly crash into the sea)
-        if (pitchInput > 0) {
-            pitchInput = 0;
+        if (!allowPitchDown) {
+            if (pitchInput > 0) {
+                pitchInput = 0;
+            }
         }
         // if (SquadLeader) { Debug.Log("pitchInput : "+pitchInput); }
         
@@ -169,14 +195,14 @@ public class AircraftAI : UnitAIController {
         //     }
         // }
         // pass the current input to the plane (false = because AI never uses air brakes!)
-        AircraftController.Move(rollInput, pitchInput, yawInput, throttleInput, false);
+        AircraftController.Move(rollInput, pitchInput, yawInput, ThrottleInput, false);
     }
     protected void FlyForward() {
         // if (AIActive) {
         //     Debug.Log("FlyForward - "+ UnitsAICurrentState);
         // }
 
-        AircraftController.Move(0, 0, 0, 1, false);
+        AircraftController.Move(0, 0, 0, 0.5f, false);
     }
     protected  void NoAIInput() {
         // if (AIActive) {
@@ -214,6 +240,8 @@ public class AircraftAI : UnitAIController {
 
     public override void SetNewMoveLocation(Vector3 waypointPosition, MapManager.RaycastHitType raycastHitType) {
         // Change altitude of point location
+        Debug.Log("Alert ! SetNewMoveLocation ");
+
         Vector3 updatedwaypointPosition = new Vector3(waypointPosition.x, waypointPosition.y + m_FlyAltitude, waypointPosition.z);
 
         base.SetNewMoveLocation(updatedwaypointPosition, raycastHitType);
@@ -235,10 +263,10 @@ public class AircraftAI : UnitAIController {
             if (!LandingPath[0]._air) {
                 AircraftController.LandingAction(UnitMasterController.Spawner);
             }
-            // Debug.Log(" case 1");
+            Debug.Log(" case 1");
         } else {
             UnitMasterController.DestroyUnit();
-            // Debug.Log(" case 2");
+            Debug.Log(" case 2");
         }
     }
 
@@ -248,6 +276,7 @@ public class AircraftAI : UnitAIController {
         // if (UnitsAICurrentState == UnitsAIStates.NoAI) {
         //     return;
         // }
+        ThrottleInput = 0.5f;
 
         if (FollowedUnit != null && FollowsUnit) {
             UnitsAICurrentState = UnitsAIStates.Follow;

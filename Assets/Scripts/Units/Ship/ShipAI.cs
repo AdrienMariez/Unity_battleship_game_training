@@ -14,6 +14,17 @@ public class ShipAI : UnitAIController {
         // Debug.Log("Unit : "+ Name +"RotationSafeDistance: " + RotationSafeDistance);
         base.BeginOperations(aiMove, aiShoot, aiSpawn);
     }
+    
+        protected override void FixedUpdate() {
+        base.FixedUpdate();
+
+        if (UnitsAICurrentState == UnitsAIStates.FollowWayPoints && UsesWaypoints) {
+            float distance = (gameObject.transform.position -  Waypoints[0]).magnitude;
+            if (distance < 50) {
+                MoveCheckPointReached();
+            }
+        }
+    }
     // UnitsAIStates
     // UnitsAICurrentState
     protected override void CheckState() {
